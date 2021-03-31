@@ -32,16 +32,19 @@ class LoginSerializer(serializers.Serializer):
             return user
         return serializers.ValidationError("Incorrect credentials")
 
+# Forgot Password Serializer
 class ForgotSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id','email')
 
+# Account Removal Serializer
 class RemovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountRemoval
         fields = ('id', 'user', 'Status', 'Date', 'Time')
 
+# Blacklist Serializer
 class BlacklistSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     class Meta:

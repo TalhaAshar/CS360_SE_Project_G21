@@ -1,9 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
-# Create your models here.
 
 # Model to hold personal information about registered users
 class Profile(models.Model):
@@ -21,6 +17,7 @@ class Profile(models.Model):
 	User_Type = models.CharField(choices=UserChoices.choices, max_length=15, default="UNVERIFIED")
 	ProfileImage = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
+# Model to hold information about account deletion requests
 class AccountRemoval(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	Status = models.CharField(max_length=10, default='Pending')
