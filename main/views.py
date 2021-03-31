@@ -229,7 +229,7 @@ class ContactUs(APIView):
 			'body' : parsed["Body"],
 		})
 		plain = ''
-		send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com'], fail_silently = False, html_message=message)
+		send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = False, html_message=message)
 		return Response(status=status.HTTP_200_OK)
 
 		

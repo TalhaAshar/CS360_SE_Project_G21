@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
