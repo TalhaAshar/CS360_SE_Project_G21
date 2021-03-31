@@ -8,13 +8,13 @@ function Footer() {
         <Container>
             <Top>
                 <LinkContainer>
-                    <Link to="/dmca" style={{color:"white", textDecoration:"none"}}>
+                    <Link to="/DMCA" style={{color:"white", textDecoration:"none"}}>
                         <FooterText>DMCA</FooterText>
                     </Link>
-                    <Link to="/rules" style={{color:"white",textDecoration:"none"}}>
+                    <Link to="/Rules" style={{color:"white",textDecoration:"none"}}>
                         <FooterText>Community Guidelines</FooterText>
                     </Link>
-                    <Link to="/contact" style={{color:"white",textDecoration:"none"}}>
+                    <Link to="/Contact" style={{color:"white",textDecoration:"none"}}>
                         <FooterText>Contact Us</FooterText>
                     </Link>
                 </LinkContainer>
