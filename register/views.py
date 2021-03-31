@@ -31,24 +31,27 @@ from accounts.models import PersonalizedList
 
 value = "foo.bar@baz.qux"
 
-# Create your views here.
 
 # View for controlling the sign up functionality
-
 class SignUpView(generics.GenericAPIView):
 	serializer_class = RegisterSerializer
 
 	def post(self, request, *args, **kwargs):
+
+		# Parsing and validating data from the user's POST request
 		serializer = self.get_serializer(data=request.data["data"])
 		serializer.is_valid(raise_exception=True)
 		user = serializer.save()
 
+		# Marking the user as inactive until they eventually use the email verification
 		user.is_active = False
 		user.save()
 
+		# Creating the profile for the new user
 		new_prof = Profile.objects.create(user=user)
 		new_prof.save()
-		#print(get_current_site(request))
+		
+		# Creating the email for account verification
 		current_site = get_current_site(request)
 		subject = 'Activate Your BookBound Account'
 		message = render_to_string('account_activation_email.html', {
@@ -61,36 +64,7 @@ class SignUpView(generics.GenericAPIView):
 
 		return Response({"Result" : "Please Confirm your email to complete registration."}, status=status.HTTP_201_CREATED)
 
-		
-
-# class SignUpView(APIView):
-	
-# 	serializer_class = UserSerializer
-
-# 	# Creating the user object and sending an email to the user for verification
-# 	def post(self, request, *args, **kwargs):
-# 		serializer = UserSerializer(data=request.data)
-# 		if serializer.is_valid(): 
-# 			serializer.save()
-# 			user = User.objects.get(username=serializer.data["username"])
-# 			user.is_active = False
-# 			user.save()
-
-# 			new_prof = Profile.objects.create(user=user)
-# 			new_prof.save()
-# 			print(get_current_site(request))
-# 			current_site = get_current_site(request)
-# 			subject = 'Activate Your BookBound Account'
-# 			message = render_to_string('account_activation_email.html', {
-# 				'user': user,
-# 				'domain': current_site.domain,
-# 				'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-# 				'token': account_activation_token.make_token(user),
-# 			})
-# 			user.email_user(subject, message)
-# 			return Response({"Result" : "Please Confirm your email to complete registration."}, status=status.HTTP_201_CREATED)
-# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+# View for Account Activation through email verification
 class ActivateAccount(APIView):
 
 	def get(self, request, uidb64, token, *args, **kwargs):
@@ -120,6 +94,7 @@ class ActivateAccount(APIView):
 		else:
 			return Response({"Error" : "The confirmation link was invalid, possibly because it has already been used."}, status=status.HTTP_400_BAD_REQUEST)
 
+# View for if the user invokes the forgot password functionality
 class ForgotPassword(APIView):
 
 	serializer_class = ForgotSerializer
@@ -143,15 +118,19 @@ class ForgotPassword(APIView):
 		message = "Here are your details:\nUsername: " + Valid_Email.username + "\nPassword: PureGPlay"
 		send_mail(subject, message, EMAIL_HOST_USER, [parsed["email"]], fail_silently = False)
 
-		#Add here logic to change in DB
+		# Updating the user's intermediary password in the database
 		Valid_Email.set_password('PureGPlay')
 		Valid_Email.save(update_fields=["password"])
 		return Response({"Result":"Gucci"}, status=status.HTTP_200_OK)
 
+
+# View for Logging into the system
 class LoginView(generics.GenericAPIView):
 	serializer_class = LoginSerializer
 
 	def post(self, request, *args, **kwargs):
+
+		# Ensure user exists
 		serializer = self.get_serializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
 		user = serializer.validated_data
@@ -161,6 +140,7 @@ class LoginView(generics.GenericAPIView):
 		except:
 			pass
 		
+		# Check if the user is authorized to login
 		if temp.blacklisted == True:
 			return Response({"User" : "Blacklisted"})
 
@@ -168,6 +148,7 @@ class LoginView(generics.GenericAPIView):
 
 		return Response({"user" : UserSerializer(user, context=self.get_serializer_context()).data})
 
+# View to logout user from the system
 class LogoutView(generics.GenericAPIView):
 	
 	def get(self, request):
@@ -182,10 +163,12 @@ class UserAPIView(generics.RetrieveAPIView):
 	def get_object(self):
 		return self.request.user
 
+# View for if the user wishes to change their account's password
 class ChangePassword(APIView):
 
 	def post(self, request):
 
+		# Authenticate user identity
 		if(not request.user.is_authenticated()):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
@@ -196,6 +179,7 @@ class ChangePassword(APIView):
 
 		parsed = request.data["data"]
 		
+		# Update user password
 		if parsed["current_password"] == user.password:
 			user.set_password(parsed["new_password"])
 			user.save()
@@ -203,13 +187,16 @@ class ChangePassword(APIView):
 			return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 		return Response(status=status.HTTP_200_OK)
 
+# Class for if user wishes to apply for their account's removal
 class UserAccountRemoval(APIView):
 
 	def post(self, request):
 		
+		# Authenticate user identity
 		if(not request.user.is_authenticated):
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 		
+		# Mark user as having removed their account
 		temp = AccountRemoval.objects.create(user=request.user)
 		temp.save()
 
@@ -218,10 +205,12 @@ class UserAccountRemoval(APIView):
 		user.save()
 		logout(request)
 
+# Administrator view for account removal requests
 class AdminAccountRemoval(APIView):
 
 	def get(self, request):
 
+		# Authenticate if user is Admin
 		if(not request.user.is_authenticated):
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -233,12 +222,14 @@ class AdminAccountRemoval(APIView):
 		if user != 'ADMIN':
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 		
+		# Fetch all pending account removal requests
 		queryset = AccountRemoval.objects.all().order_by('-Date')
 		temp = RemovalSerializer(queryset, many=True)
 		return Response(temp.data, status=status.HTTP_200_OK)
 	
 	def post(self, request, id):
 
+		# Authenticate if user is an Admin
 		if(not request.user.is_authenticated):
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -250,6 +241,7 @@ class AdminAccountRemoval(APIView):
 		if user != 'ADMIN':
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+		# Remove the relevant user's account
 		try:
 			user_to_delete = User.objects.get(id=id)
 		except:
@@ -258,9 +250,12 @@ class AdminAccountRemoval(APIView):
 		user_to_delete.delete()
 		return Response(status=status.HTTP_200_OK)
 
+# View for handling blacklisted users
 class Blacklist(APIView):
 
 	def get(self, request):
+
+		# Authenticate if user is authorized to view blacklist
 		if(not request.user.is_authenticated):
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -269,9 +264,10 @@ class Blacklist(APIView):
 		except:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
-		if user != 'ADMIN':
+		if user != 'ADMIN' and user != 'MODERATOR':
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+		# Fetch all blacklisted users
 		try:
 			queryset = Profile.objects.filter(blacklisted=True)
 		except:
@@ -282,6 +278,7 @@ class Blacklist(APIView):
 	
 	def post(self, request, act, id):
 
+		# Authenticate if user is authorized to blacklist others
 		if(not request.user.is_authenticated):
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -293,6 +290,7 @@ class Blacklist(APIView):
 		if user != 'ADMIN':
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+		# Find the user of interest
 		try:
 			queryset = Profile.objects.filter(blacklisted=True)
 		except:
@@ -304,12 +302,10 @@ class Blacklist(APIView):
 		except:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
+		# Add or delete from blacklist
 		if act == "add":
 			user_to_blacklist.blacklisted = True
 		elif act == "delete":
 			user_to_blacklist.blacklisted = False
 		user_to_blacklist.save()
 		return Response(status=status.HTTP_200_OK)
-
-
-		
