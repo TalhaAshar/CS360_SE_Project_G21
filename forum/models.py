@@ -13,7 +13,6 @@ class Post(models.Model):
     Creator = models.ForeignKey(User, on_delete=models.CASCADE)
     TimeStamp = models.DateTimeField(auto_now_add=True)
     Body = models.TextField(blank=True, null=True)
-    Image = models.ImageField(upload_to='publications/', blank=True, null=True)
     Poll_Title = models.CharField(max_length=255, blank=True, null=True)
     Poll_Yes = models.IntegerField(default=0, blank=True, null=True)
     Poll_No = models.IntegerField(default=0, blank=True, null=True)

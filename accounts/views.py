@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from main.models import Publication, Contribution
+from forum.models import Post
 from .models import PersonalizedList, Listings, Report, ModeratorApplication
 from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer
 from main.serializers import ContributionSerializer
@@ -245,7 +246,12 @@ class Reports(APIView):
         user = User.objects.get(username=request.user)
         parsed = request.data
         try:
-            Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Description"], Status='UNRESOLVED')
+            if(parsed["Type"] == 'Post'):
+                post_to_report = Post.objects.get(id=parsed["id"])
+                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
+            else:
+                pub_to_report = Publication.objects.get(id=parsed["id"])
+                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
             return Response(status=status.HTTP_201_CREATED)
         except:
             print(request.data)

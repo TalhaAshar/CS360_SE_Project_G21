@@ -13,14 +13,14 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function Home() {
 
-    const [pubs, setPubs] = React.useState([{'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : '', 'Year_Publication' : '', 'Description' : '', 'ISBN' : ''},
+    const [pubs, setPubs] = React.useState([{'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : '', 'Year_Publication' : '', 'Description' : '', 'ISBN' : '', 'Reason_for_Best_Pub' : ''},
     {'Title' : '', 'Authors' : ''},{'Title' : '', 'Authors' : ''},{'Title' : '', 'Authors' : ''},{'Title' : '', 'Authors' : ''},
     {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}])
     
     function getData(){
         axios.get(`api/main/home`).then((res) => {
             setPubs(res.data)
-            console.log('ye boi', pubs)
+            console.log('ye boi', res.data)
         })
         .catch(error => console.log('Error:', error))
     }
@@ -40,7 +40,7 @@ function Home() {
                 </Banner>
                 <Content>
                     <CardContainer>
-                    <BestEdition title={pubs[0].Title} authors={pubs[0].Authors} publisher={pubs[0].Publisher} year={pubs[0].Year_Publication} ISBN={pubs[0].ISBN} edition={pubs[0].Edition_Number} description={pubs[0].Description} />
+                    <BestEdition title={pubs[0].Title} authors={pubs[0].Authors} publisher={pubs[0].Publisher} year={pubs[0].Year_Publication} ISBN={pubs[0].ISBN} edition={pubs[0].Edition_Number} description={pubs[0].Reason_for_Best_Pub} />
                     </CardContainer>
                     <RecentAdditionContainer>
                             <RecentAdditionText>Recent Additions</RecentAdditionText>

@@ -19,12 +19,12 @@ class Publication(models.Model):
 	Front_Cover = models.ImageField(upload_to='publications/', blank=True, null=True)
 	Back_Cover = models.ImageField(upload_to='publications/', blank=True, null=True)
 	Spine = models.ImageField(upload_to='publications/', blank=True, null=True)
+	Reason_for_Best_Pub = models.TextField(max_length=5000, blank=True, null=True)
 
 class Contribution(models.Model):
 	Username = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	Publication_ID = models.ForeignKey(Publication, on_delete=models.SET_NULL, null=True)
-	Date = models.DateField(auto_now_add=True)
-	Time = models.TimeField(auto_now_add=True)
+	Date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 	EditChoices = models.TextChoices('EditChoices', 'ADD EDIT')
 	Edit_Type = models.CharField(choices=EditChoices.choices, max_length=10, null=True)
 
