@@ -1,0 +1,14 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>Publication Images</title> 
+</head> 
+<body> 
+  <form method="POST" class="form-group">
+    {% csrf_token %}
+      {{form.as_p}}
+      <button type="Submit" class="btn btn-success">Register</button>
+  </form>
+</body> 
+</html> 

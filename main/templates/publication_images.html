@@ -1,0 +1,25 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>Publication Images</title> 
+</head> 
+<body> 
+  
+    {% for publication in pub_images %} 
+            <div> 
+                    {{ publication.Title }}
+                    {{ publication.Authors }}
+                    {{ publication.Year_Publication }}
+                    {{ publication.Reprint_Year }}
+                    {{ publication.Edition_Number }}
+                    {{ publication.Lang }} 
+                    {{ publication.Description }}
+                    {% if publication.Front_Cover %}
+                    <img src="{{ publication.Front_Cover.url }}"> 
+                    {% endif %}
+            </div> 
+    {% endfor %} 
+    <p>image</p>
+</body> 
+</html> 
