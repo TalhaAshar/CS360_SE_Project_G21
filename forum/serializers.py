@@ -12,7 +12,7 @@ class PostSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('id', 'Creator', 'Timestamp', 'Body', 'Image', 'Poll_Title', 'Poll_Yes', 'Poll_No')
+        fields = ('id', 'Creator', 'Timestamp', 'Body', 'Poll_Title', 'Poll_Yes', 'Poll_No')
 
 class ListingsSerializer(serializers.ModelSerializer):
     ParentThread = ThreadSerializer(read_only=True)

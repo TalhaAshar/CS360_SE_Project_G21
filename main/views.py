@@ -28,6 +28,7 @@ class Index(generics.ListCreateAPIView):
 		try:
 			#Best_Edition_Daily = Contribution.objects.select_related.filter(Publication_ID__Best_Edition=True).order_by('-Date')[:1]
 			Best_Edition_Daily = Publication.objects.filter(Best_Edition=True).order_by('-contribution__Date')
+			#Best_Edition_Daily = Publication.objects.filter(id=35)
 		except:
 			return
 
@@ -56,6 +57,7 @@ class Index(generics.ListCreateAPIView):
 			temp = temp.union(recs, all=True)
 		print(Best_Edition_Daily)
 		print(temp)
+		#temp = 'new'
 		return temp
 	
 	queryset = FindSet()
@@ -124,6 +126,7 @@ class ViewPublication(APIView):
 class AddPublication(APIView):
 
 	parser_classes = (MultiPartParser, FormParser)
+	serializer_class = PublicationSerializer
 
 	def post(self, request):
 		print(request.data)
@@ -137,8 +140,15 @@ class AddPublication(APIView):
 			print(request.data)
 			if serializer.is_valid(): 
 				serializer.save()
-				related_pubs = request.data["Related"].split(',')
+				user = User.objects.get(username=request.user)
 				main = Publication.objects.get(id=serializer.data["id"])
+				temp = Contribution.objects.create(Username=user, Publication_ID=main, Edit_Type='ADD')
+				temp.save()
+				try:
+					related_pubs = request.data["Related"].split(',')
+				except:
+					related_pubs = []
+
 				for i in related_pubs:
 					try:
 						rel = Publication.objects.get(id=int(i))
@@ -203,7 +213,7 @@ class TakedownRequest(APIView):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
 		complaint = request.data["data"]
-		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Authority"], Reason=complaint["Reason"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Name"], Country=complaint["Country"])		
+		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Party"], Reason=complaint["Body"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Copyright"], Country=complaint["Country"])		
 		temp.save()
 		return Response(status=status.HTTP_200_OK)
 

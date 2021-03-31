@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from main.models import Publication
+from forum.models import Post
 
 # Create your models here.
 class PersonalizedList(models.Model):
@@ -17,6 +18,9 @@ class Report(models.Model):
 	Time = models.TimeField(auto_now_add=True)
 	StatusChoices = models.TextChoices('StatusChoices', 'RESOLVED UNRESOLVED')
 	Status = models.CharField(choices=StatusChoices.choices, max_length=15, null=True)
+	Relevant_Post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+	Relevant_Pub = models.ForeignKey(Publication, on_delete=models.CASCADE, null=True)
+
 
 class ModeratorApplication(models.Model):
 	Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

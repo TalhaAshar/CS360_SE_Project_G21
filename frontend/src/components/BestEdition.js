@@ -16,7 +16,6 @@ function BestEdition({title, authors, publisher, year, ISBN, description, editio
             <BookContainer>
                 <Card style={{width:"200",height:"500px"}} title={title} author={authors}/>
                 <BookDetailsContainer>
-                    Details of the book
                     <BookTitle> {title} </BookTitle>
                     <h4> {authors} </h4>
                     <h4> {edition} </h4>
@@ -34,10 +33,7 @@ function BestEdition({title, authors, publisher, year, ISBN, description, editio
                             marginBottom:"6px"
                             }}/>
                 </DividerContainer>
-                <BookCommentContainer>
-                    Description of the book
-                    <h4> {description} </h4>
-                </BookCommentContainer>
+                <BookCommentContainer dangerouslySetInnerHTML={{ __html:description}} />
             </BookContainer>
         </Container>
     )
