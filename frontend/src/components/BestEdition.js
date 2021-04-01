@@ -6,7 +6,7 @@ import Card from './Cards'
 
 
 
-function BestEdition({title, authors, publisher, year, ISBN, description, edition}) {
+function BestEdition({title, authors, publisher, year, ISBN, description, edition, front_cover}) {
 
     return (
         <Container>
@@ -14,7 +14,7 @@ function BestEdition({title, authors, publisher, year, ISBN, description, editio
                 Best Edition Community Selection
             </Title>
             <BookContainer>
-                <Card style={{width:"200",height:"500px"}} title={title} author={authors}/>
+                <Card style={{width:"200",height:"500px"}} title={title} author={authors} front_cover={front_cover}/>
                 <BookDetailsContainer>
                     <BookTitle> {title} </BookTitle>
                     <h4> {authors} </h4>

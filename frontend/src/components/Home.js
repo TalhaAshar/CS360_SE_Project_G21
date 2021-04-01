@@ -14,8 +14,8 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function Home() {
 
     const [pubs, setPubs] = React.useState([{'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : '', 'Year_Publication' : '', 'Description' : '', 'ISBN' : '', 'Reason_for_Best_Pub' : ''},
-    {'Title' : '', 'Authors' : ''},{'Title' : '', 'Authors' : ''},{'Title' : '', 'Authors' : ''},{'Title' : '', 'Authors' : ''},
-    {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}, {'Title' : '', 'Authors' : ''}])
+    {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'},{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'},{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'},{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'},
+    {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}, {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}, {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}, {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}, {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}, {'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     
     function getData(){
         axios.get(`api/main/home`).then((res) => {
@@ -40,7 +40,7 @@ function Home() {
                 </Banner>
                 <Content>
                     <CardContainer>
-                    <BestEdition title={pubs[0].Title} authors={pubs[0].Authors} publisher={pubs[0].Publisher} year={pubs[0].Year_Publication} ISBN={pubs[0].ISBN} edition={pubs[0].Edition_Number} description={pubs[0].Reason_for_Best_Pub} />
+                    <BestEdition title={pubs[0].Title} authors={pubs[0].Authors} publisher={pubs[0].Publisher} year={pubs[0].Year_Publication} ISBN={pubs[0].ISBN} edition={pubs[0].Edition_Number} description={pubs[0].Reason_for_Best_Pub} front_cover={pubs[0].Front_Cover}/>
                     </CardContainer>
                     <RecentAdditionContainer>
                             <RecentAdditionText>Recent Additions</RecentAdditionText>
@@ -49,7 +49,7 @@ function Home() {
                                     pubs.map((elem, index) => {
                                         if(index > 0 && index < 6){
                                             return(
-                                                <Card title={elem.Title} author={elem.Authors} />
+                                                <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover}/>
                                             )
                                         }
                                     })
@@ -64,7 +64,7 @@ function Home() {
                                 pubs.map((elem, index) => {
                                     if(index > 5 && index <= 10){
                                         return(
-                                            <Card title={elem.Title} author={elem.Authors} />
+                                            <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover}/>
                                         )
                                     }
                                 })
