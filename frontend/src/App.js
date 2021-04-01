@@ -28,10 +28,6 @@ function App() {
             Publication
           </Route>
 
-          <Route exact path="/LogIn">
-            <LogIn/>
-          </Route>
-
           <Route exact path="/Forum">
             {console.log("FORUM INSIDE")}
             <Forum />
