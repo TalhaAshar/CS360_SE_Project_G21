@@ -10,7 +10,7 @@ class App extends Component{
 constructor(props){
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Username:'', Email:'', Password:'' };
+    this.state = { username:'', email:'', password:'' };
 }
 
 handleChange = (event) =>{
@@ -20,9 +20,9 @@ handleChange = (event) =>{
 handleSubmit = (event) =>{
   event.preventDefault();
   //const url = "api/accounts/modapps";
-  const data = { Username:this.state.Username, Email:this.state.Email, Password:this.state.Password };
+  const data = { username:this.state.username, email:this.state.email, password:this.state.password };
   
-  axios.post(`api/accounts/SignUpData`, { data })
+  axios.post(`api/register/signup`, { data })
     .then(res => console.log(res))
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
@@ -32,11 +32,11 @@ handleSubmit = (event) =>{
     return(
         <form onSubmit={this.handleSubmit}>
         <span>Username</span>
-        <input type="text" name="Username" onChange={this.handleChange} /><br/>
+        <input type="text" name="username" onChange={this.handleChange} /><br/>
         <span>Email</span>
-        <input type="text" name="Email" onChange={this.handleChange} /><br/>
+        <input type="text" name="email" onChange={this.handleChange} /><br/>
         <span>Password</span>
-        <input type="text" name="Password" onChange={this.handleChange} /><br/>
+        <input type="text" name="password" onChange={this.handleChange} /><br/>
         <input type="submit" value="Sign Up" />
         </form>
     );
