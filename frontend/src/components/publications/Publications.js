@@ -1,8 +1,30 @@
 import React from 'react'
 import styled from 'styled-components'
-import Card from './Cards'
+import Card from '../Cards'
+import {useEffect, useState} from "react";
+import axios from 'axios';
+
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function Publications() {
+
+    const [pubs, setPubs] = React.useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}])
+
+    function getData(){
+        axios.get(`api/main/catalogue_list`).then((res) => {
+            setPubs(res.data)
+            console.log('ye boi', res.data)
+            console.log('nu boi', pubs.length)
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
     return (
        <Container>
            <PublicationTitle>
@@ -13,23 +35,16 @@ function Publications() {
                     <NextPrevious>Buttons</NextPrevious>
            </ViewNextButtonContainer>
            <Cards>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                
+                {
+                    pubs.map((elem, index) => {
+                        console.log(index)
+                        if(index < 16){
+                            return(
+                                <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover}/>
+                                )
+                        }
+                    })
+                }
            </Cards>
        </Container>
     )
