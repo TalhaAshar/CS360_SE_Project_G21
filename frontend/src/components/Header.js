@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
+import SignUp from './SignUp'
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
@@ -100,7 +101,7 @@ function Header() {
                         }
                     contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
                     >
-                    
+                    <SignUp/>
                     </Popup> 
                         <Popup trigger={
                             <LogInContainer>
@@ -115,7 +116,7 @@ function Header() {
                         }
                         contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
                         >
-                            <LogIn/>
+                        <LogIn/>
                         </Popup>
 
               <SearchContainer>
