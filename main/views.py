@@ -84,19 +84,10 @@ class CatalogueColumnar(APIView):
 
 class CatalogueList(APIView):
 
-	def get(self, request, id):
+	def get(self, request):
 
-		if id <= 0:
-			return Response(status=status.HTTP_204_NO_CONTENT)
-
-		total = Publication.objects.count()
-		if total < id * 8:
-			limit = total
-		else:
-			limit = id * 8
-
-		queryset = Publication.objects.all().order_by('Title')[(id-1)*8:limit]
-		print(queryset)
+		queryset = Publication.objects.all().order_by('Title')
+		#print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data)
 

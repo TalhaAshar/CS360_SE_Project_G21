@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
 	path('home', Index.as_view()),
 	path('', Index.as_view()),
-	path('catalogue_list/<int:id>', CatalogueList.as_view()),
+	path('catalogue_list', CatalogueList.as_view()),
 	path('catalogue_columnar/<int:id>', CatalogueColumnar.as_view()),
 	path('search', Search.as_view()),
 	path('publication/<int:id>', ViewPublication.as_view()),

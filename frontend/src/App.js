@@ -9,6 +9,7 @@ import React, {Component} from "react"
 import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
+import Publications from "./components/publications/Publications";
 //import profile
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
           </Route>
 
           <Route exact path="/Publications">
-            Publication
+            <Publications />
           </Route>
 
           <Route exact path="/Forum">
@@ -46,7 +47,7 @@ function App() {
 
           <Route exact path="/UserAccount">
             {console.log("CONTACT INSIDE")}
-            <Profile />
+            
           </Route>
 
         </Switch>
