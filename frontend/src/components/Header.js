@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import Popup from 'reactjs-popup';
+import LogIn from './LogIn'
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
@@ -9,6 +11,18 @@ import ForumIcon from '@material-ui/icons/Forum';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
+
+const StyledPopup = styled(Popup)`
+
+//   // use your custom style for ".popup-overlay"
+//   &-overlay {
+//     ...;
+//   }
+//   // use your custom style for ".popup-content"
+//   &-content {
+//     ...;
+//   }
+`;
 
 function Header() {
     return (
@@ -33,7 +47,7 @@ function Header() {
                     <img src="https://www.w3schools.com/images/lamp.jpg" width="80" height="80"
                     style={{paddingBottom:"10px",paddingTop:"10px"}} />
               </LogoContainer>
-                      <Link to="/" style={{color:"#04396B"}}>
+                    <Link to="/" style={{color:"#04396B"}}>
                       <Home>
                         <HomeOutlined
                         style={{
@@ -44,59 +58,65 @@ function Header() {
                             />
                             <IconText>Home</IconText>
                         </Home>
+                    </Link>
+                        <Link to="/Forum" style={{color:"#04396B"}}> 
+                            <Forum>
+                                <ForumIcon
+                                    style={{
+                                        color:"white",
+                                        fontSize:30,
+                                        marginLeft:"6px"
+                                    
+                                        }}
+                                />
+                                <IconText>Forum</IconText>
+                            </Forum>
                         </Link>
-                        <Link to="/Forum" style={{color:"#04396B"}}>
-                        <Forum>
-                            <ForumIcon
+                        <Link to="/Publications" style={{color:"#04396B"}}>
+                            <Publications>
+                                <LibraryBooksIcon
                                 style={{
                                     color:"white",
                                     fontSize:30,
-                                    marginLeft:"6px"
+                                    marginLeft:"25px"
                                 
                                     }}
-                            />
-                            <IconText>Forum</IconText>
-                        </Forum>
+                                    />
+                                    <IconText>Publications</IconText>
+                            </Publications>
                         </Link>
-                        <Link to="/Publications" style={{color:"#04396B"}}>
-                        <Publications>
-                            <LibraryBooksIcon
-                            style={{
-                                color:"white",
-                                fontSize:30,
-                                marginLeft:"25px"
-                            
-                                }}
-                                />
-                                <IconText>Publications</IconText>
-                        </Publications>
-                        </Link>
-                        <Link to="/SignUp" style={{color:"#04396B"}}>
-                        <SignUp>
-                            <PersonAddIcon
-                            style={{
-                                color:"white",
-                                fontSize:30,
-                                marginLeft:"5px"
-                                
-                                }}
-                                />
-                                <IconText>Sign Up</IconText>
-                        </SignUp>
-                        </Link>
-                        <Link to="/LogIn" style={{color:"#04396B"}}>
-                        <LogIn>        
-                            <AccountCircleIcon
-                            style={{
-                            color:"white",
-                            fontSize:30,
-                            marginLeft:"5px"
-                            
-                            }}
-                            />
-                            <IconText>Log In</IconText>
-                        </LogIn>
-                        </Link>
+                    <Popup trigger={
+                            <SignUpContainer>
+                                <PersonAddIcon
+                                style={{
+                                    color:"white",
+                                    fontSize:30,
+                                    marginLeft:"5px"
+                                    
+                                    }}
+                                    />
+                                    <IconText>Sign Up</IconText>
+                            </SignUpContainer>
+                        }
+                    contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
+                    >
+                    
+                    </Popup> 
+                        <Popup trigger={
+                            <LogInContainer>
+                                <AccountCircleIcon
+                                    style={{
+                                    color:"white",
+                                    fontSize:30,
+                                    marginLeft:"5px"}}/>
+                                <IconText>Log In</IconText> 
+                            </LogInContainer>
+                        
+                        }
+                        contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
+                        >
+                            <LogIn/>
+                        </Popup>
 
               <SearchContainer>
                  <SearchIconContainer> 
@@ -183,10 +203,10 @@ const Forum = styled.div`
 const Publications = styled.div`
     height:60px;
 `
-const SignUp = styled.div`
+const SignUpContainer = styled.div`
     height:60px;
 `
-const LogIn = styled.div`
+const LogInContainer = styled.div`
     height:60px;
 `
 const SearchContainer = styled.div`
