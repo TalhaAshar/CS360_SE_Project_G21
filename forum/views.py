@@ -80,12 +80,23 @@ class ThreadsHome(APIView):
         new_rel.save()
 
 
-# class AddThread(APIView):
+class AddThread(APIView):
 
-#     def post(self, request):
+    def post(self, request):
 
-#         if(not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if(not request.user.is_authenticated):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        user = User.objects.get(username=request.user)
+        parse = request.data["data"]
+        new_thread = Thread.objects.create(Title=parse["Title"], Category=parse["Category"], Creator=user)
+        new_thread.save()
+        new_post = Post.objects.create(Creator=user,Body=parse["Body"])
+        new_post.save()
+        new_postings = Postings.objects.create(ParentThread=new_thread, ParentPost=new_post)
+        new_postings.save()
+
+        return Response(status=status.HTTP_200_OK)
 
 class EditThread(APIView):
 
@@ -177,7 +188,26 @@ class DeletePost(APIView):
 
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-        #what do if first post of thread
+
+class AddPost(APIView):
+
+    def post(self, request, id):
+        if (not request.user.is_authenticated):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        try:
+            thread_to_edit = Thread.objects.get(id=id)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        user = User.objects.get(username=request.user)
+        new_post = Post.objects.create(Creator=user,Body=parse["Body"])
+        new_post.save()
+        new_postings = Postings.objects.create(ParentThread=thread_to_edit, ParentPost=new_post)
+        new_postings.save()
+        return Response(status=status.HTTP_200_OK)
+
+
 
 # class Messages(APIView):
 
