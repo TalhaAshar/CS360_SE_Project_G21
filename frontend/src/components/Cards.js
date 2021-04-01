@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider'
 import styled from 'styled-components'
+import { DialogTitle } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function ImgMediaCard({title, author}) {
+export default function ImgMediaCard({title, author, front_cover}) {
   const classes = useStyles();
 
   return (
@@ -32,11 +33,11 @@ export default function ImgMediaCard({title, author}) {
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="The Man Who The Sea Couldn't Drown"
+          alt={title}
           height="200"
           width="200"
-          image="image.jpg"
-          title="The Man Who The Sea Couldn't Drown"
+          src={front_cover}
+          title={title}
         />
         <Divider variant="middle" />
         <CardContent>
