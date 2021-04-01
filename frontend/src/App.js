@@ -9,6 +9,7 @@ import React, {Component} from "react"
 import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
+//import profile
 
 function App() {
   return (
@@ -41,6 +42,11 @@ function App() {
           <Route exact path="/DMCA">
             {console.log("CONTACT INSIDE")}
             <DMCA />
+          </Route>
+
+          <Route exact path="/UserAccount">
+            {console.log("CONTACT INSIDE")}
+            <Profile />
           </Route>
 
         </Switch>

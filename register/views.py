@@ -131,9 +131,11 @@ class LoginView(generics.GenericAPIView):
 	def post(self, request, *args, **kwargs):
 
 		# Ensure user exists
-		serializer = self.get_serializer(data=request.data)
+		serializer = self.get_serializer(data=request.data["data"])
+		print(request.data["data"])
 		serializer.is_valid(raise_exception=True)
 		user = serializer.validated_data
+		print(user)
 
 		try:
 			temp = Profile.objects.get(user=user)
@@ -144,6 +146,7 @@ class LoginView(generics.GenericAPIView):
 		if temp.blacklisted == True:
 			return Response({"User" : "Blacklisted"})
 
+		print("The user has been authenticated")
 		login(request, user)
 
 		return Response({"user" : UserSerializer(user, context=self.get_serializer_context()).data})
