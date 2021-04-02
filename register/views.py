@@ -31,6 +31,15 @@ from accounts.models import PersonalizedList
 
 value = "foo.bar@baz.qux"
 
+# Check if user is signed in
+class AuthenticationCheck(APIView):
+
+	def get(self, request):
+
+		if request.user.is_authenticated:
+			return Response({'Status' : 'Authentic'})
+		else:
+			return Response({'Status' : 'Unauthentic'})
 
 # View for controlling the sign up functionality
 class SignUpView(generics.GenericAPIView):

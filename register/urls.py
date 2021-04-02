@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import SignUpView, ActivateAccount, ForgotPassword, LoginView, UserAPIView, LogoutView, ChangePassword, UserAccountRemoval, AdminAccountRemoval, Blacklist
+from .views import SignUpView, ActivateAccount, ForgotPassword, LoginView, UserAPIView, LogoutView, ChangePassword, UserAccountRemoval, AdminAccountRemoval, Blacklist, AuthenticationCheck
 from knox import views as knox_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -14,6 +14,7 @@ urlpatterns = [
    # Account access URLs
    path('login', LoginView.as_view()),
    path('logout', LogoutView.as_view()),
+   path('auth', AuthenticationCheck.as_view()),
 
    # Account Management URLs
    path('change_password', ChangePassword.as_view()),
