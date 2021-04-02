@@ -10,6 +10,8 @@ import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
 import Publications from "./components/publications/Publications";
+import List from "./components/publications/PersonalizedListGuest";
+import Thread from "./components/forms/ThreadAdd";
 //import profile
 
 function App() {
@@ -47,7 +49,7 @@ function App() {
 
           <Route exact path="/UserAccount">
             {console.log("CONTACT INSIDE")}
-            
+            <List />  
           </Route>
 
         </Switch>

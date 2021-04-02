@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email')
 
 class ListingsSerializer(serializers.ModelSerializer):
-    #ListOwner = UserSerializer(read_only=True)
+    ListOwner = UserSerializer(read_only=True)
     ListPub = PublicationSerializer(read_only=True)
     class Meta:
         model = Listings

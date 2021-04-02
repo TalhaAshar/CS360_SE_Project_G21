@@ -1,9 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import ForumGuestThreadCard from './ForumGuestThreadCard'
-
+import {useEffect, useState} from "react";
+import axios from 'axios';
 
 function ForumGest() {
+    const [threads, setThreads] = React.useState([{'id' : 0, 'PostCount' : 0, 'Title' : '', 'Timestamp' : '', 'Category' : '', 'Creator' : {}, 'Base_View' : ''}])
+    const d = new Date()
+    function getData(){
+        axios.get(`api/forum/guest/home`).then((res) => {
+            setThreads(res.data)
+            console.log('ye boi', res.data)
+            console.log('nu boi', threads.length)
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
     return (
         <Container>
             <ThreadBar>
@@ -12,17 +28,15 @@ function ForumGest() {
                 </Text>
             </ThreadBar>
             <BodyRecent>
-                    <ForumGuestThreadCard/>
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
+                    {
+                        threads.map((elem, index) => {
+                            if(index < 6){
+                            return(
+                                <ForumGuestThreadCard title={elem.title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                            )
+                            }
+                        })
+                    }
             </BodyRecent>
         </Container>
     )

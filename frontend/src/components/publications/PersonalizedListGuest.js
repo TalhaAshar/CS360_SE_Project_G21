@@ -1,33 +1,53 @@
 import React from 'react'
 import styled from 'styled-components'
-import Card from './Cards'
+import Card from '../Cards'
+import { useEffect, useState } from "react";
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function PersonalizedListGuest() {
+    
+    const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
+    const [user, setUser] = useState('')
+    let count = 0
+
+    function getData(){
+        count = count + 1
+        axios.get(`api/accounts/list/1`).then((res) => {
+            setPubs(res.data)
+            console.log(res.data)
+            setUser(res.data[0]["ListOwner"]["username"])
+        })
+        
+        .catch(error => console.log('Error:', error))
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
     return (
        <Container>
            <UserNameContainer>
-               <Heading>UserName</Heading>
+               <Heading>{user}</Heading>
            </UserNameContainer>
            <NextButtonContainer>
                     <NextPrevious>Buttons</NextPrevious>
            </NextButtonContainer>
            <Cards>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
+                {
+                    
+                    pubs.map((elem, index) => {
+                        if(index < 16){
+                            return(
+                                <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]}/>
+                                )
+                        }
+                        console.log(index)
+                    })
+                }
                 
            </Cards>
        </Container>
