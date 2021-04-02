@@ -12,14 +12,37 @@ import DMCA from "./components/forms/TakedownRequest";
 import Publications from "./components/publications/Publications";
 import List from "./components/publications/PersonalizedListGuest";
 import Thread from "./components/forms/ThreadAdd";
+import {useEffect, useState} from "react";
+import axios from 'axios';
+
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 //import profile
 
 function App() {
+
+  const [pubs, setPubs] = React.useState([{'Status' : ''}])
+  console.log(pubs)
+
+    function getData(){
+        axios.get(`api/register/auth`).then((res) => {
+            setPubs(res.data)
+            console.log('ye boi', res.data)
+            console.log('nu boi', pubs.length)
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
   return (
     <Router>
       <Container>
       
-      <Header/>
+      <Header check={pubs.Status}/>
 
         <Switch>
 

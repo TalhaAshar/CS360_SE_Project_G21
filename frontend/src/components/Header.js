@@ -25,7 +25,53 @@ const StyledPopup = styled(Popup)`
 //   }
 `;
 
-function Header() {
+function Icons({status}){
+    if(status == 'Unauthentic'){
+        return(
+            <Container>
+            <Popup trigger={
+                <SignUpContainer>
+                    <PersonAddIcon
+                    style={{
+                        color:"white",
+                        fontSize:30,
+                        marginLeft:"5px"
+                        
+                        }}
+                        />
+                        <IconText>Sign Up</IconText>
+                </SignUpContainer>
+            }
+        contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
+        >
+        <SignUp/>
+        </Popup> 
+            <Popup trigger={
+                <LogInContainer>
+                    <AccountCircleIcon
+                        style={{
+                        color:"white",
+                        fontSize:30,
+                        marginLeft:"5px"}}/>
+                    <IconText>Log In</IconText> 
+                </LogInContainer>
+            
+            }
+            contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
+            >
+            <LogIn/>
+            </Popup>
+            </Container>
+        )
+    }
+    else{
+        return(
+            <h3>logout</h3>
+        )
+    }
+}
+
+function Header({check}) {
     return (
         
         <Container>
@@ -86,38 +132,9 @@ function Header() {
                                     <IconText>Publications</IconText>
                             </Publications>
                         </Link>
-                    <Popup trigger={
-                            <SignUpContainer>
-                                <PersonAddIcon
-                                style={{
-                                    color:"white",
-                                    fontSize:30,
-                                    marginLeft:"5px"
-                                    
-                                    }}
-                                    />
-                                    <IconText>Sign Up</IconText>
-                            </SignUpContainer>
-                        }
-                    contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
-                    >
-                    <SignUp/>
-                    </Popup> 
-                        <Popup trigger={
-                            <LogInContainer>
-                                <AccountCircleIcon
-                                    style={{
-                                    color:"white",
-                                    fontSize:30,
-                                    marginLeft:"5px"}}/>
-                                <IconText>Log In</IconText> 
-                            </LogInContainer>
+                    
                         
-                        }
-                        contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
-                        >
-                        <LogIn/>
-                        </Popup>
+                <Icons status={check}/>    
 
               <SearchContainer>
                  <SearchIconContainer> 
