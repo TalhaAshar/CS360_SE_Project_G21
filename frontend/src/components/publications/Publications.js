@@ -37,10 +37,10 @@ function Publications() {
            <Cards>
                 {
                     pubs.map((elem, index) => {
-                        console.log(index)
+                        console.log(elem.id)
                         if(index < 16){
                             return(
-                                <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover}/>
+                                <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                 )
                         }
                     })
