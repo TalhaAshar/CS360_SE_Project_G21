@@ -107,8 +107,9 @@ class ViewPublication(APIView):
 		try:
 			rel_obj = Publication.objects.get(id=id)
 			related = Publication.objects.filter(Main__Rel_Publication=rel_obj)
-			queryset = temp.union(related, all=True)			
-		except:
+			print(related)
+			queryset = temp.union(related, all=True)
+		except:		
 			queryset = temp
 		
 		serializer = PublicationSerializer(queryset, many=True)
@@ -145,6 +146,8 @@ class AddPublication(APIView):
 						rel = Publication.objects.get(id=int(i))
 						new_rel = RelatedPublication.create(Main=main, Rel=rel)
 						new_rel.save()
+						second_rel = RelatedPublication.create(Main=rel, Rel=main)
+						second_rel.save()
 					except:
 						pass
 				return Response(status=status.HTTP_201_CREATED)
@@ -203,6 +206,8 @@ class EditPublication(APIView):
 					if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)):
 						new_rel = RelatedPublication.create(Main=main, Rel=rel)
 						new_rel.save()
+						second_rel = RelatedPublication.create(Main=rel, Rel=main)
+						second_rel.save()
 			else:
 				print("Invalid")
 			return Response(status=status.HTTP_200_OK)

@@ -9,8 +9,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider'
 import styled from 'styled-components'
-import { DialogTitle } from '@material-ui/core';
-
+import { Link, useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -19,39 +19,47 @@ const useStyles = makeStyles({
 }
 });
 
+// function showPub({current}){
+//   console.log(current)
+// }
 
-export default function ImgMediaCard({title, author, front_cover}) {
+export default function ImgMediaCard({title, author, front_cover, id}) {
   const classes = useStyles();
+  let j = "/publication/" + id
+  //location = useLocation()
+  console.log(j)
+  const [path, setPath] = useState(useLocation().pathname)
 
   return (
     <StyledView>
-    <Card className={classes.root}
-     style={{
-            border:"2px",
-            filter: "drop-shadow(0px 24px 64px rgba(0, 0, 0, 0.06))"            
-        }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt={title}
-          height="200"
-          width="200"
-          src={front_cover}
-          title={title}
-        />
-        <Divider variant="middle" />
-        <CardContent>
-          <Typography gutterBottom variant="h6" component="h5" >
-            <h4>{title}</h4>
-          </Typography>
-          <Typography variant="h6" color="textSecondary" component="h6">
-            <h5>{author}</h5>
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+      <Link to={j}>
+      <Card className={classes.root}
+      style={{
+              border:"2px",
+              filter: "drop-shadow(0px 24px 64px rgba(0, 0, 0, 0.06))"            
+          }}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt={title}
+            height="200"
+            width="200"
+            src={front_cover}
+            title={title}
+          />
+          <Divider variant="middle" />
+          <CardContent>
+            <Typography gutterBottom variant="h6" component="h5" >
+              <h4>{title}</h4>
+            </Typography>
+            <Typography variant="h6" color="textSecondary" component="h6">
+              <h5>{author}</h5>
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+      </Link>
     </StyledView>
-
   );
 }
 

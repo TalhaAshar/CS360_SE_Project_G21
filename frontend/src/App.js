@@ -12,6 +12,7 @@ import DMCA from "./components/forms/TakedownRequest";
 import Publications from "./components/publications/Publications";
 import List from "./components/publications/PersonalizedListGuest";
 import Thread from "./components/forms/ThreadAdd";
+import SinglePub from "./components/publications/PubSinglePage";
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
@@ -73,6 +74,11 @@ function App() {
           <Route exact path="/UserAccount">
             {console.log("CONTACT INSIDE")}
             <List />  
+          </Route>
+
+          <Route path="/publication/:id">
+            {console.log("single")}
+            <SinglePub />  
           </Route>
 
         </Switch>
