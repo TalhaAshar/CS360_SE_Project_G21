@@ -19,7 +19,7 @@ function Footer() {
                     </Link>
                 </LinkContainer>
                 <LogoContainer>
-                    <img src="https://www.w3schools.com/images/lamp.jpg" width="60" height="60"
+                    <img src="Logo.png" width="60" height="60"
                     style={{paddingBottom:"10px"}} />
                 </LogoContainer>
             </Top>

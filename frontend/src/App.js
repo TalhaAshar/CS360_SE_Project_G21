@@ -14,7 +14,8 @@ import List from "./components/publications/PersonalizedListUserRead";
 import Thread from "./components/forms/ThreadAdd";
 import SinglePub from "./components/publications/PubSinglePage";
 import Profile from "./components/Profile";
-// import ProfileManagement from "./components/ProfileManagement";
+import ProfileManagement from "./components/ProfileManagement";
+import Catalogue from "./components/publications/PublicationsList";
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
@@ -78,13 +79,13 @@ function App() {
             <Profile /> 
           </Route>
 
-          { <Route exact path="/management">
+           <Route exact path="/management">
             {console.log("CONTACT INSIDE")}
             <ProfileManagement /> 
           </Route> 
            
           <Route path="/Publications/:id">
-            <Publications />
+            <Catalogue />
           </Route>
 
           <Route path="/publication/:id">

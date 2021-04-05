@@ -10,7 +10,9 @@ class App extends Component{
 constructor(props){
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { username:'', password:'' };
+    console.log(props.auth)
+
+    this.state = { username:'', password:'', refresh : '' };
 }
 
 handleChange = (event) =>{
@@ -25,7 +27,9 @@ handleSubmit = (event) =>{
   axios.post(`api/register/login`, { data })
     .then(res => console.log(res))
     .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
+    .then(response => console.log('Success', response))
+    .then(a => this.props.onChange({'Status' : 'Authentic'}));
+    
   }
     
   render(){
@@ -35,6 +39,7 @@ handleSubmit = (event) =>{
         <input type="text" name="username" onChange={this.handleChange} /><br/>
         <span>Password</span>
         <input type="password" name="password" onChange={this.handleChange} /><br/>
+        <input type="hidden" value="abc" name="refresh" onChange={this.handleChange}/>
         <input type="submit" value="Login" />
         </form>
     );

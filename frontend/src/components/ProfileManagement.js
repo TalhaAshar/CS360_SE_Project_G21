@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
-import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 //User profile type icon needs to be added.
 
@@ -11,7 +11,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 class ProfileManagement extends Component{
     constructor(props){
         super(props)
-        this.ID = "/List/" + this.props.passID
+        this.ID = "/List" + this.props.passID
         this.handleSubmitData = this.handleSubmitData.bind(this);
         this.handleSubmitPassword = this.handleSubmitPassword.bind(this);
         this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', 'ProfileImage':this.props.passDetails['ProfileImage'] };
@@ -23,10 +23,23 @@ class ProfileManagement extends Component{
     
     handleSubmitData = (event) =>{
       event.preventDefault();
-      const url = `api/accounts/profile`;
-      const data = { User_Type:this.state.User_Type, biography:this.state.biography, education:this.state.education, education:this.state.education, institution:this.state.institution, profession:this.state.profession, company:this.state.company, location:this.state.location, age:this.state.age, ProfileImage:this.state.ProfileImage };
-      
-      axios.post(url, { data })
+      const url = `api/accounts/edit_profile`;
+      const data = { User_Type:this.state.User_Type, biography:this.state.biography, education:this.state.education, institution:this.state.institution, profession:this.state.profession, company:this.state.company, location:this.state.location, age:this.state.age, ProfileImage:this.state.ProfileImage };
+      const formData = new FormData();
+      formData.append("User_Type", data["User_Type"]);
+      formData.append("biography", data["biography"]);
+      formData.append("education", data["education"]);
+      formData.append("institution", data["institution"]);
+      formData.append("profession", data["profession"]);
+      formData.append("company", data["company"]);
+      formData.append("location", data["location"]);
+      formData.append("age", data["age"]);
+      //formData.append("ProfileImage", this.state.ProfileImage);
+      axios.put(url, formData, {
+        headers: {
+          'content-type': 'multipart/form-data'
+          }
+      } )
         .then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => console.log('Success', response));
@@ -34,7 +47,7 @@ class ProfileManagement extends Component{
 
       handleSubmitPassword = (event) =>{
         event.preventDefault();
-        const url = `api/accounts/profile`;
+        const url = `api/register/change_password`;
         const data = { newpassword:this.state.newpassword, currentpassword:this.state.currentpassword };
         
         axios.post(url, { data })
@@ -82,7 +95,7 @@ class ProfileManagement extends Component{
               
               <ButtonsActivity>
                 <Buttons>
-                  <Link to={this.ID} value="My List">
+                  <Link to='/List' value="My List">
                     <MyList>
                       <MyListBackground>
                         My List

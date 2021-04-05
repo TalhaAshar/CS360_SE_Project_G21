@@ -12,11 +12,41 @@ from main.models import Publication, Contribution
 from forum.models import Post
 from .models import PersonalizedList, Listings, Report, ModeratorApplication
 from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer
-from main.serializers import ContributionSerializer
+from main.serializers import ContributionSerializer, PublicationSerializer
 from mysite.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
+import random
 
 # Create your views here.
+class Recommendations(APIView):
+
+    def get(self, request):
+        
+        try:
+            queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+        collected = []
+        for k in queryset:
+            collected.append(k.id)
+            
+        total = Publication.objects.count() - 1
+        j = 0
+
+        recs = []
+        while j < 5:
+            temp = random.randint(1, total)
+            if temp not in collected and temp not in recs:
+                recs.append(temp)
+                j = j + 1
+        
+        recs = Publication.objects.filter(Q(id=recs[0]) | Q(id=recs[1]) | Q(id=recs[2]) | Q(id=recs[3]) | Q(id=recs[4]))
+        
+        temp = PublicationSerializer(recs, many=True)
+        return Response(temp.data, status=status.HTTP_200_OK)
+
+
 class MyListDefault(APIView):
 
     def get(self, request):
@@ -34,6 +64,7 @@ class MyListDefault(APIView):
                 queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
             except:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+
             temp = ListingsSerializer(queryset, many=True)
             return Response(temp.data, status=status.HTTP_200_OK)
 		
@@ -205,6 +236,7 @@ class UserAccountView(APIView):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		temp = ProfileSerializer(user)
 		return Response(temp.data, status=status.HTTP_200_OK)
+
 
 class UserGuestView(APIView):
     def get(self, request, id):
@@ -383,4 +415,23 @@ class ModeratorDecision(APIView):
             subject = 'BookBound Moderator Application Decision'
             send_mail(subject, message, EMAIL_HOST_USER, [user.email], fail_silently = False)
 
+class EditProfileView(APIView):
+    
+    def put(self, request):
+
+        if(not request.user.is_authenticated):
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
+        try:
+            user = Profile.objects.get(user=request.user)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProfileSerializer(user, data=request.data, partial=True)
+        print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
