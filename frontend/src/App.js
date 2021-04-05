@@ -14,6 +14,7 @@ import List from "./components/publications/PersonalizedListUserRead";
 import Thread from "./components/forms/ThreadAdd";
 import SinglePub from "./components/publications/PubSinglePage";
 import Profile from "./components/Profile";
+// import ProfileManagement from "./components/ProfileManagement";
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
@@ -77,6 +78,11 @@ function App() {
             <Profile /> 
           </Route>
 
+          { <Route exact path="/management">
+            {console.log("CONTACT INSIDE")}
+            <ProfileManagement /> 
+          </Route> 
+           
           <Route path="/Publications/:id">
             <Publications />
           </Route>

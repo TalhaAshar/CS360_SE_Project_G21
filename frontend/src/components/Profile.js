@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
+import ProfileManagement from "./ProfileManagement";
+
+//User profile type icon needs to be added.
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -10,6 +13,8 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function Profile() {
     const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{} } )
     const [User, setUser] = useState('')
+    const [flag, setFlag] = React.useState(false)
+    console.log(flag)
     function getData(){
         axios.get(`api/accounts/profile`).then((res) => {
             setDetails(res.data)
@@ -24,132 +29,266 @@ function Profile() {
 
     let ID_List = "/List/" + User['id']
 
-    return (
-        <Container>
-           <Upper>
-                <Profilepicture src={Details['ProfileImage']}
-                    width="200px"
-                    height = "200px"
-                /> 
-                <Name>
-                    {User}
-                </Name>
+    function MouseDown(Flag){
+        setFlag(!Flag)
+    }
 
-                <Admintag>
-                    {Details['User_Type']}
-                </Admintag>
-           </Upper>
+    switch (flag) {
+        case false:
+            return (
+                <Container>
+                <Upper>
+                        <Profilepicture src={Details['ProfileImage']}
+                            width="200px"
+                            height = "200px"
+                        /> 
+                        <Name>
+                            {User}
+                        </Name>
 
-           <Lower>
-                <Descone>
-                    {  (Details['User_Type'] === 'ADMIN') && <Profession>Profession</Profession>    }
-                    {  (Details['User_Type'] === 'ADMIN') && <Professionfilled>{Details['profession']}</Professionfilled>   }
-                    {  (Details['User_Type'] === 'ADMIN') && <Company>Company</Company> }
-                    {  (Details['User_Type'] === 'ADMIN') && <Companyfilled>{Details['company']}</Companyfilled> }
-                    {  (Details['User_Type'] === 'MODERATOR') && <Profession>Education</Profession>    }
-                    {  (Details['User_Type'] === 'MODERATOR') && <Professionfilled>{Details['education']}</Professionfilled>   }
-                    {  (Details['User_Type'] === 'MODERATOR') && <Company>Institution</Company>  }
-                    {  (Details['User_Type'] === 'MODERATOR') && <Companyfilled>{Details['institution']}</Companyfilled>   }
+                        <Admintag>
+                            {Details['User_Type']}
+                        </Admintag>
+                </Upper>
 
-                    <Location>
-                        Location
-                    </Location>
-                    <Locationfilled>
-                        {Details['location']}
-                    </Locationfilled>
+                <Lower>
+                        <Descone>
+                            {  (Details['User_Type'] === 'ADMIN') && <Profession>Profession</Profession>    }
+                            {  (Details['User_Type'] === 'ADMIN') && <Professionfilled>{Details['profession']}</Professionfilled>   }
+                            {  (Details['User_Type'] === 'ADMIN') && <Company>Company</Company> }
+                            {  (Details['User_Type'] === 'ADMIN') && <Companyfilled>{Details['company']}</Companyfilled> }
+                            {  (Details['User_Type'] != 'ADMIN') && <Profession>Education</Profession>    }
+                            {  (Details['User_Type'] != 'ADMIN') && <Professionfilled>{Details['education']}</Professionfilled>   }
+                            {  (Details['User_Type'] != 'ADMIN') && <Company>Institution</Company>  }
+                            {  (Details['User_Type'] != 'ADMIN') && <Companyfilled>{Details['institution']}</Companyfilled>   }
 
-                    <Age>
-                        Age
-                    </Age>
-                    <Agefilled>
-                        {Details['age']}
-                    </Agefilled>
-                </Descone>
+                            <Location>
+                                Location
+                            </Location>
+                            <Locationfilled>
+                                {Details['location']}
+                            </Locationfilled>
 
-                <Biography>
-                    <BioText>
-                        Biography
-                    </BioText>
+                            <Age>
+                                Age
+                            </Age>
+                            <Agefilled>
+                                {Details['age']}
+                            </Agefilled>
+                        </Descone>
 
-                    <TellUsAboutYourself>
-                        {Details['biography']}
-                    </TellUsAboutYourself>
-                </Biography>
-                <ButtonsActivity>
-                <Buttons>
-                    <Link to={ID_List} value="My List">
-                        <MyList>
-                            <MyListBackground>
-                                My List
-                            </MyListBackground>
-                        </MyList>
-                    </Link>
-                    <Link to='/reports' value="Reports">
-                        <Report>
-                            <ReportBackground>
-                                Report
-                            </ReportBackground>
-                        </Report>
-                    </Link>
-                    <Link to='/' value="Settings">
-                        <Settings>
-                            <SettingsBackground>
-                                Settings
-                            </SettingsBackground>
-                        </Settings>
-                    </Link>
-                {
-                    ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
-                    <Link to='/modapps' value="Moderator Applications">
-                        <ModApp>
-                            <ModAppBackground>
-                                Moderator Applications
-                            </ModAppBackground>
-                        </ModApp>
-                    </Link>
-                }
-                {
-                    ((Details['User_Type'] === 'VERIFIED') || (Details['User_Type'] === 'UNVERIFIED')) &&
-                    <Link to='/modapps' value="Moderator Applications">
-                        <ModApp>
-                            <ModAppBackground>
-                                Moderator Application Form
-                            </ModAppBackground>
-                        </ModApp>
-                    </Link>
-                }
-                </Buttons>
+                        <Biography>
+                            <BioText>
+                                Biography
+                            </BioText>
 
-                <Activity>
-                    <Activitytext>
-                        Activity
-                    </Activitytext>
-                    <Link to='/' value="My Activity">
-                        <MyActivity>
-                            <ActivityBackground>
-                                My Activity
-                            </ActivityBackground>
-                        </MyActivity>
-                    </Link>
-                    <Link to='/' value="Publications">
-                        <Publications>
-                            <PublicationsBackground>
-                                Publications
-                            </PublicationsBackground>
-                        </Publications>
-                    </Link>
-                    <Link to='/' value="Private Messages">
-                    <PrivateMessages>
-                        <PMBackground>
-                            Private Messages
-                        </PMBackground>
-                    </PrivateMessages>
-                    </Link>
-                </Activity>
-                </ButtonsActivity>
-           </Lower>
-        </Container>
-    )
+                            <TellUsAboutYourself>
+                                {Details['biography']}
+                            </TellUsAboutYourself>
+                        </Biography>
+                        <ButtonsActivity>
+                        <Buttons>
+                            <Link to={ID_List} value="My List">
+                                <MyList>
+                                    <MyListBackground>
+                                        My List
+                                    </MyListBackground>
+                                </MyList>
+                            </Link>
+                            <Link to='/reports' value="Reports">
+                                <Report>
+                                    <ReportBackground>
+                                        Report
+                                    </ReportBackground>
+                                </Report>
+                            </Link>
+                            <Settings onMouseDownCapture={() => MouseDown(flag)}>
+                                <SettingsBackground>
+                                    Settings
+                                </SettingsBackground>
+                            </Settings>
+                        {
+                            ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
+                            <Link to='/modapps' value="Moderator Applications">
+                                <ModApp>
+                                    <ModAppBackground>
+                                        Moderator Applications
+                                    </ModAppBackground>
+                                </ModApp>
+                            </Link>
+                        }
+                        {
+                            ((Details['User_Type'] === 'VERIFIED') || (Details['User_Type'] === 'UNVERIFIED')) &&
+                            <Link to='/modapps' value="Moderator Applications">
+                                <ModApp>
+                                    <ModAppBackground>
+                                        Moderator Application Form
+                                    </ModAppBackground>
+                                </ModApp>
+                            </Link>
+                        }
+                        </Buttons>
+
+                        <Activity>
+                            <Activitytext>
+                                Activity
+                            </Activitytext>
+                            <Link to='/' value="My Activity">
+                                <MyActivity>
+                                    <ActivityBackground>
+                                        My Activity
+                                    </ActivityBackground>
+                                </MyActivity>
+                            </Link>
+                            <Link to='/' value="Publications">
+                                <Publications>
+                                    <PublicationsBackground>
+                                        Publications
+                                    </PublicationsBackground>
+                                </Publications>
+                            </Link>
+                            <Link to='/' value="Private Messages">
+                            <PrivateMessages>
+                                <PMBackground>
+                                    Private Messages
+                                </PMBackground>
+                            </PrivateMessages>
+                            </Link>
+                        </Activity>
+                        </ButtonsActivity>
+                </Lower>
+                </Container>
+            )
+        case true:
+            return (
+                <ProfileManagement passDetails={Details} passUsername={User} passID={User['id']} />
+            )
+        default:
+            return (
+                <Container>
+                <Upper>
+                        <Profilepicture src={Details['ProfileImage']}
+                            width="200px"
+                            height = "200px"
+                        /> 
+                        <Name>
+                            {User}
+                        </Name>
+
+                        <Admintag>
+                            {Details['User_Type']}
+                        </Admintag>
+                </Upper>
+
+                <Lower>
+                        <Descone>
+                            {  (Details['User_Type'] === 'ADMIN') && <Profession>Profession</Profession>    }
+                            {  (Details['User_Type'] === 'ADMIN') && <Professionfilled>{Details['profession']}</Professionfilled>   }
+                            {  (Details['User_Type'] === 'ADMIN') && <Company>Company</Company> }
+                            {  (Details['User_Type'] === 'ADMIN') && <Companyfilled>{Details['company']}</Companyfilled> }
+                            {  (Details['User_Type'] === 'MODERATOR') && <Profession>Education</Profession>    }
+                            {  (Details['User_Type'] === 'MODERATOR') && <Professionfilled>{Details['education']}</Professionfilled>   }
+                            {  (Details['User_Type'] === 'MODERATOR') && <Company>Institution</Company>  }
+                            {  (Details['User_Type'] === 'MODERATOR') && <Companyfilled>{Details['institution']}</Companyfilled>   }
+
+                            <Location>
+                                Location
+                            </Location>
+                            <Locationfilled>
+                                {Details['location']}
+                            </Locationfilled>
+
+                            <Age>
+                                Age
+                            </Age>
+                            <Agefilled>
+                                {Details['age']}
+                            </Agefilled>
+                        </Descone>
+
+                        <Biography>
+                            <BioText>
+                                Biography
+                            </BioText>
+
+                            <TellUsAboutYourself>
+                                {Details['biography']}
+                            </TellUsAboutYourself>
+                        </Biography>
+                        <ButtonsActivity>
+                        <Buttons>
+                            <Link to={ID_List} value="My List">
+                                <MyList>
+                                    <MyListBackground>
+                                        My List
+                                    </MyListBackground>
+                                </MyList>
+                            </Link>
+                            <Link to='/reports' value="Reports">
+                                <Report>
+                                    <ReportBackground>
+                                        Report
+                                    </ReportBackground>
+                                </Report>
+                            </Link>
+                            <Settings onMouseDownCapture={() => MouseDown(flag)}>
+                                <SettingsBackground>
+                                    Settings
+                                </SettingsBackground>
+                            </Settings>
+                        {
+                            ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
+                            <Link to='/modapps' value="Moderator Applications">
+                                <ModApp>
+                                    <ModAppBackground>
+                                        Moderator Applications
+                                    </ModAppBackground>
+                                </ModApp>
+                            </Link>
+                        }
+                        {
+                            ((Details['User_Type'] === 'VERIFIED') || (Details['User_Type'] === 'UNVERIFIED')) &&
+                            <Link to='/modapps' value="Moderator Applications">
+                                <ModApp>
+                                    <ModAppBackground>
+                                        Moderator Application Form
+                                    </ModAppBackground>
+                                </ModApp>
+                            </Link>
+                        }
+                        </Buttons>
+
+                        <Activity>
+                            <Activitytext>
+                                Activity
+                            </Activitytext>
+                            <Link to='/' value="My Activity">
+                                <MyActivity>
+                                    <ActivityBackground>
+                                        My Activity
+                                    </ActivityBackground>
+                                </MyActivity>
+                            </Link>
+                            <Link to='/' value="Publications">
+                                <Publications>
+                                    <PublicationsBackground>
+                                        Publications
+                                    </PublicationsBackground>
+                                </Publications>
+                            </Link>
+                            <Link to='/' value="Private Messages">
+                            <PrivateMessages>
+                                <PMBackground>
+                                    Private Messages
+                                </PMBackground>
+                            </PrivateMessages>
+                            </Link>
+                        </Activity>
+                        </ButtonsActivity>
+                </Lower>
+                </Container>
+            )
+        }
 }
 
 export default Profile;
