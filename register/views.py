@@ -162,8 +162,10 @@ class LoginView(generics.GenericAPIView):
 
 # View to logout user from the system
 class LogoutView(generics.GenericAPIView):
+
+	serializer_class = UserSerializer
 	
-	def get(self, request):
+	def post(self, request):
 		logout(request)
 		return Response({"Result":"Gucci"}, status=status.HTTP_200_OK)
 
@@ -181,7 +183,7 @@ class ChangePassword(APIView):
 	def post(self, request):
 
 		# Authenticate user identity
-		if(not request.user.is_authenticated()):
+		if(not request.user.is_authenticated):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
 		try:
@@ -190,10 +192,10 @@ class ChangePassword(APIView):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
 		parsed = request.data["data"]
-		
+		print(parsed)
 		# Update user password
-		if parsed["current_password"] == user.password:
-			user.set_password(parsed["new_password"])
+		if user.check_password(parsed["currentpassword"]):
+			user.set_password(parsed["newpassword"])
 			user.save()
 		else:
 			return Response(status=status.HTTP_406_NOT_ACCEPTABLE)

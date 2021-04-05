@@ -84,9 +84,18 @@ class CatalogueColumnar(APIView):
 
 class CatalogueList(APIView):
 
-	def get(self, request):
+	def get(self, request, id):
 
-		queryset = Publication.objects.all().order_by('Title')
+		if id <= 0:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+
+		total = Publication.objects.count()
+		if total < id * 8:
+			limit = total
+		else:
+			limit = id * 8
+
+		queryset = Publication.objects.all().order_by('Title')[(id-1)*8:limit]
 		#print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data)
@@ -251,45 +260,3 @@ class ContactUs(APIView):
 		plain = ''
 		send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = False, html_message=message)
 		return Response(status=status.HTTP_200_OK)
-
-		
-
-# 		# 		if form.is_valid():
-# 		# 			temp = form.save()
-# 		# 			title = form.cleaned_data["Title"]
-# 		# 			print(title)
-# 		# 			print(request.user.username)
-# 		# 			new_obj = temp.contribution_set.create(Username=request.user, Edit_Type='EDIT')
-# 		# 			#temp.contribution.Username = request.user
-# 		# 			print(new_obj.Username.username)
-# 		# 			return redirect('/') 
-# 		# 	else:
-# 		# 		rel_objects = RelatedPublication.objects.filter(Main_Publication__id=pub_to_edit.id)
-# 		# 		rel_ids = ''
-# 		# 		for i in rel_objects:
-# 		# 			print(i.id)
-# 		# 			if rel_ids == '':
-# 		# 				rel_ids = str(i.id)
-# 		# 			else:
-# 		# 				rel_ids =  rel_ids + ',' + str(i.id)
-
-# 		# 		pub_dict = {'Title' : pub_to_edit.Title, 'Authors': pub_to_edit.Authors, 'Year_Publication': pub_to_edit.Year_Publication, 'Reprint_Year':pub_to_edit.Reprint_Year, 'Edition_Number': pub_to_edit.Reprint_Year, 'ISBN': pub_to_edit.ISBN, 'Lang': pub_to_edit.Lang, 'Description': pub_to_edit.Description, 'Front_Cover': pub_to_edit.Front_Cover, 'Back_Cover':pub_to_edit.Back_Cover, 'Spine':pub_to_edit.Spine, 'Related':rel_ids}
-# 		# 		form = PublicationForm(initial=pub_dict) 
-# 		# 	return render(request, 'Publication_Form.html', {'form' : form})
-# 		# else:
-# 		# 	return redirect("/")
-
-# def addPublication(request):
-#     if request.method == 'POST': 
-#         form = PublicationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             temp = form.save()
-#             title = form.cleaned_data["Title"]
-#             print(title)
-#             print(request.user.username)
-#             related_pubs = form.cleaned_data["Related"].split(',')
-#             #new_obj = temp.contribution_set.create(Username=request.user, Edit_Type='ADD')
-#             return redirect('/') 
-#     else: 
-#         form = PublicationForm() 
-#         return render(request, 'Publication_Form.html', {'form' : form})

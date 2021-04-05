@@ -23,12 +23,86 @@ const StyledPopup = styled(Popup)`
 //   &-content {
 //     ...;
 //   }
-`;
+`
 
-function Icons({status}){
-    if(status == 'Unauthentic'){
-        return(
-            <Container>
+function Header(props) {
+    console.log(props.auth, "in header boioi")
+    const [temp, setTemp] = React.useState(props.auth)
+    console.log(temp)
+
+    function updateParent(event){
+        console.log(event, "DA HEADER UPDATER")
+        props.onChange(event)
+    }
+
+    function handleClick(event) {
+        //console.log(event.target.value)
+        //props.onChange(event.target.value); // pass any argument to the callback
+        setTemp(event)
+        console.log(event, "HEADER YEYA", "LOGIN IS UPDATIG ME")
+        updateParent(event)
+      }
+    return (
+        
+        <Container>
+          <Top>
+            <NotificationIconContainer>
+                <Link to="/Notification" style={{color:"white"}}>
+                <NotificationsIcon/>
+                </Link>
+            </NotificationIconContainer>
+            <UserAccountIconContainer>
+                <Link to="/UserAccount" style={{color:"white"}}>
+                <AccountCircleIcon/>
+                </Link>
+            </UserAccountIconContainer>
+          </Top>
+
+          <Bottom>
+            
+              <LogoContainer>
+                    <img src="Logo.png" width="80" height="80"
+                    style={{paddingBottom:"10px",paddingTop:"10px"}} />
+              </LogoContainer>
+                    <Link to="/" style={{color:"#04396B"}}>
+                      <Home>
+                        <HomeOutlined
+                        style={{
+                            color:"white",
+                            fontSize:30,
+                            marginLeft:"6px"                       
+                            }}
+                            />
+                            <IconText>Home</IconText>
+                        </Home>
+                    </Link>
+                        <Link to="/Forum" style={{color:"#04396B"}}> 
+                            <Forum>
+                                <ForumIcon
+                                    style={{
+                                        color:"white",
+                                        fontSize:30,
+                                        marginLeft:"6px"
+                                    
+                                        }}
+                                />
+                                <IconText>Forum</IconText>
+                            </Forum>
+                        </Link>
+                        <Link to="/Publications/1" style={{color:"#04396B"}}>
+                            <Publications>
+                                <LibraryBooksIcon
+                                style={{
+                                    color:"white",
+                                    fontSize:30,
+                                    marginLeft:"25px"
+                                
+                                    }}
+                                    />
+                                    <IconText>Publications</IconText>
+                            </Publications>
+                        </Link>
+                            
             <Popup trigger={
                 <SignUpContainer>
                     <PersonAddIcon
@@ -59,82 +133,8 @@ function Icons({status}){
             }
             contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
             >
-            <LogIn/>
+            <LogIn auth={temp} onChange={handleClick}/>
             </Popup>
-            </Container>
-        )
-    }
-    else{
-        return(
-            <h3>logout</h3>
-        )
-    }
-}
-
-function Header({check}) {
-    return (
-        
-        <Container>
-          <Top>
-            <NotificationIconContainer>
-                <Link to="/Notification" style={{color:"white"}}>
-                <NotificationsIcon/>
-                </Link>
-            </NotificationIconContainer>
-            <UserAccountIconContainer>
-                <Link to="/UserAccount" style={{color:"white"}}>
-                <AccountCircleIcon/>
-                </Link>
-            </UserAccountIconContainer>
-          </Top>
-
-          <Bottom>
-            
-              <LogoContainer>
-                    <img src="https://www.w3schools.com/images/lamp.jpg" width="80" height="80"
-                    style={{paddingBottom:"10px",paddingTop:"10px"}} />
-              </LogoContainer>
-                    <Link to="/" style={{color:"#04396B"}}>
-                      <Home>
-                        <HomeOutlined
-                        style={{
-                            color:"white",
-                            fontSize:30,
-                            marginLeft:"6px"                       
-                            }}
-                            />
-                            <IconText>Home</IconText>
-                        </Home>
-                    </Link>
-                        <Link to="/Forum" style={{color:"#04396B"}}> 
-                            <Forum>
-                                <ForumIcon
-                                    style={{
-                                        color:"white",
-                                        fontSize:30,
-                                        marginLeft:"6px"
-                                    
-                                        }}
-                                />
-                                <IconText>Forum</IconText>
-                            </Forum>
-                        </Link>
-                        <Link to="/Publications" style={{color:"#04396B"}}>
-                            <Publications>
-                                <LibraryBooksIcon
-                                style={{
-                                    color:"white",
-                                    fontSize:30,
-                                    marginLeft:"25px"
-                                
-                                    }}
-                                    />
-                                    <IconText>Publications</IconText>
-                            </Publications>
-                        </Link>
-                    
-                        
-                <Icons status={check}/>    
 
               <SearchContainer>
                  <SearchIconContainer> 

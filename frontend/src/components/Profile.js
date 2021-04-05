@@ -27,8 +27,6 @@ function Profile() {
         getData()
     }, [])
 
-    let ID_List = "/List/" + User['id']
-
     function MouseDown(Flag){
         setFlag(!Flag)
     }
@@ -88,7 +86,7 @@ function Profile() {
                         </Biography>
                         <ButtonsActivity>
                         <Buttons>
-                            <Link to={ID_List} value="My List">
+                            <Link to="/List" value="My List">
                                 <MyList>
                                     <MyListBackground>
                                         My List

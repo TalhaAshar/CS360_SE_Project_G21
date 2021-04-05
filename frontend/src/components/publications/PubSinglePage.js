@@ -36,7 +36,7 @@ function PubSinglePage(props) {
             <BookTitleContainer>{pubs[0].Title}</BookTitleContainer>
             <BookContainer>
                 <BookImageDetailContainer>
-                    
+                <Image src={pubs[0].Front_Cover} width="470px" height ="590px"/>
                     <PublicationID>Publication ID: {pubs[0].id} </PublicationID>
                     <BookDetails>
                         <Text>Author: {pubs[0].Authors}</Text>
