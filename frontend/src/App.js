@@ -10,7 +10,7 @@ import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
 import Publications from "./components/publications/Publications";
-import List from "./components/publications/PersonalizedListGuest";
+import List from "./components/publications/PersonalizedListUserRead";
 import Thread from "./components/forms/ThreadAdd";
 import SinglePub from "./components/publications/PubSinglePage";
 import Profile from "./components/Profile";
@@ -24,14 +24,13 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function App() {
 
-  const [pubs, setPubs] = React.useState([{'Status' : ''}])
-  console.log(pubs)
+  const [auth, setAuth] = React.useState([{'Status' : ''}])
 
     function getData(){
         axios.get(`api/register/auth`).then((res) => {
-            setPubs(res.data)
-            console.log('ye boi', res.data)
-            console.log('nu boi', pubs.length)
+            setAuth(res.data)
+            //console.log('ye boi', res.data)
+            //console.log('nu boi', auth.length)
         })
         .catch(error => console.log('Error:', error))
     }
@@ -40,21 +39,22 @@ function App() {
         getData()
     }, [])
 
+    function handleChange(newAuth){
+      console.log("APP JS", auth)
+      setAuth(newAuth)
+    }
+
+
+    //console.log(auth.Status)
   return (
     <Router>
       <Container>
-      
-      <Header check={pubs.Status}/>
-
+      <Header auth={auth} onChange={handleChange}/>
         <Switch>
 
           <Route exact path="/">
           {console.log("HOME PAGE")}
             <Home/>
-          </Route>
-
-          <Route exact path="/Publications">
-            <Publications />
           </Route>
 
           <Route exact path="/Forum">
@@ -77,12 +77,16 @@ function App() {
             <Profile /> 
           </Route>
 
+          <Route path="/Publications/:id">
+            <Publications />
+          </Route>
+
           <Route path="/publication/:id">
             {console.log("single")}
             <SinglePub />  
           </Route>
           
-          <Route path="/List/:id">
+          <Route path="/List">
             <List />  
           </Route>
           
