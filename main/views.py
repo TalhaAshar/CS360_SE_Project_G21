@@ -30,12 +30,17 @@ class Index(generics.ListCreateAPIView):
 			Best_Edition_Daily = Publication.objects.filter(Best_Edition=True).order_by('-contribution__Date')
 			#Best_Edition_Daily = Publication.objects.filter(id=35)
 		except:
-			return
+			return Response({'Message' : 'There was an error loading this page.'}, status=status.HTTP_400_BAD_REQUEST)
 
 		collected = []
 		for k in Best_Edition_Daily:
 			collected.append(k.id)
-		recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:5]
+		
+		try:
+			recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:5]
+		except:
+			return Response({'Message' : 'There was an error loading this page.'}, status=status.HTTP_400_BAD_REQUEST)
+
 		total = Publication.objects.count() - 1
 		j = 0
 		
@@ -53,10 +58,14 @@ class Index(generics.ListCreateAPIView):
 		temp = Best_Edition_Daily.union(recents, all=True)
 		print(temp)
 		for i in new:
-			recs = Publication.objects.filter(id=i)
-			temp = temp.union(recs, all=True)
-		print(Best_Edition_Daily)
-		print(temp)
+			try:
+				recs = Publication.objects.filter(id=i)
+				temp = temp.union(recs, all=True)
+			except:
+				continue
+	
+		#print(Best_Edition_Daily)
+		#print(temp)
 		#temp = 'new'
 		return temp
 	
@@ -69,7 +78,7 @@ class CatalogueColumnar(APIView):
 	def get(self, request, id):
 
 		if id <= 0:
-			return Response(status=status.HTTP_204_NO_CONTENT)
+			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_204_NO_CONTENT)
 
 		total = Publication.objects.count()
 		if total < id * 20:
@@ -80,25 +89,25 @@ class CatalogueColumnar(APIView):
 		queryset = Publication.objects.all().order_by('Title')[(id-1)*20:limit]
 		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
-		return Response(serializer.data)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CatalogueList(APIView):
 
 	def get(self, request, id):
-
 		if id <= 0:
-			return Response(status=status.HTTP_204_NO_CONTENT)
+			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_204_NO_CONTENT)
 
 		total = Publication.objects.count()
+		print(total)
 		if total < id * 8:
 			limit = total
 		else:
 			limit = id * 8
 
 		queryset = Publication.objects.all().order_by('Title')[(id-1)*8:limit]
-		#print(queryset)
+		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
-		return Response(serializer.data)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class Search(generics.ListCreateAPIView):
     filter_backends = (DynamicSearchFilter,)
@@ -111,7 +120,7 @@ class ViewPublication(APIView):
 		try:
 			temp = Publication.objects.filter(id=id)
 		except Exception as e:
-			return Response(status=status.HTTP_400_BAD_REQUEST)
+			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_400_BAD_REQUEST)
 		
 		try:
 			rel_obj = Publication.objects.get(id=id)
@@ -135,7 +144,7 @@ class AddPublication(APIView):
 			print("AUTHENTIC")
 			user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
 			if user_to_check == 'UNVERIFIED':
-				return Response(status=status.HTTP_401_UNAUTHORIZED)
+				return Response({'Message' : 'You do not have the permission to perform this task!'}, status=status.HTTP_401_UNAUTHORIZED)
 
 			serializer = PublicationSerializer(data=request.data)
 			print(request.data)
@@ -163,7 +172,7 @@ class AddPublication(APIView):
 			print(serializer.errors)
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 		print("UNAUTHENTIC")
-		return Response(status=status.HTTP_401_UNAUTHORIZED)
+		return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class EditPublication(APIView):
 
@@ -230,7 +239,7 @@ class TakedownRequest(APIView):
 		try:
 			queryset = Copyright.objects.all().order_by('-Date')
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_404_NOT_FOUND)
 		copy_list = CopyrightSerializer(queryset, many=True)
 		return Response(copy_list.data, status=status.HTTP_200_OK)
 
@@ -239,7 +248,7 @@ class TakedownRequest(APIView):
 		try:
 			copyrighted_pub = Publication.objects.get(id=id)
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_404_NOT_FOUND)
 		
 		complaint = request.data["data"]
 		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Party"], Reason=complaint["Body"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Copyright"], Country=complaint["Country"])		
@@ -258,5 +267,8 @@ class ContactUs(APIView):
 			'body' : parsed["Body"],
 		})
 		plain = ''
-		send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = False, html_message=message)
+		try:
+			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
+		except:
+			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 		return Response(status=status.HTTP_200_OK)

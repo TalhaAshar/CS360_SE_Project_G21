@@ -49,7 +49,10 @@ class SignUpView(generics.GenericAPIView):
 
 		# Parsing and validating data from the user's POST request
 		serializer = self.get_serializer(data=request.data["data"])
-		serializer.is_valid(raise_exception=True)
+
+		
+		if(not serializer.is_valid()):
+			return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
 		user = serializer.save()
 
 		# Marking the user as inactive until they eventually use the email verification
@@ -69,7 +72,10 @@ class SignUpView(generics.GenericAPIView):
 			'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 			'token': account_activation_token.make_token(user),
 		})
-		user.email_user(subject, message)
+		try:
+			user.email_user(subject, message)
+		except:
+			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 
 		return Response({"Result" : "Please Confirm your email to complete registration."}, status=status.HTTP_201_CREATED)
 
@@ -142,14 +148,17 @@ class LoginView(generics.GenericAPIView):
 		# Ensure user exists
 		serializer = self.get_serializer(data=request.data["data"])
 		print(request.data["data"])
-		serializer.is_valid(raise_exception=True)
+		
+		if(not serializer.is_valid()):
+			return Response({'Message' : 'Your credentials are invalid!'}, status=status.HTTP_400_BAD_REQUEST)
+		
 		user = serializer.validated_data
 		print(user)
 
 		try:
 			temp = Profile.objects.get(user=user)
 		except:
-			pass
+			return Response({'Message' : 'Please signup!'}, status=status.HTTP_400_BAD_REQUEST)
 		
 		# Check if the user is authorized to login
 		if temp.blacklisted == True:
@@ -158,7 +167,7 @@ class LoginView(generics.GenericAPIView):
 		print("The user has been authenticated")
 		login(request, user)
 
-		return Response({"user" : UserSerializer(user, context=self.get_serializer_context()).data})
+		return Response({"user" : UserSerializer(user, context=self.get_serializer_context()).data}, status=status.HTTP_200_OK)
 
 # View to logout user from the system
 class LogoutView(generics.GenericAPIView):
@@ -184,12 +193,12 @@ class ChangePassword(APIView):
 
 		# Authenticate user identity
 		if(not request.user.is_authenticated):
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'You must login to continue!'} ,status=status.HTTP_404_NOT_FOUND)
 		
 		try:
 			user = User.objects.get(username=request.user)
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
 
 		parsed = request.data["data"]
 		print(parsed)
@@ -198,8 +207,8 @@ class ChangePassword(APIView):
 			user.set_password(parsed["newpassword"])
 			user.save()
 		else:
-			return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-		return Response(status=status.HTTP_200_OK)
+			return Response({'Message' : 'Invalid data entry!'} , status=status.HTTP_406_NOT_ACCEPTABLE)
+		return Response({'Message' : 'Your password has been successfully updated!'} , status=status.HTTP_200_OK)
 
 # Class for if user wishes to apply for their account's removal
 class UserAccountRemoval(APIView):

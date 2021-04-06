@@ -3,16 +3,18 @@ import LinearCard from '../LinearCard'
 import styled from 'styled-components'
 import axios from 'axios';
 import {useEffect, useState} from "react";
+import { useLocation, useParams} from "react-router-dom"
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function PublicationsList() {
 
+    const { id } = useParams();
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     function getData(){
         console.log("jjj");
-         let url = "api/main/search"
+         let url = "api/main/catalogue_list/" + id
          console.log(url, "edfghtuehhe")
          axios.get(url).then((res) => {
              setPubs(res.data)
