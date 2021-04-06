@@ -1,5 +1,6 @@
 import './App.css';
-import Header from './components/Header'
+import Header from './components/Header';
+import HeaderUser from './components/HeaderUser';
 import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import styled from 'styled-components'
 import Home from './components/Home'
@@ -16,6 +17,7 @@ import SinglePub from "./components/publications/PubSinglePage";
 import Profile from "./components/Profile";
 import ProfileManagement from "./components/ProfileManagement";
 import Catalogue from "./components/publications/PublicationsList";
+import Columnar from "./components/publications/Publications";
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
@@ -51,7 +53,13 @@ function App() {
   return (
     <Router>
       <Container>
+       {(auth["Status"] == 'Unauthentic' || auth["Status"] == '') &&
       <Header auth={auth} onChange={handleChange}/>
+       }
+       {
+         auth["Status"] == 'Authentic' &&
+         <HeaderUser auth={auth} onChange={handleChange}/>
+       }
         <Switch>
 
           <Route exact path="/">
