@@ -35,12 +35,12 @@ handleSubmit = (event) =>{
   render(){
     return(
         <form onSubmit={this.handleSubmit}>
-        <span>Username</span>
-        <input type="text" name="username" onChange={this.handleChange} /><br/>
-        <span>Password</span>
-        <input type="password" name="password" onChange={this.handleChange} /><br/>
+        <span style={{color: "#583192"}}>Username</span><br/>
+        <input type="text" name="username" style={{width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
+        <span style={{color: "#583192"}}>Password</span><br/>
+        <input type="password" name="password" style={{width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
         <input type="hidden" value="abc" name="refresh" onChange={this.handleChange}/>
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" style={{width: "160px", height: "70px", position: "relative", top: "150px", left: "220px", fontSize: "24px", color: "#FFFFFF", backgroundColor: "transparent", borderRadius: "7px", borderColor: "#FFFFFF"}}/>
         </form>
     );
   }
