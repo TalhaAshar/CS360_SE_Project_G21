@@ -22,26 +22,33 @@ const LogIn = (props) => {
 
       }
     return (
-        <Container> 
-            <TopRectangle>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 10 300 250"><path fill="#9888BE" fill-opacity="1" d="M0,160L30,181.3C60,203,120,245,180,218.7C240,192,300,96,360,48C420,0,480,0,540,37.3C600,75,660,149,720,170.7C780,192,840,160,900,176C960,192,1020,256,1080,277.3C1140,299,1200,277,1260,229.3C1320,181,1380,107,1410,69.3L1440,32L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="300 100 740 320"><path fill="#583192" fill-opacity="1" d="M0,96L40,133.3C80,171,160,245,240,277.3C320,309,400,299,480,261.3C560,224,640,160,720,128C800,96,880,96,960,106.7C1040,117,1120,139,1200,160C1280,181,1360,203,1400,213.3L1440,224L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
-            </TopRectangle>
-            <MiddleRectangle1> 
-                <h1>Login</h1>
-                <LogInForm auth={temp} onChange={LoginClick}/>
-            </MiddleRectangle1>
-            <MiddleRectangle2>
-                <First>
-                    <FGUsername>Forgot Username?</FGUsername>
-                </First>
-                <Second>
-                    <FGPassword>Forgot Password?</FGPassword>
-                </Second>
-            </MiddleRectangle2>
-            <BottomRectangle>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="350 100 320 320"><path fill="#583192" fill-opacity="1" d="M0,224L48,202.7C96,181,192,139,288,154.7C384,171,480,245,576,245.3C672,245,768,171,864,154.7C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
-            </BottomRectangle>
+        <Container>
+        
+        <TopRectangle>
+        <svg style={{borderRadius:"16px"}}width="420" height="422" viewBox="0 0 411 422" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M44.5703 -237.381C46.5033 -240.729 50.7844 -241.876 54.1325 -239.943L591.422 70.2607C594.77 72.1937 595.917 76.4748 593.984 79.8229L420.354 380.559C418.133 384.405 412.238 382.114 413.198 377.777C436.708 271.604 347.416 174.418 239.636 188.871L128.258 203.806C27.5536 211.707 -70.73 170.29 -135.407 92.6982L-141.286 85.6459C-141.514 85.3718 -141.547 84.9843 -141.369 84.6753L44.5703 -237.381Z" fill="#9888BE"/>
+            <path d="M-120 -215C-120 -218.866 -116.866 -222 -113 -222H436C439.866 -222 443 -218.866 443 -215V85.0682C443 88.9896 437.491 89.8576 436.285 86.1261C406.994 -4.52649 297.095 -39.2913 220.997 18.0233L140.082 78.9664C66.0062 128.664 -27.2773 140.204 -111.23 110.057L-119.49 107.091C-119.796 106.981 -120 106.691 -120 106.365V-215Z" fill="#583192"/>
+        </svg>
+        
+
+        </TopRectangle>
+        <MiddleRectangle>
+        <Text>Log In</Text>
+        <UserPassword>
+            <LogInForm/>
+        </UserPassword>
+        </MiddleRectangle>
+        
+        <BottomRectangle>
+            <svg style={{marginTop:'5px', borderRadius:"16px"}}width="420" height="208" viewBox="0 0 411 208" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M459.046 381.498C458.768 385.354 455.417 388.255 451.561 387.977L-96.0191 348.519C-99.8751 348.241 -102.776 344.89 -102.498 341.034L-80.9312 41.7416C-80.6494 37.8303 -75.0922 37.3605 -74.1578 41.169C-51.458 133.692 55.6585 176.266 135.679 124.569L220.765 69.5992C298.221 25.3543 392.093 20.5484 473.662 56.6517L481.687 60.2036C481.984 60.3352 482.167 60.6394 482.143 60.9637L459.046 381.498Z" fill="#583192"/>
+            </svg>
+            <ForgetContainer>
+                    <ForgetUserName>Forgot Username?</ForgetUserName>
+                    <ForgetPassword>Forgot Password?</ForgetPassword>
+            </ForgetContainer>
+            <SignUplink>New Here? <strong>Register</strong></SignUplink>
+        </BottomRectangle>
     </Container>
   )};
 
@@ -51,7 +58,7 @@ export default LogIn;
 const Container = styled.div`
     width: 420px;
     height: 570px;
-    background: #ffffff;
+    background: white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
 `
@@ -63,41 +70,44 @@ const TopRectangle = styled.div`
         position: absolute;
     }
 `
+const MiddleRectangle = styled.div`
+    height:300px;
 
-const MiddleRectangle1 = styled.div`
-    width: 420px;
-    height: 200px;
-    margin-top: 40px;
-    left: 20px;
-    position: absolute;
-    color: white;
 `
-const MiddleRectangle2 = styled.div`
-    margin-top: 240px;
-    left: 20px;
-    position: absolute;
-    svg {
-        position: absolute;
-    }
+const UserPassword = styled.div`
+    position:relative;
+    bottom:2px;
+    left:20px;
+    height:290px;
+    padding-top:130px;
 `
-
-const First = styled.div`
-`
-
-const Second = styled.div`
-`
-
-const FGUsername = styled.span`
-    font-size: 13px;
-    color: #583192;
-`
-
-const FGPassword = styled.span`
-    font-size: 13px;
-    color: #583192;
-`
+const Text = styled.h1`
+    position:relative;
+    top:110px;
+    left:19px;
+    color:#583192;
+    white-space:nowrap;
 
 const BottomRectangle = styled.div`
+`
+const ForgetContainer = styled.div`
+    position:relative;
+    bottom:150px;
+    left:20px;
+    color:#583192;
+    font-size:20px;
+
+`
+const ForgetUserName = styled.h6`
+`
+
+const ForgetPassword = styled.h6`
+`
+const SignUplink = styled.div`
+    position:relative;
+    bottom:90px;
+    left:20px;
+    color:white;
     width: 420px;
     height: 100px;
     margin-top: 185px;
