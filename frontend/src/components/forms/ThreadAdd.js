@@ -9,49 +9,6 @@ import styled from 'styled-components';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-// const Container = styled.div`
-// `;
-
-// const HeaderContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-contents: center;
-//   margin: 40 40 40 40;
-// `;
-
-// const ThreadAddContainer = styled.h1`
-// `;
-
-// const BoxContainer = styled.div`
-// `;
-
-// const TitleContainer = styled.div`
-// `;
-
-// const TitleWitleContainer = styled.h3`
-// `;
-
-// const TitleInputContainer = styled.div`
-// `;
-
-// const CategoryContainer = styled.div`
-// `;
-
-// const CatContainer = styled.h3`
-// `;
-
-// const CatSajidContainer = styled.div`
-// `;
-
-// const BodyContainer = styled.div`
-// `;
-
-// const SubmitbuttonContainer = styled.div`
-// `;
-
-// const SubmitContainer = styled.h4`
-// `;
-
 class App extends Component{
 constructor(props){
     super(props);
@@ -74,91 +31,149 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/forum/threads/add";
+  const url = "api/main/add_publication";
   const data = { Title:this.state.Title, Category:this.state.Category, Body:this.state.Body };
   
-  axios.post(url, { data })
-    .then(res => console.log(res))
+  axios.post(`api/main/add_publication`, { data })
+    .then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
   }
     
   render(){
     return(
-      // <Container>
-      //   <HeaderContainer>
-      //     <ThreadAddContainer>
-      //       Thread - Add
-      //     </ThreadAddContainer>
-      //   </HeaderContainer>
-      //   <BoxContainer>
-      //     <TitleContainer>
-      //       <TitleWitleContainer>
-      //         Tital*
-      //       </TitleWitleContainer>
-      //       <TitleInputContainer>
-      //         TitleInput
-      //       </TitleInputContainer>
-      //     </TitleContainer>
-      //     <CategoryContainer>
-      //       <CatContainer>
-      //         Category
-      //       </CatContainer>
-      //       <CatSajidContainer>
-      //         SAJID IDHAR DROPDOWN MENU ANA HAI
-      //       </CatSajidContainer>
-      //     </CategoryContainer>
-      //     <BodyContainer>
-      //       <Editor
-      //         value={this.state.Body}
-      //         apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
-      //         init={{
-      //           height: 200,
-      //           width: 500,
-      //           plugins: "image",
-      //           toolbar: "bold italic image",
-      //           menubar: false,
-      //           toolbar_location: "bottom",
-      //         }}
-      //         onEditorChange={this.handleEditorChange}
-      //       />
-      //     </BodyContainer>
-      //     <SubmitbuttonContainer>
-      //       <SubmitContainer>
-      //         Submit
-      //       </SubmitContainer>
-      //     </SubmitbuttonContainer>
-      //   </BoxContainer>
-      // </Container>
-        <form onSubmit={this.handleSubmit}>
-        <span>Title*</span>
-        <input type="text" name="Title" onChange={this.handleChange} /><br/>
-        <label htmlFor="Category">Category</label>
-        <select name="Category" id="Category" value={this.state.Category} onChange={this.handleChange}>
-          <option defaultValue="Announcements">Announcements</option>
-          <option value="General">General</option>
-          <option value="Other">Other</option>
-        </select><br/>
-        <span>Body*</span>
-        <Editor
-          value={this.state.Body}
-          apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
-          init={{
-            height: 200,
-            width: 500,
-            plugins: "image",
-            toolbar: "bold italic image",
-            menubar: false,
-            toolbar_location: "bottom",
-          }}
-          onEditorChange={this.handleEditorChange}
-        />
-        <input type="submit" value="Submit" />
-        </form> );
+      <Container>
+      <Head>Add Thread</Head>
+      <FormContainer>
+          <Form onSubmit={this.handleSubmit}>
+          <UserInfo>
+              <Span>Title*</Span>
+              <Input type="text" name="Title" onChange={this.handleChange} />
+          </UserInfo>
+          <LabelContainer>
+              <Label for="Category">Category</Label>
+              <Select name="Category" id="Category" value={this.state.Reason} onChange={this.handleChange}>
+                  <Option defaultValue="Announcements">Announcements</Option>
+                  <Option value="General">General</Option>
+                  <Option value="Other">Other</Option>
+              </Select><br/>
+          </LabelContainer>
+          
+          <EditorContainer>
+            <Span>Body*</Span>
+            <Editor
+              value={this.state.Body}
+              apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
+              init={{
+                height: 600,
+                width: 900,
+                plugins: "image",
+                toolbar: "bold italic image",
+                menubar: false,
+                toolbar_location: "bottom",
+              }}
+              onEditorChange={this.handleEditorChange}
+            />
+            <Submit type="submit" value="Add Thread" />
+          </EditorContainer>
+        </Form>
+      </FormContainer> 
+    </Container>
+        );
   }
 }
 
 export default App;
 
-const container = document.getElementById("app");
-render(<App />, container);
+
+const Container = styled.div`
+  margin-left:150px;
+  margin-right:150px;
+
+`
+const Head = styled.h3`
+  width:990px;
+  height:50px;
+  margin-top:30px;
+  margin-left:10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  background: #03204C;
+  border-radius: 8px;
+`
+const FormContainer = styled.div`
+  width: 1000px;
+  height: 950px;
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+  background:#DCF2F8;
+  border-radius: 16px;
+
+`
+const Form = styled.form`
+`
+const UserInfo = styled.div`
+  display:grid;
+  grid-template-rows:20px 60px;
+  margin-top:20px;
+  padding-left:50px;
+`
+const Span = styled.span`
+  font-weight:bold;
+  font-size:20px;
+`
+const Input = styled.input`
+  width: 900px;
+  height: 60px;
+  margin-top:5px;
+  background: #F9F7FC;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius:6px;
+  outline:none;
+  border:none;
+`
+const LabelContainer = styled.div`
+  display:grid;
+  grid-template-rows:20px 65px;
+  margin-left:50px;
+  margin-top:20px;
+`
+const Label = styled.label`
+  font-weight:bold;
+  font-size:20px;
+`
+const Select = styled.select`
+  width:900px;
+  height:60px;
+  margin-top:10px;
+  outline:none;
+  background-color:#F9F7FC;
+  border-radius:6px;
+  border:none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`
+const Option = styled.option`
+  height: 39px;
+  background-color: #FFFFFF;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+`
+const EditorContainer = styled.div`
+  margin-left:50px;
+
+`
+const Submit = styled.input`
+  width:120px;
+  height:30px;
+  position:relative;
+  bottom:55px;
+  left:750px;
+  background-color:#03204C;
+  color:white;
+  z-index:2;
+  border-radius:6px;
+  font-size:15px;
+  font-weight:bold;
+`

@@ -13,17 +13,6 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
 
-const StyledPopup = styled(Popup)`
-
-//   // use your custom style for ".popup-overlay"
-//   &-overlay {
-//     ...;
-//   }
-//   // use your custom style for ".popup-content"
-//   &-content {
-//     ...;
-//   }
-`
 
 function Header(props) {
     console.log(props.auth, "in header boioi")
