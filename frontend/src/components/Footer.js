@@ -19,8 +19,8 @@ function Footer() {
                     </Link>
                 </LinkContainer>
                 <LogoContainer>
-                    <img src="Logo.png" width="60" height="60"
-                    style={{paddingBottom:"10px"}} />
+                    <img src="\frontend\src\images\icons\Logo.png"
+                    style={{borderRadius:"10px"}} />
                 </LogoContainer>
             </Top>
             <Bottom>
@@ -45,16 +45,16 @@ const Top = styled.nav`
     justify-content:space-between;
 `
 const LinkContainer = styled.div`
-
+    margin-top: 4px;
+    margin-left:10px;
 `
 const FooterText = styled.h6`
     color:white;
     margin-left:30px;
-
 `
 const LogoContainer = styled.div`
     padding-top:10px;
-    padding-right:10px;
+    padding-right:40px;
     padding-left:10px;
 `
 const Bottom = styled.div`
