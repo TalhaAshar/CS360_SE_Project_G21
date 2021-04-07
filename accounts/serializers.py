@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email')
 
 class ListingsSerializer(serializers.ModelSerializer):
-    #ListOwner = UserSerializer(read_only=True)
+    ListOwner = UserSerializer(read_only=True)
     ListPub = PublicationSerializer(read_only=True)
     class Meta:
         model = Listings
@@ -27,7 +27,7 @@ class ReportSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)
     class Meta:
         model = Report
-        fields = ('id', 'Creator', 'Reason', 'Description', 'Date', 'Time', 'Status')
+        fields = ('id', 'Creator', 'Reason', 'Description', 'Date', 'Time', 'Status', 'Relevant_Post', 'Relevant_Pub')
 
 class ModeratorSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)

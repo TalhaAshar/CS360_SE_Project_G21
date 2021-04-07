@@ -5,7 +5,7 @@ from .models import Publication, Contribution, Copyright
 class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
-        fields = '__all__'
+        fields = ('id' , 'Title', 'Authors', 'Publisher', 'Year_Publication', 'Edition_Number', 'ISBN', 'Lang', 'Description', 'Genres', 'Best_Edition', 'Front_Cover', 'Back_Cover', 'Spine', 'Reason_for_Best_Pub')
 
 class ContributionSerializer(serializers.ModelSerializer):
     Publication_ID = PublicationSerializer(read_only=True)

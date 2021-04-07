@@ -27,7 +27,7 @@ urlpatterns = [
     path('api/forum/', include("forum.urls")),
     path('image.jpg', Index.as_view()),
     path('', include("frontend.urls")),
-    #re_path(r'^.*$', include("frontend.urls")),
+    re_path(r'^.*$', include("frontend.urls")),
     #path('api/auth/', include('django.contrib.auth.urls')),
     #path('add/', include("main.urls")),
 ]

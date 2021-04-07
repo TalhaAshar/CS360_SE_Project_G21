@@ -3,11 +3,9 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SignUpForm from './forsajid/forms/SignUpForm';
-
 
 const SignUp = () => (
-
+        
     <Container>
         
         <TopRectangle>
@@ -35,13 +33,13 @@ const SignUp = () => (
   );
 
 export default SignUp;
+
 const Container = styled.div`
     width: 420px;
     height: 670px;
     background: white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
-
 `
 const TopRectangle = styled.div`
     width: 420px;

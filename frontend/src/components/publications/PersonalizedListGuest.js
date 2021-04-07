@@ -1,33 +1,54 @@
 import React from 'react'
 import styled from 'styled-components'
-import Card from './Cards'
+import Card from '../Cards'
+import { useEffect, useState } from "react";
+import { useParams} from "react-router-dom"
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function PersonalizedListGuest() {
+
+    const { id } = useParams();  
+    const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
+    const [user, setUser] = useState('')
+
+    function getData(id){
+        let url = "api/accounts/list/" + id
+        axios.get(url).then((res) => {
+            setPubs(res.data)
+            console.log(res.data)
+            setUser(res.data[0]["ListOwner"]["username"])
+        })
+        
+        .catch(error => console.log('Error:', error))
+    }
+
+    useEffect(() => {
+        getData(id)
+    }, [id])
+
     return (
        <Container>
            <UserNameContainer>
-               <Heading>UserName</Heading>
+               <Heading>{user}</Heading>
            </UserNameContainer>
            <NextButtonContainer>
                     <NextPrevious>Buttons</NextPrevious>
            </NextButtonContainer>
            <Cards>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
+                {
+                    
+                    pubs.map((elem, index) => {
+                        if(index < 16){
+                            return(
+                                <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
+                                )
+                        }
+                        console.log(index)
+                    })
+                }
                 
            </Cards>
        </Container>

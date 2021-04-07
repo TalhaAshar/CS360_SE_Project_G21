@@ -1,45 +1,76 @@
 import React from 'react'
 import styled from 'styled-components'
-import Cards from './Cards'
-function PubSinglePage() {
+import Cards from '../Cards'
+import { useLocation, useParams} from "react-router-dom"
+import {useEffect, useState} from "react";
+import axios from 'axios';
+
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+function PubSinglePage(props) {
+    const { id } = useParams();
+    const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
+
+
+    
+    function getData(id){
+       console.log(id, "jjj");
+        let url = "api/main/publication/" + id
+        console.log(url, "edfghtuehhe")
+        axios.get(url).then((res) => {
+            setPubs(res.data)
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    useEffect(() => {
+        getData(id)
+        //setParams(useParams())
+    }, [id])
+
+    console.log("ygygyuy")
     return (
         <Container>
-            <BookTitleContainer>BOOK TITLE</BookTitleContainer>
+            <BookTitleContainer>{pubs[0].Title}</BookTitleContainer>
             <BookContainer>
                 <BookImageDetailContainer>
-                    <Image src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OXx8Y3NzfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" width="470px" height ="590px"/>
-                    <PublicationID>Publcation ID:234345435 </PublicationID>
+                <Image src={pubs[0].Front_Cover} width="470px" height ="590px"/>
+                    <PublicationID>Publication ID: {pubs[0].id} </PublicationID>
                     <BookDetails>
-                        <Text>Author:</Text>
-                        <Text>Publisher:</Text>
-                        <Text>Edition:</Text>
-                        <Text>Year:</Text>
-                        <Text>Language:</Text>
-                        <Text>ISBN:</Text>
+                        <Text>Author: {pubs[0].Authors}</Text>
+                        <Text>Publisher: {pubs[0].Publisher}</Text>
+                        <Text>Edition: {pubs[0].Edition_Number}</Text>
+                        <Text>Year: {pubs[0].Year_Publication}</Text>
+                        <Text>Language: {pubs[0].Lang}</Text>
+                        <Text>ISBN: {pubs[0].ISBN}</Text>
                     </BookDetails>
                 </BookImageDetailContainer>
                 <BookDescriptionComment>
                     <BookComment>
                         <Text>Comment:</Text>
                         <Comment>
-                        If this is best edition
+                        {pubs[0].Reason_for_Best_Pub}
                         </Comment>
                     </BookComment>
                     <BookDescription>
                         <Text>Description:</Text>
-                        <Description>
-                            Description of the book
-                            This particular edition contains the true, unabridged, writings by Johanna Spyri as confirmed by her editor in the foreword.
-                            Not only does it contain the illustrations hand-drawn by the author, which are reproduced for the purpose of the edition by Puffin Books, but also contains excerpts from the author’s own personal experiences in the Alps as part of the appendix at the end of the book. No other edition of Heidi contains these extra snippets.
-                        </Description>
+                        <Description dangerouslySetInnerHTML={{ __html:pubs[0].Description}} />
                     </BookDescription>
                 </BookDescriptionComment>
             </BookContainer>
             <BookRelatedEditionContainer>
-                <Cards/>
-                <Cards/>
-                <Cards/>
-                <Cards/>
+                {
+                    pubs.map((elem, index) => {
+                        if(index > 0 && index < 6){
+                            console.log(elem.id, "rec_idx")
+                            return(
+                                <Cards title={elem.Title} author={elem.Authors} id={elem.id} front_cover={elem.Front_Cover} />
+                            )
+                        }
+                    })
+                }
             </BookRelatedEditionContainer>
         </Container>
     )

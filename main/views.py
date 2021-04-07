@@ -28,13 +28,19 @@ class Index(generics.ListCreateAPIView):
 		try:
 			#Best_Edition_Daily = Contribution.objects.select_related.filter(Publication_ID__Best_Edition=True).order_by('-Date')[:1]
 			Best_Edition_Daily = Publication.objects.filter(Best_Edition=True).order_by('-contribution__Date')
+			#Best_Edition_Daily = Publication.objects.filter(id=35)
 		except:
-			return
+			return Response({'Message' : 'There was an error loading this page.'}, status=status.HTTP_400_BAD_REQUEST)
 
 		collected = []
 		for k in Best_Edition_Daily:
 			collected.append(k.id)
-		recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:5]
+		
+		try:
+			recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:5]
+		except:
+			return Response({'Message' : 'There was an error loading this page.'}, status=status.HTTP_400_BAD_REQUEST)
+
 		total = Publication.objects.count() - 1
 		j = 0
 		
@@ -52,10 +58,15 @@ class Index(generics.ListCreateAPIView):
 		temp = Best_Edition_Daily.union(recents, all=True)
 		print(temp)
 		for i in new:
-			recs = Publication.objects.filter(id=i)
-			temp = temp.union(recs, all=True)
-		print(Best_Edition_Daily)
-		print(temp)
+			try:
+				recs = Publication.objects.filter(id=i)
+				temp = temp.union(recs, all=True)
+			except:
+				continue
+	
+		#print(Best_Edition_Daily)
+		#print(temp)
+		#temp = 'new'
 		return temp
 	
 	queryset = FindSet()
@@ -67,7 +78,7 @@ class CatalogueColumnar(APIView):
 	def get(self, request, id):
 
 		if id <= 0:
-			return Response(status=status.HTTP_204_NO_CONTENT)
+			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_204_NO_CONTENT)
 
 		total = Publication.objects.count()
 		if total < id * 20:
@@ -78,16 +89,16 @@ class CatalogueColumnar(APIView):
 		queryset = Publication.objects.all().order_by('Title')[(id-1)*20:limit]
 		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
-		return Response(serializer.data)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CatalogueList(APIView):
 
 	def get(self, request, id):
-
 		if id <= 0:
-			return Response(status=status.HTTP_204_NO_CONTENT)
+			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_204_NO_CONTENT)
 
 		total = Publication.objects.count()
+		print(total)
 		if total < id * 8:
 			limit = total
 		else:
@@ -96,7 +107,7 @@ class CatalogueList(APIView):
 		queryset = Publication.objects.all().order_by('Title')[(id-1)*8:limit]
 		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
-		return Response(serializer.data)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class Search(generics.ListCreateAPIView):
     filter_backends = (DynamicSearchFilter,)
@@ -109,13 +120,14 @@ class ViewPublication(APIView):
 		try:
 			temp = Publication.objects.filter(id=id)
 		except Exception as e:
-			return Response(status=status.HTTP_400_BAD_REQUEST)
+			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_400_BAD_REQUEST)
 		
 		try:
 			rel_obj = Publication.objects.get(id=id)
 			related = Publication.objects.filter(Main__Rel_Publication=rel_obj)
-			queryset = temp.union(related, all=True)			
-		except:
+			print(related)
+			queryset = temp.union(related, all=True)
+		except:		
 			queryset = temp
 		
 		serializer = PublicationSerializer(queryset, many=True)
@@ -124,6 +136,7 @@ class ViewPublication(APIView):
 class AddPublication(APIView):
 
 	parser_classes = (MultiPartParser, FormParser)
+	serializer_class = PublicationSerializer
 
 	def post(self, request):
 		print(request.data)
@@ -131,26 +144,35 @@ class AddPublication(APIView):
 			print("AUTHENTIC")
 			user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
 			if user_to_check == 'UNVERIFIED':
-				return Response(status=status.HTTP_401_UNAUTHORIZED)
+				return Response({'Message' : 'You do not have the permission to perform this task!'}, status=status.HTTP_401_UNAUTHORIZED)
 
 			serializer = PublicationSerializer(data=request.data)
 			print(request.data)
 			if serializer.is_valid(): 
 				serializer.save()
-				related_pubs = request.data["Related"].split(',')
+				user = User.objects.get(username=request.user)
 				main = Publication.objects.get(id=serializer.data["id"])
+				temp = Contribution.objects.create(Username=user, Publication_ID=main, Edit_Type='ADD')
+				temp.save()
+				try:
+					related_pubs = request.data["Related"].split(',')
+				except:
+					related_pubs = []
+
 				for i in related_pubs:
 					try:
 						rel = Publication.objects.get(id=int(i))
 						new_rel = RelatedPublication.create(Main=main, Rel=rel)
 						new_rel.save()
+						second_rel = RelatedPublication.create(Main=rel, Rel=main)
+						second_rel.save()
 					except:
 						pass
 				return Response(status=status.HTTP_201_CREATED)
 			print(serializer.errors)
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 		print("UNAUTHENTIC")
-		return Response(status=status.HTTP_401_UNAUTHORIZED)
+		return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class EditPublication(APIView):
 
@@ -164,20 +186,46 @@ class EditPublication(APIView):
 			
 			try:
 				pub_to_edit = Publication.objects.get(id=id)
+				print("found")
 			except:
 				return Response(status=status.HTTP_404_NOT_FOUND)
-			
+			print(request.data)
 			serializer = PublicationSerializer(data=request.data)
 			if serializer.is_valid():
-				serializer.save()
+				pub_to_edit.Title = request.data["Title"]
+				pub_to_edit.Authors = request.data["Authors"]
+				pub_to_edit.Publisher = request.data["Publisher"]
+				pub_to_edit.Year_Publication = request.data["Year_Publication"]
+				pub_to_edit.Edition_Number = request.data["Edition_Number"]
+				pub_to_edit.ISBN = request.data["ISBN"]
+				pub_to_edit.Lang = request.data["Lang"]
+				pub_to_edit.Description = request.data["Description"]
+				try:
+					if request.data["Best_Edition"] == 'true':
+						pub_to_edit.Best_Edition = True
+					elif request.data["Best_Edition"] == 'false':
+						pub_to_edit.Best_Edition = False
+				except:
+					pass
+				pub_to_edit.Front_Cover = request.data["Front_Cover"]
+				pub_to_edit.Back_Cover = request.data["Back_Cover"]
+				pub_to_edit.Spine_Cover = request.data["Spine"]
+				pub_to_edit.Reason_for_Best_Pub = request.data["Reason_for_Best_Pub"]
+				pub_to_edit.save(update_fields=["Title", "Authors", "Publisher", "Year_Publication", "Edition_Number", "ISBN", "Lang", "Description", "Best_Edition", "Front_Cover", "Back_Cover", "Spine", "Reason_for_Best_Pub"])
 				parse = request.data
-				related_pubs = parse["Related"].split(',')
-				main = Publication.objects.get(id=serializer.data["id"])
+				try:
+					related_pubs = parse["Related"].split(',')
+				except:
+					related_pubs = []
+
+				main = pub_to_edit
 				for i in related_pubs:
 					rel = Publication.objects.get(id=int(i))
 					if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)):
 						new_rel = RelatedPublication.create(Main=main, Rel=rel)
 						new_rel.save()
+						second_rel = RelatedPublication.create(Main=rel, Rel=main)
+						second_rel.save()
 			else:
 				print("Invalid")
 			return Response(status=status.HTTP_200_OK)
@@ -191,7 +239,7 @@ class TakedownRequest(APIView):
 		try:
 			queryset = Copyright.objects.all().order_by('-Date')
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_404_NOT_FOUND)
 		copy_list = CopyrightSerializer(queryset, many=True)
 		return Response(copy_list.data, status=status.HTTP_200_OK)
 
@@ -200,10 +248,10 @@ class TakedownRequest(APIView):
 		try:
 			copyrighted_pub = Publication.objects.get(id=id)
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_404_NOT_FOUND)
 		
 		complaint = request.data["data"]
-		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Authority"], Reason=complaint["Reason"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Name"], Country=complaint["Country"])		
+		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Party"], Reason=complaint["Body"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Copyright"], Country=complaint["Country"])		
 		temp.save()
 		return Response(status=status.HTTP_200_OK)
 
@@ -219,47 +267,8 @@ class ContactUs(APIView):
 			'body' : parsed["Body"],
 		})
 		plain = ''
-		send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com'], fail_silently = False, html_message=message)
+		try:
+			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
+		except:
+			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 		return Response(status=status.HTTP_200_OK)
-
-		
-
-# 		# 		if form.is_valid():
-# 		# 			temp = form.save()
-# 		# 			title = form.cleaned_data["Title"]
-# 		# 			print(title)
-# 		# 			print(request.user.username)
-# 		# 			new_obj = temp.contribution_set.create(Username=request.user, Edit_Type='EDIT')
-# 		# 			#temp.contribution.Username = request.user
-# 		# 			print(new_obj.Username.username)
-# 		# 			return redirect('/') 
-# 		# 	else:
-# 		# 		rel_objects = RelatedPublication.objects.filter(Main_Publication__id=pub_to_edit.id)
-# 		# 		rel_ids = ''
-# 		# 		for i in rel_objects:
-# 		# 			print(i.id)
-# 		# 			if rel_ids == '':
-# 		# 				rel_ids = str(i.id)
-# 		# 			else:
-# 		# 				rel_ids =  rel_ids + ',' + str(i.id)
-
-# 		# 		pub_dict = {'Title' : pub_to_edit.Title, 'Authors': pub_to_edit.Authors, 'Year_Publication': pub_to_edit.Year_Publication, 'Reprint_Year':pub_to_edit.Reprint_Year, 'Edition_Number': pub_to_edit.Reprint_Year, 'ISBN': pub_to_edit.ISBN, 'Lang': pub_to_edit.Lang, 'Description': pub_to_edit.Description, 'Front_Cover': pub_to_edit.Front_Cover, 'Back_Cover':pub_to_edit.Back_Cover, 'Spine':pub_to_edit.Spine, 'Related':rel_ids}
-# 		# 		form = PublicationForm(initial=pub_dict) 
-# 		# 	return render(request, 'Publication_Form.html', {'form' : form})
-# 		# else:
-# 		# 	return redirect("/")
-
-# def addPublication(request):
-#     if request.method == 'POST': 
-#         form = PublicationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             temp = form.save()
-#             title = form.cleaned_data["Title"]
-#             print(title)
-#             print(request.user.username)
-#             related_pubs = form.cleaned_data["Related"].split(',')
-#             #new_obj = temp.contribution_set.create(Username=request.user, Edit_Type='ADD')
-#             return redirect('/') 
-#     else: 
-#         form = PublicationForm() 
-#         return render(request, 'Publication_Form.html', {'form' : form})

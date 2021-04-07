@@ -8,19 +8,19 @@ function Footer() {
         <Container>
             <Top>
                 <LinkContainer>
-                    <Link to="/dmca" style={{color:"white", textDecoration:"none"}}>
+                    <Link to="/DMCA" style={{color:"white", textDecoration:"none"}}>
                         <FooterText>DMCA</FooterText>
                     </Link>
-                    <Link to="/rules" style={{color:"white",textDecoration:"none"}}>
+                    <Link to="/Rules" style={{color:"white",textDecoration:"none"}}>
                         <FooterText>Community Guidelines</FooterText>
                     </Link>
-                    <Link to="/contact" style={{color:"white",textDecoration:"none"}}>
+                    <Link to="/Contact" style={{color:"white",textDecoration:"none"}}>
                         <FooterText>Contact Us</FooterText>
                     </Link>
                 </LinkContainer>
                 <LogoContainer>
-                    <img src="https://www.w3schools.com/images/lamp.jpg" width="60" height="60"
-                    style={{paddingBottom:"10px"}} />
+                    <img src="\frontend\src\images\icons\Logo.png"
+                    style={{borderRadius:"10px"}} />
                 </LogoContainer>
             </Top>
             <Bottom>
@@ -45,16 +45,16 @@ const Top = styled.nav`
     justify-content:space-between;
 `
 const LinkContainer = styled.div`
-
+    margin-top: 4px;
+    margin-left:10px;
 `
 const FooterText = styled.h6`
     color:white;
     margin-left:30px;
-
 `
 const LogoContainer = styled.div`
     padding-top:10px;
-    padding-right:10px;
+    padding-right:40px;
     padding-left:10px;
 `
 const Bottom = styled.div`

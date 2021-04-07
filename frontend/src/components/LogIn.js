@@ -2,11 +2,27 @@ import React from 'react';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import styled from 'styled-components';
-import LogInForm from './forsajid/forms/LogInForm'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import LogInForm from './forms/LogInForm';
 
-const LogIn = () => (
-    
-    <Container>
+
+const LogIn = (props) => {
+
+    const [temp, setTemp] = React.useState({'Status' : 'Unauthentic'})
+
+    function updateParent(event){
+        props.onChange(event)
+    }
+
+    function LoginClick(event) {
+        //console.log(event.target.value)
+        //props.onChange(event.target.value); // pass any argument to the callback
+        setTemp(event)
+        updateParent(event)
+
+      }
+    return (
+        <Container>
         
         <TopRectangle>
         <svg style={{borderRadius:"16px"}}width="420" height="422" viewBox="0 0 411 422" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,9 +50,10 @@ const LogIn = () => (
             <SignUplink>New Here? <strong>Register</strong></SignUplink>
         </BottomRectangle>
     </Container>
-  );
+  )};
 
-export default LogIn
+export default LogIn;
+
 
 const Container = styled.div`
     width: 420px;
@@ -44,12 +61,14 @@ const Container = styled.div`
     background: white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
-
 `
 const TopRectangle = styled.div`
     width: 420px;
     height: 100px;
     border-color: transparent transparent #000 transparent;
+    svg {
+        position: absolute;
+    }
 `
 const MiddleRectangle = styled.div`
     height:300px;
@@ -68,10 +87,8 @@ const Text = styled.h1`
     left:19px;
     color:#583192;
     white-space:nowrap;
-`
+
 const BottomRectangle = styled.div`
-
-
 `
 const ForgetContainer = styled.div`
     position:relative;
@@ -91,4 +108,9 @@ const SignUplink = styled.div`
     bottom:90px;
     left:20px;
     color:white;
+    width: 420px;
+    height: 100px;
+    margin-top: 185px;
+    border-color: transparent transparent #000 transparent;
+    border-radius: 20px;
 `

@@ -5,7 +5,7 @@ import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import CardMedia from '@material-ui/core/CardMedia';
 
 
-function ForumGuestThreadCard() {
+function ForumGuestThreadCard({username, title, category, postcount, timestamp, desc}) {
     return (
         
         <Container>
@@ -16,21 +16,25 @@ function ForumGuestThreadCard() {
                     width="100px" height="100px"
                 />
             </ImageContainer>
-            <UserName>Alachigari</UserName>
+            <UserName>{username}</UserName>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
-            <ThreadTitle>Forum Ruels:Must Read!!1</ThreadTitle>
-            <ThreadCategory>Announcements</ThreadCategory>
-            <ThreadMinorDetail>This thread is for new users</ThreadMinorDetail>
+            <ThreadTitle>{title}</ThreadTitle>
+            <ThreadCategory>{category}</ThreadCategory>
+            <ThreadMinorDetail>{desc}</ThreadMinorDetail>
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Posts</h5>
+                <h5 style={{paddingTop:"4px"}}>{postcount}</h5>
             </Comment>
             <TimeIcon>
                 <QueryBuilderIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Hours</h5>
+                <h5 style={{paddingTop:"4px"}}>
+                    {
+                        timestamp
+                    }
+                </h5>
             </TimeIcon>
         </ThreadTimePostContainer>
 

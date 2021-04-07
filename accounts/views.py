@@ -9,30 +9,62 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from main.models import Publication, Contribution
+from forum.models import Post
 from .models import PersonalizedList, Listings, Report, ModeratorApplication
 from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer
-from main.serializers import ContributionSerializer
+from main.serializers import ContributionSerializer, PublicationSerializer
 from mysite.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
+import random
 
 # Create your views here.
+class Recommendations(APIView):
+
+    def get(self, request):
+        
+        try:
+            queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+        collected = []
+        for k in queryset:
+            collected.append(k.id)
+            
+        total = Publication.objects.count() - 1
+        j = 0
+
+        recs = []
+        while j < 5:
+            temp = random.randint(1, total)
+            if temp not in collected and temp not in recs:
+                recs.append(temp)
+                j = j + 1
+        
+        recs = Publication.objects.filter(Q(id=recs[0]) | Q(id=recs[1]) | Q(id=recs[2]) | Q(id=recs[3]) | Q(id=recs[4]))
+        
+        temp = PublicationSerializer(recs, many=True)
+        return Response(temp.data, status=status.HTTP_200_OK)
+
+
 class MyListDefault(APIView):
 
     def get(self, request):
 
         if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         try:
             display_type = PersonalizedList.objects.get(Owner=request.user).Display_Type
         except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message' : 'Empty!'},status=status.HTTP_404_NOT_FOUND)
         print("ye", request.user)
         if display_type == 'ALPHABETICAL':
 
             try:
                 queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
             except:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'Message' : 'Empty!'}, status=status.HTTP_204_NO_CONTENT)
+
             temp = ListingsSerializer(queryset, many=True)
             return Response(temp.data, status=status.HTTP_200_OK)
 		
@@ -182,12 +214,12 @@ class MyListGuest(APIView):
 		try:
 			user = User.objects.get(id=id)
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'The user does not exist!'},status=status.HTTP_404_NOT_FOUND)
 
 		try:
 			queryset = Listings.objects.filter(ListOwner=user).order_by('ListPub__Title')
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'Empty!'}, status=status.HTTP_204_NO_CONTENT)
 		temp = ListingsSerializer(queryset, many=True)
 		return Response(temp.data, status=status.HTTP_200_OK)
 
@@ -196,14 +228,15 @@ class UserAccountView(APIView):
 	def get(self, request):
 
 		if(not request.user.is_authenticated):
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'You must login to continue!'}, status=status.HTTP_404_NOT_FOUND)
 		
 		try:
 			user = Profile.objects.get(user=request.user)
 		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
 		temp = ProfileSerializer(user)
 		return Response(temp.data, status=status.HTTP_200_OK)
+
 
 class UserGuestView(APIView):
     def get(self, request, id):
@@ -245,7 +278,12 @@ class Reports(APIView):
         user = User.objects.get(username=request.user)
         parsed = request.data
         try:
-            Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Description"], Status='UNRESOLVED')
+            if(parsed["Type"] == 'Post'):
+                post_to_report = Post.objects.get(id=parsed["id"])
+                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
+            else:
+                pub_to_report = Publication.objects.get(id=parsed["id"])
+                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
             return Response(status=status.HTTP_201_CREATED)
         except:
             print(request.data)
@@ -277,7 +315,7 @@ class ModeratorApps(APIView):
         try:
             queryset = ModeratorApplication.objects.filter(Creator=request.user).order_by("-Date")
         except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
         mod_list = ModeratorSerializer(queryset, many=True)
         return Response(mod_list.data, status=status.HTTP_200_OK)
     
@@ -286,19 +324,19 @@ class ModeratorApps(APIView):
         try:
             queryset = ModeratorApplication.objects.all().order_by("-Date")
         except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
         mod_list = ModeratorSerializer(queryset, many=True)
         return Response(mod_list.data, status=status.HTTP_200_OK)
 
     def get(self, request):
 
         if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
         try:
             user = Profile.objects.get(user=request.user).User_Type
         except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message' : 'Please login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
         if user == 'UNVERIFIED' or user == 'VERIFIED':
             return self.NormalUser(request)
         else:
@@ -308,7 +346,7 @@ class ModeratorApps(APIView):
     def post(self, request):
 
         if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
         user = User.objects.get(username=request.user)
         parsed = request.data["data"]
@@ -318,7 +356,7 @@ class ModeratorApps(APIView):
             return Response(status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message' : 'Your application has been submitted!'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 #Do when forum models made
@@ -377,4 +415,27 @@ class ModeratorDecision(APIView):
             subject = 'BookBound Moderator Application Decision'
             send_mail(subject, message, EMAIL_HOST_USER, [user.email], fail_silently = False)
 
+
+class EditProfileView(APIView):
+    
+    def put(self, request):
+
+        if(not request.user.is_authenticated):
+            return Response({'Message' : 'You must login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
+        try:
+            user = Profile.objects.get(user=request.user)
+        except:
+            return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            serializer = ProfileSerializer(user, data=request.data, partial=True)
+        except:
+            return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
+        print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'Message' : 'Your profile was successfuly updated!'}, status=status.HTTP_200_OK)
+        else:
+            print(serializer.errors)
+            return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)

@@ -14,7 +14,7 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Party:'', Relationship:'', Copyright:'', Country:'', Email:'', Publication:'', Body:'You need to host your image and then upload in this text box.' };
+    this.state = {Party:'', Relationship:'', Copyright:'', Country:'', Email:'', Publication:3, Body:'You need to host your image and then upload in this text box.' };
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -31,10 +31,10 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
+  const url = "api/main/takedown/" + this.state.Publication;
   const data = { Party:this.state.Party, Relationship:this.state.Relationship, Copyright:this.state.Copyright, Country:this.state.Country, Email:this.state.Email, Publication:this.state.Publication, Body:this.state.Body };
   
-  axios.post(`api/main/add_publication`, { data })
+  axios.post(url, { data })
     .then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
