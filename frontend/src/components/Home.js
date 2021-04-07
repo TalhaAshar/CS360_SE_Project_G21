@@ -36,14 +36,14 @@ function Home() {
                 <Banner>
                     <BannerHeadTitle>Welcome to BookBound</BannerHeadTitle>
                     <BannerSmallTitle>Find the most intriguing edtion of your favorite book </BannerSmallTitle>
-                    
                 </Banner>
                 <Content>
                     <CardContainer>
-                    <BestEdition title={pubs[0].Title} authors={pubs[0].Authors} publisher={pubs[0].Publisher} year={pubs[0].Year_Publication} ISBN={pubs[0].ISBN} edition={pubs[0].Edition_Number} description={pubs[0].Reason_for_Best_Pub} front_cover={pubs[0].Front_Cover} id={pubs[0].id}/>
+                        <BestEdition title={pubs[0].Title} authors={pubs[0].Authors} publisher={pubs[0].Publisher} year={pubs[0].Year_Publication} ISBN={pubs[0].ISBN} edition={pubs[0].Edition_Number} description={pubs[0].Reason_for_Best_Pub} front_cover={pubs[0].Front_Cover} id={pubs[0].id}/>
                     </CardContainer>
+
                     <RecentAdditionContainer>
-                            <RecentAdditionText>Recent Additions</RecentAdditionText>
+                    <br/> <RecentAdditionText>Recent Additions</RecentAdditionText>
                             <Cards>
                                 {
                                     pubs.map((elem, index) => {
@@ -58,7 +58,7 @@ function Home() {
                     </RecentAdditionContainer>
                 
                     <RecommendationContainer>
-                        <RecommendationText>Recommendations</RecommendationText>
+                    <br/> <RecommendationText>Recommendations</RecommendationText>
                         <Cards>
                             {
                                 pubs.map((elem, index) => {
@@ -70,10 +70,8 @@ function Home() {
                                 })
                             } 
                         </Cards>
-                        
                     </RecommendationContainer>
                 </Content>
-
             </Container>
     )
 }
@@ -86,7 +84,6 @@ const Container = styled.div`
     margin: 0 auto;
     height: auto;
     background-color: white;
-
 `
 const Banner = styled.div`
     min-height:40px;
@@ -98,7 +95,6 @@ const Banner = styled.div`
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     border:none;
     border-radius:6px;
-
 `
 // //the welcome writing
 const BannerHeadTitle = styled.h2`
@@ -119,14 +115,13 @@ const BannerSmallTitle = styled.h4`
 const Content = styled.div`
 `
 const CardContainer = styled.div`
-background: #FFFFFF;
-border-radius: 16px;
+    background: #FFFFFF;
+    border-radius: 16px;
     border:2px;
     border-style:solid;
     margin-bottom:20px;
     margin-left:20px;
     margin-right:20px;
-
 `
 const RecentAdditionContainer = styled.div`
     margin-top:50px;
@@ -136,21 +131,22 @@ const RecentAdditionContainer = styled.div`
     padding-left:18px;
     background-color:#DCF2F8;
     border-radius:8px;
-
 `
 const RecentAdditionText = styled.h3`
-    max-height:50px;
-    max-width:390px;
+    height:30px;
+    max-width:235px;
     background-color: #0A3977;
     color:white;
     font-size:large;
     font-weight:bold;
     border:1px;
     border-radius:6px;
-    padding-left:40px;
+    margin-left:10px;
+    text-align: center;
 `
 const Cards = styled.div`
     display:flex;
+    padding-right: 20px;
 `
 const RecommendationContainer = styled.div`
     margin-top:20px;
@@ -160,17 +156,16 @@ const RecommendationContainer = styled.div`
     padding-left:18px;
     background-color:#DCF2F8;
     border-radius:8px;
-
 `
 const RecommendationText = styled.h3`
-    max-height:50px;
-    max-width:380px;
+    height:30px;
+    max-width:235px;
     background-color: #0A3977;
     color:white;
     font-size:large;
     font-weight:bold;
     border:1px;
     border-radius:6px;
-    padding-left:40px;
-    
+    margin-left:10px;
+    text-align: center;
 `

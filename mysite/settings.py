@@ -29,6 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', '4a395d0bfe9e4c949e1e33fbe542d990.vfs.cloud9.ap-south-1.amazonaws.com', 'ec2-15-207-108-7.ap-south-1.compute.amazonaws.com']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -176,3 +177,4 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 #LOGGING = { 'version': 1, 'disable_existing_loggers': False, 'handlers': { 'file': { 'level': 'DEBUG', 'class': 'logging.FileHandler', 'filename': '/tmp/debug.log', }, }, 'loggers': { 'django': { 'handlers': ['file'], 'level': 'DEBUG', 'propagate': True, }, }, }
+
