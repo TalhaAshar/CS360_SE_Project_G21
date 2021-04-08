@@ -11,7 +11,7 @@ urlpatterns = [
 	path('', Index.as_view()),
 	path('catalogue_list/<int:id>', CatalogueList.as_view()),
 	path('catalogue_columnar/<int:id>', CatalogueColumnar.as_view()),
-	path('search', Search.as_view()),
+	path('query/', Search.as_view()),
 	path('publication/<int:id>', ViewPublication.as_view()),
 	path("add_publication", AddPublication.as_view()),
 	path("edit_publication/<int:id>", EditPublication.as_view()),

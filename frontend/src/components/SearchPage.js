@@ -1,8 +1,8 @@
 import React from 'react'
 import LinearCard from './LinearCard'
-import EditedLinearCard from './EditedLinearCard'
 import styled from 'styled-components'
 import axios from 'axios';
+import {useEffect, useState} from "react";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -13,16 +13,23 @@ function SearchPage() {
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     function getData(){
         console.log("jjj");
-         let url = "api/main/search"
-         console.log(url, "edfghtuehhe")
-         axios.get(url).then((res) => {
-             setPubs(res.data)
-         })
-         .catch(error => console.log('Error:', error))
+         
      }
  
      useEffect(() => {
-         getData()
+        let isComponentMounted = true;
+        let url = "api/main/query/?search=juni&search_fields=Authors"
+        console.log(url, "edfghtuehhe")
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setPubs(res.data)
+                console.log(res)
+            }
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
          //setParams(useParams())
      }, [])
 
