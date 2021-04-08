@@ -158,11 +158,11 @@ class LoginView(generics.GenericAPIView):
 		try:
 			temp = Profile.objects.get(user=user)
 		except:
-			return Response({'Message' : 'Please signup!'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'Message' : 'Please signup!'}, status=status.HTTP_401_UNAUTHORIZED)
 		
 		# Check if the user is authorized to login
 		if temp.blacklisted == True:
-			return Response({"User" : "Blacklisted"})
+			return Response({"Message" : "Blacklisted"}, status=status.HTTP_403_FORBIDDEN)
 
 		print("The user has been authenticated")
 		login(request, user)

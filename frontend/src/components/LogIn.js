@@ -35,7 +35,7 @@ const LogIn = (props) => {
         <MiddleRectangle>
         <Text>Log In</Text>
         <UserPassword>
-            <LogInForm/>
+            <LogInForm auth={temp} onChange={LoginClick}/>
         </UserPassword>
         </MiddleRectangle>
         
@@ -87,7 +87,7 @@ const Text = styled.h1`
     left:19px;
     color:#583192;
     white-space:nowrap;
-
+`
 const BottomRectangle = styled.div`
 `
 const ForgetContainer = styled.div`
