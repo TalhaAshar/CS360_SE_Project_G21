@@ -40,7 +40,9 @@ class ProfileManagement extends Component{
           'content-type': 'multipart/form-data'
           }
       } )
-        .then(res => res.json())
+        .then(res => {
+          this.props.onChange(this.props.val)
+        })
         .catch(error => console.error('Error:', error))
         .then(response => console.log('Success', response));
       }

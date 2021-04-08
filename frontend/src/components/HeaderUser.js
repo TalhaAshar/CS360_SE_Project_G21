@@ -47,7 +47,7 @@ function Header(props) {
     }
 
     function handleClick(event) {
-        //console.log(event.target.value)
+        console.log(event.target.value, "mmmmm")
         //props.onChange(event.target.value); // pass any argument to the callback
         setTemp(event)
         updateParent(event)

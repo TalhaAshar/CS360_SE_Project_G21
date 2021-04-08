@@ -20,6 +20,7 @@ import Catalogue from "./components/publications/PublicationsList";
 import Columnar from "./components/publications/Publications";
 import {useEffect, useState} from "react";
 import axios from 'axios';
+import { ContactSupportOutlined } from '@material-ui/icons';
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -31,6 +32,7 @@ function App() {
   const [auth, setAuth] = React.useState([{'Status' : ''}])
 
     function getData(){
+      console.log("getting data")
         axios.get(`api/register/auth`).then((res) => {
             setAuth(res.data)
             //console.log('ye boi', res.data)

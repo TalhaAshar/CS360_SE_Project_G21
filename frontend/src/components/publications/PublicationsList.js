@@ -11,6 +11,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function PublicationsList() {
 
     const { id } = useParams();
+    
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     function getData(){
         console.log("jjj");
