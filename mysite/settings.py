@@ -26,7 +26,8 @@ SECRET_KEY = 'y#zj%#*x*6mv6-t2ce7_(crm(aduk1x)ipm+2+12c$3)!-bc!h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '4a395d0bfe9e4c949e1e33fbe542d990.vfs.cloud9.ap-south-1.amazonaws.com', 'book-bound-app.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', '4a395d0bfe9e4c949e1e33fbe542d990.vfs.cloud9.ap-south-1.amazonaws.com', 'book-bound-app.herokuapp.com', 'ec2-13-127-36-52.ap-south-1.compute.amazonaws.com', '13.127.36.52']
+
 
 
 
