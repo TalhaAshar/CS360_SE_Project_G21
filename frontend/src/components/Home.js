@@ -15,18 +15,23 @@ function Home() {
 
     const [pubs, setPubs] = React.useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : '', 'Year_Publication' : '', 'Description' : '', 'ISBN' : '', 'Reason_for_Best_Pub' : ''}])
     
-    //function getData(){
-     //   console.log("HOME JS")
-     //   axios.get(`api/main/home`).then((res) => {
-     //       setPubs(res.data)
-     //       console.log('ye boi', res.data)
-     //   })
-     //   .catch(error => console.log('Error:', error))
-    //}
+    function getData(){
+        console.log("HOME JS")
+    }
 
-    //useEffect(() => {
-    //    getData()
-    //}, [])
+    useEffect(() => {
+        let isComponentMounted = true;
+        axios.get(`api/main/home`).then((res) => {
+            if (isComponentMounted){
+            setPubs(res.data)
+            };
+            console.log('ye boi', res.data)
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
 
     return (
 
