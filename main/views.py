@@ -110,9 +110,11 @@ class CatalogueList(APIView):
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class Search(generics.ListCreateAPIView):
-    filter_backends = (DynamicSearchFilter,)
-    queryset = Publication.objects.all()
-    serializer_class = PublicationSerializer
+    
+	filter_backends = (DynamicSearchFilter,)
+	queryset = Publication.objects.all()
+	serializer_class = PublicationSerializer
+    
 
 class ViewPublication(APIView):
 
