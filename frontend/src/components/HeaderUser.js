@@ -58,12 +58,12 @@ function Header(props) {
           <Top>
             <NotificationIconContainer>
                 <Link to="/Notification" style={{color:"white"}}>
-                <NotificationsIcon/>
+                    <NotificationsIcon/>
                 </Link>
             </NotificationIconContainer>
             <UserAccountIconContainer>
                 <Link to="/UserAccount" style={{color:"white"}}>
-                <AccountCircleIcon/>
+                    <AccountCircleIcon/>
                 </Link>
             </UserAccountIconContainer>
           </Top>
@@ -172,10 +172,11 @@ const Top = styled.div`
 `
 const NotificationIconContainer = styled.div`
 padding-right:10px;
+margin-top:5px;
 `
 const UserAccountIconContainer = styled.div`
 padding-right:10px;
-
+margin-top:5px;
 `
 
 const Bottom = styled.nav`

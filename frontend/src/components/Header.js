@@ -42,16 +42,6 @@ function Header(props) {
         
         <Container>
           <Top>
-            <NotificationIconContainer>
-                <Link to="/Notification" style={{color:"white"}}>
-                    <NotificationsIcon/>
-                </Link>
-            </NotificationIconContainer>
-            <UserAccountIconContainer>
-                <Link to="/UserAccount" style={{color:"white"}}>
-                    <AccountCircleIcon/>
-                </Link>
-            </UserAccountIconContainer>
           </Top>
 
           <Bottom>
