@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function SearchFilter() {
+function SearchFilter(props) {
     return (
         <Container>
            <Text>
@@ -10,24 +10,24 @@ function SearchFilter() {
            <Flex>
                 <AT>
                     <Author>
-                            <AText>
+                            <AText onClick={() => props.onChange("Authors")}>
                             ＋    Author
                             </AText>
                     </Author>
-                    <Title>
+                    <Title onClick={() => props.onChange("Title")}>
                     ＋   Title
                     </Title>
                 </AT>
                 <IG>
-                    <ISBN>
+                    <ISBN onClick={() => props.onChange("ISBN")}>
                     ＋   ISBN
                     </ISBN>
-                    <Genre>
+                    <Genre onClick={() => props.onChange("Genre")}>
                     ＋   Genre
                     </Genre>
                 </IG>
                 <PY>
-                    <Publisher>
+                    <Publisher onClick={() => props.onChange("Publisher")}>
                     ＋   Publisher
                     </Publisher>
                     <Year>
@@ -35,10 +35,10 @@ function SearchFilter() {
                     </Year>
                 </PY>
                 <DL>
-                    <D>
+                    <D onClick={() => props.onChange("Date")}>
                     ＋   Date
                     </D>
-                    <L>
+                    <L onClick={() => props.onChange("Language")}>
                     ＋   Language
                     </L>
                 </DL>

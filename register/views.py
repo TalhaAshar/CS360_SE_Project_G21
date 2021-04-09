@@ -80,34 +80,34 @@ class SignUpView(generics.GenericAPIView):
 		return Response({"Result" : "Please Confirm your email to complete registration."}, status=status.HTTP_201_CREATED)
 
 # View for Account Activation through email verification
-class ActivateAccount(APIView):
+#class ActivateAccount(APIView):
 
-	def get(self, request, uidb64, token, *args, **kwargs):
+def ActivateAccount(request, uidb64, token, *args, **kwargs):
 		
-		# Check if the user exists
+	# Check if the user exists
+	try:
+		uid = force_text(urlsafe_base64_decode(uidb64))
+		user = User.objects.get(pk=uid)
+	except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+		return Response(status=status.HTTP_404_NOT_FOUND)
+
+	# Authenticate the token from the email and mark user as active
+	if user is not None and account_activation_token.check_token(user, token):
+		user.is_active = True
+		user.save(update_fields=["is_active"])
 		try:
-			uid = force_text(urlsafe_base64_decode(uidb64))
-			user = User.objects.get(pk=uid)
-		except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			prof = Profile.objects.get(user_id=uid)
+			prof.email_confirmed = True
+			prof.save(update_fields=["email_confirmed"])
 
-		# Authenticate the token from the email and mark user as active
-		if user is not None and account_activation_token.check_token(user, token):
-			user.is_active = True
-			user.save(update_fields=["is_active"])
-			try:
-				prof = Profile.objects.get(user_id=uid)
-				prof.email_confirmed = True
-				prof.save(update_fields=["email_confirmed"])
-
-				new_list = PersonalizedList.objects.create(Owner=user, Display_Type = 'ALPHABETICAL')
-				new_list.save()
-			except:
-				pass
-			login(request, user)
-			return Response({"token" : AuthToken.objects.create(user)[1]})
-		else:
-			return Response({"Error" : "The confirmation link was invalid, possibly because it has already been used."}, status=status.HTTP_400_BAD_REQUEST)
+			new_list = PersonalizedList.objects.create(Owner=user, Display_Type = 'ALPHABETICAL')
+			new_list.save()
+		except:
+			pass
+		login(request, user)
+		return redirect('/')
+	else:
+		return Response({"Error" : "The confirmation link was invalid, possibly because it has already been used."}, status=status.HTTP_400_BAD_REQUEST)
 
 # View for if the user invokes the forgot password functionality
 class ForgotPassword(APIView):
@@ -115,11 +115,7 @@ class ForgotPassword(APIView):
 	serializer_class = ForgotSerializer
 	def post(self, request):
 		parsed = request.data["data"]
-		try:
-			validate_email(parsed["email"])
-		except:
-			return Response({"Error" : "Incorrect email"}, status=status.HTTP_400_BAD_REQUEST)
-
+		
 		# Fetching the record from the database against the input email
 		try:
 			print(parsed["email"])
