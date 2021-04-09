@@ -10,7 +10,7 @@ class App extends Component{
 constructor(props){
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { username:'', email:'', password:'' };
+    this.state = { username:' ', email:' ', password:' ' };
 }
 
 handleChange = (event) =>{
@@ -19,7 +19,6 @@ handleChange = (event) =>{
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  //const url = "api/accounts/modapps";
   const data = { username:this.state.username, email:this.state.email, password:this.state.password };
   
   axios.post(`api/register/signup`, { data })
@@ -30,15 +29,15 @@ handleSubmit = (event) =>{
     
   render(){
     return(
-        <form onSubmit={this.handleSubmit}>
-        <span>Username</span>
-        <input type="text" name="username" onChange={this.handleChange} /><br/>
-        <span>Email</span>
-        <input type="text" name="email" onChange={this.handleChange} /><br/>
-        <span>Password</span>
-        <input type="text" name="password" onChange={this.handleChange} /><br/>
-        <input type="submit" value="Sign Up" />
-        </form>
+      <form onSubmit={this.handleSubmit}>
+        <span style={{color: "#583192"}}>Username</span> <br/>
+        <input type="text" name="username" placeholder="Between 8 to 32 characters." minLength="8" maxLength="32" style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
+        <span style={{color: "#583192"}}>Email</span> <br/>
+        <input type="text" name="email" style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
+        <span style={{color: "#583192"}}>Password</span> <br/>
+        <input type="text" name="password" placeholder="Between 8 to 32 characters." minLength="8" maxLength="32"  style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
+        <input type="submit" value="Sign Up" style={{width: "160px", height: "70px", position: "relative", marginTop: "95px", marginLeft: "220px", fontSize: "24px", color: "#FFFFFF", backgroundColor: "transparent", borderRadius: "7px", borderColor: "#FFFFFF"}}/>
+      </form>
     );
   }
 }

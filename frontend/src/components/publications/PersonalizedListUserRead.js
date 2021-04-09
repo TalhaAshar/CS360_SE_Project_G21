@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Card from '../Cards'
-import '../App.scss';
-import Dropdown from '../Dropdown';
+// import '../App.scss';
+// import Dropdown from '../Dropdown';
 import { useEffect, useState } from "react";
 import axios from 'axios';
 
@@ -67,7 +67,7 @@ function PersonalizedListUserRead() {
             </UserNameContainer>
             <Background>
                 <SortBy>
-                    <Dropdown title="Sort By" items={items} onChange={handleChange} multiSelect />
+                    {/* <Dropdown title="Sort By" items={items} onChange={handleChange} multiSelect /> */}
                 </SortBy>
             <Cards>
                {
