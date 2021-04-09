@@ -154,6 +154,7 @@ color:white;
 `
 
 const Top = styled.div`
+    margin-top:-20px;
     width:100%;
     height:35px;
     background:#03204C;

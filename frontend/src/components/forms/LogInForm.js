@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import axios from 'axios';
 import styled from 'styled-components'
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -14,7 +16,7 @@ constructor(props){
     this.handleSubmit = this.handleSubmit.bind(this);
     console.log(props.auth)
 
-    this.state = { username:' ', password:' ', refresh : '' };
+    this.state = { username:' ', password:' ', refresh : '' , redirect : false};
 }
 
 handleChange = (event) =>{
@@ -29,6 +31,7 @@ handleSubmit = (event) =>{
   axios.post(`api/register/login`, { data })
     .then(res => {
       this.props.onChange({'Status' : 'Authentic'})
+      //this.setState({redirect: true});
     })
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response))
@@ -36,6 +39,10 @@ handleSubmit = (event) =>{
   }
     
   render(){
+    // if (this.state.redirect) {
+    //   console.log("REDIRECTING USER HOME")
+    //   return <Redirect push to="/" />;
+    // }
     return(
         <Form onSubmit={this.handleSubmit}>
         <Span>Username</Span><br/>
