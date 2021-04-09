@@ -116,17 +116,16 @@ function Header(props) {
                                     <IconText>Publications</IconText>
                             </Publications>
                         </Link>
-
-            <Link to="/" style={{color:"#04396B"}}>                
-            <LogOutContainer onClick={logUserOut}>
-                    <ExitToAppIcon
-                        style={{
-                        color:"white",
-                        fontSize:30,
-                        marginLeft:"13px"}}/>
-                    <IconText>Log Out</IconText> 
-            </LogOutContainer>
-            </Link>
+            <Link to = "/" style={{color:"#04396B"}}>
+                <LogOutContainer onClick={logUserOut}>
+                        <ExitToAppIcon
+                            style={{
+                            color:"white",
+                            fontSize:30,
+                            marginLeft:"13px"}}/>
+                        <IconText>Log Out</IconText> 
+                </LogOutContainer>
+            </Link>           
 
             <SearchContainer>
                 <SearchIconContainer> 

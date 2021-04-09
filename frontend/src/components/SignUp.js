@@ -60,11 +60,4 @@ const Text = styled.h1`
 `
 const BottomRectangle = styled.div`
     padding-top:57px;
-
-`
-const LogInlink = styled.div`
-    position:relative;
-    bottom:60px;
-    left:20px;
-    color:white;
 `

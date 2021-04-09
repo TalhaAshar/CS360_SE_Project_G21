@@ -2,6 +2,8 @@ import React from 'react';
 import 'reactjs-popup/dist/index.css';
 import styled from 'styled-components';
 import LogInForm from './forms/LogInForm';
+import ForgotPasswordPopup from './functionality/ForgotPasswordPopup';
+import ForgotUsernamePopup from './functionality/ForgotUsernamePopup';
 
 
 const LogIn = (props) => {
@@ -40,10 +42,9 @@ const LogIn = (props) => {
                 <path d="M459.046 381.498C458.768 385.354 455.417 388.255 451.561 387.977L-96.0191 348.519C-99.8751 348.241 -102.776 344.89 -102.498 341.034L-80.9312 41.7416C-80.6494 37.8303 -75.0922 37.3605 -74.1578 41.169C-51.458 133.692 55.6585 176.266 135.679 124.569L220.765 69.5992C298.221 25.3543 392.093 20.5484 473.662 56.6517L481.687 60.2036C481.984 60.3352 482.167 60.6394 482.143 60.9637L459.046 381.498Z" fill="#583192"/>
             </svg>
             <ForgetContainer>
-                    <ForgetUserName>Forgot Username?</ForgetUserName>
-                    <ForgetPassword>Forgot Password?</ForgetPassword>
+                <ForgotPasswordPopup />
+                <ForgotUsernamePopup />
             </ForgetContainer>
-            <SignUplink>New Here? <strong>Register</strong></SignUplink>
         </BottomRectangle>
     </Container>
   );
@@ -91,16 +92,4 @@ const ForgetContainer = styled.div`
     left:20px;
     color:#583192;
     font-size:20px;
-
-`
-const ForgetUserName = styled.h6`
-`
-
-const ForgetPassword = styled.h6`
-`
-const SignUplink = styled.div`
-    position:relative;
-    bottom:90px;
-    left:20px;
-    color:white;
 `

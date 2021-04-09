@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import axios from 'axios';
+import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import styled from 'styled-components'
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -37,7 +35,7 @@ handleSubmit = (event) =>{
     .then(response => console.log('Success', response))
     
   }
-    
+
   render(){
     // if (this.state.redirect) {
     //   console.log("REDIRECTING USER HOME")
