@@ -40,7 +40,7 @@ function SearchPage() {
             isComponentMounted = false;
         }
          //setParams(useParams())
-     }, [])
+     }, [param])
 
     return (
         <Container>
