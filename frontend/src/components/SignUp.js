@@ -60,5 +60,4 @@ const Text = styled.h1`
 `
 const BottomRectangle = styled.div`
     padding-top:57px;
-
 `
