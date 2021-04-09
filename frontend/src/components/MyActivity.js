@@ -28,8 +28,7 @@ function MyActivity() {
                 <Activity/>
             </ActivityContainer>
             <ViewNextButtonContainer>
-                <NextPrevious>Buttons</NextPrevious>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'-55px'}}/><SkipNextRoundedIcon style = {{}}/>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}}/><SkipNextRoundedIcon style = {{}}/>
             </ViewNextButtonContainer>
         </Container>
     )
@@ -84,10 +83,11 @@ box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0
 
 const ViewNextButtonContainer = styled.div`
 display:flex;
-margin-left:150px;
+width:100px;
+height:50px;
+margin-left:635px;
+align-items: Center;
 margin-top:40px;
-`
-const NextPrevious = styled.h4`
-align-items:center;
-margin-left:500px;
+background: #DCF2F8;
+border-radius:10px;
 `
