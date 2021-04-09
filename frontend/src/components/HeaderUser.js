@@ -34,7 +34,16 @@ const StyledPopup = styled(Popup)`
 function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
     const [logged, setLogged] = React.useState(true)
+    const [searched, setSearched] = React.useState('')
 
+    console.log(searched, "kakak")
+
+    const handleChange = (event) => {
+        let temp = "/search/" + event.target.value
+        setSearched(temp);
+        console.log(temp, searched, "SEARCHED")
+    }
+    
     function logUserOut(){
         const url = `api/register/logout`
         axios.post(url).then((res) => {
@@ -140,7 +149,9 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" placeholder="Search Publications..."></SearchInput>
+                    <SearchInput type="text" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
+                        
+                        <Link to={searched}>
                         <Button style={{
                             display:"flex",
                             justify:"center",
@@ -150,8 +161,9 @@ function Header(props) {
                             marginRight:"5px",
                             borderRadius:"20px",
                             height: "20px"
-                        }} type="submit"
+                        }}
                     >Search</Button>
+                    </Link>
                 </Search>
             </SearchContainer>
           </Bottom>

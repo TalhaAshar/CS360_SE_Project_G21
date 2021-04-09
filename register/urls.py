@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
    # Account creation URLs
    path('signup', SignUpView.as_view()),
-   path('activate/<uidb64>/<token>/', ActivateAccount.as_view(), name='activate'),
+   path('activate/<uidb64>/<token>/', ActivateAccount, name='activate'),
    path('forgot', ForgotPassword.as_view(), name="forgot"),
 
    # Account access URLs

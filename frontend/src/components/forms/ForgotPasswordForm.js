@@ -22,15 +22,12 @@ export default class ForgotUsername extends Component {
       event.preventDefault();
       const data = { email:this.state.email };
       
-      axios.post(`api/register/login`, { data })  //Talha
+      axios.post(`api/register/forgot`, { data })  //Talha
         .then(res => { })
         .catch(error => console.error('Error:', error))
         .then(response => console.log('Success', response))
-        
-    }
-    
-    handleClick = () => {
         this.props.toggle();
+        
     }
 
     render(){
@@ -49,7 +46,7 @@ export default class ForgotUsername extends Component {
                             <Form>
                                 <input type="text" name="email" minLength="5" style={{width: "440px", height: "30px", fontSize: "16px", borderColor: "#2F80ED", borderRadius: "14px", padding:"10px", outline: "none"}} onChange={this.handleChange} />
                             </Form>
-                            <input type="submit" value="Submit" style={{width: "126px", height: "48px", position: "relative", marginTop: "15px", marginLeft: "345px", fontSize: "18px", color: "#FFFFFF", padding:"10px", backgroundColor: "#583192", borderRadius: "7px", borderColor: "#000000"}} onClick={this.handleClick}/>
+                            <input type="submit" value="Submit" style={{width: "126px", height: "48px", position: "relative", marginTop: "15px", marginLeft: "345px", fontSize: "18px", color: "#FFFFFF", padding:"10px", backgroundColor: "#583192", borderRadius: "7px", borderColor: "#000000"}}/>
                         </Body>
                     </form>
                 </Container>

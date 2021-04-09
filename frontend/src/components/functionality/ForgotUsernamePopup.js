@@ -17,7 +17,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <ForgotPass onClick={this.togglePop}>Forgot Password?</ForgotPass>
+        <ForgotPass onClick={this.togglePop}>Forgot Username?</ForgotPass>
         { (this.state.seen == 1) ? <ForgotUsernameForm toggle={this.togglePop} /> : null}
         { (this.state.seen == 2) ? <ForgotFeedbackPopup /> : null}
       </div>

@@ -3,6 +3,8 @@ import LinearCard from './LinearCard'
 import styled from 'styled-components'
 import axios from 'axios';
 import {useEffect, useState} from "react";
+import { useLocation, useParams} from "react-router-dom"
+import Filter from "./SearchFilter";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -10,15 +12,22 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function SearchPage() {
 
+    const { param } = useParams();
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
+    
+    function handleFilters(value){
+        console.log(value, "YES WE ARE EHERE")
+    }
+
     function getData(){
         console.log("jjj");
          
-     }
+    }
+    console.log("MMMM", param)
  
      useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/main/query/?search=juni&search_fields=Authors"
+        let url = "api/main/query/?search=" + param + "&search_fields=Title"
         console.log(url, "edfghtuehhe")
         axios.get(url).then((res) => {
             if (isComponentMounted){
@@ -40,7 +49,7 @@ function SearchPage() {
                 Search Results
                 </Background>
             </Heading>
-
+            < Filter onChange={handleFilters}/>
             <Results>
                 {
                     pubs.map((elem, index) => {

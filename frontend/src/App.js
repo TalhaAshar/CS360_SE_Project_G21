@@ -21,6 +21,7 @@ import Columnar from "./components/publications/Publications";
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import { ContactSupportOutlined } from '@material-ui/icons';
+import Search from "./components/SearchPage";
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -95,7 +96,7 @@ function App() {
           </Route> 
            
           <Route path="/Publications/:id">
-            <Columnar />
+            <Catalogue />
           </Route>
 
           <Route path="/publication/:id">
@@ -105,6 +106,11 @@ function App() {
           
           <Route path="/List">
             <List />  
+          </Route>
+
+          <Route path="/searched/:param">
+            {console.log("IM HERE")}
+            <Search />  
           </Route>
           
         </Switch>
