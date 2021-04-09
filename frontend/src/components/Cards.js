@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 const useStyles = makeStyles({
   root: {
     maxWidth: 290,
-    maxHeight:500
+    maxHeight:300
 }
 });
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 // }
 
 export default function ImgMediaCard({title, author, front_cover, id}) {
-  const classes = useStyles();
+  //const classes = useStyles();
   let j = "/publication/" + id
   //location = useLocation()
   console.log(j)
@@ -32,13 +32,14 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
 
   return (
     <StyledView>
-      <Link to={j}>
-      <Card className={classes.root}
+      
+      <Card
       style={{
               border:"2px",
               filter: "drop-shadow(0px 24px 64px rgba(0, 0, 0, 0.06))"            
           }}>
         <CardActionArea>
+        <Link to={j}>
           <CardMedia
             component="img"
             alt={title}
@@ -47,6 +48,7 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
             src={front_cover}
             title={title}
           />
+          </Link>
           <Divider variant="middle" />
           <CardContent>
             <Typography gutterBottom variant="h6" component="h5" >
@@ -58,7 +60,7 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
           </CardContent>
         </CardActionArea>
       </Card>
-      </Link>
+      
     </StyledView>
   );
 }
@@ -80,4 +82,6 @@ const StyledView = styled.div`
   padding-bottom:20px;
   padding-left:10px;
   padding-right:10px;
+  max-width:250px;
+  max-height:300px;
 `

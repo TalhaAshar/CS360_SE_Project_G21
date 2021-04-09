@@ -95,7 +95,7 @@ function App() {
           </Route> 
            
           <Route path="/Publications/:id">
-            <Catalogue />
+            <Columnar />
           </Route>
 
           <Route path="/publication/:id">

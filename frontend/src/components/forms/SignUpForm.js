@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import axios from 'axios';
+import styled from 'styled-components';
+
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -29,20 +31,51 @@ handleSubmit = (event) =>{
     
   render(){
     return(
-      <form onSubmit={this.handleSubmit}>
-        <span style={{color: "#583192"}}>Username</span> <br/>
-        <input type="text" name="username" placeholder="Between 8 to 32 characters." minLength="8" maxLength="32" style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
-        <span style={{color: "#583192"}}>Email</span> <br/>
-        <input type="text" name="email" style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
-        <span style={{color: "#583192"}}>Password</span> <br/>
-        <input type="text" name="password" placeholder="Between 8 to 32 characters." minLength="8" maxLength="32"  style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
-        <input type="submit" value="Sign Up" style={{width: "160px", height: "70px", position: "relative", marginTop: "95px", marginLeft: "220px", fontSize: "24px", color: "#FFFFFF", backgroundColor: "transparent", borderRadius: "7px", borderColor: "#FFFFFF"}}/>
-      </form>
+      <Form onSubmit={this.handleSubmit}>
+      <Span>Username</Span><br/>
+      <Input type="text" name="username" onChange={this.handleChange} /><br/>
+      <Span>Email</Span><br/>
+      <Input type="text" name="email" onChange={this.handleChange} /><br/>
+      <Span>Password</Span><br/>
+      <Input type="password" name="password" onChange={this.handleChange} /><br/>
+      <Input type="hidden" value="abc" name="refresh" onChange={this.handleChange}/>
+      <Submit type="submit" value="Sign Up"/>
+      </Form>
     );
   }
 }
 
 export default App;
 
-const container = document.getElementById("app");
-render(<App />, container);
+
+const Form = styled.form`
+  position:relative;
+
+`
+const Span = styled.span`
+  color:#583192;
+  font-size:20px;
+  padding-bottom:10px;
+`
+const Input = styled.input`
+  bottom:10px;
+  width: 380px;
+  height: 40px;
+  font-size: 24px;
+  border-color: #2F80ED;
+  border-radius: 14px;
+  outline: none;
+`
+const Submit = styled.input`
+  width: 160px;
+  height: 70px;
+  position: relative;
+  top: 85px;
+  left: 220px;
+  font-size: 24px;
+  font-weight:bold;
+  color: #FFFFFF;
+  background-color: transparent;
+  border-radius: 7px;
+  borderColor:#FFFFFF;
+`

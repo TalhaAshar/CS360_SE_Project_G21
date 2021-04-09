@@ -3,19 +3,29 @@ import styled from 'styled-components'
 import React from 'react'
 
 import Card from './Cards'
-
+import { Link, useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
 
 
 function BestEdition({title, authors, publisher, year, ISBN, description, edition, front_cover, id}) {
+
+    let j = "/publication/" + id
+  //location = useLocation()
+  console.log(j)
+  const [path, setPath] = useState(useLocation().pathname)
+
     return (
         <Container>
             <br/><Title>
                 Best Edition Community Selection
             </Title>
+            
             <BookContainer>
-                <BookPhoto>
-                    <img src={front_cover} />
-                </BookPhoto>
+                <Link to={j}>
+                    <BookPhoto>
+                        <img src={front_cover} />
+                    </BookPhoto>
+                </Link>
                 <BookDetailsContainer>
                     <BookTitle> {title} </BookTitle>
                     <h4> {authors} </h4>

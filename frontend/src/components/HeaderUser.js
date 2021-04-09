@@ -51,7 +51,11 @@ function Header(props) {
         //props.onChange(event.target.value); // pass any argument to the callback
         setTemp(event)
         updateParent(event)
-      }
+    }
+
+    function searchSubmit(event){
+
+    }
 
     return (
         <Container>
@@ -121,7 +125,7 @@ function Header(props) {
                             marginLeft:"13px"}}/>
                         <IconText>Log Out</IconText> 
                 </LogOutContainer>
-            </Link>                
+            </Link>           
 
             <SearchContainer>
                 <SearchIconContainer> 
@@ -137,7 +141,7 @@ function Header(props) {
             </SearchIconContainer>
                 <Search>
                     <SearchInput type="text" placeholder="Search Publications..."></SearchInput>
-                        <IconText style={{
+                        <Button style={{
                             display:"flex",
                             justify:"center",
                             alignItems:"center",
@@ -146,8 +150,8 @@ function Header(props) {
                             marginRight:"5px",
                             borderRadius:"20px",
                             height: "20px"
-                        }}
-                    >Search</IconText>
+                        }} type="submit"
+                    >Search</Button>
                 </Search>
             </SearchContainer>
           </Bottom>
@@ -239,6 +243,17 @@ const Search = styled.div`
 `
 
 const IconText = styled.h5`
+    color:white;
+    border-style: double;
+    border-color:#04396B;
+    border-radius:6px;
+
+    &:hover {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+`
+
+const Button = styled.button`
     color:white;
     border-style: double;
     border-color:#04396B;
