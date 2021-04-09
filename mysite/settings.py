@@ -24,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'y#zj%#*x*6mv6-t2ce7_(crm(aduk1x)ipm+2+12c$3)!-bc!h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '4a395d0bfe9e4c949e1e33fbe542d990.vfs.cloud9.ap-south-1.amazonaws.com', 'ec2-52-66-203-239.ap-south-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['127.0.0.1', '4a395d0bfe9e4c949e1e33fbe542d990.vfs.cloud9.ap-south-1.amazonaws.com', 'book-bound-app.herokuapp.com', 'ec2-13-127-36-52.ap-south-1.compute.amazonaws.com']
+
 
 
 # Application definition
@@ -149,7 +150,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT =  os.path.join(BASE_DIR, 'frontend/static')
+STATIC_URL = '/frontend/static/'
 
 
 #Adding path for media files
@@ -173,3 +175,6 @@ SERVER_EMAIL = 'bookboundofficial@gmail.com'
 #Defining the relevant URL's for when a user logs in or out of the system
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+#LOGGING = { 'version': 1, 'disable_existing_loggers': False, 'handlers': { 'file': { 'level': 'DEBUG', 'class': 'logging.FileHandler', 'filename': '/tmp/debug.log', }, }, 'loggers': { 'django': { 'handlers': ['file'], 'level': 'DEBUG', 'propagate': True, }, }, }
+

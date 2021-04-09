@@ -1,26 +1,38 @@
 import React from 'react';
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import styled from 'styled-components';
-import LogInForm from './forsajid/forms/LogInForm'
+import LogInForm from './forms/LogInForm';
 
-const LogIn = () => (
-    
-    <Container>
+
+const LogIn = (props) => {
+
+    const [temp, setTemp] = React.useState({'Status' : 'Unauthentic'})
+
+    function updateParent(event){
+        props.onChange(event)
+    }
+
+    function LoginClick(event) {
+        //console.log(event.target.value)
+        //props.onChange(event.target.value); // pass any argument to the callback
+        setTemp(event)
+        updateParent(event)
+      }
+
+    return (
+        <Container>
         
         <TopRectangle>
-        <svg style={{borderRadius:"16px"}}width="420" height="422" viewBox="0 0 411 422" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M44.5703 -237.381C46.5033 -240.729 50.7844 -241.876 54.1325 -239.943L591.422 70.2607C594.77 72.1937 595.917 76.4748 593.984 79.8229L420.354 380.559C418.133 384.405 412.238 382.114 413.198 377.777C436.708 271.604 347.416 174.418 239.636 188.871L128.258 203.806C27.5536 211.707 -70.73 170.29 -135.407 92.6982L-141.286 85.6459C-141.514 85.3718 -141.547 84.9843 -141.369 84.6753L44.5703 -237.381Z" fill="#9888BE"/>
-            <path d="M-120 -215C-120 -218.866 -116.866 -222 -113 -222H436C439.866 -222 443 -218.866 443 -215V85.0682C443 88.9896 437.491 89.8576 436.285 86.1261C406.994 -4.52649 297.095 -39.2913 220.997 18.0233L140.082 78.9664C66.0062 128.664 -27.2773 140.204 -111.23 110.057L-119.49 107.091C-119.796 106.981 -120 106.691 -120 106.365V-215Z" fill="#583192"/>
-        </svg>
-        
-
+            <svg style={{borderRadius:"16px"}}width="420" height="422" viewBox="0 0 411 422" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M44.5703 -237.381C46.5033 -240.729 50.7844 -241.876 54.1325 -239.943L591.422 70.2607C594.77 72.1937 595.917 76.4748 593.984 79.8229L420.354 380.559C418.133 384.405 412.238 382.114 413.198 377.777C436.708 271.604 347.416 174.418 239.636 188.871L128.258 203.806C27.5536 211.707 -70.73 170.29 -135.407 92.6982L-141.286 85.6459C-141.514 85.3718 -141.547 84.9843 -141.369 84.6753L44.5703 -237.381Z" fill="#9888BE"/>
+                <path d="M-120 -215C-120 -218.866 -116.866 -222 -113 -222H436C439.866 -222 443 -218.866 443 -215V85.0682C443 88.9896 437.491 89.8576 436.285 86.1261C406.994 -4.52649 297.095 -39.2913 220.997 18.0233L140.082 78.9664C66.0062 128.664 -27.2773 140.204 -111.23 110.057L-119.49 107.091C-119.796 106.981 -120 106.691 -120 106.365V-215Z" fill="#583192"/>
+            </svg>
         </TopRectangle>
         <MiddleRectangle>
-        <Text>Log In</Text>
-        <UserPassword>
-            <LogInForm/>
-        </UserPassword>
+            <Text>Log In</Text>
+            <UserPassword>
+                <LogInForm auth={temp} onChange={LoginClick}/>
+            </UserPassword>
         </MiddleRectangle>
         
         <BottomRectangle>
@@ -35,7 +47,7 @@ const LogIn = () => (
         </BottomRectangle>
     </Container>
   );
-
+}
 export default LogIn
 
 const Container = styled.div`

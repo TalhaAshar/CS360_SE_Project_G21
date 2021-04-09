@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from main.views import Index
+from django.conf.urls.static import static
+from django.conf import settings
+from django.views.static import serve 
+from django.conf.urls import url
 
 
 urlpatterns = [
@@ -28,6 +32,7 @@ urlpatterns = [
     path('image.jpg', Index.as_view()),
     path('', include("frontend.urls")),
     re_path(r'^.*$', include("frontend.urls")),
+    
     #path('api/auth/', include('django.contrib.auth.urls')),
     #path('add/', include("main.urls")),
-]
+] 

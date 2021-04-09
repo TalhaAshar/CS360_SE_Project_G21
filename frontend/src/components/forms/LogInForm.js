@@ -14,7 +14,7 @@ constructor(props){
     this.handleSubmit = this.handleSubmit.bind(this);
     console.log(props.auth)
 
-    this.state = { username:'', password:'', refresh : '' };
+    this.state = { username:' ', password:' ', refresh : '' };
 }
 
 handleChange = (event) =>{
@@ -27,10 +27,11 @@ handleSubmit = (event) =>{
   const data = { username:this.state.username, password:this.state.password };
   
   axios.post(`api/register/login`, { data })
-    .then(res => console.log(res))
+    .then(res => {
+      this.props.onChange({'Status' : 'Authentic'})
+    })
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response))
-    .then(a => this.props.onChange({'Status' : 'Authentic'}));
     
   }
     

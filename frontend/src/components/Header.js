@@ -15,12 +15,9 @@ import SearchIcon from '@material-ui/icons/Search';
 
 
 function Header(props) {
-    console.log(props.auth, "in header boioi")
     const [temp, setTemp] = React.useState(props.auth)
-    console.log(temp)
 
     function updateParent(event){
-        console.log(event, "DA HEADER UPDATER")
         props.onChange(event)
     }
 
@@ -28,30 +25,19 @@ function Header(props) {
         //console.log(event.target.value)
         //props.onChange(event.target.value); // pass any argument to the callback
         setTemp(event)
-        console.log(event, "HEADER YEYA", "LOGIN IS UPDATIG ME")
         updateParent(event)
       }
     return (
         
         <Container>
           <Top>
-            <NotificationIconContainer>
-                <Link to="/Notification" style={{color:"white"}}>
-                <NotificationsIcon/>
-                </Link>
-            </NotificationIconContainer>
-            <UserAccountIconContainer>
-                <Link to="/UserAccount" style={{color:"white"}}>
-                <AccountCircleIcon/>
-                </Link>
-            </UserAccountIconContainer>
           </Top>
 
           <Bottom>
             
               <LogoContainer>
-                    <img src="Logo.png" width="80" height="80"
-                    style={{paddingBottom:"10px",paddingTop:"10px"}} />
+                    <img src="\frontend\src\images\icons\Logo.png"
+                    style={{borderRadius:"10px"}} />
               </LogoContainer>
                     <Link to="/" style={{color:"#04396B"}}>
                       <Home>
@@ -59,7 +45,7 @@ function Header(props) {
                         style={{
                             color:"white",
                             fontSize:30,
-                            marginLeft:"6px"                       
+                            marginLeft:"8px"                       
                             }}
                             />
                             <IconText>Home</IconText>
@@ -71,7 +57,7 @@ function Header(props) {
                                     style={{
                                         color:"white",
                                         fontSize:30,
-                                        marginLeft:"6px"
+                                        marginLeft:"8px"
                                     
                                         }}
                                 />
@@ -84,7 +70,7 @@ function Header(props) {
                                 style={{
                                     color:"white",
                                     fontSize:30,
-                                    marginLeft:"25px"
+                                    marginLeft:"27px"
                                 
                                     }}
                                     />
@@ -98,7 +84,7 @@ function Header(props) {
                     style={{
                         color:"white",
                         fontSize:30,
-                        marginLeft:"5px"
+                        marginLeft:"9px"
                         
                         }}
                         />
@@ -115,7 +101,7 @@ function Header(props) {
                         style={{
                         color:"white",
                         fontSize:30,
-                        marginLeft:"5px"}}/>
+                        marginLeft:"7px"}}/>
                     <IconText>Log In</IconText> 
                 </LogInContainer>
             
@@ -125,30 +111,33 @@ function Header(props) {
             <LogIn auth={temp} onChange={handleClick}/>
             </Popup>
 
-              <SearchContainer>
-                 <SearchIconContainer> 
-                     <SearchIcon
-                  style={{
-                      color:"white",
+            <SearchContainer>
+                <SearchIconContainer> 
+                    <SearchIcon
+                    style={{
+                      color:"#5F6368",
                       fontSize:30,
                       display:"flex",
                       justify:"center",
                       alignItems:"center"
-                  }}
+                    }}
                   />
-                  </SearchIconContainer>
-                  <Search>
-                        <SearchInput type="text" placeholder="Search Publications...">
-                        </SearchInput>
+            </SearchIconContainer>
+                <Search>
+                    <SearchInput type="text" placeholder="Search Publications..."></SearchInput>
                         <IconText style={{
                             display:"flex",
                             justify:"center",
-                            alignItems:"center"
+                            alignItems:"center",
+                            background:"#04396B",
+                            marginTop:"10px",
+                            marginRight:"5px",
+                            borderRadius:"20px",
+                            height: "20px"
                         }}
-                        >Search</IconText>
-                  </Search>
-
-              </SearchContainer>
+                    >Search</IconText>
+                </Search>
+            </SearchContainer>
           </Bottom>
 
         </Container>
@@ -172,7 +161,6 @@ const Top = styled.div`
     justify-content:flex-end;
     align-items:center;
     filter:drop-shadow(0px 2px 4px rgba(38, 50, 56, 0.16)), drop-shadow(0px 4px 8px rgba(38, 50, 56, 0.08));
-
 `
 const NotificationIconContainer = styled.div`
 padding-right:10px;
@@ -183,22 +171,18 @@ padding-right:10px;
 
 `
 
-
 const Bottom = styled.nav`
     height:80px;
     background:#04396B;
     display:flex;
     align-items:center;
-    justify-content:space-between;
-
-
-    
+    justify-content:space-between;    
 `
 
 const LogoContainer = styled.div`
     height: 80px;
-    margin-left:10px;
-
+    margin-top:25px;
+    margin-left:40px;
 `
 const Home = styled.div`
     height:60px;
@@ -217,33 +201,31 @@ const LogInContainer = styled.div`
     height:60px;
 `
 const SearchContainer = styled.div`
-    height:60px;
+    margin-right: 45px;
+    background:#D8E6EE;
+    height:30px;
     display:flex;
     align-items:center;
-    border-radius:10px;
+    border-radius:20px;
     overflow:hidden;
     &:focus-within {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }
-    
 `
 const SearchIconContainer = styled.div`
-background:#04396B;
-
+    background:#D8E6EE;
 `
 const SearchInput = styled.input`
-background:transparent;
-color:white;
-border:none;
-flex-grow:1;
-height:40px;
-border:0;
-border-radius:10px;
-overflow:hidden;
-&:focus {
-    outline:none;
-}
-
+    background:#D8E6EE;
+    color:black;
+    border:none;
+    flex-grow:1;
+    height:40px;
+    border:0;
+    overflow:hidden;
+    &:focus {
+        outline:none;
+    }
 `
 const Search = styled.div`
     display:flex;

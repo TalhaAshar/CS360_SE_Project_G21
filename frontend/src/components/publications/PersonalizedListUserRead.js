@@ -1,22 +1,45 @@
 import React from 'react'
 import styled from 'styled-components'
 import Card from '../Cards'
-import { useParams} from "react-router-dom"
+// import '../App.scss';
+// import Dropdown from '../Dropdown';
+import { useEffect, useState } from "react";
 import axios from 'axios';
-import {useEffect, useState} from "react";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+const items = [
+    {
+      id: 1,
+      value: 'Alphabetical',
+    },
+    {
+      id: 2,
+      value: 'Read',
+    },
+    {
+      id: 3,
+      value: 'Unread',
+    },
+  ];
+
 function PersonalizedListUserRead() {
 
-    const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
+	const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
     const [recs, setRecs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
-
+    const [sorter, setSorter] = useState('alphabetical')
     const [user, setUser] = useState('')
 
+    function handleChange(event){
+        let temp = event.charAt(0).toLowerCase() + event.slice(1)
+        setSorter(temp)
+        
+    }
+
+
     function getData(){
-        let url = "api/accounts/mylist/alphabetical"
+        let url = "api/accounts/mylist/" + sorter
         axios.get(url).then((res) => {
             setPubs(res.data)
             console.log(res.data)
@@ -33,8 +56,8 @@ function PersonalizedListUserRead() {
 
     useEffect(() => {
         getData()
-    }, [])
-
+    }, [sorter])
+	
     return (
         <Overall>
         <Container>
@@ -44,10 +67,10 @@ function PersonalizedListUserRead() {
             </UserNameContainer>
             <Background>
                 <SortBy>
-                    Sort By
+                    {/* <Dropdown title="Sort By" items={items} onChange={handleChange} multiSelect /> */}
                 </SortBy>
             <Cards>
-            {
+               {
                     
                     pubs.map((elem, index) => {
                         if(index < 8){
@@ -68,7 +91,7 @@ function PersonalizedListUserRead() {
                     Recommended
                 </Recommended>
             <Cards2>
-            {
+                {
                     
                     recs.map((elem, index) => {
                         if(index < 4){
@@ -121,12 +144,11 @@ border-radius: 16px;
 
 `
 const SortBy = styled.div`
-border-radius: 20px 20px 20px 20px;
+padding-top: 3px;
 margin-left:15px;
 margin-right:150px;
 margin-top:20px;
-width: 250px;
-height: 35px;
+max-width:250px;
 background: #3B058B;
 display:flex;
 align-items:center;
@@ -136,7 +158,9 @@ font-style: normal;
 font-weight: bold;
 font-size: 20px;
 line-height: 27px;
-    color: white;
+color: white;
+
+        
 `
 
 const Overall = styled.h3`

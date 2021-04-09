@@ -25,9 +25,13 @@ function Profile() {
     }
     useEffect(() => {
         getData()
-    }, [])
+    }, [flag])
 
     function MouseDown(Flag){
+        setFlag(!Flag)
+    }
+
+    function changeFlag(Flag){
         setFlag(!Flag)
     }
 
@@ -159,7 +163,7 @@ function Profile() {
             )
         case true:
             return (
-                <ProfileManagement passDetails={Details} passUsername={User} passID={User['id']} />
+                <ProfileManagement passDetails={Details} passUsername={User} passID={User['id']} onChange={changeFlag} val={flag} />
             )
         default:
             return (

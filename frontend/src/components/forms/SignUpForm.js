@@ -12,7 +12,7 @@ class App extends Component{
 constructor(props){
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { username:'', email:'', password:'' };
+    this.state = { username:' ', email:' ', password:' ' };
 }
 
 handleChange = (event) =>{
@@ -21,7 +21,6 @@ handleChange = (event) =>{
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  //const url = "api/accounts/modapps";
   const data = { username:this.state.username, email:this.state.email, password:this.state.password };
   
   axios.post(`api/register/signup`, { data })

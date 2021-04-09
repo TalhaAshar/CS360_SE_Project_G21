@@ -7,14 +7,15 @@ import Card from './Cards'
 
 
 function BestEdition({title, authors, publisher, year, ISBN, description, edition, front_cover, id}) {
-
     return (
         <Container>
-            <Title>
+            <br/><Title>
                 Best Edition Community Selection
             </Title>
             <BookContainer>
-                <Card style={{width:"200",height:"500px"}} title={title} author={authors} front_cover={front_cover} id={id}/>
+                <BookPhoto>
+                    <img src={front_cover} />
+                </BookPhoto>
                 <BookDetailsContainer>
                     <BookTitle> {title} </BookTitle>
                     <h4> {authors} </h4>
@@ -49,7 +50,7 @@ const Container = styled.div`
     border-radius:16px;
 `
 const Title = styled.div`
-    max-height:50px;
+    height:40px;
     max-width:380px;
     background-color: #0A3977;
     color:white;
@@ -57,10 +58,10 @@ const Title = styled.div`
     font-weight:bold;
     border:1px;
     border-radius:6px;
-    padding-left:40px;
+    text-align: center;
+    padding-top: 5px;
+    margin-left: 10px;
     margin-top:10px;
-
-
 `
 const BookContainer = styled.div`
     display:flex;
@@ -68,19 +69,17 @@ const BookContainer = styled.div`
     background-color:#ffffff;
     padding-left:20px;
 `
-const Image = styled.img`
+const BookPhoto = styled.div`
     max-height:350px;
     max-width:300px;
     object-fit:none;
     padding-left:10px;
-
 `
 const BookDetailsContainer = styled.div`
     padding-left:80px;
     padding-right:80px;
     padding-top:10px;
-
-    
+    margin-left:40px;
 `
 const DividerContainer = styled.div`
     padding-left:20px;

@@ -8,6 +8,7 @@ function ForumGest() {
     const [threads, setThreads] = React.useState([{'id' : 0, 'PostCount' : 0, 'Title' : '', 'Timestamp' : '', 'Category' : '', 'Creator' : {}, 'Base_View' : ''}])
     const d = new Date()
     function getData(){
+        console.log("FORUM GEST JS")
         axios.get(`api/forum/guest/home`).then((res) => {
             setThreads(res.data)
             console.log('ye boi', res.data)
