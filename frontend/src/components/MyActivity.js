@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Activity from './ActivityContainer'
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 
 function MyActivity() {
     return (
@@ -8,9 +10,6 @@ function MyActivity() {
             <ActivityHeader>
                 <ActivityText>My Activity</ActivityText>
             </ActivityHeader>
-            <ViewNextButtonContainer>
-                             <NextPrevious>Buttons</NextPrevious>
-            </ViewNextButtonContainer>
             <ActivityContainer>
                 <Activity/>
                 <Activity/>
@@ -28,6 +27,10 @@ function MyActivity() {
                 <Activity/>
                 <Activity/>
             </ActivityContainer>
+            <ViewNextButtonContainer>
+                <NextPrevious>Buttons</NextPrevious>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'-55px'}}/><SkipNextRoundedIcon style = {{}}/>
+            </ViewNextButtonContainer>
         </Container>
     )
 }
@@ -72,7 +75,6 @@ width:1050px;
 height: 1155px;
 margin-left:160px;
 margin-top:75px;
-margin-bottom:200px;
 border-radius:10px;
 
 background: #DCF2F8;
@@ -83,6 +85,7 @@ box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0
 const ViewNextButtonContainer = styled.div`
 display:flex;
 margin-left:150px;
+margin-top:40px;
 `
 const NextPrevious = styled.h4`
 align-items:center;
