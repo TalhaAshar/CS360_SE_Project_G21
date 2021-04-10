@@ -47,9 +47,10 @@ const LogIn = (props) => {
             </ForgetContainer>
         </BottomRectangle>
     </Container>
-  );
-}
-export default LogIn
+  )};
+
+export default LogIn;
+
 
 const Container = styled.div`
     width: 420px;
@@ -57,12 +58,14 @@ const Container = styled.div`
     background: white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
-
 `
 const TopRectangle = styled.div`
     width: 420px;
     height: 100px;
     border-color: transparent transparent #000 transparent;
+    svg {
+        position: absolute;
+    }
 `
 const MiddleRectangle = styled.div`
     height:300px;
@@ -83,8 +86,6 @@ const Text = styled.h1`
     white-space:nowrap;
 `
 const BottomRectangle = styled.div`
-
-
 `
 const ForgetContainer = styled.div`
     position:relative;
