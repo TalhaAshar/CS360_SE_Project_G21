@@ -14,9 +14,28 @@ function SearchPage() {
 
     const { param } = useParams();
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
-    
+    const [filters, setFilters] = useState(["Title"])
+
     function handleFilters(value){
         console.log(value, "YES WE ARE EHERE")
+        const temp = filters.indexOf(value)
+        
+        if(temp == -1)
+        {
+            setFilters([...filters, value])
+        }
+        else
+        {
+            if (filters.length > 1)
+            {
+                const updatedFilters = [...filters.slice(0, temp), ...filters.slice(temp + 1)]
+                setFilters(updatedFilters)
+            }
+            else{
+                setFilters(["Title"])
+            }
+        }
+        console.log(filters)
     }
 
     function getData(){
@@ -27,7 +46,11 @@ function SearchPage() {
  
      useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/main/query/?search=" + param + "&search_fields=Title"
+
+        let url = "api/main/query/?search=" + param
+        for (let index = 0; index < filters.length; index++) {
+            url = url + "&search_fields=" + filters[index]
+        }
         console.log(url, "edfghtuehhe")
         axios.get(url).then((res) => {
             if (isComponentMounted){
@@ -40,7 +63,7 @@ function SearchPage() {
             isComponentMounted = false;
         }
          //setParams(useParams())
-     }, [param])
+     }, [param, filters])
 
     return (
         <Container>

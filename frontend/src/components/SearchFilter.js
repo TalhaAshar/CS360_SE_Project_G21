@@ -30,15 +30,15 @@ function SearchFilter(props) {
                     <Publisher onClick={() => props.onChange("Publisher")}>
                     ＋   Publisher
                     </Publisher>
-                    <Year>
+                    <Year onClick={() => props.onChange("Year_Publication")}>
                     ＋   Year
                     </Year>
                 </PY>
                 <DL>
-                    <D onClick={() => props.onChange("Date")}>
+                    <D onClick={() => props.onChange("Year_Publication")}>
                     ＋   Date
                     </D>
-                    <L onClick={() => props.onChange("Language")}>
+                    <L onClick={() => props.onChange("Lang")}>
                     ＋   Language
                     </L>
                 </DL>
