@@ -37,27 +37,26 @@ function PersonalizedListUserRead() {
         
     }
 
-
-    function getData(){
+    useEffect(() => {
+        let isComponentMounted = true;
         let url = "api/accounts/mylist/" + sorter
         axios.get(url).then((res) => {
-            setPubs(res.data)
-            console.log(res.data)
-            setUser(res.data[0]["ListOwner"]["username"])
+            if (isComponentMounted){
+                setPubs(res.data)
+                setUser(res.data[0]["ListOwner"]["username"])
+            };
         })
-        
-            axios.get("api/accounts/recs").then((res) => {
-                console.log("done recs")
+        axios.get(`api/accounts/recs`).then((res) => {
+            if (isComponentMounted){
                 setRecs(res.data)
-            })
-        
+            };
+        })
         .catch(error => console.log('Error:', error))
-    }
-
-    useEffect(() => {
-        getData()
+        return () => {
+            isComponentMounted = false;
+        }
     }, [sorter])
-	
+
     return (
         <Overall>
         <Container>

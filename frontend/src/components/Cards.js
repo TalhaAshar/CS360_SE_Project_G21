@@ -12,19 +12,11 @@ import styled from 'styled-components'
 import { Link, useLocation } from "react-router-dom";
 import {useEffect, useState} from "react";
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 290,
-    maxHeight:500
-}
-});
-
 // function showPub({current}){
 //   console.log(current)
 // }
 
 export default function ImgMediaCard({title, author, front_cover, id}) {
-  const classes = useStyles();
   let j = "/publication/" + id
   //location = useLocation()
   console.log(j)
@@ -33,8 +25,10 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
   return (
     <StyledView>
       <Link to={j}>
-      <Card className={classes.root}
+      <Card
       style={{
+              height: "350px",
+              width: "234.7px",
               border:"2px",
               filter: "drop-shadow(0px 24px 64px rgba(0, 0, 0, 0.06))"            
           }}>

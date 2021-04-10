@@ -13,21 +13,19 @@ function Publications() {
     const [pubs, setPubs] = React.useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     const [flag, setFlag] = React.useState(false)
 
-    function getData(id){
+    useEffect(() => {
+        let isComponentMounted = true;
         let url = "api/main/catalogue_columnar/" + id
-        console.log(url)
         axios.get(url).then((res) => {
-            setPubs(res.data)
-            console.log('ye boi', res.data)
-            console.log('nu boi', pubs.length)
+            if (isComponentMounted){
+                setPubs(res.data)
+            };
         })
         .catch(error => console.log('Error:', error))
-    }
-
-    useEffect(() => {
-        getData(id)
+        return () => {
+            isComponentMounted = false;
+        }
     }, [id])
-
 
     switch (flag) {
         case false:

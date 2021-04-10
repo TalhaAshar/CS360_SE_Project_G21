@@ -14,17 +14,19 @@ function Profile() {
     const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{} } )
     const [User, setUser] = useState('')
     const [flag, setFlag] = React.useState(false)
-    console.log(flag)
-    function getData(){
+
+    useEffect(() => {
+        let isComponentMounted = true;
         axios.get(`api/accounts/profile`).then((res) => {
-            setDetails(res.data)
-            console.log(res.data)
-            setUser(res.data['user']['username'])
+            if (isComponentMounted){
+                setUser(res.data)
+                setUser(res.data['user']['username'])
+            };
         })
         .catch(error => console.log('Error:', error))
-    }
-    useEffect(() => {
-        getData()
+        return () => {
+            isComponentMounted = false;
+        }
     }, [flag])
 
     function MouseDown(Flag){
