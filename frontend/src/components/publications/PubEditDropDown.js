@@ -6,18 +6,13 @@ import FlagIcon from '@material-ui/icons/Flag';
 
 function SortPerList(props) {
     return (props.trigger)?(
-        <Container>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+        <Container onMouseLeave={() => props.setTrigger(!props.trigger)}>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)}>
                 <AddCircleIcon/>
-                <Text>Add Publications</Text>
+                <Text>Add to My List</Text>
             </TextContainer>
             <Line></Line>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
-                <EditIcon/>
-                <Text>Edit Publications</Text>    
-            </TextContainer>
-            <Line></Line>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)}>
                 <FlagIcon/>
                 <Text>Report Publications</Text>
             </TextContainer>

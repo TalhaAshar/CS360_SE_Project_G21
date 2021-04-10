@@ -1,14 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
+import Catalogue from "./PublicationsList";
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 
 function View(props) {
     return (props.trigger)?(
-        <Container>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+        <Container >
+            <Link to="/Catalogue/1">
+            <TextContainer>
                 <Text>List</Text>
-                <Line></Line>
             </TextContainer>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+            </Link>
+            <Line></Line>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)}>
                 <Text>Grid</Text>
             </TextContainer>
         </Container>

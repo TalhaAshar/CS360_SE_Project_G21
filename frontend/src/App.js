@@ -95,8 +95,12 @@ function App() {
             <ProfileManagement /> 
           </Route> 
            
-          <Route path="/Publications/:id">
-            <Catalogue />
+          <Route path="/Columnar/:id">
+            <Columnar logged={auth["Status"]}/>
+          </Route>
+
+          <Route path="/Catalogue/:id">
+            <Catalogue/>
           </Route>
 
           <Route path="/publication/:id">
