@@ -16,6 +16,15 @@ import SearchIcon from '@material-ui/icons/Search';
 
 function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
+    const [searched, setSearched] = React.useState('')
+
+    console.log(searched, "kakak")
+
+    const handleChange = (event) => {
+        let temp = "/search/" + event.target.value
+        setSearched(temp);
+        console.log(temp, searched, "SEARCHED")
+    }
 
     function updateParent(event){
         props.onChange(event)
@@ -124,8 +133,9 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" placeholder="Search Publications..."></SearchInput>
-                        <IconText style={{
+                    <SearchInput type="text" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
+                    <Link to={searched}>
+                        <Button style={{
                             display:"flex",
                             justify:"center",
                             alignItems:"center",
@@ -135,7 +145,8 @@ function Header(props) {
                             borderRadius:"20px",
                             height: "20px"
                         }}
-                    >Search</IconText>
+                    >Search</Button>
+                    </Link>
                 </Search>
             </SearchContainer>
           </Bottom>
@@ -233,6 +244,17 @@ const Search = styled.div`
 `
 
 const IconText = styled.h5`
+    color:white;
+    border-style: double;
+    border-color:#04396B;
+    border-radius:6px;
+
+    &:hover {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+`
+
+const Button = styled.button`
     color:white;
     border-style: double;
     border-color:#04396B;
