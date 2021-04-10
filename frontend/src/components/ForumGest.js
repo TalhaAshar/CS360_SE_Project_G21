@@ -7,18 +7,18 @@ import axios from 'axios';
 function ForumGest() {
     const [threads, setThreads] = React.useState([{'id' : 0, 'PostCount' : 0, 'Title' : '', 'Timestamp' : '', 'Category' : '', 'Creator' : {}, 'Base_View' : ''}])
     const d = new Date()
-    function getData(){
-        console.log("FORUM GEST JS")
-        axios.get(`api/forum/guest/home`).then((res) => {
-            setThreads(res.data)
-            console.log('ye boi', res.data)
-            console.log('nu boi', threads.length)
-        })
-        .catch(error => console.log('Error:', error))
-    }
 
     useEffect(() => {
-        getData()
+        let isComponentMounted = true;
+        axios.get(`api/forum/guest/home`).then((res) => {
+            if (isComponentMounted){
+                setThreads(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
     }, [])
 
     return (

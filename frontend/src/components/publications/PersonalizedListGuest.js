@@ -14,19 +14,19 @@ function PersonalizedListGuest() {
     const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
     const [user, setUser] = useState('')
 
-    function getData(id){
+    useEffect(() => {
+        let isComponentMounted = true;
         let url = "api/accounts/list/" + id
         axios.get(url).then((res) => {
-            setPubs(res.data)
-            console.log(res.data)
-            setUser(res.data[0]["ListOwner"]["username"])
+            if (isComponentMounted){
+                setPubs(res.data)
+                setUser(res.data[0]["ListOwner"]["username"])
+            };
         })
-        
         .catch(error => console.log('Error:', error))
-    }
-
-    useEffect(() => {
-        getData(id)
+        return () => {
+            isComponentMounted = false;
+        }
     }, [id])
 
     return (

@@ -15,10 +15,6 @@ function Home() {
 
     const [pubs, setPubs] = React.useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : '', 'Year_Publication' : '', 'Description' : '', 'ISBN' : '', 'Reason_for_Best_Pub' : ''}])
     
-    function getData(){
-        console.log("HOME JS")
-    }
-
     useEffect(() => {
         let isComponentMounted = true;
         axios.get(`api/main/home`).then((res) => {
