@@ -32,18 +32,18 @@ function App() {
 
   const [auth, setAuth] = React.useState([{'Status' : ''}])
 
-    function getData(){
-      console.log("getting data")
-        axios.get(`api/register/auth`).then((res) => {
-            setAuth(res.data)
-            //console.log('ye boi', res.data)
-            //console.log('nu boi', auth.length)
-        })
-        .catch(error => console.log('Error:', error))
-    }
-
     useEffect(() => {
-        getData()
+      let isComponentMounted = true;
+      axios.get(`api/register/auth`).then((res) => {
+          if (isComponentMounted){
+          setAuth(res.data)
+          };
+          console.log('ye boi', res.data)
+      })
+      .catch(error => console.log('Error:', error))
+      return () => {
+          isComponentMounted = false;
+      }
     }, [])
 
     function handleChange(newAuth){

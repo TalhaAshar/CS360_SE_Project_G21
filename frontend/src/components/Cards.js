@@ -24,7 +24,6 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
 
   return (
     <StyledView>
-      <Link to={j}>
       <Card
       style={{
               height: "350px",
