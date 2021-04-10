@@ -223,7 +223,7 @@ function Profile() {
                         </Biography>
                         <ButtonsActivity>
                         <Buttons>
-                            <Link to="/" value="My List" style={{textDecoration:"none"}}>
+                            <Link to={ID_List} value="My List" style={{textDecoration:"none"}}>
                                 <MyList>
                                     <MyListBackground>
                                         My List
