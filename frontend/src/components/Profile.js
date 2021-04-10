@@ -135,21 +135,23 @@ function Profile() {
                             <Activitytext>
                                 Activity
                             </Activitytext>
-                            <Link to='/' value="My Activity">
+                            <Link to='/' value="My Activity" style={{ textDecoration: 'none' }}>
                                 <MyActivity>
                                     <ActivityBackground>
                                         My Activity
                                     </ActivityBackground>
                                 </MyActivity>
                             </Link>
-                            <Link to='/' value="Publications">
+                             <Line> <Line/>
+                            <Link to='/' value="Publications" style={{ textDecoration: 'none' }}>
                                 <Publications>
                                     <PublicationsBackground>
                                         Publications
                                     </PublicationsBackground>
                                 </Publications>
                             </Link>
-                            <Link to='/' value="Private Messages">
+                             <Line> <Line/>
+                            <Link to='/' value="Private Messages" style={{ textDecoration: 'none' }}>
                             <PrivateMessages>
                                 <PMBackground>
                                     Private Messages
@@ -322,7 +324,6 @@ const Profilepicture = styled.img`
     margin-left:60px;
     margin-top:60px;
 `
-
 const Name = styled.h3`
 
     width: 511px;
@@ -756,4 +757,10 @@ const Publications = styled.div`
 
 const PrivateMessages = styled.div`
 
+`
+const Line = styled.div`
+    height:0px;
+    width:200px;
+    margin-left:10px;
+    margin-right:10px;
 `
