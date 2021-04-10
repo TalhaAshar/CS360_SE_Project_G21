@@ -18,8 +18,8 @@ function NewLinearCard() {
             </ImageContainer>
         </ImageUserNameContainer>
         <PublicationDetailContainer>
-            <BookTitle>Fuck Asad</BookTitle>
-            <Author>Talha Ashar</Author>
+            <BookTitle>Bring back the haskell for the greater good</BookTitle>
+            <Author>Junaid HardcoderSiddiqui</Author>
         </PublicationDetailContainer>
         <ThreadTimePostContainer>
             <TimeIcon>
@@ -55,6 +55,7 @@ const PublicationDetailContainer = styled.div`
     margin-left:20px;
 `
 const BookTitle = styled.h4`
+width:800px;
 font-style: normal;
 font-weight: bold;
 font-size: 20px;
@@ -70,7 +71,8 @@ margin-top:30px;
 color: #081F32
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:690px;
+position:absolute;    
+margin-left:1000px;
     margin-top:5px;
 `
 
