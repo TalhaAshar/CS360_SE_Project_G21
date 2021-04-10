@@ -137,18 +137,20 @@ class MyListDefault(APIView):
 
 class MyListAlphabetical(APIView):
 
-	def get(self, request):
-		if(not request.user.is_authenticated):
-			return Response(status=status.HTTP_404_NOT_FOUND)
-		try:
-			queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
-		except:
-			return Response(status=status.HTTP_404_NOT_FOUND)
-		temp = ListingsSerializer(queryset, many=True)
-		preference = PersonalizedList.objects.get(Owner=request.user)
-		preference.Display_Type = 'ALPHABETICAL'
-		preference.save(update_fields=["Display_Type"])
-		return Response(temp.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        if(not request.user.is_authenticated):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
+            queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        temp = ListingsSerializer(queryset, many=True)
+        preference = PersonalizedList.objects.get(Owner=request.user)
+        preference.Display_Type = 'ALPHABETICAL'
+        preference.save(update_fields=["Display_Type"])
+        if(len(temp.data) == 0):
+            return JsonResponse({'ListOwner' : request.user.username}, status=status.HTTP_200_OK)
+        return Response(temp.data, status=status.HTTP_200_OK)
 		
 
 class MyListUnread(APIView):
@@ -429,7 +431,13 @@ class EditProfileView(APIView):
             return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            serializer = ProfileSerializer(user, data=request.data, partial=True)
+            parsed = request.data
+            edited_profile = {}
+            for key in parsed:
+                if parsed[key] != 'null':
+                    edited_profile[key] = parsed[key]
+                
+            serializer = ProfileSerializer(user, data=edited_profile, partial=True)
         except:
             return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
         print(request.data)
