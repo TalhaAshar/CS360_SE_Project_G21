@@ -12,40 +12,51 @@ import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function Publications() {
+function Publications(props) {
     const { id } = useParams();
     const [pubs, setPubs] = React.useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}])
-    const [flag, setFlag] = React.useState(false)
+    const [flag, setFlag] = React.useState(props.logged)
     
     const [PopView, setPopView] = useState(false)
-    const [PopEdit, setPopEdit] = useState(false)    
+    const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
     
-    function getData(id){
-        let url = "api/main/catalogue_columnar/" + id
-        console.log(url)
-        axios.get(url).then((res) => {
-            setPubs(res.data)
-            console.log('ye boi', res.data)
-            console.log('nu boi', pubs.length)
-        })
-        .catch(error => console.log('Error:', error))
-    }
 
     useEffect(() => {
-        getData(id)
+        //getData(id)
+        let isComponentMounted = true;
+        let url = "api/main/catalogue_columnar/" + id
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setPubs(res.data)
+                console.log('ye boi', res.data)
+                console.log('nu boi', pubs.length)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
     }, [id])
     
     
     
     const handleClick = () =>{
         setPopView(!PopView)
+        console.log("NEW VIEW", PopView)
     }
-    const editClick = () =>{
-        setPopEdit(!PopEdit)
+    const editClick = (value) =>{
+        const updated = [...PopEdit.slice(0, value), !PopEdit[value], ...PopEdit.slice(value+1)]
+        console.log(updated)
+        setPopEdit(updated)
+    }
+    const closeClick = () =>{
+        const updated = [false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false]
+        console.log(updated)
+        setPopEdit(updated)
     }
 
     switch (flag) {
-        case false:
+        case 'Unauthentic':
             return (
                 <Container>
                     
@@ -53,8 +64,19 @@ function Publications() {
                         <Heading>Publications</Heading>
                     </PublicationTitle>
                     <ViewNextButtonContainer>
-                             <View>View</View>
-                             <NextPrevious>Buttons</NextPrevious>
+                    <View onMouseOver = {handleClick} onMouseLeave={handleClick}>
+                                <ViewText>View</ViewText>
+                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                            </Svg>
+                            <ViewPopContainer>
+                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                            </ViewPopContainer>
+                            </View>
+                            <NextPrevious>
+                                <SkipPreviousRoundedIcon/>
+                                <SkipNextRoundedIcon/>
+                            </NextPrevious>
                     </ViewNextButtonContainer>
                     <Cards>
                          {
@@ -72,26 +94,21 @@ function Publications() {
                 </Container>
              )
             break;
-        case true:
-            return (
-                <div>IT REAALLY WORKS BRO</div>
-            )
-        break;
-        default:
+        case 'Authentic':
             return (
                 <Container>
                     
                     <PublicationTitle>
                         <Heading>Publications</Heading>
                     </PublicationTitle>
-                    <ViewNextButtonContainer>
-                            <View>
+                    <ViewNextButtonContainer >
+                            <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
-                            <Svg onClick = {handleClick} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
                             </Svg>
-                            <ViewPopContainer>
-                            <EditPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                            <ViewPopContainer >
+                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
                             </ViewPopContainer>
                             </View>
                             <NextPrevious>
@@ -107,12 +124,53 @@ function Publications() {
                                      return(
                                         <CardContent>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
-                                            <CardSvg onClick = {handleClick} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
                                             </CardSvg>
                                             <PopContainer>
-                                            <ViewPub className = "view" trigger={PopEdit} setTrigger={editClick}/>
+                                            <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} id={elem.id}/>
                                             </PopContainer>
+                                        </CardContent>
+                                         )
+
+                                 }
+                             })
+                         }
+                    </Cards>
+                 
+                </Container>
+            )
+        break;
+        default:
+            return (
+                <Container>
+                    
+                    <PublicationTitle>
+                        <Heading>Publications</Heading>
+                    </PublicationTitle>
+                    <ViewNextButtonContainer>
+                            <View onClick = {handleClick} onMouseLeave= {handleClick} >
+                                <ViewText>View</ViewText>
+                            <Svg width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                            </Svg>
+                            <ViewPopContainer>
+                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                            </ViewPopContainer>
+                            </View>
+                            <NextPrevious>
+                                <SkipPreviousRoundedIcon/>
+                                <SkipNextRoundedIcon/>
+                            </NextPrevious>
+                    </ViewNextButtonContainer>
+                    <Cards>
+                         {
+                             pubs.map((elem, index) => {
+                                 console.log(elem.id)
+                                 if(index < 16){
+                                     return(
+                                        <CardContent>
+                                            <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                         </CardContent>
                                          )
 
@@ -130,13 +188,13 @@ function Publications() {
 export default Publications
 
 const Container = styled.div`
+    margin-left:50px;
     width:1200px;
     max-height:2500px;
 `
 const ViewNextButtonContainer = styled.div`
     display:flex;
-    margin-left:150px;
-   
+    margin-left:12.5%;
 `
 const Svg = styled.svg`
     position:relative;
@@ -145,8 +203,7 @@ const Svg = styled.svg`
 `
 const ViewPopContainer = styled.div`
 position:relative;
-top:58px;
-left:6px;
+margin-top:99%;
 z-index:1;
 `
 

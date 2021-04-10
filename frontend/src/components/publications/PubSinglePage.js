@@ -4,6 +4,9 @@ import Cards from '../Cards'
 import { useLocation, useParams} from "react-router-dom"
 import {useEffect, useState} from "react";
 import axios from 'axios';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import EditIcon from '@material-ui/icons/Edit';
+import FlagIcon from '@material-ui/icons/Flag';
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -45,13 +48,13 @@ function PubSinglePage(props) {
                     </BookDetails>
                     <ButtonIcons>
                             <Icons>
-                            <AddCircleIcon/><Text>Add Publications</Text>
+                            <AddCircleIcon/><Text>Add to My List</Text>
                             </Icons>
                             <Icons>
-                            <EditIcon/><Text>Edit Publications</Text>
+                            <EditIcon/><Text>Edit Publication</Text>
                             </Icons>
                             <Icons>
-                            <FlagIcon/><Text>Report Publications</Text>
+                            <FlagIcon/><Text>Report Publication</Text>
                             </Icons>
                     </ButtonIcons>
                 </BookImageDetailContainer>

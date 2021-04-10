@@ -112,7 +112,7 @@ function Header(props) {
                                 <IconText>Forum</IconText>
                             </Forum>
                         </Link>
-                        <Link to="/Publications/1" style={{color:"#04396B"}}>
+                        <Link to="/Columnar/1" style={{color:"#04396B"}}>
                             <Publications>
                                 <LibraryBooksIcon
                                 style={{
