@@ -31,11 +31,11 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/forum/threads/add";
+  const url = "api/main/add_publication";
   const data = { Title:this.state.Title, Category:this.state.Category, Body:this.state.Body };
   
-  axios.post(url, { data })
-    .then(res => console.log(res))
+  axios.post(`api/main/add_publication`, { data })
+    .then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
   }

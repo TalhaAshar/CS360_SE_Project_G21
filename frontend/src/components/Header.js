@@ -13,17 +13,6 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
 
-const StyledPopup = styled(Popup)`
-
-//   // use your custom style for ".popup-overlay"
-//   &-overlay {
-//     ...;
-//   }
-//   // use your custom style for ".popup-content"
-//   &-content {
-//     ...;
-//   }
-`
 
 function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
@@ -165,6 +154,7 @@ color:white;
 `
 
 const Top = styled.div`
+    margin-top:-20px;
     width:100%;
     height:35px;
     background:#03204C;

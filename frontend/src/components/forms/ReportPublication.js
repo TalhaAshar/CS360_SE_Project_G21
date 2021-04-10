@@ -14,7 +14,7 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {Type : 'Pub', id : 0, Reason:'Incorrect data', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Reason:'Incorrect data', Body:'You need to host your image and then upload in this text box.' };
 }
 
 rteChange = (content, delta, source, editor) => {

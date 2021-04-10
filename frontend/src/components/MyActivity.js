@@ -4,13 +4,13 @@ import Activity from './ActivityContainer'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 
-function Notifications() {
+function MyActivity() {
     return (
         <Container>
-            <NotificationHeader>
-                <NotificationsText>Notifications</NotificationsText>
-            </NotificationHeader>
-            <NotificationsContainer>
+            <ActivityHeader>
+                <ActivityText>My Activity</ActivityText>
+            </ActivityHeader>
+            <ActivityContainer>
                 <Activity/>
                 <Activity/>
                 <Activity/>
@@ -25,8 +25,8 @@ function Notifications() {
                 <Activity/>
                 <Activity/>
                 <Activity/>
-                <Activity/>                
-            </NotificationsContainer>
+                <Activity/>
+            </ActivityContainer>
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}}/><SkipNextRoundedIcon style = {{}}/>
             </ViewNextButtonContainer>
@@ -35,7 +35,7 @@ function Notifications() {
 }
 
 
-export default Notifications
+export default MyActivity
 
 const Container = styled.div`
 max-width: 1570px;
@@ -43,7 +43,7 @@ margin: 0 auto;
 height: auto;
 background-color: white;
 `
-const NotificationHeader = styled.h3`
+const ActivityHeader = styled.h3`
 width: 1050px;
 height: 80px;
 margin-left:150px;
@@ -54,7 +54,7 @@ margin-top:150px;
 border-radius: 20px;
 background: #0A3977;
 `
-const NotificationsText = styled.h3`
+const ActivityText = styled.h3`
 max-height:50px;
 max-width:380px;
 background-color: #0A3977;
@@ -69,7 +69,7 @@ letter-spacing: -1px;
 border-radius:6px;
 `
 
-const NotificationsContainer = styled.h3`
+const ActivityContainer = styled.h3`
 width:1050px;
 height: 1155px;
 margin-left:160px;
