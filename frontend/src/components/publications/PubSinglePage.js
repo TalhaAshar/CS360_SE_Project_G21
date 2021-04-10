@@ -46,6 +46,17 @@ function PubSinglePage(props) {
                         <Text>Language: {pubs[0].Lang}</Text>
                         <Text>ISBN: {pubs[0].ISBN}</Text>
                     </BookDetails>
+                    <ButtonIcons>
+                            <Icons>
+                            <AddCircleIcon/><Text>Add Publications</Text>
+                            </Icons>
+                            <Icons>
+                            <EditIcon/><Text>Edit Publications</Text>
+                            </Icons>
+                            <Icons>
+                            <FlagIcon/><Text>Report Publications</Text>
+                            </Icons>
+                    </ButtonIcons>
                 </BookImageDetailContainer>
                 <BookDescriptionComment>
                     <BookComment>
@@ -134,6 +145,15 @@ const BookDetails = styled.div`
 const Text = styled.p`
 
 `
+const ButtonIcons = styled.h6`
+    margin-left:20px;
+    margin-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+`
+const Icons = styled.div`
+`
+
 const PublicationID = styled.h3`
     margin-left:100px;
 `

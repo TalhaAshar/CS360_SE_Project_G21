@@ -4,6 +4,7 @@ import { render } from "react-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
 import styled from 'styled-components'
+import UploadImage from './UploadImage'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
