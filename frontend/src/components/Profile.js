@@ -19,7 +19,7 @@ function Profile() {
         let isComponentMounted = true;
         axios.get(`api/accounts/profile`).then((res) => {
             if (isComponentMounted){
-                setUser(res.data)
+                setDetails(res.data)
                 setUser(res.data['user']['username'])
             };
         })
