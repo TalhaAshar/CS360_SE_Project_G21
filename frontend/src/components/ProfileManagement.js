@@ -91,7 +91,7 @@ class ProfileManagement extends Component{
                         <textarea rows="25" cols="50" name="biography" onChange={this.handleChange} >{this.state.biography}</textarea>
                       </TellUsAboutYourself>
                     </Biography>
-                    <input type="submit" value="Save" />
+                    <input type="submit" value="Save" style = {{height: "7%",width:"7%", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"70%", marginTop:"10%"}}/>
                 </Descone>
               </form>
               
@@ -154,14 +154,16 @@ class ProfileManagement extends Component{
                 </Buttons>
               </ButtonsActivity>
 
+                <ChangePassword>
                 <form onSubmit={this.handleSubmitPassword}>
-                  <h3>Change Password</h3>
+                  <T>Change Password</T>
                   <h2>Current Password</h2>
-                  <input type="text" name="currentpassword" onChange={this.handleChange} /><br/>
+                  <input type="text" name="currentpassword" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
                   <h2>New Password</h2>
-                  <input type="text" name="newpassword" onChange={this.handleChange} /> <br/>
-                  <input type="submit" value="Save" />
+                  <input type="text" name="newpassword" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
+                  <input type="submit" value="Save" style = {{height: "10%",width:"10%", color:"#FB0101", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
                 </form>
+                </ChangePassword>
             </Lower>
 
           </Container>
@@ -204,7 +206,7 @@ const Name = styled.h3`
     width: 511px;
     height: 55px;
     margin-top:60px;
-    margin-left:0px;
+    margin-left:10px;
 
     font-family: Manrope;
     font-style: normal;
@@ -243,8 +245,11 @@ margin-left: 60px;
 `
 const ButtonsActivity = styled.div`
     display:flex;
+    position:absolute;
     flex-direction:column;
-    margin-left:180px;
+    margin-left:750px;
+    margin-top:300px;
+    
 `
 
 
@@ -313,8 +318,9 @@ margin-bottom: 10px;
 `
 
 const Biography = styled.div`
-
-    margin-left:20px;
+    position:absolute;
+    margin-top:-31.75%;
+    margin-left:250px;
 
 `
 
@@ -333,6 +339,9 @@ const BioText = styled.h3`
 `
 
 const TellUsAboutYourself = styled.div`
+position:relative;
+height: 150px;
+width:150px;
 
 `
 
@@ -502,4 +511,22 @@ const Publications = styled.div`
 
 const PrivateMessages = styled.div`
 
+`
+
+const ChangePassword = styled.div`
+position:absolute;
+height:40%;
+width:40%;
+margin-top:-0.5%;
+margin-left:56%;
+font-family: Manrope;
+font-style: normal;
+font-weight: bold;
+font-size: 20px;
+line-height: 41px;
+
+color: #13AAFF;
+`
+const T = styled.text`
+font-size:170%s;
 `
