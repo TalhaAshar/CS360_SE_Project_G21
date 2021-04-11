@@ -7,6 +7,7 @@ from django.contrib import admin
 urlpatterns = [
 	path("mylist/", MyListDefault.as_view()),
 	path("mylist/add/<int:id>", MyListDefault.as_view()),
+	path("mylist/delete/<int:id>", MyListDefault.as_view()),
 	path("mylist/alphabetical", MyListAlphabetical.as_view()),
 	path("mylist/unread", MyListUnread.as_view()),
 	path("mylist/read", MyListRead.as_view()),

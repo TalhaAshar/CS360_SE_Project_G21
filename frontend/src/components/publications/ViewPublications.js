@@ -6,7 +6,7 @@ import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 function View(props) {
     return (props.trigger)?(
         <Container >
-            <Link to="/Catalogue/1">
+            <Link to="/Catalogue/">
             <TextContainer>
                 <Text>List</Text>
             </TextContainer>

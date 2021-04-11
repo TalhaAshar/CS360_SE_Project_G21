@@ -8,6 +8,9 @@ import { Rotate90DegreesCcw } from '@material-ui/icons';
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
+import NewLinearCard from './NewLinearCard'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -33,13 +36,13 @@ if (!event.target.matches('.dropbtn')) {
 
 function PublicationsList() {
 
-	 const { id } = useParams();
+	const { id } = useParams();
     
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
 
     useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/main/catalogue_list/" + id
+        let url = "api/main/catalogue_list/"
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
@@ -49,17 +52,15 @@ function PublicationsList() {
         return () => {
             isComponentMounted = false;
         }
-    }, [id])
+    }, [])
 
     return (
         <Container>
 
         
-            <Heading>
-                <Background>
-                Publications
-                </Background>
-            </Heading>
+            <PublicationTitle>
+                <Heading>Publications</Heading>
+            </PublicationTitle>
 
             <Sort>
             <div class="dropdown">
@@ -71,11 +72,8 @@ function PublicationsList() {
                 </div>
             </div>
                 <Nextpage>
-
-                
-                    <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    </Nextpage>
+                    <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}}/><SkipNextRoundedIcon style = {{}}/>
+                </Nextpage>
             </Sort>
 
             <Colour>
@@ -86,7 +84,7 @@ function PublicationsList() {
                     pubs.map((elem, index) => {
                         if(index < 8){
                             return(
-                                <LinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                 )
                         }
                         console.log(index)
@@ -129,13 +127,11 @@ const Colour = styled.div`
 margin-left: 100px;
 background: #DCF2F8;
 width:1140px;
-height:1700px;
+height:1600px;
 border-radius: 20px;
+margin-bottom:100px;
 `
 
-const Heading = styled.div`
-margin-left: 120px;
-`
 const Background = styled.div`
 
 border-radius: 20px 20px 20px 20px;
@@ -172,4 +168,26 @@ letter-spacing: 0.005em;
 font-feature-settings: 'tnum' on, 'lnum' on;
 
 color: black;
+`
+
+const PublicationTitle = styled.div`
+    background: #0A3977;
+    margin-left:150px;
+    margin-right:150px;
+    margin-top:20px;
+    width:600px;
+    color:white;
+    border-radius:12px;
+    height:50px;
+    width:1000px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+`
+
+const Heading = styled.h3`
+    display:flex;
+    align-items:center;
+    justify-content:center;
 `

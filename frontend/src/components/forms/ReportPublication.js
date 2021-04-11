@@ -14,7 +14,8 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Reason:'Incorrect data', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Reason:'Incorrect data', Body:'' };
+    this.ID = props.location.state
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -31,10 +32,9 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
-  const data = { Reason:this.state.Reason, Body:this.state.Body };
+  const data = { id: this.ID, Reason:this.state.Reason, Body:this.state.Body, Type: "PUB"};
   
-  axios.post(`api/main/add_publication`, { data })
+  axios.post(`api/accounts/reports`, { data })
     .then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
@@ -47,23 +47,24 @@ handleSubmit = (event) =>{
       <FormContainer>
           <Form onSubmit={this.handleSubmit}>
           <LabelContainer>
-              <Label for="Reason">Reason</Label>
+              <Label for="Reason">Reason:</Label> <br/>
               <Select name="Reason" id="Reason" value={this.state.Reason} onChange={this.handleChange}>
                 <Option defaultValue="Incorrect data">Incorrect data</Option>
                 <Option value="Inaccurate description">Inaccurate description</Option>
                 <Option value="Non-existent publication">Non-existent publication</Option>
                 <Option value="Images not clear">Images not clear</Option>
-              </Select><br/>
+              </Select>
           </LabelContainer>
           
           <EditorContainer>
-            <Span>Provide a description of what is wrong and suggestions/corrections required</Span>
+            <Span>Please provide a description of what is wrong and propose suggestions/corrections:</Span> <br/>
             <Editor
               value={this.state.Body}
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
               init={{
-                height: 600,
-                width: 900,
+                placeholder: 'You need to host your image and then upload in this text box.',
+                height: 900,
+                width: '100%',
                 plugins: "image",
                 toolbar: "bold italic image",
                 menubar: false,
@@ -76,22 +77,22 @@ handleSubmit = (event) =>{
         </Form>
       </FormContainer> 
     </Container>
-         );
+    );
   }
 }
 
 export default App;
 
 const Container = styled.div`
-  margin-left:150px;
-  margin-right:150px;
-
+  max-width:100%;
+  max-height:100%;
+  margin-left:3%;
+  margin-right:3%;
 `
 const Head = styled.h3`
-  width:990px;
-  height:50px;
-  margin-top:30px;
-  margin-left:05px;
+  min-width: 55%;
+  min-height: 4%;
+  margin-top: 2%;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -100,16 +101,18 @@ const Head = styled.h3`
   border-radius: 8px;
 `
 const FormContainer = styled.div`
-  width: 1000px;
-  height: 950px;
-  margin-top:20px;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 2%;
   display:flex;
   justify-content:space-between;
   background:#DCF2F8;
   border-radius: 16px;
-
 `
 const Form = styled.form`
+  flex: 1;
+  margin-right: 3%;
+  margin-bottom: 1%;
 `
 
 const Span = styled.span`
@@ -118,44 +121,46 @@ const Span = styled.span`
 `
 
 const LabelContainer = styled.div`
-  display:grid;
-  grid-template-rows:20px 65px;
-  margin-left:50px;
-  margin-top:20px;
+  margin-left:3%;
+  margin-top:3%;
+  flex:1;
 `
 const Label = styled.label`
   font-weight:bold;
   font-size:20px;
 `
 const Select = styled.select`
-  width:900px;
+  min-width:100%;
   height:60px;
   margin-top:10px;
   outline:none;
   background-color:#F9F7FC;
   border-radius:6px;
   border:none;
+  padding:1%;
+  font-size: 24px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 const Option = styled.option`
-  height: 39px;
+  height: 50px;
   background-color: #FFFFFF;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `
 const EditorContainer = styled.div`
-  margin-left:50px;
-
+  margin-left:3%;
+  margin-top:3%;
+  flex:1;
 `
 const Submit = styled.input`
-  width:80px;
-  height:30px;
+  width:8%;
+  height:15%;
   position:relative;
   bottom:55px;
-  left:800px;
+  left:91%;
   background-color:#03204C;
   color:white;
   z-index:2;
   border-radius:6px;
-  font-size:15px;
+  font-size:24px;
   font-weight:bold;
 `

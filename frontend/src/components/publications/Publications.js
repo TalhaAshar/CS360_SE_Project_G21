@@ -24,7 +24,7 @@ function Publications(props) {
     useEffect(() => {
         //getData(id)
         let isComponentMounted = true;
-        let url = "api/main/catalogue_columnar/" + id
+        let url = "api/main/catalogue_columnar/"
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
@@ -36,7 +36,7 @@ function Publications(props) {
         return () => {
             isComponentMounted = false;
         }
-    }, [id])
+    }, [])
     
     
     
@@ -77,12 +77,15 @@ function Publications(props) {
                                 <SkipPreviousRoundedIcon/>
                                 <SkipNextRoundedIcon/>
                             </NextPrevious>
+                            <View style = {{width:"15%"}}>
+                                <ViewText>Add Publication</ViewText>
+                            </View>
                     </ViewNextButtonContainer>
                     <Cards>
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 16){
+                                 if(index < 20){
                                      return(
                                          <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                          )
@@ -115,21 +118,25 @@ function Publications(props) {
                                 <SkipPreviousRoundedIcon/>
                                 <SkipNextRoundedIcon/>
                             </NextPrevious>
+                            <View style = {{width:"15%"}}>
+                                <ViewText>Add Publication</ViewText>
+                            </View>
                     </ViewNextButtonContainer>
                     <Cards>
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 16){
+                                 if(index < 20){
                                      return(
                                         <CardContent>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                             <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                                <PopContainer>
+                                                <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} id={elem.id}/>
+                                                </PopContainer>
                                             </CardSvg>
-                                            <PopContainer>
-                                            <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} id={elem.id}/>
-                                            </PopContainer>
+                                            
                                         </CardContent>
                                          )
 
@@ -162,16 +169,17 @@ function Publications(props) {
                                 <SkipPreviousRoundedIcon/>
                                 <SkipNextRoundedIcon/>
                             </NextPrevious>
+                            <View style = {{width:"15%"}}>
+                                <ViewText>Add Publication</ViewText>
+                            </View>
                     </ViewNextButtonContainer>
                     <Cards>
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 16){
+                                 if(index < 20){
                                      return(
-                                        <CardContent>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
-                                        </CardContent>
                                          )
 
                                  }
@@ -188,90 +196,111 @@ function Publications(props) {
 export default Publications
 
 const Container = styled.div`
-    margin-left:50px;
-    width:1200px;
-    max-height:2500px;
+    max-width:100%;
+    max-height:100%;
+    margin-left:3%;
+    margin-right:3%;
+    @media only screen and (max-width: 1200px) {
+        height:auto;
+    }
 `
 const ViewNextButtonContainer = styled.div`
     display:flex;
-    margin-left:12.5%;
-`
+    margin-left:2%;
+    margin-right:2%;
+    justify-content:space-between;
+    align-items:center;
+    `
 const Svg = styled.svg`
     position:relative;
-    top:-5.49px;
-    right:-14px;
+    bottom:85%;
+    left:70%;
 `
 const ViewPopContainer = styled.div`
 position:relative;
-margin-top:99%;
+margin-top:1%;
 z-index:1;
 `
 
 const ViewText = styled.h4`
     z-index:2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 `
 const View = styled.h4`
     background:#3B058B;
-    width:110px;
+    width:10%;
     height:30px;
     color:white;
     border-radius:6px;
-    margin-top:10px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    margin-top:1%;
 `
 const NextPrevious = styled.h4`
-    margin-left:330px;
-    margin-top:10px;
+    margin-top:1%;
 `
 
 const PublicationTitle = styled.div`
-    background: #0A3977;
-    margin-left:150px;
-    margin-right:150px;
-    margin-top:20px;
-    width:600px;
-    color:white;
-    border-radius:12px;
-    height:50px;
-    width:1000px;
+    min-width: 55%;
+    min-height: 2%;
+    margin-top: 2%;
+    margin-left:2%;
+    margin-right:2%;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
+    color:white;
+    background: #03204C;
+    border-radius: 8px;
 
 `
 
 const Heading = styled.h3`
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
+    color:white;
+    background: #03204C;
 `
 const Cards = styled.div`
-    margin-left:150px;
-    margin-right:50px;
-    margin-top:20px;
-    margin-bottom:20px;
-    display:grid;
-    grid-template-rows: 375px 375px 375px 375px;
-    grid-template-columns: 250px 250px 250px 250px;
+    margin-left:1.3%;
+    margin-right:1.3%;
+    margin-top:4%;
+    margin-bottom:4%;
+    display:flex;
+    flex-basis:10%;
+    flex-flow: row wrap;
     background:#DCF2F8;
+    @media only screen and (max-width: 1200px) {
+        height:auto;
+        display:flex;
+        justify-content:left;
+        flex-wrap:wrap;
+        flex:1;
+        background:black;
+    }
 
 `
 const CardContent = styled.div`
-
+    margin-left:2%;
+    margin-right:2%;
+    margin-top:2%;
+    margin-bottom:2%;
+    padding-right:1%;
+    padding-bottom:2%;
+    padding-right: 2%;
 `
 const PopContainer = styled.div`
     position:relative;
-    left:40px;
-    bottom:399px;
     z-index:2;
+    left:1%;
+    bottom:1%;
 `
 
 const CardSvg = styled.svg`
     position:relative;
-    bottom:373px;
-    left:200px;
+    bottom:91%;
+    left:85%;
     z-index:1;
 
 `

@@ -37,6 +37,18 @@ function PersonalizedListUserRead() {
         
     }
 
+    function DeleteMyList(){
+        let url = "api/accounts/mylist/delete/" + id
+        axios.delete(url).then((res) => {
+            console.log(res)
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    function MarkAsRead(){
+        
+    }
+
     useEffect(() => {
         let isComponentMounted = true;
         let url = "api/accounts/mylist/" + sorter

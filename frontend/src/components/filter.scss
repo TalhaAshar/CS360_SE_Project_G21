@@ -1,0 +1,255 @@
+.button {
+    background-color: #AE14DB; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+    transition: 0.8s;
+  }
+
+.button1 {
+    height: 30px;
+    width: 130px;
+    margin-left: 10px;
+
+    &:focus {
+      cursor: pointer;
+      background-color: lighten(#0EA8D8, 10%)
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: lighten(#AE14DB, 10%)
+    }
+  }
+
+  .button2 {
+    height: 30px;
+    width: 100px;
+    margin-left: 10px;
+
+    &:focus {
+      cursor: pointer;
+      background-color: lighten(#0EA8D8, 10%)
+    }
+  }
+
+  .button3 {
+    height: 30px;
+    width: 90px;
+    margin-left: 10px;
+
+    &:focus {
+      cursor: pointer;
+      background-color: lighten(#0EA8D8, 10%)
+    }
+  }
+
+  .button4 {
+    height: 30px;
+    width: 140px;
+    margin-left: 10px;
+
+    &:focus {
+      cursor: pointer;
+      background-color: lighten(#0EA8D8, 10%)
+    }
+
+    
+  }
+
+  .button5 {
+    height: 30px;
+    width: 145px;
+    margin-left: 10px;
+
+    &:focus {
+      cursor: pointer;
+      background-color: lighten(#0EA8D8, 10%)
+    }
+  }
+
+  button:hover{
+    background:lighten(#AE14DB, 20%)
+}
+
+button:visited{
+  background-color:lighten(red, 20%)
+}
+
+
+button:focus{
+    outline: none; 
+    background:olive;
+}
+
+.hidden {position:absolute;visibility:hidden;opacity:0;}
+input[type=checkbox] + label {
+  background-color: #AE14DB; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+    transition: 0.8s;
+   overflow:auto;
+   float:left;
+   height: 30px;
+    width: 130px;
+    margin-left: 10px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lighten(#AE14DB, 10%)
+    }
+} 
+
+.bro {position:absolute;visibility:hidden;opacity:0;}
+input[type=checkbox] + label {
+  background-color: #AE14DB; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+    transition: 0.8s;
+   overflow:auto;
+   float:left;
+   height: 30px;
+    width: 130px;
+    margin-left: 10px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lighten(#AE14DB, 10%)
+    }
+} 
+
+.hidden2 {position:absolute;visibility:hidden;opacity:0;}
+input[type=checkbox] + label {
+  background-color: #AE14DB; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+    transition: 0.8s;
+   overflow:auto;
+   float:left;
+   height: 30px;
+    width: 130px;
+    margin-left: 10px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lighten(#AE14DB, 10%)
+    }
+} 
+
+.hidden3 {position:absolute;visibility:hidden;opacity:0;}
+input[type=checkbox] + label {
+  background-color: #AE14DB; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+    transition: 0.8s;
+   overflow:auto;
+   float:left;
+   height: 30px;
+    width: 130px;
+    margin-left: 10px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lighten(#AE14DB, 10%)
+    }
+} 
+
+#cb:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+
+#cb1:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+
+#cb2:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+
+#cb3:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+
+#cb4:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+
+#cb5:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+
+#cb6:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}
+#cb7:checked + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+}

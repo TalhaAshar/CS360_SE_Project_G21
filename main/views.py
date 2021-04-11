@@ -75,36 +75,18 @@ class Index(generics.ListCreateAPIView):
 
 class CatalogueColumnar(APIView):
 
-	def get(self, request, id):
+	def get(self, request):
 
-		if id <= 0:
-			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_204_NO_CONTENT)
-
-		total = Publication.objects.count()
-		if total < id * 20:
-			limit = total
-		else:
-			limit = id * 20
-
-		queryset = Publication.objects.all().order_by('Title')[(id-1)*20:limit]
+		queryset = Publication.objects.all().order_by('Title')
 		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CatalogueList(APIView):
 
-	def get(self, request, id):
-		if id <= 0:
-			return Response({'Message' : 'The given publication does not exist!'}, status=status.HTTP_204_NO_CONTENT)
+	def get(self, request):
 
-		total = Publication.objects.count()
-		print(total)
-		if total < id * 8:
-			limit = total
-		else:
-			limit = id * 8
-
-		queryset = Publication.objects.all().order_by('Title')[(id-1)*8:limit]
+		queryset = Publication.objects.all().order_by('Title')
 		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)

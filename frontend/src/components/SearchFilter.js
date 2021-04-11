@@ -1,8 +1,17 @@
 import React from 'react'
+import './filter.scss';
 import styled from 'styled-components'
+import {useEffect, useState} from "react";
+
+let a = document.querySelector('#author')
+let b = document.querySelector('#title')
+let c = document.querySelector('#isbn')
 
 function SearchFilter(props) {
     return (
+        <body>
+
+        
         <Container>
            <Text>
                Type or filter by category:
@@ -10,48 +19,52 @@ function SearchFilter(props) {
            <Flex>
                 <AT>
                     <Author>
-                            <AText onClick={() => props.onChange("Authors")}>
-                            ＋    Author
-                            </AText>
+                
+                    <input type="checkbox" class="hidden" name="cb" id="cb"/><label for="cb" onClick={() => props.onChange("Authors")}>Author</label>
+                        
+                    
                     </Author>
-                    <Title onClick={() => props.onChange("Title")}>
-                    ＋   Title
+                    <Title >
+                    <input type="checkbox" class="bro" name="cb1" id="cb1"/><label for="cb1" onClick={() => props.onChange("Title")}>Title</label>
                     </Title>
                 </AT>
                 <IG>
-                    <ISBN onClick={() => props.onChange("ISBN")}>
-                    ＋   ISBN
+                    <ISBN >
+                    <input type="checkbox" class="hidden3" name="cb2" id="cb2"/><label for="cb2" onClick={() => props.onChange("ISBN")}>ISBN</label>
                     </ISBN>
-                    <Genre onClick={() => props.onChange("Genre")}>
-                    ＋   Genre
+                    <Genre >
+                    <input type="checkbox" class="hidden2" name="cb3" id="cb3"/><label for="cb3" onClick={() => props.onChange("Genre")}>Genre</label>
                     </Genre>
                 </IG>
                 <PY>
-                    <Publisher onClick={() => props.onChange("Publisher")}>
-                    ＋   Publisher
+                    <Publisher >
+                    <input type="checkbox" class="hidden2" name="cb4" id="cb4"/><label for="cb4" onClick={() => props.onChange("Publisher")}>Publisher</label>
                     </Publisher>
-                    <Year onClick={() => props.onChange("Year_Publication")}>
-                    ＋   Year
+                    <Year >
+                    <input type="checkbox" class="hidden2" name="cb4" id="cb5"/><label for="cb5" onClick={() => props.onChange("Year_Publication")}>Year</label>
                     </Year>
                 </PY>
                 <DL>
-                    <D onClick={() => props.onChange("Year_Publication")}>
-                    ＋   Date
+                    <D >
+                    <input type="checkbox" class="hidden2" name="cb4" id="cb6"/><label for="cb6" onClick={() => props.onChange("Year_Publication")}>Date</label>
                     </D>
-                    <L onClick={() => props.onChange("Lang")}>
-                    ＋   Language
+                    <L >
+                    <input type="checkbox" class="hidden2" name="cb4" id="cb7"/><label for="cb7" onClick={() => props.onChange("Lang")}>Language</label>
                     </L>
                 </DL>
            </Flex>
+           
         </Container>
+        
+        </body>
     )
 }
 
 export default SearchFilter
 
 const Container = styled.div`
-    width: 285px;
-    height: 210px;
+    max-width: 285px;
+    max-height: 210px;
     background: white;
     border-radius: 15px;
 
@@ -72,150 +85,44 @@ color: #000000;
 const AT = styled.div`
 display:flex;
 flex-direction:row;
+
 `
 const Author = styled.div`
-width: 130px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    margin-top: 10px;
 `
 const Title = styled.div`
-width: 100px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
-color: white;
 `
-const AText = styled.div`
-font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
-color: white;
-`
+
 const IG = styled.div`
 display:flex;
 flex-direction:row;
 `
 const ISBN = styled.div`
-width: 90px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
-color: white;
+
 `
 const Genre = styled.div`
-width: 100px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-family: Manrope;
-font-style: normal;
-color: white;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
+
 `
 const PY = styled.div`
 display:flex;
 flex-direction:row;
 `
 const Publisher = styled.div`
-width: 140px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    color: white;
-    margin-top: 10px;
-    font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
+
 `
 const Year = styled.div`
-width: 100px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-color: white;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
+
 `
 const DL = styled.div`
 display:flex;
 flex-direction:row;
 `
 const D = styled.div`
-width: 90px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    color: white;
-    margin-top: 10px;
-    font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
+
 `
 const L = styled.div`
-width: 145px;
-    height: 30px;
-    background: #AE14DB;
-    border-radius: 50px;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-family: Manrope;
-    color: white;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 142%;
-align-items: center;
-text-align: center;
+
 `
 
 const Flex = styled.div`
-
+padding-bottom: 10px;
 `

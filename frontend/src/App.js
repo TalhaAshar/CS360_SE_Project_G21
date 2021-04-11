@@ -22,6 +22,8 @@ import {useEffect, useState} from "react";
 import axios from 'axios';
 import { ContactSupportOutlined } from '@material-ui/icons';
 import Search from "./components/SearchPage";
+import ReportPublication from "./components/forms/ReportPublication";
+
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -95,11 +97,11 @@ function App() {
             <ProfileManagement /> 
           </Route> 
            
-          <Route path="/Columnar/:id">
+          <Route path="/Columnar/">
             <Columnar logged={auth["Status"]}/>
           </Route>
 
-          <Route path="/Catalogue/:id">
+          <Route path="/Catalogue/">
             <Catalogue/>
           </Route>
 
@@ -116,6 +118,8 @@ function App() {
             {console.log("IM HERE")}
             <Search />  
           </Route>
+
+          <Route path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
           
         </Switch>
 

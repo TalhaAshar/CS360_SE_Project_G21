@@ -1,0 +1,48 @@
+.button {
+    background-color: #02A4D7; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+  }
+
+.bleh {
+    background-color: blue; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 142%;
+    height: 30px;
+    width: 130px;
+    margin-left: 50px;
+    transition: 0.8s;
+
+    &:focus {
+      cursor: pointer;
+      background-color: lighten(#02A4D7, 20%)
+    }
+    &:hover{
+        background:lighten(#02A4D7, 10%)
+      }
+  }
+
+
+
+ 
