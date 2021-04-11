@@ -46,18 +46,23 @@ function ForumGest() {
 export default ForumGest
 
 const Container = styled.div`
-
+    max-width:100%;
+    max-height:100%;
+    margin-left:3%;
+    margin-right:3%;
 `
 const ThreadBar = styled.div`
-    width: 1179px;
-    height: 60px;
-    color:white;
-    background-color:#03204C;
-    margin-top:20px;
-    margin-left:50px;
+    min-width: 55%;
+    min-height: 4%;
+    margin-top: 2%;
     display:flex;
     justify-content:center;
-    border-radius:12px;
+    align-items:center;
+    color:white;
+    background: #03204C;
+    border-radius: 8px;
+    margin-left:2%;
+    margin-right:2%;
 
 
 `
@@ -68,17 +73,16 @@ const Text = styled.h3`
 `
 
 const BodyRecent = styled.div`
-    margin-left:50px;
-    margin-right:50px;
-    margin-top:20px;
-    margin-bottom:20px;
+    margin-left:2%;
+    margin-right:2%;
+    margin-top:1%;
+    margin-bottom:1%;
     display:grid;
     grid-template-rows: 200px 200px 200px 200px;
     background:#DCF2F8;
-    padding-left:40px;
-    padding-top:20px;
-    padding-bottom:20px;
-    padding-right:40px;
+    padding-top:2%;
+    padding-bottom:2%;
+    padding-left:2%;
     height:1250px;
     border-radius:8px;
 

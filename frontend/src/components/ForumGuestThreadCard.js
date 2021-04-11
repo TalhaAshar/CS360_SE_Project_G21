@@ -18,11 +18,13 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
             </ImageContainer>
             <UserName>{username}</UserName>
         </ImageUserNameContainer>
+        
         <ThreadDetailContainer>
             <ThreadTitle>{title}</ThreadTitle>
             <ThreadCategory>{category}</ThreadCategory>
             <ThreadMinorDetail>{desc}</ThreadMinorDetail>
         </ThreadDetailContainer>
+        
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
@@ -45,17 +47,15 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
 export default ForumGuestThreadCard
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
-
-
+    width:1100px;
+    height:180px;
+    display:flex;
+    background:white;
+    border-radius:12px;
 `
 const ImageUserNameContainer = styled.div`
-    margin-left:20px;
-    margin-top:20px;
+    margin-left:2%;
+    margin-top:2%;
 
 `
 const ImageContainer = styled.div`
@@ -67,23 +67,27 @@ const Image = styled.img`
 const UserName = styled.h3`
 `
 const ThreadDetailContainer = styled.div`
-    margin-top:30px;
-    margin-left:20px;
+    margin-top:2.5%;
+    margin-left:2%;
+    display:flex;
+    flex-grow:3;
 `
 const ThreadTitle = styled.h4`
+    
 `
 const ThreadCategory = styled.h4`
 `
 const ThreadMinorDetail = styled.h6`
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:620px;
-    margin-top:30px;
+    margin-top:2.5%;
+    margin-right:2%;
+
 
 `
 const Comment = styled.div`
 display:flex;
-margin-bottom:10px;
+margin-bottom:1%;
 
 
 `

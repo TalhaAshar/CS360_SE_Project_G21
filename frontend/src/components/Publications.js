@@ -93,8 +93,10 @@ function Publications() {
 export default Publications
 
 const Container = styled.div`
-    width:1200px;
-    max-height:2500px;
+    max-width:100%;
+    max-height:100%;
+    margin-left:3%;
+    margin-right:3%;
 `
 const ViewNextButtonContainer = styled.div`
     display:flex;

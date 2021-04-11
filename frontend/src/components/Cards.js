@@ -59,22 +59,16 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
 }
 
 const StyledView = styled.div`
-  border-width: 1;
-  border-radius: 2;
+  border-width: 1px;
+  border-radius: 2px;
   border-color: #ddd;
   border-bottom-width: 0;
-  shadow-color: #000;
+  shadow-color: #000000;
   shadow-offset: {width: 0, height: 2};
-  shadow-opacity: 0.8;
-  shadow-radius: 2;
-  elevation: 1;
-  margin-left: 5;
-  margin-right: 5;
-  margin-top: 10;
-  padding-top:20px;
-  padding-bottom:20px;
-  padding-left:10px;
-  padding-right:10px;
+  shadow-opacity: 0.8px;
+  shadow-radius: 2px;
+  elevation: 1px;
   max-width:250px;
   max-height:300px;
+  margin: 1% 1.3% 5.4% 3.5%;
 `
