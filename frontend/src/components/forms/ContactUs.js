@@ -4,6 +4,7 @@ import { render } from "react-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
 import styled from 'styled-components'
+import ContactFeedbackPopup from '../functionality/ContactFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -14,8 +15,15 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Name:'', Email:'', Reason:'Feedback', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Name:'', Email:'', Reason:'Feedback', Body:'You need to host your image and then upload in this text box.', seen: false };
 }
+
+togglePop = () => {
+  this.setState({
+    seen: !this.state.seen
+  })
+}
+
 
 rteChange = (content, delta, source, editor) => {
     console.log(this.state.Body);
@@ -31,10 +39,10 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
+  const url = "api/main/contact";     //TALHA
   const data = { Name:this.state.Name, Email:this.state.Email, Reason: this.state.Reason, Body:this.state.Body };
   
-  axios.post(`api/main/add_publication`, { data })
+  axios.post(`api/main/contact`, { data })
     .then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
@@ -68,8 +76,8 @@ handleSubmit = (event) =>{
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
                 init={{
-                  height: 600,
-                  width: 900,
+                  height: 900,
+                  width: '100%',
                   plugins: "image",
                   toolbar: "bold italic image",
                   menubar: false,
@@ -77,7 +85,8 @@ handleSubmit = (event) =>{
                 }}
                 onEditorChange={this.handleEditorChange}
               />
-              <Submit type="submit" value="Submit" />
+              <Submit type="submit" value="Submit" onClick={this.togglePop} />
+              { this.state.seen ? <ContactFeedbackPopup toggle={this.togglePop} /> : null } 
             </EditorContainer>
           </Form>
         </FormContainer> 
@@ -96,28 +105,29 @@ const Container = styled.div`
 
 `
 const Head = styled.h3`
-  width:990px;
-  height:50px;
-  margin-top:30px;
-  margin-left:5px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  background: #03204C;
-  border-radius: 8px;
+min-width: 55%;
+min-height: 4%;
+margin-top: 2%;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+background: #03204C;
+border-radius: 8px;
 `
 const FormContainer = styled.div`
-  width: 1000px;
-  height: 950px;
-  margin-top:20px;
-  display:flex;
-  justify-content:space-between;
-  background:#DCF2F8;
-  border-radius: 16px;
-
+max-width: 100%;
+max-height: 100%;
+margin-top: 2%;
+display:flex;
+justify-content:space-between;
+background:#DCF2F8;
+border-radius: 16px;
 `
 const Form = styled.form`
+flex: 1;
+margin-right: 3%;
+margin-bottom: 1%;
 `
 const UserInfo = styled.div`
   display:grid;
@@ -166,19 +176,20 @@ const Option = styled.option`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `
 const EditorContainer = styled.div`
-  margin-left:50px;
-
+margin-left:3%;
+margin-top:3%;
+flex:1;
 `
 const Submit = styled.input`
-  width:80px;
-  height:30px;
-  position:relative;
-  bottom:55px;
-  left:800px;
-  background-color:#03204C;
-  color:white;
-  z-index:2;
-  border-radius:6px;
-  font-size:15px;
-  font-weight:bold;
+width:8%;
+height:15%;
+position:relative;
+bottom:55px;
+left:91%;
+background-color:#03204C;
+color:white;
+z-index:2;
+border-radius:6px;
+font-size:24px;
+font-weight:bold;
 `
