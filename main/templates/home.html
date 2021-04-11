@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>Home</title> 
+</head> 
+<body> 
+<h2>Home Page</h2>
+    
+	{% if user.is_authenticated %}
+	<p>I AM LOGGED IN</p>
+	{% else %}
+	<p>I NOT LOG IN</p>
+	{% endif %}
+
+	<div>
+		<p>BEST EDITION BOOK</p>
+		{{ Best.Title }}
+        {{ Best.Authors }}
+		{{ Best.Year_Publication }}
+		{{ Best.Reprint_Year }}
+		{{ Best.Edition_Number }}
+		{{ Best.Lang }} 
+		{{ Best.Description }}
+		{% if Best.Front_Cover %}
+		<img src="{{ Best.Front_Cover.url }}"> 
+		{% endif %}
+	</div>
+	<div>
+		<p>RECENTS</p>
+		 {% for publication in Recent %}
+		 {{ publication.Title }}
+                    {{ publication.Authors }}
+                    {{ publication.Year_Publication }}
+                    {{ publication.Reprint_Year }}
+                    {{ publication.Edition_Number }}
+                    {{ publication.Lang }} 
+                    {{ publication.Description }}
+                    {% if publication.Front_Cover %}
+                    <img src="{{ publication.Front_Cover.url }}"> 
+                    {% endif %}
+                    <br>
+		{% endfor %}
+
+	</div>
+	<div>
+		<p>RECS</p>
+		{% for publication in Recs %}
+		 {{ publication.Title }}
+                    {{ publication.Authors }}
+                    {{ publication.Year_Publication }}
+                    {{ publication.Reprint_Year }}
+                    {{ publication.Edition_Number }}
+                    {{ publication.Lang }} 
+                    {{ publication.Description }}
+                    {% if publication.Front_Cover %}
+                    <img src="{{ publication.Front_Cover.url }}"> 
+                    {% endif %}
+                    <br>
+		{% endfor %}
+	</div>
+</body>
+</html>

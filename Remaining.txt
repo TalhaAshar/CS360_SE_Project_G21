@@ -1,0 +1,2 @@
+Validate for single email
+Try catches
