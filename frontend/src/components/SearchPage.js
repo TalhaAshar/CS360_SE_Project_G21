@@ -82,7 +82,6 @@ function SearchPage() {
 
                 Search Results
                 </Text>
-                    <button class="bleh">Filter</button>
                 </Background>
             </Heading>
 

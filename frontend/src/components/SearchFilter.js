@@ -13,9 +13,6 @@ function SearchFilter(props) {
 
         
         <Container>
-           <Text>
-               Type or filter by category:
-           </Text>
            <Flex>
                 <AT>
                     <Author>
@@ -24,38 +21,32 @@ function SearchFilter(props) {
                         
                     
                     </Author>
-                    <Title >
+                    <Title>
                     <input type="checkbox" class="bro" name="cb1" id="cb1"/><label for="cb1" onClick={() => props.onChange("Title")}>Title</label>
                     </Title>
-                </AT>
-                <IG>
-                    <ISBN >
+                    <ISBN>
                     <input type="checkbox" class="hidden3" name="cb2" id="cb2"/><label for="cb2" onClick={() => props.onChange("ISBN")}>ISBN</label>
                     </ISBN>
-                    <Genre >
+                    <Genre>
                     <input type="checkbox" class="hidden2" name="cb3" id="cb3"/><label for="cb3" onClick={() => props.onChange("Genre")}>Genre</label>
                     </Genre>
-                </IG>
-                <PY>
-                    <Publisher >
+                    <Publisher>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb4"/><label for="cb4" onClick={() => props.onChange("Publisher")}>Publisher</label>
                     </Publisher>
-                    <Year >
+                    <Year>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb5"/><label for="cb5" onClick={() => props.onChange("Year_Publication")}>Year</label>
                     </Year>
-                </PY>
-                <DL>
-                    <D >
+                    <D>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb6"/><label for="cb6" onClick={() => props.onChange("Year_Publication")}>Date</label>
                     </D>
-                    <L >
+                    <L>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb7"/><label for="cb7" onClick={() => props.onChange("Lang")}>Language</label>
                     </L>
-                </DL>
+
+                </AT>
            </Flex>
            
         </Container>
-        
         </body>
     )
 }
@@ -63,7 +54,7 @@ function SearchFilter(props) {
 export default SearchFilter
 
 const Container = styled.div`
-    max-width: 285px;
+    max-width: 1145px;
     max-height: 210px;
     background: white;
     border-radius: 15px;
@@ -83,6 +74,8 @@ color: #000000;
 `
 
 const AT = styled.div`
+padding-top: 5px;
+
 display:flex;
 flex-direction:row;
 
@@ -124,5 +117,5 @@ const L = styled.div`
 `
 
 const Flex = styled.div`
-padding-bottom: 10px;
+padding-bottom: 5px;
 `

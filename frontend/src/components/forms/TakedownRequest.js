@@ -4,6 +4,7 @@ import { render } from "react-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import styled from 'styled-components'
 import axios from 'axios';
+import TakedownFeedbackPopup from '../functionality/TakedownFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -14,7 +15,13 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Party:'', Relationship:'', Copyright:'', Country:'', Email:'', Publication:'', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Party:'', Relationship:'', Copyright:'', Country:'', Email:'', Publication:'', Body:'', seen: false };
+}
+
+togglePop = () => {
+  this.setState({
+    seen: !this.state.seen
+  })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -31,10 +38,10 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
+  const url = "api/main/add_publication"; //TALHA
   const data = { Party:this.state.Party, Relationship:this.state.Relationship, Copyright:this.state.Copyright, Country:this.state.Country, Email:this.state.Email, Publication:this.state.Publication, Body:this.state.Body };
   
-  axios.post(`api/main/add_publication`, { data })
+  axios.post(`api/main/takedown`, { data })
     .then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
@@ -70,8 +77,9 @@ handleSubmit = (event) =>{
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
                 init={{
-                  height: 600,
-                  width: 900,
+                  placeholder: 'You need to host your image and then upload in this text box.',
+                  height: 900,
+                  width: '100%',
                   plugins: "image",
                   toolbar: "bold italic image",
                   menubar: false,
@@ -79,7 +87,8 @@ handleSubmit = (event) =>{
                 }}
                 onEditorChange={this.handleEditorChange}
               />
-              <Submit type="submit" value="Submit" />
+              <Submit type="submit" value="Submit" onClick={this.togglePop} />
+              { this.state.seen ? <TakedownFeedbackPopup toggle={this.togglePop} /> : null}
             </EditorContainer>
           </Form>
         </FormContainer> 
@@ -96,7 +105,6 @@ max-width:100%;
 max-height:100%;
 margin-left:3%;
 margin-right:3%;
-
 `
 const Head = styled.h3`
 min-width: 55%;
@@ -110,16 +118,18 @@ background: #03204C;
 border-radius: 8px;
 `
 const FormContainer = styled.div`
-  width: 1000px;
-  height: 1150px;
-  margin-top:20px;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 2%;
   display:flex;
   justify-content:space-between;
   background:#DCF2F8;
   border-radius: 16px;
-
 `
 const Form = styled.form`
+  flex: 1;
+  margin-right: 3%;
+  margin-bottom: 1%;
 `
 const UserInfo = styled.div`
   display:grid;
@@ -150,19 +160,20 @@ const Input = styled.input`
   margin-bottom:10px;
 `
 const EditorContainer = styled.div`
-  margin-left:50px;
-
+  margin-left:3%;
+  margin-top:3%;
+  flex:1;
 `
 const Submit = styled.input`
-  width:80px;
-  height:30px;
-  position:relative;
-  bottom:55px;
-  left:800px;
-  background-color:#03204C;
-  color:white;
-  z-index:2;
-  border-radius:6px;
-  font-size:15px;
-  font-weight:bold;
+width:8%;
+height:15%;
+position:relative;
+bottom:55px;
+left:91%;
+background-color:#03204C;
+color:white;
+z-index:2;
+border-radius:6px;
+font-size:24px;
+font-weight:bold;
 `
