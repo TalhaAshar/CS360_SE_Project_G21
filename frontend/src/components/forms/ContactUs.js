@@ -89,8 +89,10 @@ handleSubmit = (event) =>{
 export default App;
 
 const Container = styled.div`
-  margin-left:150px;
-  margin-right:150px;
+  max-width:100%;
+  max-height:100%;
+  margin-left:3%;
+  margin-right:3%;
 
 `
 const Head = styled.h3`

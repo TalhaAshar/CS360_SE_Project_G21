@@ -91,7 +91,7 @@ class ProfileManagement extends Component{
                         <textarea rows="25" cols="50" name="biography" onChange={this.handleChange} >{this.state.biography}</textarea>
                       </TellUsAboutYourself>
                     </Biography>
-                    <input type="submit" value="Save" />
+                    <input type="submit" value="Save" style = {{height: "7%",width:"7%", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"70%", marginTop:"10%"}}/>
                 </Descone>
               </form>
               
@@ -154,14 +154,16 @@ class ProfileManagement extends Component{
                 </Buttons>
               </ButtonsActivity>
 
+                <ChangePassword>
                 <form onSubmit={this.handleSubmitPassword}>
-                  <h3>Change Password</h3>
+                  <T>Change Password</T>
                   <h2>Current Password</h2>
-                  <input type="text" name="currentpassword" onChange={this.handleChange} /><br/>
+                  <input type="text" name="currentpassword" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
                   <h2>New Password</h2>
-                  <input type="text" name="newpassword" onChange={this.handleChange} /> <br/>
-                  <input type="submit" value="Save" />
+                  <input type="text" name="newpassword" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
+                  <input type="submit" value="Save" style = {{height: "10%",width:"10%", color:"#FB0101", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
                 </form>
+                </ChangePassword>
             </Lower>
 
           </Container>
@@ -178,7 +180,6 @@ const Container = styled.div`
     margin-left:100px;
     margin-right:100px;
     margin-bottom:50px;
-
     background: #DCF2F8;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 24px;
@@ -200,20 +201,16 @@ const Profilepicture = styled.img`
 `
 
 const Name = styled.h3`
-
     width: 511px;
     height: 55px;
     margin-top:60px;
-    margin-left:0px;
-
+    margin-left:10px;
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 40px;
     line-height: 55px;
-
     color: #FFFFFF;
-
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
@@ -224,7 +221,6 @@ const Admintag = styled.div`
     height: 82px;
     color:white;
     border:none;
-
     box-sizing: border-box;
 `
 
@@ -232,19 +228,19 @@ const Lower = styled.div`
     margin-top:80px;
     margin-left:20px;
     display:flex;
-
 `
 
 const Descone = styled.div`
 margin-top: 50px;
 margin-left: 60px;
-
-
 `
 const ButtonsActivity = styled.div`
     display:flex;
+    position:absolute;
     flex-direction:column;
-    margin-left:180px;
+    margin-left:750px;
+    margin-top:300px;
+    
 `
 
 
@@ -253,15 +249,12 @@ const Profession = styled.h3`
     height: 34px;
     margin-bottom: 10px;
     margin-top: 30px;
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
     line-height: 34px;
-
     color: #13AAFF;
-
 `
 
 const Company = styled.h3`
@@ -270,13 +263,11 @@ margin-bottom: 10px;
     width: 121px;
     height: 34px;
    
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
     line-height: 34px;
-
     color: #13AAFF;
 `
 const Location = styled.h3`
@@ -285,13 +276,11 @@ margin-bottom: 10px;
     width: 107px;
     height: 34px;
     
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
     line-height: 34px;
-
     color: #13AAFF;
 `
 
@@ -301,47 +290,42 @@ margin-bottom: 10px;
     width: 48px;
     height: 34px;
   
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
     line-height: 34px;
-
     color: #13AAFF;
-
 `
 
 const Biography = styled.div`
-
-    margin-left:20px;
-
+    position:absolute;
+    margin-top:-31.75%;
+    margin-left:250px;
 `
 
 const BioText = styled.h3`
     width: 273px;
     height: 48px;
    
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 30px;
     line-height: 41px;
-
     color: #13AAFF;
 `
 
 const TellUsAboutYourself = styled.div`
-
+position:relative;
+height: 150px;
+width:150px;
 `
 
 const Buttons = styled.div`
-
 `
 
 const MyList = styled.div`
-
 `
 
 const MyListBackground = styled.div`
@@ -354,7 +338,6 @@ const MyListBackground = styled.div`
     width: 359px;
     height: 30px;
    
-
     background: #03204C;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
@@ -368,12 +351,10 @@ font-style: normal;
 font-weight: bold;
 font-size: 20px;
 line-height: 24px;
-
 color: #FFFFFF;
 `
 
 const Report = styled.div`
-
 `
 
 const ReportBackground = styled.div`
@@ -382,11 +363,8 @@ display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:20px;
-
 width: 359px;
 height: 30px;
-
-
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
@@ -396,31 +374,23 @@ const ReportText = styled.h3`
     width: 81px;
     height: 24px;
    
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
     line-height: 27px;
-
     color: #FFFFFF;
-
 `
 const Settings = styled.div`
-
 `
 const SettingsBackground = styled.div`
-
 color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:20px;
-
 width: 359px;
 height: 30px;
-
-
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
@@ -434,11 +404,9 @@ const SettingsText = styled.h3`
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
-
     color: #FFFFFF;
 `
 const ModApp = styled.div`
-
 `
 const ModAppBackground = styled.div`
 color:white;
@@ -446,11 +414,8 @@ display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:40px;
-
 width: 359px;
 height: 30px;
-
-
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
@@ -465,7 +430,6 @@ const ModAppText = styled.h3`
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
-
     color: #FFFFFF;
 `
 
@@ -477,7 +441,6 @@ align-items:center;
     width: 360px;
     height: 86px;
     
-
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
@@ -491,15 +454,28 @@ const PMText = styled.h3`
     font-weight: bold;
     font-size: 20px;
     line-height: 27px;
-
     color: #000000;
-
 `
 
 const Publications = styled.div`
-
 `
 
 const PrivateMessages = styled.div`
+`
 
+const ChangePassword = styled.div`
+position:absolute;
+height:40%;
+width:40%;
+margin-top:-0.5%;
+margin-left:56%;
+font-family: Manrope;
+font-style: normal;
+font-weight: bold;
+font-size: 20px;
+line-height: 41px;
+color: #13AAFF;
+`
+const T = styled.text`
+font-size:170%s;
 `

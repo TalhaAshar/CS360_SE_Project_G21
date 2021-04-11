@@ -56,7 +56,7 @@ const Container = styled.div`
     width: 1100px;
     height: 125px;
     display:flex;
-    
+    cursor: pointer;
 `
 
 const Image = styled.img`

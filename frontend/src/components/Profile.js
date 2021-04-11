@@ -92,14 +92,14 @@ function Profile() {
                         </Biography>
                         <ButtonsActivity>
                         <Buttons>
-                            <Link to="/List" value="My List">
+                            <Link to="/List" value="My List" style={{textDecoration:"none"}}>
                                 <MyList>
                                     <MyListBackground>
                                         My List
                                     </MyListBackground>
                                 </MyList>
                             </Link>
-                            <Link to='/reports' value="Reports">
+                            <Link to='/reports' value="Reports" style={{textDecoration:"none"}}>
                                 <Report>
                                     <ReportBackground>
                                         Report
@@ -113,7 +113,7 @@ function Profile() {
                             </Settings>
                         {
                             ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
-                            <Link to='/modapps' value="Moderator Applications">
+                            <Link to='/modapps' value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Applications
@@ -123,7 +123,7 @@ function Profile() {
                         }
                         {
                             ((Details['User_Type'] === 'VERIFIED') || (Details['User_Type'] === 'UNVERIFIED')) &&
-                            <Link to='/modapps' value="Moderator Applications">
+                            <Link to='/modapps' value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Application Form
@@ -137,21 +137,23 @@ function Profile() {
                             <Activitytext>
                                 Activity
                             </Activitytext>
-                            <Link to='/' value="My Activity">
+                            <Link to='/' value="My Activity" style={{textDecoration:"none"}}>
                                 <MyActivity>
                                     <ActivityBackground>
                                         My Activity
                                     </ActivityBackground>
                                 </MyActivity>
                             </Link>
-                            <Link to='/' value="Publications">
+                            <Line></Line>
+                            <Link to='/' value="Publications" style={{textDecoration:"none"}}>
                                 <Publications>
                                     <PublicationsBackground>
                                         Publications
                                     </PublicationsBackground>
                                 </Publications>
                             </Link>
-                            <Link to='/' value="Private Messages">
+                            <Line></Line>
+                            <Link to='/' value="Private Messages" style={{textDecoration:"none"}}>
                             <PrivateMessages>
                                 <PMBackground>
                                     Private Messages
@@ -221,28 +223,28 @@ function Profile() {
                         </Biography>
                         <ButtonsActivity>
                         <Buttons>
-                            <Link to={ID_List} value="My List">
+                            <Link to={ID_List} value="My List" style={{textDecoration:"none"}}>
                                 <MyList>
                                     <MyListBackground>
                                         My List
                                     </MyListBackground>
                                 </MyList>
                             </Link>
-                            <Link to='/reports' value="Reports">
+                            <Link to='/reports' value="Reports" style={{textDecoration:"none"}}>
                                 <Report>
                                     <ReportBackground>
                                         Report
                                     </ReportBackground>
                                 </Report>
                             </Link>
-                            <Settings onMouseDownCapture={() => MouseDown(flag)}>
+                            <Settings onMouseDownCapture={() => MouseDown(flag)} style={{textDecoration:"none"}}>
                                 <SettingsBackground>
                                     Settings
                                 </SettingsBackground>
                             </Settings>
                         {
                             ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
-                            <Link to='/modapps' value="Moderator Applications">
+                            <Link to='/modapps' value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Applications
@@ -252,7 +254,7 @@ function Profile() {
                         }
                         {
                             ((Details['User_Type'] === 'VERIFIED') || (Details['User_Type'] === 'UNVERIFIED')) &&
-                            <Link to='/modapps' value="Moderator Applications">
+                            <Link to='/modapps' value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Application Form
@@ -266,21 +268,23 @@ function Profile() {
                             <Activitytext>
                                 Activity
                             </Activitytext>
-                            <Link to='/' value="My Activity">
+                            <Link to='/' value="My Activity" style={{textDecoration:"none"}}>
                                 <MyActivity>
                                     <ActivityBackground>
                                         My Activity
                                     </ActivityBackground>
                                 </MyActivity>
                             </Link>
-                            <Link to='/' value="Publications">
+                            <Line></Line>
+                            <Link to='/' value="Publications" style={{textDecoration:"none"}}>
                                 <Publications>
                                     <PublicationsBackground>
                                         Publications
                                     </PublicationsBackground>
                                 </Publications>
                             </Link>
-                            <Link to='/' value="Private Messages">
+                            <Line></Line>
+                            <Link to='/' value="Private Messages" style={{textDecoration:"none"}}>
                             <PrivateMessages>
                                 <PMBackground>
                                     Private Messages
@@ -496,7 +500,8 @@ margin-bottom: 30px;
 
 const Biography = styled.div`
 
-    margin-left:20px;
+    margin-left:40px;
+    margin-right:10px;
 
 `
 
@@ -666,7 +671,13 @@ const ModAppText = styled.h3`
 `
 
 const Activity = styled.div`
+    width:250px;
 
+`
+const Line = styled.div`
+    height:0px;
+    width:360px;
+    border: solid 1px;
 `
 
 const MyActivity = styled.div`

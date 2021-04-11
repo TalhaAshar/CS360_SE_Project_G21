@@ -112,9 +112,7 @@ class MyListDefault(APIView):
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
 		
-        try:
-            pub_exists_in_list = Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_add))
-        except:
+        if(not Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_add)).exists()):
             new_list_item = Listings.objects.create(ListOwner=request.user, ListPub=pub_to_add, Status='UNREAD')
             new_list_item.save()
             return Response(status=status.HTTP_201_CREATED)
@@ -127,10 +125,11 @@ class MyListDefault(APIView):
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
 		
-        try:
+        if Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_del)).exists():
             pub_exists_in_list = Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_del))[0]
             pub_exists_in_list.delete()
-        except:
+            print("Deleted")
+        else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         return Response(status=status.HTTP_200_OK)
@@ -278,14 +277,20 @@ class Reports(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         user = User.objects.get(username=request.user)
-        parsed = request.data
+        parsed = request.data["data"]
+        print(parsed)
+        print(parsed["Type"])
         try:
+            
             if(parsed["Type"] == 'Post'):
+                print("faggot")
                 post_to_report = Post.objects.get(id=parsed["id"])
                 Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
             else:
+                print("negitotot")
                 pub_to_report = Publication.objects.get(id=parsed["id"])
-                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
+                temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
+                temp.save()
             return Response(status=status.HTTP_201_CREATED)
         except:
             print(request.data)

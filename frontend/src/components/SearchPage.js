@@ -1,6 +1,8 @@
 import React from 'react'
 import LinearCard from './LinearCard'
 import styled from 'styled-components'
+import './popup.scss';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
@@ -9,12 +11,12 @@ import Filter from "./SearchFilter";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-
 function SearchPage() {
 
     const { param } = useParams();
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
-    const [filters, setFilters] = useState(["Title"])
+    const [filters, setFilters] = useState([])
+    const [start, setStart] = useState(0)
 
     function handleFilters(value){
         console.log(value, "YES WE ARE EHERE")
@@ -22,25 +24,28 @@ function SearchPage() {
         
         if(temp == -1)
         {
+            console.log("ADDING")
             setFilters([...filters, value])
         }
         else
         {
-            if (filters.length > 1)
-            {
+            console.log("Inside ELSE")
                 const updatedFilters = [...filters.slice(0, temp), ...filters.slice(temp + 1)]
                 setFilters(updatedFilters)
-            }
-            else{
-                setFilters(["Title"])
-            }
         }
         console.log(filters)
     }
 
-    function getData(){
-        console.log("jjj");
-         
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 8)
+        }
+    }
+
+    function rightClick(){
+        if(start + 8 < pubs.length){
+            setStart(start + 8)
+        }
     }
     console.log("MMMM", param)
  
@@ -53,7 +58,9 @@ function SearchPage() {
         }
         console.log(url, "edfghtuehhe")
         axios.get(url).then((res) => {
+            console.log("THEN HANDLER")
             if (isComponentMounted){
+                console.log("COMP")
                 setPubs(res.data)
                 console.log(res)
             }
@@ -67,16 +74,30 @@ function SearchPage() {
 
     return (
         <Container>
+
+        
             <Heading>
                 <Background>
+                    <Text>
+
                 Search Results
+                </Text>
+                    <button class="bleh">Filter</button>
                 </Background>
             </Heading>
+
+            <Nextpage>
+                <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}} onClick={leftClick}/>
+                <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}} onClick={rightClick}/>
+            </Nextpage>
+
             < Filter onChange={handleFilters}/>
-            <Results>
-                {
+            <Colour>
+            
+                <Results>
+                   {
                     pubs.map((elem, index) => {
-                        if(index < 8){
+                        if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
                                 <LinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                 )
@@ -84,7 +105,8 @@ function SearchPage() {
                         console.log(index)
                     })
                 }
-            </Results>
+                </Results>
+            </Colour>
         </Container>
     )
 }
@@ -96,13 +118,33 @@ const Results = styled.div`
     height:1600px;
     display:grid;
     grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    padding-top:20px;
+padding-left:20px;
 `
 const Container = styled.div`
 margin-left: 120px;
 `
 
 const Heading = styled.div`
+margin-left: 20px;
 `
+const Nextpage = styled.div`
+cursor: pointer;
+display:flex;
+    flex-direction:row;
+    margin-left: 530px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+`
+
+const Colour = styled.div`
+background: #DCF2F8;
+width:1140px;
+height:1600px;
+border-radius: 20px;
+margin-bottom:100px;
+`
+
 const Background = styled.div`
 border-radius: 20px 20px 20px 20px;
 color:white;
@@ -120,23 +162,8 @@ font-size: 45px;
 line-height: 142%;
 right: 8.43%;
 top: 9.11%;
-bottom: 87.28%;
-margin-bottom: 30px;
-    
+padding-left: 360px;    
 `
 const Text = styled.h3`
-width: 769px;
-height: 62px;
-
-font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 45px;
-line-height: 142%;
-
-text-align: center;
-letter-spacing: 0.005em;
-font-feature-settings: 'tnum' on, 'lnum' on;
-
-color: black;
+margin-right: 180px;
 `

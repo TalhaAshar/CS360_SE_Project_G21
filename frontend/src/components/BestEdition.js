@@ -23,7 +23,7 @@ function BestEdition({title, authors, publisher, year, ISBN, description, editio
             <BookContainer>
                 <Link to={j}>
                     <BookPhoto>
-                        <img src={front_cover} />
+                        <img src={front_cover} width="300px" height="350px"/>
                     </BookPhoto>
                 </Link>
                 <BookDetailsContainer>
@@ -58,10 +58,16 @@ const Container = styled.div`
     padding-right:20px;
     background-color:white;
     border-radius:16px;
+    @media only screen and (max-width: 800px) {
+        height:auto;
+        display:flex;
+        justify-content:left;
+        flex-flow: row wrap;
+    }
 `
 const Title = styled.div`
     height:40px;
-    max-width:380px;
+    width:380px;
     background-color: #0A3977;
     color:white;
     font-size:large;
@@ -80,46 +86,51 @@ const BookContainer = styled.div`
     padding-left:20px;
 `
 const BookPhoto = styled.div`
-    max-height:350px;
-    max-width:300px;
+    height:350px;
+    width:300px;
     object-fit:none;
     padding-left:10px;
 `
 const BookDetailsContainer = styled.div`
-    padding-left:80px;
-    padding-right:80px;
-    padding-top:10px;
-    margin-left:40px;
+    padding-left:25%;
+    padding-right:4%;
+    padding-top:1%;
+    margin-left:2%;
+    @media only screen and (max-width: 700px) {
+        display:none;
+    }
 `
 const DividerContainer = styled.div`
-    padding-left:20px;
-    padding-right:20px;
-    padding-top:30px;
+    padding-left:4%;
+    padding-right:2%;
+    padding-top:2.5%;
+    @media only screen and (max-width: 900px) {
+        display:none;
+    }
 
 `
 const BookCommentContainer = styled.div`
     background-color:#DCF2F8;
-    max-height:250px;
-    max-width:450px;
-    padding-left:60px;
-    padding-right:60px;
-    padding-top:20px;
-    margin-top:35px;
-    margin-left:85px;
-    padding-bottom:20px;
+    height:40%;
+    width:40%;
+    padding-left:2%;
+    padding-right:1%;
+    padding-top:2%;
+    margin-top:6%;
+    margin-bottom:2%;
+    margin-left:6%;
+    padding-bottom:1%;
     border-radius:16px;
+    @media only screen and (max-width: 900px) {
+        display:none;
+    }
 `
 
 const BookTitle = styled.div`
-	width: 509px;
-	height: 46px;
-
-	font-family: DM Serif Display;
+    margin-bottom : 2%;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 40px;
 	line-height: 46px;
-
-
 	color: #081F32;
 `

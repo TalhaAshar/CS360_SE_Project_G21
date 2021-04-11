@@ -92,21 +92,22 @@ export default App;
 
 
 const Container = styled.div`
-  margin-left:150px;
-  margin-right:150px;
+max-width:100%;
+max-height:100%;
+margin-left:3%;
+margin-right:3%;
 
 `
 const Head = styled.h3`
-  width:990px;
-  height:50px;
-  margin-top:30px;
-  margin-left:5px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  background: #03204C;
-  border-radius: 8px;
+min-width: 55%;
+min-height: 4%;
+margin-top: 2%;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+background: #03204C;
+border-radius: 8px;
 `
 const FormContainer = styled.div`
   width: 1000px;
