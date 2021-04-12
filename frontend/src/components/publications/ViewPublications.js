@@ -12,9 +12,11 @@ function View(props) {
             </TextContainer>
             </Link>
             <Line></Line>
+            <Link to="/Columnar/">
             <TextContainer onClick ={()=>props.setTrigger(!props.trigger)}>
                 <Text>Grid</Text>
             </TextContainer>
+            </Link>
         </Container>
     ):"";
 }

@@ -35,7 +35,7 @@ handleSubmit = (event) =>{
   const data = { id: this.ID, Reason:this.state.Reason, Body:this.state.Body, Type: "PUB"};
   
   axios.post(`api/accounts/reports`, { data })
-    .then(res => res.json())
+    .then(res => console.log(res))
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
   }

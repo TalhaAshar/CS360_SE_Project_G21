@@ -107,7 +107,7 @@ class ProfileManagement extends Component{
                   <Link to='/reports' value="Reports">
                     <Report>
                       <ReportBackground>
-                        Report
+                        Report History
                       </ReportBackground>
                     </Report>
                   </Link>
@@ -123,7 +123,7 @@ class ProfileManagement extends Component{
                   }
                   {
                     ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED')) &&
-                      <Link to='/' value="Moderator Application History">
+                      <Link to='/modhist' value="Moderator Application History">
                         <Settings>
                           <SettingsBackground>
                             Moderator Application History
@@ -136,7 +136,7 @@ class ProfileManagement extends Component{
                       <Link to='/' value="Remove Account">
                         <ModApp>
                           <ModAppBackground>
-                            Remove Account
+                            Account Removal Requests
                           </ModAppBackground>
                         </ModApp>
                       </Link>

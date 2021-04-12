@@ -42,7 +42,7 @@ class Recommendations(APIView):
                 j = j + 1
         
         recs = Publication.objects.filter(Q(id=recs[0]) | Q(id=recs[1]) | Q(id=recs[2]) | Q(id=recs[3]) | Q(id=recs[4]))
-        
+        print(recs)
         temp = PublicationSerializer(recs, many=True)
         return Response(temp.data, status=status.HTTP_200_OK)
 
@@ -283,7 +283,6 @@ class Reports(APIView):
         try:
             
             if(parsed["Type"] == 'Post'):
-                print("faggot")
                 post_to_report = Post.objects.get(id=parsed["id"])
                 Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
             else:

@@ -15,7 +15,7 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Name:'', Email:'', Reason:'Feedback', Body:'You need to host your image and then upload in this text box.', seen: false };
+    this.state = { Name:'', Email:'', Reason:'Feedback', Body:'', seen: false };
 }
 
 togglePop = () => {
@@ -76,6 +76,7 @@ handleSubmit = (event) =>{
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
                 init={{
+                  placeholder: 'You need to host your image and then upload in this text box.',
                   height: 900,
                   width: '100%',
                   plugins: "image",

@@ -97,11 +97,11 @@ function App() {
             <ProfileManagement /> 
           </Route> 
            
-          <Route path="/Columnar/">
+          <Route exact path="/Columnar/">
             <Columnar logged={auth["Status"]}/>
           </Route>
 
-          <Route path="/Catalogue/">
+          <Route exact path="/Catalogue/">
             <Catalogue/>
           </Route>
 
@@ -110,7 +110,7 @@ function App() {
             <SinglePub />  
           </Route>
           
-          <Route path="/List">
+          <Route exact path="/List">
             <List />  
           </Route>
 
@@ -119,7 +119,19 @@ function App() {
             <Search />  
           </Route>
 
-          <Route path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
+          <Route exact path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
+
+          <Route exact path="/reports">
+            {/* <ReportHistory />   */}
+          </Route>
+
+          <Route exact path="/modapps">
+            {/* <ModApps />   */}
+          </Route>
+
+          <Route exact path="/modhist">
+            {/* <ModHist />   */}
+          </Route>
           
         </Switch>
 

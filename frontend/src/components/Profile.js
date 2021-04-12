@@ -102,18 +102,18 @@ function Profile() {
                             <Link to='/reports' value="Reports" style={{textDecoration:"none"}}>
                                 <Report>
                                     <ReportBackground>
-                                        Report
+                                        Report History
                                     </ReportBackground>
                                 </Report>
                             </Link>
                             <Settings onMouseDownCapture={() => MouseDown(flag)}>
                                 <SettingsBackground>
-                                    Settings
+                                    Manage Profile
                                 </SettingsBackground>
                             </Settings>
                         {
                             ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
-                            <Link to='/modapps' value="Moderator Applications" style={{textDecoration:"none"}}>
+                            <Link to='/modhist' value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Applications
@@ -145,10 +145,10 @@ function Profile() {
                                 </MyActivity>
                             </Link>
                             <Line></Line>
-                            <Link to='/' value="Publications" style={{textDecoration:"none"}}>
+                            <Link to='/contributions' value="Publications" style={{textDecoration:"none"}}>
                                 <Publications>
                                     <PublicationsBackground>
-                                        Publications
+                                        Contributions
                                     </PublicationsBackground>
                                 </Publications>
                             </Link>
@@ -233,21 +233,21 @@ function Profile() {
                             <Link to='/reports' value="Reports" style={{textDecoration:"none"}}>
                                 <Report>
                                     <ReportBackground>
-                                        Report
+                                        Report History
                                     </ReportBackground>
                                 </Report>
                             </Link>
                             <Settings onMouseDownCapture={() => MouseDown(flag)} style={{textDecoration:"none"}}>
                                 <SettingsBackground>
-                                    Settings
+                                    Manage Profile
                                 </SettingsBackground>
                             </Settings>
                         {
                             ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
-                            <Link to='/modapps' value="Moderator Applications" style={{textDecoration:"none"}}>
+                            <Link to='/modhist' value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
-                                        Moderator Applications
+                                        View Moderator Applications
                                     </ModAppBackground>
                                 </ModApp>
                             </Link>
@@ -276,10 +276,10 @@ function Profile() {
                                 </MyActivity>
                             </Link>
                             <Line></Line>
-                            <Link to='/' value="Publications" style={{textDecoration:"none"}}>
+                            <Link to='/contributions' value="Publications" style={{textDecoration:"none"}}>
                                 <Publications>
                                     <PublicationsBackground>
-                                        Publications
+                                        Contributions
                                     </PublicationsBackground>
                                 </Publications>
                             </Link>
@@ -594,7 +594,7 @@ const ReportText = styled.h3`
 
 `
 const Settings = styled.div`
-
+cursor: pointer;
 `
 const SettingsBackground = styled.div`
 

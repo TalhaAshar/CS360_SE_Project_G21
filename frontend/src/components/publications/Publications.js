@@ -19,7 +19,7 @@ function Publications(props) {
     
     const [PopView, setPopView] = useState(false)
     const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
-    
+    const [start, setStart] = useState(0)
 
     useEffect(() => {
         //getData(id)
@@ -55,6 +55,18 @@ function Publications(props) {
         setPopEdit(updated)
     }
 
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 16)
+        }
+    }
+
+    function rightClick(){
+        if(start + 16 < pubs.length){
+            setStart(start + 16)
+        }
+    }
+
     switch (flag) {
         case 'Unauthentic':
             return (
@@ -64,7 +76,7 @@ function Publications(props) {
                         <Heading>Publications</Heading>
                     </PublicationTitle>
                     <ViewNextButtonContainer>
-                    <View onMouseOver = {handleClick} onMouseLeave={handleClick}>
+                    <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
                             <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
@@ -74,8 +86,8 @@ function Publications(props) {
                             </ViewPopContainer>
                             </View>
                             <NextPrevious>
-                                <SkipPreviousRoundedIcon/>
-                                <SkipNextRoundedIcon/>
+                                <SkipPreviousRoundedIcon onClick={leftClick}/>
+                                <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
                             <View style = {{width:"15%"}}>
                                 <ViewText>Add Publication</ViewText>
@@ -85,7 +97,7 @@ function Publications(props) {
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 20){
+                                 if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
                                          <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                          )
@@ -126,7 +138,7 @@ function Publications(props) {
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 20){
+                                 if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
                                         <CardContent>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
@@ -156,7 +168,7 @@ function Publications(props) {
                         <Heading>Publications</Heading>
                     </PublicationTitle>
                     <ViewNextButtonContainer>
-                            <View onClick = {handleClick} onMouseLeave= {handleClick} >
+                            <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
                             <Svg width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
@@ -177,7 +189,7 @@ function Publications(props) {
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 20){
+                                 if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                          )
