@@ -41,6 +41,7 @@ class ForgotSerializer(serializers.ModelSerializer):
 
 # Account Removal Serializer
 class RemovalSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
     class Meta:
         model = AccountRemoval
         fields = ('id', 'user', 'Status', 'Date', 'Time')

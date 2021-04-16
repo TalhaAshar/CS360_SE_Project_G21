@@ -1,9 +1,30 @@
 import React from 'react'
 import styled from 'styled-components'
-import ForumGuestThreadCard from './ForumGuestThreadCard'
+import ForumGuestThreadCard from './ForumGuestThreadCard';
+import {useEffect, useState} from "react";
+import axios from 'axios';
+import {Link} from "react-router-dom";
 
 
 function ForumGest() {
+
+    const [threads, setThreads] = React.useState([])
+    const d = new Date()
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        axios.get(`api/forum/guest/home`).then((res) => {
+            if (isComponentMounted){
+                setThreads(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
+
     return (
         <Container>
             <ThreadBar>
@@ -12,16 +33,21 @@ function ForumGest() {
                 </Text>
             </ThreadBar>
             <BodyRecent>
-                    <ForumGuestThreadCard/>
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
-
-                    <ForumGuestThreadCard/>
+                    {
+                        threads.map((elem, index) => {
+                            if(index < 6){
+                            let placeholder = "/thread/" + elem.id
+                            return(
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }}>
+                                <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </Link>
+                            )
+                            }
+                        })
+                    }
 
             </BodyRecent>
         </Container>

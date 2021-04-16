@@ -30,11 +30,10 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
   const data = { Name:this.state.Name, Location:this.state.Location, Why:this.state.Why, Body:this.state.Body };
   
-  axios.post(`api/main/add_publication`, { data })
-    .then(res => res.json())
+  axios.post(`api/accounts/modapps`, { data })
+    .then(res => console.log("Posted"))
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
   }

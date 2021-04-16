@@ -215,6 +215,7 @@ class MyListGuest(APIView):
 		try:
 			user = User.objects.get(id=id)
 		except:
+			print("failed")
 			return Response({'Message' : 'The user does not exist!'},status=status.HTTP_404_NOT_FOUND)
 
 		try:
@@ -241,77 +242,77 @@ class UserAccountView(APIView):
 
 class UserGuestView(APIView):
     def get(self, request, id):
-
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
 		
         try:
             user = Profile.objects.get(user__id=id)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         temp = ProfileSerializer(user)
+        print(temp.data)
         return Response(temp.data, status=status.HTTP_200_OK)
 
 
 class Reports(APIView):
 
-    serializer_class = ReportSerializer
-    def get(self, request):
+	serializer_class = ReportSerializer
+	def get(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            user = Profile.objects.get(user=request.user).User_Type
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        if user == 'UNVERIFIED' or user == 'VERIFIED':
-            return self.NormalReport(request)
-        else:
-            return self.AdminReport()
-        
+		try:
+			user = Profile.objects.get(user=request.user).User_Type
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+		if user == 'UNVERIFIED' or user == 'VERIFIED':
+			print("neither")
+			return self.NormalReport(request)
+		else:
+			print("nor")
+			return self.AdminReport()
+
     
-    def post(self, request):
+	def post(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        user = User.objects.get(username=request.user)
-        parsed = request.data["data"]
-        print(parsed)
-        print(parsed["Type"])
-        try:
-            
-            if(parsed["Type"] == 'Post'):
-                post_to_report = Post.objects.get(id=parsed["id"])
-                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
-            else:
-                print("negitotot")
-                pub_to_report = Publication.objects.get(id=parsed["id"])
-                temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
-                temp.save()
-            return Response(status=status.HTTP_201_CREATED)
-        except:
-            print(request.data)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+		user = User.objects.get(username=request.user)
+		parsed = request.data["data"]
+		print(parsed)
+		print(parsed["Type"])
+		try:
+   
+			if(parsed["Type"] == 'Post'):
+				post_to_report = Post.objects.get(id=parsed["id"])
+				Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
+			else:
+				print("negitotot")
+				pub_to_report = Publication.objects.get(id=parsed["id"])
+				temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
+				temp.save()
+			return Response(status=status.HTTP_201_CREATED)
+		except:
+			print(request.data)
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def NormalReport(self, request):
+	def NormalReport(self, request):
 
-        try:
-            queryset = Report.objects.filter(Creator=request.user).order_by("-Date")
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        report_list = ReportSerializer(queryset, many=True)
-        return Response(report_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = Report.objects.filter(Creator=request.user).order_by("-Date")
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+		report_list = ReportSerializer(queryset, many=True)
+		return Response(report_list.data, status=status.HTTP_200_OK)
     
-    def AdminReport(self):
+	def AdminReport(self):
 
-        try:
-            queryset = Report.objects.all().order_by("-Date")
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        report_list = ReportSerializer(queryset, many=True)
-        return Response(report_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = Report.objects.all().order_by("-Date")
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+		report_list = ReportSerializer(queryset, many=True)
+		return Response(report_list.data, status=status.HTTP_200_OK)
 
 class ModeratorApps(APIView):
 
@@ -332,6 +333,7 @@ class ModeratorApps(APIView):
         except:
             return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
         mod_list = ModeratorSerializer(queryset, many=True)
+        print(mod_list.data)
         return Response(mod_list.data, status=status.HTTP_200_OK)
 
     def get(self, request):
@@ -346,6 +348,7 @@ class ModeratorApps(APIView):
         if user == 'UNVERIFIED' or user == 'VERIFIED':
             return self.NormalUser(request)
         else:
+            print("Got this far")
             return self.AdminUser()
         
     
@@ -358,11 +361,12 @@ class ModeratorApps(APIView):
         parsed = request.data["data"]
         print(parsed)
         try:
-            ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')
+            temp = ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')
+            temp.save()
             return Response(status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
-            return Response({'Message' : 'Your application has been submitted!'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message' : 'There was an error!'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 #Do when forum models made
@@ -451,3 +455,31 @@ class EditProfileView(APIView):
         else:
             print(serializer.errors)
             return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
+
+class ReportResolution(APIView):
+
+	def post(self, request, id):
+		
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'You must login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+        
+		try:
+			user = Profile.objects.get(user=request.user)
+		except:
+			return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		
+		if(user.User_Type != 'ADMIN' and user.User_Type != 'MODERATOR'):
+			return Response({'Message' : 'You are not authorized to perform this action!'}, status=status.HTTP_404_NOT_FOUND)
+
+		try:
+			report_to_resolve = Report.objects.get(id=id)
+		except:
+			return Response({'Message' : 'The report does not exist!'}, status=status.HTTP_404_NOT_FOUND)
+		
+		if(report_to_resolve.Status == 'RESOLVED'):
+			report_to_resolve.Status = 'UNRESOLVED'
+			report_to_resolve.save(update_fields=["Status"])
+		else:
+			report_to_resolve.Status = 'RESOLVED'
+			report_to_resolve.save(update_fields=["Status"])
+		return Response({'Message' : 'Success!'}, status=status.HTTP_200_OK)

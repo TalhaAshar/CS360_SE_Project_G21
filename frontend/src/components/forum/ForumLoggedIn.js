@@ -1,7 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
 import ForumLoggInCard from './ForumLoggInCard'
+import {useEffect, useState} from "react";
+import axios from 'axios';
+import {Link} from 'react-router-dom'
+
 function ForumLoggedIn() {
+
+    const [threads, setThreads] = React.useState([])
+    const d = new Date()
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        axios.get(`api/forum/user/home`).then((res) => {
+            if (isComponentMounted){
+                setThreads(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
     return (
         <Container>
             <Head>Discussion Forum</Head>
@@ -10,15 +31,28 @@ function ForumLoggedIn() {
                     <CategoryTitle>
                         Announcements
                     </CategoryTitle>
+                    <Link to="/thread/add">
                     <AddThread>
                         Add Thread
                     </AddThread>
+                    </Link>
                 </HeadContainer>
                 <CategoryThreadContainer>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
+                    {
+                        threads.map((elem, index) => {
+                            if(index < 4){
+                            let placeholder = "/thread/" + elem.id
+                            return(
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }}>
+                                <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </Link>
+                            )
+                            }
+                        })
+                    }
                 </CategoryThreadContainer>
             </AnnouncementsContainer>
             <GeneralContainer>
@@ -28,10 +62,21 @@ function ForumLoggedIn() {
                     </CategoryTitle>
                 </HeadContainer>
                 <CategoryThreadContainer>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
+                    {
+                        threads.map((elem, index) => {
+                            if(index >= 4 && index < 8){
+                            let placeholder = "/thread/" + elem.id
+                            return(
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }}>
+                                <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </Link>
+                            )
+                            }
+                        })
+                    }
 
                 </CategoryThreadContainer>
             </GeneralContainer>
@@ -42,10 +87,21 @@ function ForumLoggedIn() {
                         </CategoryTitle>
                     </HeadContainer>
                     <CategoryThreadContainer>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
-                        <ForumLoggInCard/>
+                    {
+                        threads.map((elem, index) => {
+                            if(index >= 8 && index < 12){
+                            let placeholder = "/thread/" + elem.id
+                            return(
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }}>
+                                <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </Link>
+                            )
+                            }
+                        })
+                    }
 
                     </CategoryThreadContainer>
             </OtherContainer>

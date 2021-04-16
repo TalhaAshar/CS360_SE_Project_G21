@@ -99,7 +99,7 @@ function Header(props) {
                             <IconText>Home</IconText>
                         </Home>
                     </Link>
-                        <Link to="/Forum" style={{color:"#04396B"}}> 
+                        <Link to="/forum/user" style={{color:"#04396B"}}> 
                             <Forum>
                                 <ForumIcon
                                     style={{

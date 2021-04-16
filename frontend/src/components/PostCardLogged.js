@@ -15,11 +15,11 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-function ForumGuestThreadCard({username, title, category, postcount, timestamp, desc, id}) {
+function PostCardLogged({username, timestamp, desc, id}) {
 
     let placeholder = "Hours"
     let post_time = timestamp
-
+    console.log("Ninpa id", id)
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
@@ -27,21 +27,30 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
 
     const [profile, setProfile] = React.useState({})
     const [flag, setFlag] = React.useState(false)
+    const [current, setCurrent] = React.useState(id)
+    console.log("vurrent", current)
 
     useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/accounts/profile/" + id
-        axios.get(url).then((res) => {
-            if (isComponentMounted){
-                setProfile(res.data)
-                setFlag(true)
-            };
-        })
-        .catch(error => console.log('Error:', error))
+        console.log("BACK IN HERE WITH ID", current)
+        
+            let url = "api/accounts/profile/" + id
+            console.log("send prof", url)
+            axios.get(url).then((res) => {
+                if (isComponentMounted){
+                    setProfile(res.data)
+                    console.log("recv prof")
+                    console.log(url, res.data)
+                    
+                };
+            })
+            .catch(error => console.log('Error:', error))
+        setFlag(!flag)
         return () => {
             isComponentMounted = false;
         }
-    }, [])
+    }, [id])
+
 
     return (
         
@@ -49,23 +58,21 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
         <ImageUserNameContainer>
             <ImageContainer>
                
-            {flag && <Image src={profile["ProfileImage"]}
+                <Image src={profile["ProfileImage"]}
                     width="100px" height="100px"
-                />}
+                />
             </ImageContainer>
             <UserName>{username}</UserName>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
-            <ThreadTitle>{title}</ThreadTitle>
-            <ThreadCategory>{category}</ThreadCategory>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>{postcount} Posts</h5>
+                <h5 style={{paddingTop:"4px"}}>{post_time}{placeholder}</h5>
             </Comment>
-            <Comment>
+            <Commentf>
             
             <Comment1>
             <ReplyIcon style = {{fontSize:'30px'}}/>
@@ -73,13 +80,13 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
             <Comment2>
             <ReportProblemIcon style = {{fontSize:'30px'}}/>
             </Comment2>
-            </Comment>
+            </Commentf>
             <TimeIcon>
             <Comment1>
-                    <DeleteIcon style = {{fontSize:'30px'}}/>
+                    
             </Comment1>
             <Comment2>
-                    <EditIcon style = {{fontSize:'30px'}}/>
+                    
             </Comment2>
             </TimeIcon>
         </ThreadTimePostContainer>
@@ -88,7 +95,7 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
     )
 }
 
-export default ForumGuestThreadCard
+export default PostCardLogged
 
 const Container = styled.div`
 width:1100px;
@@ -113,19 +120,28 @@ const ThreadDetailContainer = styled.div`
     margin-left:20px;
 `
 const ThreadTitle = styled.h4`
+padding-right: 155px;
 `
 const ThreadCategory = styled.h4`
 `
-const ThreadMinorDetail = styled.h6`
+const ThreadMinorDetail = styled.h4`
+margin-top:10px;
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:680px;
-    margin-top:60px;
+    margin-left:670px;
+    margin-top:20px;
 `
 const Comment = styled.div`
 display:flex;
 margin-bottom:10px;
+padding-bottom: 30px;
 `
+
+const Commentf = styled.div`
+display:flex;
+margin-bottom:10px;
+`
+
 const TimeIcon = styled.div`
 display:flex;
 padding-top: 10px;

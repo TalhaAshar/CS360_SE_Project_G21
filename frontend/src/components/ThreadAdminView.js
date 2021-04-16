@@ -1,47 +1,231 @@
 import React from 'react'
-import LinearCard from './LinearCard'
 import ThreadCardGuest from './ThreadCardGuest'
+import PostCardOwner from "./PostCardOwner";
+import PostCardLogged from "./PostCardLogged";
 import styled from 'styled-components'
+import { useLocation, useParams} from "react-router-dom"
+import {useEffect, useState} from "react";
+import axios from 'axios';
 
-function SearchPage() {
-    return (
-        <Container>
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+function ThreadAdmin(props) {
+
+    const [posts, setPosts] = React.useState([{"id":'',"Creator":{"id":0,"username":"","email":""},"TimeStamp":"","Body":"","Poll_Title":null,"Poll_Yes":'',"Poll_No":''}])
+    const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{} } )
+    const [User, setUser] = useState('')
+    const [flag, setFlag] = useState(false)
+    const d = new Date()
+    const { id } = useParams();
+    console.log("ningo", posts)
+
+    useEffect(() => {
+        let isComponentMounted = true;
+
+        let url = `api/forum/threads/` + id
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                
+                console.log(posts, "set new")
+                console.log(res.data, "Nptt")
+                setPosts(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+
+        axios.get(`api/accounts/profile`).then((res) => {
+            if (isComponentMounted){
+                setDetails(res.data)
+                setUser(res.data['user']['username'])
+                if(res.data['User_Type'] == 'ADMIN' || res.data['User_Type'] == 'MODERATOR'){
+                    setFlag(true)
+                }
+
+            };
+        })
+        .catch(error => console.log('Error:', error))
+
+        
+
+        
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [id])
+
+
+    function deleteThread(){
+        
+    }
+
+    function reportPost(){
+
+    }
+
+    function addPost(){
+
+    }
+
+    function editPost(){
+
+    }
+
+    switch(flag){
+        case true:
+            return(
+                <Container>
             <Heading>
                     <Background>
-                    Thread Title
+                    {props.location.state.Title}
                     </Background>
                 </Heading>
             <Lower>
                 
 
                 <Results1>
-                    <ThreadCardGuest/>
+                    {/* <ThreadCardGuest id={props.location.state.Creator["id"]} title={props.location.state.Title} username={props.location.state.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(props.location.state.Timestamp)) / 3600000)} category={props.location.state.Category} postcount={props.location.state.PostCount} desc={posts[0].Body}/> */}
                 </Results1>
                 <RP>
+
                 <Report>
                     <RText>
-                    Report Thread
-                    </RText>
-                    
-                </Report>
-                <Delete>
-                    <DText>
                     Delete Thread
+                    </RText>
+                </Report>
+
+                {(User == posts[0].Creator["username"]) && <Delete>
+                    <DText>
+                    Unnotify Me
                     </DText>
-                </Delete>
+                </Delete>}
+
                 </RP>
                 <Results>
+                    {/* {
+                        posts.map((elem, index)  => {
+                            if(index > 0){
+                                return(
+                                    <ThreadCardGuest />
+                                )
+                            }
+                        })
+                    } */}
                     <ThreadCardGuest/>
                     <ThreadCardGuest/>
                     <ThreadCardGuest/>
                     <ThreadCardGuest/>
                 </Results>
-            </Lower>
-        </Container>
-    )
+                </Lower>
+            </Container>
+            )
+        case false:
+            return(
+                <Container>
+            <Heading>
+                    <Background>
+                    {props.location.state.Title}
+                    </Background>
+                </Heading>
+            <Lower>
+                
+
+                <Results1>
+                    {(User == posts[0].Creator["username"]) && <PostCardOwner id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {(User != posts[0].Creator["username"]) && <PostCardLogged id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {console.log(posts[0])}
+                    {/* <ThreadCardGuest id={props.location.state.Creator["id"]} title={props.location.state.Title} username={props.location.state.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(props.location.state.Timestamp)) / 3600000)} category={props.location.state.Category} postcount={props.location.state.PostCount} desc={posts[0].Body}/> */}
+                </Results1>
+                <RP>
+
+                {(User == posts[0].Creator["username"]) &&<Report>
+                    <RText>
+                    Delete Thread
+                    </RText>
+                </Report>}
+
+                {(User == posts[0].Creator["username"]) && <Delete>
+                    <DText>
+                    Unnotify Me
+                    </DText>
+                </Delete>}
+
+                </RP>
+                <Results>
+                    {/* is current user creator or no*/}
+                    {
+                        posts.map((elem, index)  => {
+                            if(index > 0){
+                                if(User == elem.Creator["username"]){
+                                    return(
+                                        <PostCardOwner id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    )
+                                }else{
+                                    <PostCardLogged id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                }
+                            }
+                        })
+                    }
+                </Results>
+                </Lower>
+            </Container>
+            )
+        default:
+            return(
+                <Container>
+            <Heading>
+                    <Background>
+                    {props.location.state.Title}
+                    </Background>
+                </Heading>
+            <Lower>
+                
+
+                <Results1>
+                    {(User == posts[0].Creator["username"]) && <PostCardOwner id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {(User != posts[0].Creator["username"]) && <PostCardLogged id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {/*Two cases to be handled, is current viewer the creator or not?*/}
+                    {/* <ThreadCardGuest id={props.location.state.Creator["id"]} title={props.location.state.Title} username={props.location.state.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(props.location.state.Timestamp)) / 3600000)} category={props.location.state.Category} postcount={props.location.state.PostCount} desc={posts[0].Body}/> */}
+                </Results1>
+                <RP>
+
+                {(User == posts[0].Creator["username"]) &&<Report>
+                    <RText>
+                    Delete Thread
+                    </RText>
+                </Report>}
+
+                {(User == posts[0].Creator["username"]) && <Delete>
+                    <DText>
+                    Unnotify Me
+                    </DText>
+                </Delete>}
+
+                </RP>
+                <Results>
+                    {/* is current user creator or no*/}
+                    {
+                        posts.map((elem, index)  => {
+                            if(index > 0){
+                                if(User == elem.Creator["username"]){
+                                    return(
+                                        <PostCardOwner id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    )
+                                }else{
+                                    <PostCardLogged id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                }
+                            }
+                        })
+                    }
+                </Results>
+                </Lower>
+            </Container>
+           )
+    }
+    
 }
 
-export default SearchPage
+export default ThreadAdmin
 
 const Results = styled.div`
     width:1100px;

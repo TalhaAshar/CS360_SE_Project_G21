@@ -23,52 +23,55 @@ class GuestRecentThreads(APIView):
         serializer = ThreadSerializer(queryset, many=True)
         return Response(serializer.data)
 
-# class UserRecentThreads(APIView):
+class UserRecentThreads(APIView):
 
-#     def get(self, request):
+    def get(self, request):
 
-#         if(not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if(not request.user.is_authenticated):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-#         announcements = Postings.objects.filter(ParentThread__Category='Announcements').order_by('ParentThread__Timestamp')[:4]
-#         general = Postings.objects.filter(ParentThread__Category='General').order_by('ParentThread__Timestamp')[:4]
-#         other = Postings.objects.filter(ParentThread__Category='Other').order_by('ParentThread__Timestamp')[:4]
+        announcements = Thread.objects.filter(Category='Announcements').order_by('-Timestamp')[:4]
+        general = Thread.objects.filter(Category='General').order_by('-Timestamp')[:4]
+        other = Thread.objects.filter(Category='Other').order_by('-Timestamp')[:4]
         
-#         temp = announcements.union(general, other, all=True)
-#         serializer = ListingsSerializer(temp)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+        temp = announcements.union(general, other, all=True)
+        serializer = ThreadSerializer(temp, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-# class ThreadsHome(APIView):
+class ThreadsHome(APIView):
 
-#     def get(self, request, id):
-
-#         try:
-#             queryset = Post.objects.filter(postings__ParentThread__id=id).order_by('Timestamp')
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+    def get(self, request, id):
+        print("am trying")
+        try:
+            thread = Thread.objects.get(id=id)
+            print(thread)
+            queryset = Post.objects.filter(ParentThread=thread).order_by('TimeStamp')
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
-#         all_posts = PostSerializer(queryset, many=True)
-#         return Response(all_posts.data, status=status.HTTP_200_OK)
+        all_posts = PostSerializer(queryset, many=True)
+        return Response(all_posts.data, status=status.HTTP_200_OK)
     
-#     def post(self, request, id):
-#         try:
-#             queryset = Thread.objects.get(id=id)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+    def post(self, request, id):
+        try:
+            queryset = Thread.objects.get(id=id)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-#         if(not request.user.is_authenticated):
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+        if(not request.user.is_authenticated):
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
-#         user = User.objects.get(username=request.user)
-#         count = queryset.PostCount + 1
-#         queryset.PostCount = count
-#         queryset.save(update_fields=["PostCount"])
+        user = User.objects.get(username=request.user)
+        count = queryset.PostCount + 1
+        queryset.PostCount = count
+        queryset.save(update_fields=["PostCount"])
 
-#         parse = request.data["data"]
-#         temp = Post.objects.create(Creator=user, Body=parse["Body"])
-#         temp.save()
-#         new_rel = Postings.objects.create(ParentThread=queryset, ParentPost=temp)
-#         new_rel.save()
+        parse = request.data["data"]
+        temp = Post.objects.create(Creator=user, Body=parse["Body"])
+        temp.save()
+        new_rel = Postings.objects.create(ParentThread=queryset, ParentPost=temp)
+        new_rel.save()
 
 
 class AddThread(APIView):
@@ -81,10 +84,12 @@ class AddThread(APIView):
         user = User.objects.get(username=request.user)
         parse = request.data["data"]
         new_thread = Thread.objects.create(Title=parse["Title"], Category=parse["Category"], Creator=user)
-        new_thread.Base_View = parse["Body"][:60]
         new_thread.save()
+        new_thread.Base_View = parse["Body"][:60]
+        new_thread.save(update_fields=["Base_View"])
         new_post = Post.objects.create(Creator=user,Body=parse["Body"], ParentThread=new_thread)
         new_post.save()
+        print(new_post.Body)
 
         return Response(status=status.HTTP_200_OK)
 

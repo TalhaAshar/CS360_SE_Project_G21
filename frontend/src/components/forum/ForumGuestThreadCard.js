@@ -3,34 +3,66 @@ import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import CardMedia from '@material-ui/core/CardMedia';
+import {useEffect} from "react";
+import axios from 'axios';
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function ForumGuestThreadCard() {
+function ForumGuestThreadCard({username, title, category, postcount, timestamp, desc, id}) {
+
+    let placeholder = "Hours"
+    let post_time = timestamp
+
+    if(post_time > 24){
+        placeholder = "Days"
+        post_time = Math.floor(post_time / 24)
+    }
+
+    const [profile, setProfile] = React.useState({})
+    const [flag, setFlag] = React.useState(false)
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/accounts/profile/" + id
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setProfile(res.data)
+                setFlag(true)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
+    console.log("Post time", post_time)
     return (
         
         <Container>
         <ImageUserNameContainer>
             <ImageContainer>
                
-                <Image src="http://www.pngall.com/wp-content/uploads/5/Aesthetic-Anime-Girl-PNG-File-Download-Free.png"
+                {flag && <Image src={profile["ProfileImage"]}
                     width="100px" height="100px"
-                />
+                />}
             </ImageContainer>
-            <UserName>Alachigari</UserName>
+            <UserName>{username}</UserName>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
-            <ThreadTitle>Forum Ruels:Must Read!!1</ThreadTitle>
-            <ThreadCategory>Announcements</ThreadCategory>
-            <ThreadMinorDetail>This thread is for new users</ThreadMinorDetail>
+            <ThreadTitle>{title}</ThreadTitle>
+            <ThreadCategory>{category}</ThreadCategory>
+            <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}}/>
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Posts</h5>
+                <h5 style={{paddingTop:"4px"}}>{postcount} Posts</h5>
             </Comment>
             <TimeIcon>
                 <QueryBuilderIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Hours</h5>
+                <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
             </TimeIcon>
         </ThreadTimePostContainer>
 

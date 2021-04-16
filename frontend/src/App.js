@@ -5,7 +5,6 @@ import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import styled from 'styled-components'
 import Home from './components/Home'
 import Footer from './components/Footer'
-import LogIn from './components/LogIn'
 import React, {Component} from "react"
 import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
@@ -23,8 +22,14 @@ import axios from 'axios';
 import { ContactSupportOutlined } from '@material-ui/icons';
 import Search from "./components/SearchPage";
 import ReportPublication from "./components/forms/ReportPublication";
-
-
+import ReportHistory from "./components/ReportUser";
+import ModHistory from "./components/ModAppHistoryUser";
+import ModeratorAppForm from "./components/forms/ModeratorAppForm";
+import PubActivity from "./components/PubActivity";
+import AccountRemoval from "./components/AccountRemovalList";
+import ForumGuest from "./components/forum/ForumGest";
+import ForumUser from "./components/forum/ForumLoggedIn";
+import ThreadAdmin from "./components/ThreadAdminView";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -109,6 +114,12 @@ function App() {
             {console.log("single")}
             <SinglePub />  
           </Route>
+
+          <Route exact path="/thread/add">
+            <Thread />
+          </Route>
+
+          <Route path="/thread/:id" component={(props) => <ThreadAdmin {...props} />} /> 
           
           <Route exact path="/List">
             <List />  
@@ -119,19 +130,35 @@ function App() {
             <Search />  
           </Route>
 
+          <Route path="/contributions">
+            {console.log("IM HERE")}
+            <PubActivity />  
+          </Route>
+
           <Route exact path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
 
-          <Route exact path="/reports">
-            {/* <ReportHistory />   */}
-          </Route>
+          <Route exact path="/reports" component={(props) => <ReportHistory {...props}/>} />
+
+          <Route exact path="/modhist" component={(props) => <ModHistory {...props}/>} />
 
           <Route exact path="/modapps">
-            {/* <ModApps />   */}
+            <ModeratorAppForm />
           </Route>
 
-          <Route exact path="/modhist">
-            {/* <ModHist />   */}
+          <Route exact path="/remove_account/admin">
+            <AccountRemoval />
           </Route>
+
+          <Route exact path="/forum/guest">
+            <ForumGuest />
+          </Route>
+
+          <Route exact path="/forum/user">
+            <ForumUser />
+          </Route>
+
+          
+          
           
         </Switch>
 

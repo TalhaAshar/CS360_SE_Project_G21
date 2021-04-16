@@ -17,6 +17,14 @@ class ProfileManagement extends Component{
         this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', 'ProfileImage':this.props.passDetails['ProfileImage'] };
     }
 
+    removeAccount = () => {
+      let url = "/api/register/user/delete"
+      axios.post(url)
+          .then(res => console.log("done"))
+          .catch(error => console.error('Error:', error))
+          .then(response => console.log('Success', response));
+    }
+
     handleChange = (event) =>{
         this.setState({ [event.target.name]:event.target.value });
     }
@@ -123,7 +131,10 @@ class ProfileManagement extends Component{
                   }
                   {
                     ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED')) &&
-                      <Link to='/modhist' value="Moderator Application History">
+                      <Link to={{
+                        pathname : '/modhist',
+                        state : this.state.User_Type,
+                    }}  value="Moderator Application History">
                         <Settings>
                           <SettingsBackground>
                             Moderator Application History
@@ -133,7 +144,7 @@ class ProfileManagement extends Component{
                   }
                   {
                     (this.state.User_Type === 'ADMIN') &&
-                      <Link to='/' value="Remove Account">
+                      <Link to='/remove_account/admin' value="Remove Account">
                         <ModApp>
                           <ModAppBackground>
                             Account Removal Requests
@@ -143,13 +154,11 @@ class ProfileManagement extends Component{
                   }
                   {
                     ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED') || (this.state.User_Type === 'MODERATOR')) &&
-                      <Link to='/' value="Remove Account">
                         <ModApp>
-                          <ModAppBackground>
+                          <ModAppBackground onClick={this.removeAccount}>
                             Remove Account
                           </ModAppBackground>
                         </ModApp>
-                      </Link>
                   }
                 </Buttons>
               </ButtonsActivity>

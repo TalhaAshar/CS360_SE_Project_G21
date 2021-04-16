@@ -14,7 +14,7 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Title:'', Category:'Announcements', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Title:'', Category:'Announcements', Body:'' };
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -34,8 +34,8 @@ handleSubmit = (event) =>{
   const url = "api/main/add_publication";
   const data = { Title:this.state.Title, Category:this.state.Category, Body:this.state.Body };
   
-  axios.post(`api/main/add_publication`, { data })
-    .then(res => res.json())
+  axios.post(`api/forum/threads/add`, { data })
+    .then(res => console.log("done adding thread"))
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
   }
@@ -65,6 +65,7 @@ handleSubmit = (event) =>{
               value={this.state.Body}
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
               init={{
+                placeholder : 'You need to host your image and then upload in this text box.',
                 height: 600,
                 width: 900,
                 plugins: "image",
