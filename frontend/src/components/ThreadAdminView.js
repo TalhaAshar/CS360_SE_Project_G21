@@ -2,10 +2,12 @@ import React from 'react'
 import ThreadCardGuest from './ThreadCardGuest'
 import PostCardOwner from "./PostCardOwner";
 import PostCardLogged from "./PostCardLogged";
+import PostCardAdmin from "./PostCardAdmin";
 import styled from 'styled-components'
 import { useLocation, useParams} from "react-router-dom"
 import {useEffect, useState} from "react";
 import axios from 'axios';
+import RichTextEditor from "./functionality/RichTextEditor";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -84,7 +86,7 @@ function ThreadAdmin(props) {
                 
 
                 <Results1>
-                    {/* <ThreadCardGuest id={props.location.state.Creator["id"]} title={props.location.state.Title} username={props.location.state.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(props.location.state.Timestamp)) / 3600000)} category={props.location.state.Category} postcount={props.location.state.PostCount} desc={posts[0].Body}/> */}
+                    <PostCardAdmin id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)} />
                 </Results1>
                 <RP>
 
@@ -102,20 +104,18 @@ function ThreadAdmin(props) {
 
                 </RP>
                 <Results>
-                    {/* {
+                    {
                         posts.map((elem, index)  => {
                             if(index > 0){
                                 return(
-                                    <ThreadCardGuest />
+                                    <PostCardAdmin id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                 )
                             }
                         })
-                    } */}
-                    <ThreadCardGuest/>
-                    <ThreadCardGuest/>
-                    <ThreadCardGuest/>
-                    <ThreadCardGuest/>
+                    }
                 </Results>
+
+                <RichTextEditor />
                 </Lower>
             </Container>
             )
@@ -167,6 +167,8 @@ function ThreadAdmin(props) {
                         })
                     }
                 </Results>
+
+                <RichTextEditor />
                 </Lower>
             </Container>
             )
@@ -218,6 +220,8 @@ function ThreadAdmin(props) {
                         })
                     }
                 </Results>
+
+                <RichTextEditor />
                 </Lower>
             </Container>
            )

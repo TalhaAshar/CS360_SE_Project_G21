@@ -19,7 +19,7 @@ function Publications(props) {
     
     const [PopView, setPopView] = useState(false)
     const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
-    
+    const [start, setStart] = useState(0)
 
     useEffect(() => {
         //getData(id)
@@ -55,6 +55,18 @@ function Publications(props) {
         setPopEdit(updated)
     }
 
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 8)
+        }
+    }
+
+    function rightClick(){
+        if(start + 8 < pubs.length){
+            setStart(start + 8)
+        }
+    }
+
     switch (flag) {
         case 'Unauthentic':
             return (
@@ -85,7 +97,7 @@ function Publications(props) {
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 20){
+                                 if(index >= start && index < (start + 8) && index < pubs.length){
                                      return(
                                          <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                          )
@@ -126,7 +138,7 @@ function Publications(props) {
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 20){
+                                 if(index >= start && index < (start + 8) && index < pubs.length){
                                      return(
                                         <CardContent>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
@@ -177,7 +189,7 @@ function Publications(props) {
                          {
                              pubs.map((elem, index) => {
                                  console.log(elem.id)
-                                 if(index < 20){
+                                 if(index >= start && index < (start + 8) && index < pubs.length){
                                      return(
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                          )

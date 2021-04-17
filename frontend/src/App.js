@@ -30,6 +30,7 @@ import AccountRemoval from "./components/AccountRemovalList";
 import ForumGuest from "./components/forum/ForumGest";
 import ForumUser from "./components/forum/ForumLoggedIn";
 import ThreadAdmin from "./components/ThreadAdminView";
+import ThreadGuest from "./components/ThreadGuestView";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -119,7 +120,9 @@ function App() {
             <Thread />
           </Route>
 
-          <Route path="/thread/:id" component={(props) => <ThreadAdmin {...props} />} /> 
+          <Route path="/thread/user/:id" component={(props) => <ThreadAdmin {...props} />} /> 
+
+          <Route path="/thread/guest/:id" component={(props) => <ThreadGuest {...props} />} /> 
           
           <Route exact path="/List">
             <List />  

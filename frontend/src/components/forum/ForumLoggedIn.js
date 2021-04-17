@@ -41,7 +41,7 @@ function ForumLoggedIn() {
                     {
                         threads.map((elem, index) => {
                             if(index < 4){
-                            let placeholder = "/thread/" + elem.id
+                            let placeholder = "/thread/user/" + elem.id
                             return(
                                 <Link to={{
                                     pathname : placeholder,
@@ -65,7 +65,7 @@ function ForumLoggedIn() {
                     {
                         threads.map((elem, index) => {
                             if(index >= 4 && index < 8){
-                            let placeholder = "/thread/" + elem.id
+                            let placeholder = "/thread/user/" + elem.id
                             return(
                                 <Link to={{
                                     pathname : placeholder,
@@ -90,7 +90,7 @@ function ForumLoggedIn() {
                     {
                         threads.map((elem, index) => {
                             if(index >= 8 && index < 12){
-                            let placeholder = "/thread/" + elem.id
+                            let placeholder = "/thread/user/" + elem.id
                             return(
                                 <Link to={{
                                     pathname : placeholder,

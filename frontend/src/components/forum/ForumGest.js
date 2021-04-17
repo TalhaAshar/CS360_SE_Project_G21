@@ -36,7 +36,7 @@ function ForumGest() {
                     {
                         threads.map((elem, index) => {
                             if(index < 6){
-                            let placeholder = "/thread/" + elem.id
+                            let placeholder = "/thread/guest/" + elem.id
                             return(
                                 <Link to={{
                                     pathname : placeholder,

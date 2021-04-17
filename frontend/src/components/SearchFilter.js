@@ -33,9 +33,6 @@ function SearchFilter(props) {
                     <Publisher>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb4"/><label for="cb4" onClick={() => props.onChange("Publisher")}>Publisher</label>
                     </Publisher>
-                    <Year>
-                    <input type="checkbox" class="hidden2" name="cb4" id="cb5"/><label for="cb5" onClick={() => props.onChange("Year_Publication")}>Year</label>
-                    </Year>
                     <D>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb6"/><label for="cb6" onClick={() => props.onChange("Year_Publication")}>Date</label>
                     </D>
