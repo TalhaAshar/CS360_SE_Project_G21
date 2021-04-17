@@ -14,7 +14,8 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Reason:'Spam', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Reason:'Spam', Body:'' };
+    this.ID = props.location.state
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -31,11 +32,11 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
-  const data = { Reason:this.state.Reason, Body:this.state.Body };
+  const url = "api/accounts/reports";
+  const data = { id: this.ID, Reason:this.state.Reason, Body:this.state.Body, Type:'Post' };
   
-  axios.post(`api/main/add_publication`, { data })
-    .then(res => res.json())
+  axios.post(`api/accounts/reports`, { data })
+    .then(res => console.log("reported"))
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success', response));
   }
@@ -62,6 +63,7 @@ handleSubmit = (event) =>{
               value={this.state.Body}
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
               init={{
+                placeholder : 'You need to host your image and then upload in this text box.',
                 height: 600,
                 width: 900,
                 plugins: "image",

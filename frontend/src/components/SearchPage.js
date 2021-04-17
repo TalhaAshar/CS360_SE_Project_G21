@@ -7,6 +7,9 @@ import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
 import Filter from "./SearchFilter";
+import NewLinearCard from "./publications/NewLinearCard";
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -86,8 +89,8 @@ function SearchPage() {
             </Heading>
 
             <Nextpage>
-                <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}} onClick={leftClick}/>
-                <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}} onClick={rightClick}/>
+            <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+            <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
 
             < Filter onChange={handleFilters}/>
@@ -98,7 +101,7 @@ function SearchPage() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
-                                <LinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                 )
                         }
                         console.log(index)

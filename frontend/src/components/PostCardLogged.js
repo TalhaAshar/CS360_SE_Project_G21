@@ -10,12 +10,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Delete } from '@material-ui/icons';
 import {useEffect, useState} from "react";
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-function PostCardLogged({username, timestamp, desc, id}) {
+function PostCardLogged({post_id, username, timestamp, desc, id}) {
 
     let placeholder = "Hours"
     let post_time = timestamp
@@ -77,9 +78,16 @@ function PostCardLogged({username, timestamp, desc, id}) {
             <Comment1>
             <ReplyIcon style = {{fontSize:'30px'}}/>
             </Comment1>
-            <Comment2>
-            <ReportProblemIcon style = {{fontSize:'30px'}}/>
-            </Comment2>
+
+            <Link to={{
+                pathname : "/reportpost",
+                state : post_id
+            }}>
+                <Comment2>
+                <ReportProblemIcon style = {{fontSize:'30px'}}/>
+                </Comment2>
+            </Link>
+
             </Commentf>
             <TimeIcon>
             <Comment1>

@@ -31,6 +31,7 @@ import ForumGuest from "./components/forum/ForumGest";
 import ForumUser from "./components/forum/ForumLoggedIn";
 import ThreadAdmin from "./components/ThreadAdminView";
 import ThreadGuest from "./components/ThreadGuestView";
+import ReportThread from "./components/forms/ReportThread";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -139,6 +140,8 @@ function App() {
           </Route>
 
           <Route exact path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
+
+          <Route exact path="/reportpost" component={(props) => <ReportThread {...props}/>} />
 
           <Route exact path="/reports" component={(props) => <ReportHistory {...props}/>} />
 

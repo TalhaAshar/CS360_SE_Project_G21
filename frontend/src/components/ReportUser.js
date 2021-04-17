@@ -98,10 +98,11 @@ function ReportsUser(props) {
                                 )
                             }
                             else if (elem.Status == 'UNRESOLVED'){
+                                console.log(elem)
                                 return(
                                     <Flag>
                                         <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text>{placeholder} reported {elem.Relevant_Post["Creator"]["username"]}'s post for {elem.Reason}.</Text>
+                                        <Text>{placeholder} reported a post for {elem.Reason}.</Text>
                                         <UnresolvedButton onClick={changeStatus(elem.id)}/>
                                         <NLine></NLine>
                                     </Flag>
@@ -111,7 +112,7 @@ function ReportsUser(props) {
                                 return(
                                     <Flag>
                                         <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text>{placeholder} reported {elem.Relevant_Post["Creator"]["username"]}'s post for {elem.Reason}.</Text>
+                                        <Text>{placeholder} reported a post for {elem.Reason}.</Text>
                                         <ResolvedButton onClick={changeStatus(elem.id)}/>
                                         <NLine></NLine>
                                     </Flag>

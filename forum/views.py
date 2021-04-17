@@ -93,47 +93,47 @@ class AddThread(APIView):
 
         return Response(status=status.HTTP_200_OK)
 
-# class EditThread(APIView):
+class EditThread(APIView):
 
-#     def post(self, request, id):
+    def post(self, request, id):
 
-#         if (not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if (not request.user.is_authenticated):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-#         try:
-#             thread_to_edit = Thread.objects.get(id=id)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
+            thread_to_edit = Thread.objects.get(id=id)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
-#         user = User.objects.get(username=request.user)
-#         temp_check = Profile.objects.get(user=user)
-#         if thread_to_edit.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
+        user = User.objects.get(username=request.user)
+        temp_check = Profile.objects.get(user=user)
+        if thread_to_edit.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
 
-#             parse = request.data["data"]
-#             thread_to_edit.Category = parse["Category"]
-#             thread_to_edit.Title = parse["Title"]
-#             thread_to_edit.save(update_fields=["Title", "Category"])
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_401_UNAUTHORIZED)
+            parse = request.data["data"]
+            thread_to_edit.Category = parse["Category"]
+            thread_to_edit.Title = parse["Title"]
+            thread_to_edit.save(update_fields=["Title", "Category"])
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-# class DeleteThread(APIView):
+class DeleteThread(APIView):
 
-#     def post(self, request, id):
+    def post(self, request, id):
 
-#         if (not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if (not request.user.is_authenticated):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-#         try:
-#             thread_to_delete = Thread.objects.get(id=id)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
+            thread_to_delete = Thread.objects.get(id=id)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
-#         user = User.objects.get(username=request.user)
-#         temp_check = Profile.objects.get(user=user)
-#         if thread_to_delete.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
-#             thread_to_delete.delete()
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_401_UNAUTHORIZED)
+        user = User.objects.get(username=request.user)
+        temp_check = Profile.objects.get(user=user)
+        if thread_to_delete.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
+            thread_to_delete.delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 # # class EditPost(APIView):
 

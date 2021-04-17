@@ -1,35 +1,40 @@
 import React from 'react'
+import LinearCard from '../LinearCard'
 import styled from 'styled-components'
-import Card from '../Cards'
-import {useEffect, useState} from "react";
+import './button.scss';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
+import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
+import { Rotate90DegreesCcw } from '@material-ui/icons';
 import axios from 'axios';
+import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
-import ViewPub from './ViewPublications'
-import EditPub from './PubEditDropDown'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
+import NewLinearCard from './NewLinearCard'
+import ViewPub from './ViewPublications'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function Publications(props) {
-    const { id } = useParams();
-    const [pubs, setPubs] = React.useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Front_Cover' : '../images/publications/Screenshot_1.png'}])
-    const [flag, setFlag] = React.useState(props.logged)
+
+
+
+function PublicationsList() {
+
+	const { id } = useParams();
     
+    const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
+    const [start, setStart] = useState(0) 
+
     const [PopView, setPopView] = useState(false)
     const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
-    const [start, setStart] = useState(0)
-
+    
     useEffect(() => {
-        //getData(id)
         let isComponentMounted = true;
         let url = "api/main/catalogue_list/"
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
-                console.log('ye boi', res.data)
-                console.log('nu boi', pubs.length)
             };
         })
         .catch(error => console.log('Error:', error))
@@ -37,9 +42,7 @@ function Publications(props) {
             isComponentMounted = false;
         }
     }, [])
-    
-    
-    
+        
     const handleClick = () =>{
         setPopView(!PopView)
         console.log("NEW VIEW", PopView)
@@ -67,16 +70,15 @@ function Publications(props) {
         }
     }
 
-    switch (flag) {
-        case 'Unauthentic':
-            return (
-                <Container>
-                    
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
-                    <ViewNextButtonContainer>
-                    <View onMouseOver = {handleClick} onMouseLeave={handleClick}>
+    return (
+        <Container>
+
+        
+            <PublicationTitle>
+                <Heading>Publications</Heading>
+            </PublicationTitle>
+            <ViewNextButtonContainer>
+                    <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
                             <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
@@ -86,126 +88,38 @@ function Publications(props) {
                             </ViewPopContainer>
                             </View>
                             <NextPrevious>
-                                <SkipPreviousRoundedIcon/>
-                                <SkipNextRoundedIcon/>
+                                <SkipPreviousRoundedIcon onClick={leftClick}/>
+                                <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
                             <View style = {{width:"15%"}}>
                                 <ViewText>Add Publication</ViewText>
                             </View>
                     </ViewNextButtonContainer>
-                    <Cards>
-                         {
-                             pubs.map((elem, index) => {
-                                 console.log(elem.id)
-                                 if(index >= start && index < (start + 8) && index < pubs.length){
-                                     return(
-                                         <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
-                                         )
-                                 }
-                             })
-                         }
-                    </Cards>
-                 
-                </Container>
-             )
-            break;
-        case 'Authentic':
-            return (
-                <Container>
-                    
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
-                    <ViewNextButtonContainer >
-                            <View onClick = {handleClick} onMouseLeave={handleClick}>
-                                <ViewText>View</ViewText>
-                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer >
-                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
-                            </ViewPopContainer>
-                            </View>
-                            <NextPrevious>
-                                <SkipPreviousRoundedIcon/>
-                                <SkipNextRoundedIcon/>
-                            </NextPrevious>
-                            <View style = {{width:"15%"}}>
-                                <ViewText>Add Publication</ViewText>
-                            </View>
-                    </ViewNextButtonContainer>
-                    <Cards>
-                         {
-                             pubs.map((elem, index) => {
-                                 console.log(elem.id)
-                                 if(index >= start && index < (start + 8) && index < pubs.length){
-                                     return(
-                                        <CardContent>
-                                            <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
-                                            <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                                                <PopContainer>
-                                                <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} id={elem.id}/>
-                                                </PopContainer>
-                                            </CardSvg>
-                                            
-                                        </CardContent>
-                                         )
 
-                                 }
-                             })
-                         }
-                    </Cards>
-                 
-                </Container>
-            )
-        break;
-        default:
-            return (
-                <Container>
-                    
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
-                    <ViewNextButtonContainer>
-                            <View onClick = {handleClick} onMouseLeave= {handleClick} >
-                                <ViewText>View</ViewText>
-                            <Svg width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer>
-                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
-                            </ViewPopContainer>
-                            </View>
-                            <NextPrevious>
-                                <SkipPreviousRoundedIcon/>
-                                <SkipNextRoundedIcon/>
-                            </NextPrevious>
-                            <View style = {{width:"15%"}}>
-                                <ViewText>Add Publication</ViewText>
-                            </View>
-                    </ViewNextButtonContainer>
-                    <Cards>
-                         {
-                             pubs.map((elem, index) => {
-                                 console.log(elem.id)
-                                 if(index >= start && index < (start + 8) && index < pubs.length){
-                                     return(
-                                            <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
-                                         )
+            
 
-                                 }
-                             })
-                         }
-                    </Cards>
-                 
-                </Container>
-             )
-    }
-    
+            <Colour>
+            
+
+            <Results>
+                {
+                    pubs.map((elem, index) => {
+                        if(index >= start && index < (start + 8) && index < pubs.length){
+                            return(
+                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                )
+                        }
+                        console.log(index)
+                    })
+                }
+            </Results>
+            </Colour>
+        </Container>
+    )
 }
 
-export default Publications
+export default PublicationsList
+
 
 const Container = styled.div`
     max-width:100%;
@@ -216,44 +130,33 @@ const Container = styled.div`
         height:auto;
     }
 `
-const ViewNextButtonContainer = styled.div`
-    display:flex;
-    margin-left:2%;
-    margin-right:2%;
-    justify-content:space-between;
-    align-items:center;
-    `
-const Svg = styled.svg`
-    position:relative;
-    bottom:85%;
-    left:70%;
-`
-const ViewPopContainer = styled.div`
-position:relative;
-margin-top:1%;
-z-index:1;
-top:6%;
-left:6%;
+const Nextpage = styled.div`
+display:flex;
+    flex-direction:row;
+    margin-left: 260px;
+
 `
 
-const ViewText = styled.h4`
-    z-index:2;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-`
-const View = styled.h4`
-    background:#3B058B;
-    width:10%;
-    height:30px;
-    color:white;
-    border-radius:6px;
-    margin-top:1%;
-`
-const NextPrevious = styled.h4`
-    margin-top:1%;
-`
 
+const Colour = styled.div`
+margin-left:2%;
+margin-right:3%;
+margin-top:3%;
+margin-bottom:20%;
+
+background: #DCF2F8;
+width:95%;
+height:80%;
+border-radius: 20px;
+`
+const Results = styled.div`
+    padding-top:2%;
+    padding-left:13%;
+    width:1100px;
+    height:1600px;
+    display:grid;
+    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+`
 const PublicationTitle = styled.div`
     min-width: 55%;
     min-height: 2%;
@@ -276,46 +179,40 @@ const Heading = styled.h3`
     color:white;
     background: #03204C;
 `
-const Cards = styled.div`
-    margin-left:1.3%;
-    margin-right:1.3%;
-    margin-top:4%;
-    margin-bottom:4%;
+const ViewNextButtonContainer = styled.div`
     display:flex;
-    flex-basis:10%;
-    flex-flow: row wrap;
-    background:#DCF2F8;
-    border-radius:20px;
-    @media only screen and (max-width: 1200px) {
-        height:auto;
-        display:flex;
-        justify-content:left;
-        flex-wrap:wrap;
-        flex:1;
-        background:black;
-    }
-
-`
-const CardContent = styled.div`
     margin-left:2%;
     margin-right:2%;
-    margin-top:2%;
-    margin-bottom:2%;
-    padding-right:1%;
-    padding-bottom:2%;
-    padding-right: 2%;
-`
-const PopContainer = styled.div`
+    justify-content:space-between;
+    align-items:center;
+    `
+const Svg = styled.svg`
     position:relative;
+    bottom:85%;
+    left:70%;
+`
+const ViewPopContainer = styled.div`
+position:relative;
+margin-top:1%;
+z-index:1;
+top:6%;
+left:30%;
+`
+
+const ViewText = styled.h4`
     z-index:2;
-    left:1%;
-    bottom:1%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 `
-
-const CardSvg = styled.svg`
-    position:relative;
-    bottom:91%;
-    left:85%;
-    z-index:1;
-
+const View = styled.h4`
+    background:#3B058B;
+    width:10%;
+    height:30px;
+    color:white;
+    border-radius:6px;
+    margin-top:1%;
+`
+const NextPrevious = styled.h4`
+    margin-top:1%;
 `

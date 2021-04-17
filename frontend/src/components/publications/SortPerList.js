@@ -4,15 +4,15 @@ import styled from 'styled-components'
 function SortPerList(props) {
     return (props.trigger)?(
         <Container>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+            <TextContainer onClick ={()=>props.setTrigger('alphabetical')}>
                 <Text>Alphabetical</Text>
                 <Line></Line>
             </TextContainer>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+            <TextContainer onClick ={()=>props.setTrigger('read')}>
                 <Text>Read</Text>
                 <Line></Line>    
             </TextContainer>
-            <TextContainer onClick ={()=>props.setTrigger(false)}>
+            <TextContainer onClick ={()=>props.setTrigger('unread')}>
                 <Text>Unread</Text>
             </TextContainer>
         </Container>

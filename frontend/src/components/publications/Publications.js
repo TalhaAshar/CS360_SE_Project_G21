@@ -127,8 +127,8 @@ function Publications(props) {
                             </ViewPopContainer>
                             </View>
                             <NextPrevious>
-                                <SkipPreviousRoundedIcon/>
-                                <SkipNextRoundedIcon/>
+                                <SkipPreviousRoundedIcon onClick={leftClick}/>
+                                <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
                             <View style = {{width:"15%"}}>
                                 <ViewText>Add Publication</ViewText>
@@ -178,8 +178,8 @@ function Publications(props) {
                             </ViewPopContainer>
                             </View>
                             <NextPrevious>
-                                <SkipPreviousRoundedIcon/>
-                                <SkipNextRoundedIcon/>
+                                <SkipPreviousRoundedIcon onClick={leftClick}/>
+                                <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
                             <View style = {{width:"15%"}}>
                                 <ViewText>Add Publication</ViewText>
