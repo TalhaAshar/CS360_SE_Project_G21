@@ -63,7 +63,7 @@ function PubSinglePage(props) {
                             <AddCircleIcon onClick={AddToMyList}/>
                             <Link to={{
                                         pathname: "/editpublication",
-                                        state: pubs,
+                                        state: pubs[0],
                                         batchIDs: IDs
                                     }}>
                                 <EditIcon/>

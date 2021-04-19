@@ -32,6 +32,8 @@ import ForumUser from "./components/forum/ForumLoggedIn";
 import ThreadAdmin from "./components/ThreadAdminView";
 import ThreadGuest from "./components/ThreadGuestView";
 import ReportThread from "./components/forms/ReportThread";
+import EditPublication from "./components/publications/EditPublication";
+import AddPublication from "./components/publications/AddPublication";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -138,6 +140,12 @@ function App() {
             {console.log("IM HERE")}
             <PubActivity />  
           </Route>
+
+          <Route path="/addpublication">
+            <AddPublication />  
+          </Route>
+
+          <Route exact path="/editpublication" component={(props) => <EditPublication {...props}/>} />
 
           <Route exact path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
 

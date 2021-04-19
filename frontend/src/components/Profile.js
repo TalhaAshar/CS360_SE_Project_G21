@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 import ProfileManagement from "./ProfileManagement";
+import SecurityIcon from '@material-ui/icons/Security';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
 //User profile type icon needs to be added.
 
@@ -51,6 +53,10 @@ function Profile() {
                         </Name>
 
                         <Admintag>
+                            {  (Details['User_Type'] === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
                             {Details['User_Type']}
                         </Admintag>
                 </Upper>
@@ -188,6 +194,10 @@ function Profile() {
                         </Name>
 
                         <Admintag>
+                            {  (Details['User_Type'] === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
                             {Details['User_Type']}
                         </Admintag>
                 </Upper>
@@ -360,13 +370,14 @@ const Name = styled.h3`
 `
 
 const Admintag = styled.div`
-    margin-left: 250px;
-    margin-top:100px;
+    margin-left: 25%;
+    margin-right: 5%;
+    margin-bottom: 7%;
+    margin-top: 5%;
     width: 82px;
     height: 82px;
     color:white;
     border:none;
-
     box-sizing: border-box;
 `
 
@@ -374,7 +385,6 @@ const Lower = styled.div`
     margin-top:80px;
     margin-left:20px;
     display:flex;
-
 `
 
 const Descone = styled.div`

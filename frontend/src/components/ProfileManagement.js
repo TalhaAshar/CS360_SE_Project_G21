@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import SecurityIcon from '@material-ui/icons/Security';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
 //User profile type icon needs to be added.
 
@@ -73,7 +75,13 @@ class ProfileManagement extends Component{
             <Upper>
               <Profilepicture src={this.state.ProfileImage} width="200px" height = "200px" />
               <Name>{this.props.passUsername}</Name>
-              <Admintag>{this.state.User_Type}</Admintag>
+              <Admintag>
+                {  (this.state.User_Type === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                {  (this.state.User_Type === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                {  (this.state.User_Type === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                {  (this.state.User_Type === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                {this.state.User_Type}
+              </Admintag>
             </Upper>
 
             <Lower>
@@ -164,14 +172,14 @@ class ProfileManagement extends Component{
               </ButtonsActivity>
 
                 <ChangePassword>
-                <form onSubmit={this.handleSubmitPassword}>
-                  <T>Change Password</T>
-                  <h2>Current Password</h2>
-                  <input type="text" name="currentpassword" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
-                  <h2>New Password</h2>
-                  <input type="text" name="newpassword" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
-                  <input type="submit" value="Save" style = {{height: "10%",width:"10%", color:"#FB0101", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
-                </form>
+                  <form onSubmit={this.handleSubmitPassword}>
+                    <T>Change Password</T>
+                    <h2>Current Password</h2>
+                    <input type="text" name="currentpassword" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
+                    <h2>New Password</h2>
+                    <input type="text" name="newpassword" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
+                    <input type="submit" value="Save" style = {{height: "10%", width:"10%", position:"absolute", color:"#FB0101", background:"#03204C", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
+                  </form>
                 </ChangePassword>
             </Lower>
 
@@ -224,8 +232,10 @@ const Name = styled.h3`
 `
 
 const Admintag = styled.div`
-    margin-left: 250px;
-    margin-top:100px;
+    margin-left: 25%;
+    margin-right: 5%;
+    margin-bottom: 7%;
+    margin-top: 5%;
     width: 82px;
     height: 82px;
     color:white;
@@ -308,15 +318,15 @@ margin-bottom: 10px;
 `
 
 const Biography = styled.div`
-    position:absolute;
-    margin-top:-31.75%;
-    margin-left:250px;
+    position:relative;
+    margin-top:-150%;
+    margin-left:80%;
 `
 
 const BioText = styled.h3`
     width: 273px;
     height: 48px;
-   
+    position: absolute
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
@@ -326,7 +336,7 @@ const BioText = styled.h3`
 `
 
 const TellUsAboutYourself = styled.div`
-position:relative;
+position:absolute;
 height: 150px;
 width:150px;
 `
@@ -473,7 +483,7 @@ const PrivateMessages = styled.div`
 `
 
 const ChangePassword = styled.div`
-position:absolute;
+position:relative;
 height:40%;
 width:40%;
 margin-top:-0.5%;
