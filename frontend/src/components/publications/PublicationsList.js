@@ -12,6 +12,7 @@ import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 import NewLinearCard from './NewLinearCard'
 import ViewPub from './ViewPublications'
+import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -91,16 +92,13 @@ function PublicationsList() {
                                 <SkipPreviousRoundedIcon onClick={leftClick}/>
                                 <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
-                            <View style = {{width:"15%"}}>
-                                <ViewText>Add Publication</ViewText>
-                            </View>
+                            <Link to="/addpublication">
+                                <View style = {{width:"15%"}}>
+                                    <ViewText>Add Publication</ViewText>
+                                </View>
+                            </Link>
                     </ViewNextButtonContainer>
-
-            
-
             <Colour>
-            
-
             <Results>
                 {
                     pubs.map((elem, index) => {
