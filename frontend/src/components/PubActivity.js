@@ -64,7 +64,7 @@ function PubActivity() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 15) && index < pubs.length){
                             return(
-                                <Activity pub={elem} type="Pub"/>
+                                <Activity key={index} pub={elem} type="Pub"/>
                             )
                         }
                     })

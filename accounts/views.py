@@ -10,8 +10,8 @@ from rest_framework.response import Response
 
 from main.models import Publication, Contribution
 from forum.models import Post
-from .models import PersonalizedList, Listings, Report, ModeratorApplication
-from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer
+from .models import PersonalizedList, Listings, Report, ModeratorApplication, MyActivity
+from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer, ActivitySerializer
 from main.serializers import ContributionSerializer, PublicationSerializer
 from mysite.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
@@ -292,6 +292,10 @@ class Reports(APIView):
 				pub_to_report = Publication.objects.get(id=parsed["id"])
 				temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
 				temp.save()
+            
+			user_activity = MyActivity.objects.create(Owner=user, FiledReport=temp)
+			user_activity.save()
+
 			return Response(status=status.HTTP_201_CREATED)
 		except:
 			print(request.data)
@@ -317,61 +321,79 @@ class Reports(APIView):
 
 class ModeratorApps(APIView):
 
-    serializer_class = ModeratorSerializer
-    def NormalUser(self, request):
+	serializer_class = ModeratorSerializer
+	def NormalUser(self, request):
 
-        try:
-            queryset = ModeratorApplication.objects.filter(Creator=request.user).order_by("-Date")
-        except:
-            return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
-        mod_list = ModeratorSerializer(queryset, many=True)
-        return Response(mod_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = ModeratorApplication.objects.filter(Creator=request.user).order_by("-Date")
+		except:
+			return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
+		mod_list = ModeratorSerializer(queryset, many=True)
+		return Response(mod_list.data, status=status.HTTP_200_OK)
     
-    def AdminUser(self):
+	def AdminUser(self):
 
-        try:
-            queryset = ModeratorApplication.objects.all().order_by("-Date")
-        except:
-            return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
-        mod_list = ModeratorSerializer(queryset, many=True)
-        print(mod_list.data)
-        return Response(mod_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = ModeratorApplication.objects.all().order_by("-Date")
+		except:
+			return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
+		mod_list = ModeratorSerializer(queryset, many=True)
+		print(mod_list.data)
+		return Response(mod_list.data, status=status.HTTP_200_OK)
 
-    def get(self, request):
+	def get(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            user = Profile.objects.get(user=request.user).User_Type
-        except:
-            return Response({'Message' : 'Please login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
-        if user == 'UNVERIFIED' or user == 'VERIFIED':
-            return self.NormalUser(request)
-        else:
-            print("Got this far")
-            return self.AdminUser()
+		try:
+			user = Profile.objects.get(user=request.user).User_Type
+		except:
+			return Response({'Message' : 'Please login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		if user == 'UNVERIFIED' or user == 'VERIFIED':
+			return self.NormalUser(request)
+		else:
+			print("Got this far")
+			return self.AdminUser()
         
     
-    def post(self, request):
+	def post(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
-        user = User.objects.get(username=request.user)
-        parsed = request.data["data"]
-        print(parsed)
-        try:
-            temp = ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')
-            temp.save()
-            return Response(status=status.HTTP_201_CREATED)
-        except Exception as e:
-            print(e)
-            return Response({'Message' : 'There was an error!'}, status=status.HTTP_400_BAD_REQUEST)
+		user = User.objects.get(username=request.user)
+		parsed = request.data["data"]
+		print(parsed)
+		try:
+			temp = ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')
+			temp.save()
+
+			user_activity = MyActivity.objects.create(Owner=user, ModApp=temp)
+			user_activity.save()
+			return Response(status=status.HTTP_201_CREATED)
+		except Exception as e:
+			print(e)
+			return Response({'Message' : 'There was an error!'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 #Do when forum models made
-#class MyActivity(APIView)
+class UserActivityHistory(APIView):
+
+	def get(self, request):
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
+        
+		user = User.objects.get(username=request.user)
+
+		try:
+			queryset = MyActivity.objects.filter(Owner=user).order_by('-id')
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+        
+		activity_list = ActivitySerializer(queryset, many=True)
+		return Response(activity_list.data, status=status.HTTP_200_OK)
+
 
 class MyPubActivity(APIView):
 

@@ -163,6 +163,7 @@ class EditPublication(APIView):
 	serializer_class = PublicationSerializer
 
 	def post(self, request, id):
+
 		if request.user.is_authenticated:
 			user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
 			
@@ -182,12 +183,16 @@ class EditPublication(APIView):
 				for key in parsed:
 					if parsed[key] != 'null' and key != 'Related':
 						edited_pub[key] = parsed[key]
+				
+				print("After for", edited_pub)
                 
-				serializer = PublicationSerializer(data=edited_pub, partial=True)
+				serializer = PublicationSerializer(pub_to_edit, data=edited_pub, partial=True)
+				print("donings")
 			except:
 				return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
 
 			if serializer.is_valid():
+				print("oki")
 				serializer.save()
 				
 			try:

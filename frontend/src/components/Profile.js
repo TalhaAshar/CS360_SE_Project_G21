@@ -149,7 +149,7 @@ function Profile() {
                             <Activitytext>
                                 Activity
                             </Activitytext>
-                            <Link to='/' value="My Activity" style={{textDecoration:"none"}}>
+                            <Link to='/my_activity' value="My Activity" style={{textDecoration:"none"}}>
                                 <MyActivity>
                                     <ActivityBackground>
                                         My Activity
@@ -290,7 +290,7 @@ function Profile() {
                             <Activitytext>
                                 Activity
                             </Activitytext>
-                            <Link to='/' value="My Activity" style={{textDecoration:"none"}}>
+                            <Link to='/my_activity' value="My Activity" style={{textDecoration:"none"}}>
                                 <MyActivity>
                                     <ActivityBackground>
                                         My Activity
