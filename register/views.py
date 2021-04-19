@@ -47,6 +47,13 @@ class SignUpView(generics.GenericAPIView):
 
 	def post(self, request, *args, **kwargs):
 
+		# Checking for duplicate username or email
+		if(User.objects.filter(email=request.data["data"]["email"]).exists()):
+			return Response({'Message' : 'Email Taken!'}, status=status.HTTP_400_BAD_REQUEST)
+		
+		if(User.objects.filter(username=request.data["data"]["username"]).exists()):
+			return Response({'Message' : 'Username Taken!'}, status=status.HTTP_400_BAD_REQUEST)
+
 		# Parsing and validating data from the user's POST request
 		serializer = self.get_serializer(data=request.data["data"])
 

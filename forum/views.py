@@ -68,10 +68,15 @@ class ThreadsHome(APIView):
         queryset.save(update_fields=["PostCount"])
 
         parse = request.data["data"]
-        temp = Post.objects.create(Creator=user, Body=parse["Body"])
+        temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
         temp.save()
-        new_rel = Postings.objects.create(ParentThread=queryset, ParentPost=temp)
-        new_rel.save()
+
+        all_posts = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+        all_posts = PostSerializer(all_posts, many=True)
+
+        return Response(all_posts.data, status=status.HTTP_200_OK)
+        # new_rel = Postings.objects.create(ParentThread=queryset, ParentPost=temp)
+        # new_rel.save()
 
 
 class AddThread(APIView):
@@ -135,54 +140,63 @@ class DeleteThread(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-# # class EditPost(APIView):
+class EditPost(APIView):
 
-# #     def post(self, request, id)
+	def post(self, request, id, tid):
 
-# #         if (not request.user.is_authenticated):
-# #                 return Response(status=status.HTTP_401_UNAUTHORIZED)
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
             
-# #             try:
-# #                 post_to_edit = Post.objects.get(id=id)
-# #             except:
-# #                 return Response(status=status.HTTP_404_NOT_FOUND)
+		try:
+			post_to_edit = Post.objects.get(id=id)
+			queryset = Thread.objects.get(id=tid)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
             
-# #             user = User.objects.get(username=request.user)
-# #             temp_check = Profile.objects.get(user=user)
-# #             if post_to_edit.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
+		user = User.objects.get(username=request.user)
+		temp_check = Profile.objects.get(user=user)
+		if post_to_edit.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
 
-# #                 parse = request.data["data"]
-# #                 thread_to_edit.Category = parse["Category"]
-# #                 thread_to_edit.Title = parse["Title"]
-# #                 thread_to_edit.save(update_fields=["Title", "Category"])
-# #                 return Response(status=status.HTTP_200_OK)
-# #             return Response(status=status.HTTP_401_UNAUTHORIZED)
-            
+			parse = request.data["data"]
+			post_to_edit.Body = parse["Body"]
+			post_to_edit.save(update_fields=["Body"])
 
-# class DeletePost(APIView):
+			all_posts = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+			all_posts = PostSerializer(all_posts, many=True)
+                
+			return Response(all_posts.data, status=status.HTTP_200_OK)
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-#     def post(self, request, id, tid):
 
-#         if (not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+class DeletePost(APIView):
+
+	def post(self, request, id, tid):
+
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-#         try:
-#             post_to_delete = POST.objects.get(id=id)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+		try:
+			post_to_delete = Post.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-#         user = User.objects.get(username=request.user)
-#         temp_check = Profile.objects.get(user=user)
-#         if post_to_delete.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
+		user = User.objects.get(username=request.user)
+		temp_check = Profile.objects.get(user=user)
+		if post_to_delete.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
             
-#             parent_thread = Postings.objects.filter(ParentThread__id=tid).order_by('Timestamp')
+			parent_thread = Thread.objects.get(id=tid)
 
-#             if parent_thread[0].ParentPost == post_to_delete:
-#                 parent_thread.delete()
-#             post_to_delete.delete()
+			count = parent_thread.PostCount - 1
+			parent_thread.PostCount = count
+			parent_thread.save(update_fields=["PostCount"])
+            
+			post_to_delete.delete()
 
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_401_UNAUTHORIZED)
+			all_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
+			all_posts = PostSerializer(all_posts, many=True)
+
+			return Response(all_posts.data, status=status.HTTP_200_OK)
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 # class AddPost(APIView):
 
