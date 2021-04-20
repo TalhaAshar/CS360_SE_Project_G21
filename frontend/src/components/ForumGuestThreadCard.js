@@ -11,12 +11,15 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
         <Container>
         <ImageUserNameContainer>
             <ImageContainer>
-               
                 <Image src="http://www.pngall.com/wp-content/uploads/5/Aesthetic-Anime-Girl-PNG-File-Download-Free.png"
                     width="100px" height="100px"
                 />
             </ImageContainer>
-            <UserName>{username}</UserName>
+            <Link to="/profile/guest">
+                <UserName>
+                    {username}
+                </UserName>
+            </Link>
         </ImageUserNameContainer>
         
         <ThreadDetailContainer>

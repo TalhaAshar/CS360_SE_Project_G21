@@ -4,6 +4,8 @@ import Card from '../Cards'
 import { useEffect, useState } from "react";
 import { useParams} from "react-router-dom"
 import axios from 'axios';
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -13,6 +15,7 @@ function PersonalizedListGuest() {
     const { id } = useParams();  
     const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
     const [user, setUser] = useState('')
+    const [start, setStart] = useState(0)
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -29,13 +32,28 @@ function PersonalizedListGuest() {
         }
     }, [id])
 
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 8)
+        }
+    }
+
+    function rightClick(){
+        if(start + 8 < pubs.length){
+            setStart(start + 8)
+        }
+    }
+
     return (
        <Container>
            <UserNameContainer>
                <Heading>{user}</Heading>
            </UserNameContainer>
            <NextButtonContainer>
-                    <NextPrevious>Buttons</NextPrevious>
+                <NextPrevious>
+                    <SkipPreviousRoundedIcon onClick={leftClick}/>
+                    <SkipNextRoundedIcon onClick={rightClick}/>
+                </NextPrevious>
            </NextButtonContainer>
            <Cards>
                 {

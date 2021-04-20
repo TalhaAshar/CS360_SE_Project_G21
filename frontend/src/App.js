@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import Home from './components/Home'
 import Footer from './components/Footer'
 import React, {Component} from "react"
-import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
 import Publications from "./components/publications/Publications";
@@ -34,6 +33,8 @@ import ThreadGuest from "./components/ThreadGuestView";
 import ReportThread from "./components/forms/ReportThread";
 import EditPublication from "./components/publications/EditPublication";
 import AddPublication from "./components/publications/AddPublication";
+import ProfileGuest from "./components/ProfileGuest";
+import ListGuest from "./components/publications/PersonalizedListGuest"
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -81,11 +82,6 @@ function App() {
             <Home/>
           </Route>
 
-          <Route exact path="/Forum">
-            {console.log("FORUM INSIDE")}
-            <Forum />
-          </Route>
-
           <Route exact path="/Contact">
             {console.log("CONTACT INSIDE")}
             <ContactUs />
@@ -97,8 +93,11 @@ function App() {
           </Route>
 
           <Route exact path="/UserAccount">
-            {console.log("CONTACT INSIDE")}
             <Profile /> 
+          </Route>
+
+          <Route path="/profile/:id">
+            <ProfileGuest /> 
           </Route>
 
            <Route exact path="/management">
@@ -129,6 +128,10 @@ function App() {
           
           <Route exact path="/List">
             <List />  
+          </Route>
+
+          <Route path="/List/guest/:id">
+            <ListGuest />
           </Route>
 
           <Route path="/searched/:param">
