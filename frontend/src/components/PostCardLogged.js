@@ -20,7 +20,6 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
 
     let placeholder = "Hours"
     let post_time = timestamp
-    console.log("Ninpa id", id)
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
@@ -28,21 +27,16 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
 
     const [profile, setProfile] = React.useState({})
     const [flag, setFlag] = React.useState(false)
-    const [current, setCurrent] = React.useState(id)
-    console.log("vurrent", current)
+    const [profile_url, setUrl] = React.useState('/profile/')
 
     useEffect(() => {
         let isComponentMounted = true;
-        console.log("BACK IN HERE WITH ID", current)
         
             let url = "api/accounts/profile/" + id
-            console.log("send prof", url)
             axios.get(url).then((res) => {
                 if (isComponentMounted){
                     setProfile(res.data)
-                    console.log("recv prof")
-                    console.log(url, res.data)
-                    
+                    setUrl(profile_url + res.data["user"]["id"])
                 };
             })
             .catch(error => console.log('Error:', error))
@@ -63,7 +57,11 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
                     width="100px" height="100px"
                 />
             </ImageContainer>
-            <UserName>{username}</UserName>
+            <Link to={profile_url}>
+                <UserName>
+                    {username}
+                </UserName>
+            </Link>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />

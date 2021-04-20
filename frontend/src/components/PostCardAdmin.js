@@ -27,22 +27,16 @@ function PostCardAdmin({thread_id, post_id, username, timestamp, desc, id, reply
     }
 
     const [profile, setProfile] = React.useState({})
+    const [profile_url, setUrl] = React.useState('/profile/')
     const [flag, setFlag] = React.useState(false)
-    const [current, setCurrent] = React.useState(id)
-    console.log("vurrent", current)
 
     useEffect(() => {
-        let isComponentMounted = true;
-        console.log("BACK IN HERE WITH ID", current)
-        
+        let isComponentMounted = true; 
             let url = "api/accounts/profile/" + id
-            console.log("send prof", url)
             axios.get(url).then((res) => {
                 if (isComponentMounted){
-                    setProfile(res.data)
-                    console.log("recv prof")
-                    console.log(url, res.data)
-                    
+                    setProfile(res.data)     
+                    setUrl(profile_url + res.data["user"]["id"])               
                 };
             })
             .catch(error => console.log('Error:', error))
@@ -73,7 +67,11 @@ function PostCardAdmin({thread_id, post_id, username, timestamp, desc, id, reply
                     width="100px" height="100px"
                 />
             </ImageContainer>
-            <UserName>{username}</UserName>
+            <Link to={profile_url}>
+                <UserName>
+                    {username}
+                </UserName>
+            </Link>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />

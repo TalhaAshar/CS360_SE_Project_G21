@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Delete } from '@material-ui/icons';
 import {useEffect, useState} from "react";
 import axios from 'axios';
+import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -28,6 +29,7 @@ function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, reply
 
     const [profile, setProfile] = React.useState({})
     const [flag, setFlag] = React.useState(false)
+    const [profile_url, setUrl] = React.useState('/profile/')
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -35,7 +37,7 @@ function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, reply
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setProfile(res.data)
-                
+                setUrl(profile_url + res.data["user"]["id"])
             };
         })
         .catch(error => console.log('Error:', error))
@@ -65,7 +67,11 @@ function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, reply
                     width="100px" height="100px"
                 />
             </ImageContainer>
-            <UserName>{username}</UserName>
+            <Link to={profile_url}>
+                <UserName>
+                    {username}
+                </UserName>
+            </Link>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}}/>

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
+import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 import {useEffect} from "react";
 import axios from 'axios';
 
@@ -18,7 +19,8 @@ function ForumLoggInCard({username, title, category, postcount, timestamp, desc,
         post_time = Math.floor(post_time / 24)
     }
 
-    const [profile, setProfile] = React.useState({})
+    const [profile, setProfile] = React.useState({'user':{'id':0}})
+    const [profile_url, setUrl] = React.useState('/profile/')
     const [flag, setFlag] = React.useState(false)
 
     useEffect(() => {
@@ -28,6 +30,7 @@ function ForumLoggInCard({username, title, category, postcount, timestamp, desc,
             if (isComponentMounted){
                 setProfile(res.data)
                 setFlag(true)
+                setUrl(profile_url + res.data["user"]["id"])
             };
         })
         .catch(error => console.log('Error:', error))
@@ -45,7 +48,11 @@ function ForumLoggInCard({username, title, category, postcount, timestamp, desc,
                     width="100px" height="100px"
                 />}
             </ImageContainer>
-            <UserName>{username}</UserName>
+            <Link to={profile_url}>
+                <UserName>
+                    {username}
+                </UserName>
+            </Link>
         </ImageUserNameContainer>
         <ThreadDetailContainer>
             <TimeIcon>
