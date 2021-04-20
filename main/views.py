@@ -163,8 +163,10 @@ class EditPublication(APIView):
 	serializer_class = PublicationSerializer
 
 	def post(self, request, id):
+
 		if request.user.is_authenticated:
 			user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
+			
 			if user_to_check == 'UNVERIFIED':
 				return Response(status=status.HTTP_401_UNAUTHORIZED)
 			
@@ -173,46 +175,41 @@ class EditPublication(APIView):
 				print("found")
 			except:
 				return Response(status=status.HTTP_404_NOT_FOUND)
-			print(request.data)
-			serializer = PublicationSerializer(data=request.data)
-			if serializer.is_valid():
-				pub_to_edit.Title = request.data["Title"]
-				pub_to_edit.Authors = request.data["Authors"]
-				pub_to_edit.Publisher = request.data["Publisher"]
-				pub_to_edit.Year_Publication = request.data["Year_Publication"]
-				pub_to_edit.Edition_Number = request.data["Edition_Number"]
-				pub_to_edit.ISBN = request.data["ISBN"]
-				pub_to_edit.Lang = request.data["Lang"]
-				pub_to_edit.Description = request.data["Description"]
-				try:
-					if request.data["Best_Edition"] == 'true':
-						pub_to_edit.Best_Edition = True
-					elif request.data["Best_Edition"] == 'false':
-						pub_to_edit.Best_Edition = False
-				except:
-					pass
-				pub_to_edit.Front_Cover = request.data["Front_Cover"]
-				pub_to_edit.Back_Cover = request.data["Back_Cover"]
-				pub_to_edit.Spine_Cover = request.data["Spine"]
-				pub_to_edit.Reason_for_Best_Pub = request.data["Reason_for_Best_Pub"]
-				pub_to_edit.save(update_fields=["Title", "Authors", "Publisher", "Year_Publication", "Edition_Number", "ISBN", "Lang", "Description", "Best_Edition", "Front_Cover", "Back_Cover", "Spine", "Reason_for_Best_Pub"])
-				parse = request.data
-				try:
-					related_pubs = parse["Related"].split(',')
-				except:
-					related_pubs = []
+			
+			try:
+				parsed = request.data
+				edited_pub = {}
+				
+				for key in parsed:
+					if parsed[key] != 'null' and key != 'Related':
+						edited_pub[key] = parsed[key]
+				
+				print("After for", edited_pub)
+                
+				serializer = PublicationSerializer(pub_to_edit, data=edited_pub, partial=True)
+				print("donings")
+			except:
+				return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
 
-				main = pub_to_edit
-				for i in related_pubs:
-					rel = Publication.objects.get(id=int(i))
-					if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)):
-						new_rel = RelatedPublication.create(Main=main, Rel=rel)
-						new_rel.save()
-						second_rel = RelatedPublication.create(Main=rel, Rel=main)
-						second_rel.save()
-			else:
-				print("Invalid")
-			return Response(status=status.HTTP_200_OK)
+			if serializer.is_valid():
+				print("oki")
+				serializer.save()
+				
+			try:
+				related_pubs = parse["Related"].split(',')
+			except:
+				related_pubs = []
+
+			main = pub_to_edit
+			for i in related_pubs:
+				rel = Publication.objects.get(id=int(i))
+				if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)).exists():
+					new_rel = RelatedPublication.create(Main=main, Rel=rel)
+					new_rel.save()
+					second_rel = RelatedPublication.create(Main=rel, Rel=main)
+					second_rel.save()
+
+			return Response(serializer.data, status=status.HTTP_200_OK)
 		else:
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 

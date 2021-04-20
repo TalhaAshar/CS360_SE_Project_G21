@@ -175,9 +175,9 @@ class ProfileManagement extends Component{
                   <form onSubmit={this.handleSubmitPassword}>
                     <T>Change Password</T>
                     <h2>Current Password</h2>
-                    <input type="text" name="currentpassword" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
+                    <input type="text" required name="currentpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
                     <h2>New Password</h2>
-                    <input type="text" name="newpassword" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
+                    <input type="text" required name="newpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
                     <input type="submit" value="Save" style = {{height: "10%", width:"10%", position:"absolute", color:"#FB0101", background:"#03204C", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
                   </form>
                 </ChangePassword>

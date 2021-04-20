@@ -89,22 +89,22 @@ handleSubmit = (event) =>{
     formData.append("Related", data["Related"]);
     formData.append("Description", data["Description"]);
     
-    if (Front_Flag) {
+    if (this.state.Front_Flag) {
         formData.append("Front_Cover", this.state.Front_Cover, this.state.Front_Cover.name);
     } else {
-        formData.append("Front_Cover", this.state.Front_Cover);
+        formData.append("Front_Cover", null);
     }
     
-    if (Back_Flag) {
+    if (this.state.Back_Flag) {
         formData.append("Back_Cover", this.state.Back_Cover, this.state.Back_Cover.name);
     } else {
-        formData.append("Back_Cover", this.state.Back_Cover);
+        formData.append("Back_Cover", nullr);
     }
 
-    if (Spine_Flag) {
+    if (this.state.Spine_Flag) {
         formData.append("Spine", this.state.Spine, this.state.Spine.name);
     } else {
-        formData.append("Spine", this.state.Spine);
+        formData.append("Spine", null);
     }
   
     axios.post(url, formData, { headers: { 'content-type': 'multipart/form-data' } })

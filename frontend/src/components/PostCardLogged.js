@@ -16,7 +16,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-function PostCardLogged({post_id, username, timestamp, desc, id}) {
+function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) {
 
     let placeholder = "Hours"
     let post_time = timestamp
@@ -69,12 +69,12 @@ function PostCardLogged({post_id, username, timestamp, desc, id}) {
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>{post_time}{placeholder}</h5>
+                <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
             </Comment>
             <Commentf>
             
             <Comment1>
-            <ReplyIcon style = {{fontSize:'30px'}}/>
+            <ReplyIcon style = {{fontSize:'30px'}} onClick={() => replyHandler("@" + username)}/>
             </Comment1>
 
             <Link to={{

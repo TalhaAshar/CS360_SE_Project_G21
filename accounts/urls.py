@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MyListDefault, MyListGuest, MyListRead, MyListUnread, MyListAlphabetical, UserAccountView, Reports, ModeratorApps, MyPubActivity, UserGuestView, ModeratorDecision, Recommendations, EditProfileView, ReportResolution
+from .views import MyListDefault, MyListGuest, MyListRead, MyListUnread, MyListAlphabetical, UserAccountView, Reports, ModeratorApps, MyPubActivity, UserGuestView, ModeratorDecision, Recommendations, EditProfileView, ReportResolution, UserActivityHistory
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -21,6 +21,7 @@ urlpatterns = [
 	path("modapps/<str:act>/<int:id>", ModeratorDecision.as_view()),
 	path("recs", Recommendations.as_view()),
 	path("edit_profile", EditProfileView.as_view()),
+	path("my_activity", UserActivityHistory.as_view()),
 ]
 
 if settings.DEBUG:
