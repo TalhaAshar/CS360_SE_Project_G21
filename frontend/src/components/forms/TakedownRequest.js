@@ -38,7 +38,7 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/takedown/" + this.state.Publication; //TALHA
+  const url = "api/main/takedown/" + this.state.Publication;
   const data = { Party:this.state.Party, Relationship:this.state.Relationship, Copyright:this.state.Copyright, Country:this.state.Country, Email:this.state.Email, Publication:this.state.Publication, Body:this.state.Body };
   
   axios.post(url, { data })

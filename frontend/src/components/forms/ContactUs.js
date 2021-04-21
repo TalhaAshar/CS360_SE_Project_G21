@@ -15,7 +15,7 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Name:'', Email:'', Reason:'Feedback', Body:'', seen: false };
+    this.state = { Name:'', Email:'', Reason:'Feedback', Body:'', seen: false, invalid: false };
 }
 
 togglePop = () => {
@@ -39,14 +39,12 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/contact";     //TALHA
-  const data = { Name:this.state.Name, Email:this.state.Email, Reason: this.state.Reason, Body:this.state.Body };
-  
-  axios.post(`api/main/contact`, { data })
-    .then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
-  }
+    const data = { Name:this.state.Name, Email:this.state.Email, Reason: this.state.Reason, Body:this.state.Body };
+    axios.post(`api/main/contact`, { data })
+      .then(res => this.setState({seen:true, invalid:true}))
+      .catch(error => this.setState({invalid:true}))
+      .then(response => console.log("huh"));
+}
     
   render(){
     return(
@@ -57,8 +55,8 @@ handleSubmit = (event) =>{
             <UserInfo>
                 <Span>Name*</Span>
                 <Span>Email*</Span>
-                <Input type="text" name="Name" onChange={this.handleChange} />
-                <Input type="text" name="Email" onChange={this.handleChange} />
+                <Input type="text" required name="Name" onChange={this.handleChange} />
+                <Input type="text" required name="Email" onChange={this.handleChange} />
             </UserInfo>
             <LabelContainer>
                 <Label for="Reason">Reason</Label>
@@ -72,6 +70,7 @@ handleSubmit = (event) =>{
             
             <EditorContainer>
               <Span>Body*</Span>
+              { this.state.invalid ? <ErrorMessage>Fields set to * cannot be empty.</ErrorMessage> : null }
               <Editor
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -86,8 +85,8 @@ handleSubmit = (event) =>{
                 }}
                 onEditorChange={this.handleEditorChange}
               />
-              <Submit type="submit" value="Submit" onClick={this.togglePop} />
-              { this.state.seen ? <ContactFeedbackPopup toggle={this.togglePop} /> : null } 
+              { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+              { (this.state.seen && this.state.invalid) ? <ContactFeedbackPopup toggle={this.togglePop} /> : null }
             </EditorContainer>
           </Form>
         </FormContainer> 
@@ -103,8 +102,9 @@ const Container = styled.div`
   max-height:100%;
   margin-left:3%;
   margin-right:3%;
-
+  
 `
+
 const Head = styled.h3`
 min-width: 55%;
 min-height: 4%;
@@ -141,6 +141,13 @@ const Span = styled.span`
   font-weight:bold;
   font-size:20px;
 `
+
+const ErrorMessage = styled.span`
+  font-weight:bold;
+  font-size:20px;
+  color:red;
+`
+
 const Input = styled.input`
   width: 400px;
   height: 60px;
