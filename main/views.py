@@ -130,6 +130,9 @@ class AddPublication(APIView):
 			if user_to_check == 'UNVERIFIED':
 				return Response({'Message' : 'You do not have the permission to perform this task!'}, status=status.HTTP_401_UNAUTHORIZED)
 
+			if(request.data["Description"] == ""):
+				return Response(status=status.HTTP_400_BAD_REQUEST)
+			
 			serializer = PublicationSerializer(data=request.data)
 			print(request.data)
 			if serializer.is_valid(): 
@@ -145,10 +148,10 @@ class AddPublication(APIView):
 
 				for i in related_pubs:
 					try:
-						rel = Publication.objects.get(id=int(i))
-						new_rel = RelatedPublication.create(Main=main, Rel=rel)
+						rel = Publication.objects.get(id=i)
+						new_rel = RelatedPublication.objects.create(Main=main, Rel=rel)
 						new_rel.save()
-						second_rel = RelatedPublication.create(Main=rel, Rel=main)
+						second_rel = RelatedPublication.objects.create(Main=rel, Rel=main)
 						second_rel.save()
 					except:
 						pass
@@ -176,6 +179,9 @@ class EditPublication(APIView):
 			except:
 				return Response(status=status.HTTP_404_NOT_FOUND)
 			
+			if(request.data["Description"] == ""):
+				return Response(status=status.HTTP_400_BAD_REQUEST)
+			
 			try:
 				parsed = request.data
 				edited_pub = {}
@@ -202,11 +208,11 @@ class EditPublication(APIView):
 
 			main = pub_to_edit
 			for i in related_pubs:
-				rel = Publication.objects.get(id=int(i))
+				rel = Publication.objects.get(id=i)
 				if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)).exists():
-					new_rel = RelatedPublication.create(Main=main, Rel=rel)
+					new_rel = RelatedPublication.objects.create(Main=main, Rel=rel)
 					new_rel.save()
-					second_rel = RelatedPublication.create(Main=rel, Rel=main)
+					second_rel = RelatedPublication.objects.create(Main=rel, Rel=main)
 					second_rel.save()
 
 			return Response(serializer.data, status=status.HTTP_200_OK)
@@ -232,6 +238,10 @@ class TakedownRequest(APIView):
 			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_404_NOT_FOUND)
 		
 		complaint = request.data["data"]
+
+		if(complaint["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
 		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Party"], Reason=complaint["Body"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Copyright"], Country=complaint["Country"])		
 		temp.save()
 		return Response(status=status.HTTP_200_OK)
@@ -241,6 +251,10 @@ class ContactUs(APIView):
 	def post(self, request):
 		
 		parsed = request.data["data"]
+
+		if(parsed["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
 		subject = "BookBound - " + parsed["Reason"]
 		message = render_to_string('contact_us.html', {
 			'user': parsed["Name"],

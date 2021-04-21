@@ -279,6 +279,9 @@ class Reports(APIView):
         
 		user = User.objects.get(username=request.user)
 		parsed = request.data["data"]
+
+		if(parsed["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 		print(parsed)
 		print(parsed["Type"])
 		try:
@@ -364,6 +367,9 @@ class ModeratorApps(APIView):
         
 		user = User.objects.get(username=request.user)
 		parsed = request.data["data"]
+
+		if(parsed["Why"] == "" or parsed["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 		print(parsed)
 		try:
 			temp = ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')

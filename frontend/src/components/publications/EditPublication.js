@@ -131,7 +131,7 @@ handleSubmit = (event) =>{
                       <Span>
                           Book Title*
                       </Span>
-                      <Input type="text" required name="Title" maxLength="255" value={this.state.Title} onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Title" maxLength="150" value={this.state.Title} onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Author(s)*</Span>
                       <Input type="text" required name="Authors" maxLength="255" value={this.state.Authors} onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Publisher(s)</Span>
@@ -143,7 +143,7 @@ handleSubmit = (event) =>{
                       <Span>Genres*</Span>
                       <Input type="text" required name="Genres" maxLength="255" value={this.state.Genres} onChange={this.handleChange} style={{marginLeft:"98px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Language*</Span>
-                      <Input type="text" required name="Lang" value={this.state.Lang} onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Lang" maxLength="30" value={this.state.Lang} onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>ISBN</Span>
                       <Input type="number" name="ISBN" min="1" max="9999999999999" value={this.state.ISBN} onChange={this.handleChange}  style={{marginLeft:"130px", marginTop:"30px", marginBottom:'10px'}}/><br/>
                       <Span>Related</Span>

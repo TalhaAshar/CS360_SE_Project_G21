@@ -122,19 +122,19 @@ handleSubmit = (event) =>{
                       <Span>
                           Book Title*
                       </Span>
-                      <Input type="text" required name="Title" maxLength="255" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Title" maxLength="150" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Author(s)*</Span>
                       <Input type="text" required name="Authors" maxLength="255" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Publisher(s)</Span>
                       <Input type="text" name="Publisher" maxLength="255" onChange={this.handleChange} style={{marginLeft:"65px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Edition_Number</Span>
                       <Input type="number" name="Edition_Number" min="1" max="999999" onChange={this.handleChange} style={{marginLeft:"30px", marginTop:"30px", marginBottom:'10px'}} /><br/>
-                      <Span>Year</Span>
+                      <Span>Year of Publication</Span>
                       <Input type="number" name="Year_Publication" min="1" max="9999" onChange={this.handleChange} style={{marginLeft:"125px", marginTop:"30px", marginBottom:'10px'}}  /><br/>
                       <Span>Genres*</Span>
                       <Input type="text" required name="Genres" maxLength="255" onChange={this.handleChange} style={{marginLeft:"98px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Language*</Span>
-                      <Input type="text" required name="Lang" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Lang" maxLength="30" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>ISBN</Span>
                       <Input type="number" name="ISBN" min="1" max="9999999999999" onChange={this.handleChange} style={{marginLeft:"130px", marginTop:"30px", marginBottom:'10px'}}/><br/>
                       <Span>Related</Span>
