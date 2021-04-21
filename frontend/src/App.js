@@ -196,7 +196,7 @@ export default App;
 //the whole page container
 const Container = styled.div`
 width:100%;
-height:1580px;
+height:100%;
 display: grid;
 grid-template-rows: 115px auto 110px;
 `

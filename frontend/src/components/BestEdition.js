@@ -53,7 +53,7 @@ function BestEdition({title, authors, publisher, year, ISBN, description, editio
 export default BestEdition
 const Container = styled.div`
     width:100%;
-    max-height:500px;
+    height:550px;
     padding-left:20px;
     padding-right:20px;
     background-color:white;
@@ -81,7 +81,7 @@ const Title = styled.div`
 `
 const BookContainer = styled.div`
     display:flex;
-    max-height:360px;
+    height:auto;
     background-color:#ffffff;
     padding-left:20px;
 `
@@ -89,10 +89,13 @@ const BookPhoto = styled.div`
     height:350px;
     width:300px;
     object-fit:none;
-    padding-left:10px;
+    padding-left:8%;
+    padding-top:2%;
+    margin-top:2%;
+    margin-bottom:4%;
 `
 const BookDetailsContainer = styled.div`
-    padding-left:25%;
+    padding-left:14%;
     padding-right:4%;
     padding-top:1%;
     margin-left:2%;
@@ -101,10 +104,8 @@ const BookDetailsContainer = styled.div`
     }
 `
 const DividerContainer = styled.div`
-    padding-left:4%;
     padding-right:2%;
-    padding-top:2.5%;
-    @media only screen and (max-width: 900px) {
+    @media only screen and (max-width: 920px) {
         display:none;
     }
 
@@ -116,12 +117,10 @@ const BookCommentContainer = styled.div`
     padding-left:2%;
     padding-right:1%;
     padding-top:2%;
-    margin-top:6%;
     margin-bottom:2%;
-    margin-left:6%;
     padding-bottom:1%;
     border-radius:16px;
-    @media only screen and (max-width: 900px) {
+    @media only screen and (max-width: 920px) {
         display:none;
     }
 `

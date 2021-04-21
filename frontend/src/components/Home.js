@@ -49,7 +49,9 @@ function Home() {
                                     pubs.map((elem, index) => {
                                         if(index > 0 && index < 6){
                                             return(
+                                                <CardDiv>
                                                 <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                                </CardDiv>
                                             )
                                         }
                                     })
@@ -64,7 +66,9 @@ function Home() {
                                 pubs.map((elem, index) => {
                                     if(index > 5 && index <= 10){
                                         return(
+                                            <CardDiv>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                            </CardDiv>
                                         )
                                     }
                                 })
@@ -81,14 +85,13 @@ export default Home
 //outer container of the home page (whole)
 const Container = styled.div`
     width: 100%;
-    height: 1500px;
+    height:100%;
     background-color: white;
     margin-bottom:20%;
     display:flex;
     flex-grow:1;
     flex-direction:column;
     @media only screen and (max-width: 800px) {
-          height:auto;
       }
 `
 const Banner = styled.div`
@@ -147,9 +150,11 @@ const RecentAdditionContainer = styled.div`
     width:auto;
     display:flex;
     justify-content:space-between;
-    @media only screen and (max-width: 900px){
+    @media only screen and (max-width: 920px){
         margin-bottom:60%;
-        width:70%;
+        display:flex;
+        justify-content:space-between;
+        width:auto;
     }
 `
 const RecentAdditionText = styled.h3`
@@ -170,8 +175,21 @@ const Cards = styled.div`
     justify-content:left;
     flex-flow:row wrap;
     flex:1;
-    
-    
+    margin-left:5%;
+    margin-bottom:5%;
+    @media only screen and (max-width: 920px){
+        display:flex;
+        justify-content:space-evenly;
+        align-items:left;
+        margin-bottom:5%;
+    }
+`
+const CardDiv = styled.div`
+    margin-top:5%;
+    margin-bottom:5%;
+    margin-left:2%;
+    margin-right:2%;
+
 `
 const RecommendationContainer = styled.div`
     background-color:#DCF2F8;
@@ -181,6 +199,7 @@ const RecommendationContainer = styled.div`
     margin-right:3%;
     height:auto;
     width:auto;
+    padding-bottom:1%;
     @media only screen and (max-width: 900px){
         margin-bottom:60%;
         padding-bottom:60%;
