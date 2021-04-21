@@ -44,10 +44,12 @@ function Header(props) {
 
           <Bottom>
             
-              <LogoContainer>
-                    <img src="\frontend\src\images\icons\Logo.png"
-                    style={{borderRadius:"10px"}} />
-              </LogoContainer>
+            <Link to="/"> 
+                <LogoContainer>
+                        <img src="\frontend\src\images\icons\Logo.png"
+                        style={{borderRadius:"10px"}} />
+                </LogoContainer>
+            </Link>
                     <Link to="/" style={{color:"#04396B"}}>
                       <Home>
                         <HomeOutlined
@@ -195,6 +197,7 @@ const LogoContainer = styled.div`
     height: 80px;
     margin-top:25px;
     margin-left:40px;
+    cursor: pointer;
 `
 const Home = styled.div`
     height:60px;
@@ -208,9 +211,13 @@ const Publications = styled.div`
 `
 const SignUpContainer = styled.div`
     height:60px;
+    cursor: pointer;
+
 `
 const LogInContainer = styled.div`
     height:60px;
+    cursor: pointer;
+
 `
 const SearchContainer = styled.div`
     margin-right: 45px;
@@ -263,4 +270,6 @@ const Button = styled.button`
     &:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }
+      cursor: pointer;
+
 `

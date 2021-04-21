@@ -51,10 +51,14 @@ function SearchFilter(props) {
 export default SearchFilter
 
 const Container = styled.div`
-    max-width: 1145px;
-    max-height: 210px;
     background: white;
     border-radius: 15px;
+    height:auto;
+    width:1100px;
+    display:grid;
+    margin: 0 auto;
+    height:auto;
+    padding-left: 50px;
 
 `
 
