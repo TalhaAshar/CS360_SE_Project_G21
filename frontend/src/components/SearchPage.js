@@ -17,7 +17,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function SearchPage() {
 
     const { param } = useParams();
-    const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
+    const [pubs, setPubs] = useState([])
     const [filters, setFilters] = useState([])
     const [start, setStart] = useState(0)
 
@@ -99,6 +99,7 @@ function SearchPage() {
             < Filter onChange={handleFilters}/>
             <Colour>
             
+            {(pubs.length == 0) && <p>Your search filters returned no matching results.</p>}
                 <Results>
                    {
                     pubs.map((elem, index) => {

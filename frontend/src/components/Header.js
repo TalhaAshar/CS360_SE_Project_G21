@@ -133,7 +133,7 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
+                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
                     <Link to={searched}>
                         <Button style={{
                             display:"flex",
