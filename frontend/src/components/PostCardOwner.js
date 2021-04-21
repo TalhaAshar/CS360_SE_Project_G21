@@ -17,7 +17,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 
-function PostCardOwner({username, timestamp, desc, id}) {
+function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
 
     let placeholder = "Hours"
     let post_time = timestamp
@@ -47,6 +47,16 @@ function PostCardOwner({username, timestamp, desc, id}) {
         }
     }, [id])
 
+    function deletePost(){
+
+        let url = "api/forum/post/delete/" + post_id + "/" + thread_id
+        axios.post(url).then((res) => {
+            console.log("deleted")
+            postHandler(res.data)
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
     return (
         
         <Container>
@@ -69,12 +79,12 @@ function PostCardOwner({username, timestamp, desc, id}) {
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>{post_time}{placeholder}</h5>
+                <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
             </Comment>
             <Commentf>
             
             <Comment1>
-            <ReplyIcon style = {{fontSize:'30px'}}/>
+            <ReplyIcon style = {{fontSize:'30px'}} onClick={() => replyHandler("@" + username)}/>
             </Comment1>
             <Comment2>
             
@@ -82,7 +92,7 @@ function PostCardOwner({username, timestamp, desc, id}) {
             </Commentf>
             <TimeIcon>
             <Comment1>
-                    <DeleteIcon style = {{fontSize:'30px'}}/>
+                    <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost} onClick={() => editHandler(desc, post_id)}/>
             </Comment1>
             <Comment2>
                     <EditIcon style = {{fontSize:'30px'}}/>

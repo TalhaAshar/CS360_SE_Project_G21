@@ -14,11 +14,29 @@ function Activity(props) {
             </ActivityContainer>
         )
     }
+    else if(props.type == 'Mod'){
+        return (
+            <ActivityContainer>
+                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                <Text>You applied for moderatorship.</Text>
+                <NLine></NLine>
+            </ActivityContainer>
+        )
+    }
+    else if(props.type == 'Thread'){
+        return (
+            <ActivityContainer>
+                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                <Text>You created the thread.</Text>
+                <NLine></NLine>
+            </ActivityContainer>
+        )
+    }
     else{
         return (
             <ActivityContainer>
                 <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                <Text>Hello</Text>
+                <Text>You created the post.</Text>
                 <NLine></NLine>
             </ActivityContainer>
         )

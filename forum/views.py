@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Thread, Post#, Message, Conversation
+from .models import Thread, Post
 from django.contrib.auth.models import User
 
 from django.shortcuts import render
@@ -10,7 +10,9 @@ from django.db.models import Q
 from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PostSerializer, ThreadSerializer#, ConversationSerializer, MessageSerializer
+from .serializers import PostSerializer, ThreadSerializer
+from accounts.models import MyActivity
+from accounts.serializers import ActivitySerializer
 
 # Create your views here.
 
@@ -68,10 +70,18 @@ class ThreadsHome(APIView):
         queryset.save(update_fields=["PostCount"])
 
         parse = request.data["data"]
-        temp = Post.objects.create(Creator=user, Body=parse["Body"])
+        temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
         temp.save()
-        new_rel = Postings.objects.create(ParentThread=queryset, ParentPost=temp)
-        new_rel.save()
+
+        all_posts = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+        all_posts = PostSerializer(all_posts, many=True)
+
+        user_activity = MyActivity.objects.create(Owner=user, CreatedPost=queryset)
+        user_activity.save()
+
+        return Response(all_posts.data, status=status.HTTP_200_OK)
+        # new_rel = Postings.objects.create(ParentThread=queryset, ParentPost=temp)
+        # new_rel.save()
 
 
 class AddThread(APIView):
@@ -90,6 +100,9 @@ class AddThread(APIView):
         new_post = Post.objects.create(Creator=user,Body=parse["Body"], ParentThread=new_thread)
         new_post.save()
         print(new_post.Body)
+
+        user_activity = MyActivity.objects.create(Owner=user, CreatedThread=new_thread)
+        user_activity.save()
 
         return Response(status=status.HTTP_200_OK)
 
@@ -135,82 +148,62 @@ class DeleteThread(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-# # class EditPost(APIView):
+class EditPost(APIView):
 
-# #     def post(self, request, id)
+	def post(self, request, id, tid):
 
-# #         if (not request.user.is_authenticated):
-# #                 return Response(status=status.HTTP_401_UNAUTHORIZED)
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
             
-# #             try:
-# #                 post_to_edit = Post.objects.get(id=id)
-# #             except:
-# #                 return Response(status=status.HTTP_404_NOT_FOUND)
+		try:
+			post_to_edit = Post.objects.get(id=id)
+			queryset = Thread.objects.get(id=tid)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
             
-# #             user = User.objects.get(username=request.user)
-# #             temp_check = Profile.objects.get(user=user)
-# #             if post_to_edit.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
+		user = User.objects.get(username=request.user)
+		temp_check = Profile.objects.get(user=user)
+		if post_to_edit.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
 
-# #                 parse = request.data["data"]
-# #                 thread_to_edit.Category = parse["Category"]
-# #                 thread_to_edit.Title = parse["Title"]
-# #                 thread_to_edit.save(update_fields=["Title", "Category"])
-# #                 return Response(status=status.HTTP_200_OK)
-# #             return Response(status=status.HTTP_401_UNAUTHORIZED)
+			parse = request.data["data"]
+			post_to_edit.Body = parse["Body"]
+			post_to_edit.save(update_fields=["Body"])
+
+			all_posts = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+			all_posts = PostSerializer(all_posts, many=True)
+                
+			return Response(all_posts.data, status=status.HTTP_200_OK)
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class DeletePost(APIView):
+
+	def post(self, request, id, tid):
+
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+		try:
+			post_to_delete = Post.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+        
+		user = User.objects.get(username=request.user)
+		temp_check = Profile.objects.get(user=user)
+		if post_to_delete.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
             
+			parent_thread = Thread.objects.get(id=tid)
 
-# class DeletePost(APIView):
-
-#     def post(self, request, id, tid):
-
-#         if (not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
-#         try:
-#             post_to_delete = POST.objects.get(id=id)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-        
-#         user = User.objects.get(username=request.user)
-#         temp_check = Profile.objects.get(user=user)
-#         if post_to_delete.Creator == user or temp_check.User_Type == 'ADMIN' or temp_check.User_Type == 'MODERATOR':
+			count = parent_thread.PostCount - 1
+			parent_thread.PostCount = count
+			parent_thread.save(update_fields=["PostCount"])
             
-#             parent_thread = Postings.objects.filter(ParentThread__id=tid).order_by('Timestamp')
+			post_to_delete.delete()
 
-#             if parent_thread[0].ParentPost == post_to_delete:
-#                 parent_thread.delete()
-#             post_to_delete.delete()
+			all_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
+			all_posts = PostSerializer(all_posts, many=True)
 
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-# class AddPost(APIView):
-
-#     def post(self, request, id):
-#         if (not request.user.is_authenticated):
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
-#         try:
-#             thread_to_edit = Thread.objects.get(id=id)
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-        
-#         user = User.objects.get(username=request.user)
-#         new_post = Post.objects.create(Creator=user,Body=parse["Body"])
-#         new_post.save()
-#         new_postings = Postings.objects.create(ParentThread=thread_to_edit, ParentPost=new_post)
-#         new_postings.save()
-#         return Response(status=status.HTTP_200_OK)
-
-
-
-# # class Messages(APIView):
-
-# #     def get(self, request):
-
-# #         if (not request.user.is_authenticated):
-# #             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
-# #         user = User.objects.get(username=request.user)
+			return Response(all_posts.data, status=status.HTTP_200_OK)
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 

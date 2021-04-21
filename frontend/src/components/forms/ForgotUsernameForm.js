@@ -41,10 +41,10 @@ export default class ForgotUsername extends Component {
                     <form onSubmit={this.handleSubmit}>
                         <Body>
                             <Heading>
-                                Enter Email Address
+                                Enter Email Address*
                             </Heading>
                             <Form>
-                                <input type="text" name="email" minLength="5" style={{width: "440px", height: "30px", fontSize: "16px", borderColor: "#2F80ED", borderRadius: "14px", padding:"10px", outline: "none"}} onChange={this.handleChange} />
+                                <input type="text" name="email" required minLength="5" maxLength="150" style={{width: "440px", height: "30px", fontSize: "16px", borderColor: "#2F80ED", borderRadius: "14px", padding:"10px", outline: "none"}} onChange={this.handleChange} />
                             </Form>
                             <input type="submit" value="Submit" style={{width: "126px", height: "48px", position: "relative", marginTop: "15px", marginLeft: "345px", fontSize: "18px", color: "#FFFFFF", padding:"10px", backgroundColor: "#583192", borderRadius: "7px", borderColor: "#000000"}}/>
                         </Body>

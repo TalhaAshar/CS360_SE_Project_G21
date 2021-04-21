@@ -11,7 +11,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function PubActivity() {
 
-    const [pubs, setPubs] = useState([])
+    const [pubs, setPubs] = useState([{'Publication_ID' : {'id' : 0}, 'Edit_Type' : 'REPORTED'}])
     const [flag, setFlag] = useState(false)
     const [start, setStart] = useState(0)
 
@@ -62,10 +62,13 @@ function PubActivity() {
             <ActivityContainer>
                 {
                     pubs.map((elem, index) => {
-                        if(index >= start && index < (start + 15) && index < pubs.length){
-                            return(
-                                <Activity pub={elem} type="Pub"/>
-                            )
+
+                        if(elem.Publication_ID != null){
+                            if(index >= start && index < (start + 15) && index < pubs.length){
+                                return(
+                                    <Activity key={index} pub={elem} type="Pub"/>
+                                )
+                            }
                         }
                     })
                 }

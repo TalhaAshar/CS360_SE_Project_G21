@@ -56,7 +56,6 @@ function ThreadGuest(props) {
                     }
                 </Results>
 
-                <RichTextEditor />
                 </Lower>
             </Container>
             )

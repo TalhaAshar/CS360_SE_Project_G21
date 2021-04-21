@@ -29,12 +29,14 @@ function SearchPage() {
         {
             console.log("ADDING")
             setFilters([...filters, value])
+            setStart(0)
         }
         else
         {
             console.log("Inside ELSE")
                 const updatedFilters = [...filters.slice(0, temp), ...filters.slice(temp + 1)]
                 setFilters(updatedFilters)
+                setStart(0)
         }
         console.log(filters)
     }
@@ -67,6 +69,7 @@ function SearchPage() {
                 setPubs(res.data)
                 console.log(res)
             }
+            setStart(0)
         })
         .catch(error => console.log('Error:', error))
         return () => {

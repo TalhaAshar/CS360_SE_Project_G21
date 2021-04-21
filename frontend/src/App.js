@@ -35,6 +35,7 @@ import EditPublication from "./components/publications/EditPublication";
 import AddPublication from "./components/publications/AddPublication";
 import ProfileGuest from "./components/ProfileGuest";
 import ListGuest from "./components/publications/PersonalizedListGuest"
+import MyActivity from "./components/MyActivity";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -142,6 +143,11 @@ function App() {
           <Route path="/contributions">
             {console.log("IM HERE")}
             <PubActivity />  
+          </Route>
+
+          <Route path="/my_activity">
+            {console.log("IM HERE")}
+            <MyActivity />  
           </Route>
 
           <Route path="/addpublication">
