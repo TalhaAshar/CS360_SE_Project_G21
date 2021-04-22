@@ -26,19 +26,29 @@ function PublicationsList() {
     
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     const [start, setStart] = useState(0) 
+    const [profile, setProfile] = React.useState({"User_Type":"LOGGEDOUT"})
 
     const [PopView, setPopView] = useState(false)
     const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
     
     useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/main/catalogue_list/"
-        axios.get(url).then((res) => {
+        let url1 = "api/main/catalogue_list/"
+        axios.get(url1).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
             };
         })
         .catch(error => console.log('Error:', error))
+
+        let url2 = "api/accounts/profile"
+        axios.get(url2).then((res) => {
+            if (isComponentMounted){
+                setProfile(res.data["User_Type"])
+            };
+        })
+        .catch(error => setProfile("LOGGEDOUT"))
+
         return () => {
             isComponentMounted = false;
         }
@@ -71,49 +81,102 @@ function PublicationsList() {
         }
     }
 
-    return (
-        <Container>
-
-        
-            <PublicationTitle>
-                <Heading>Publications</Heading>
-            </PublicationTitle>
-            <ViewNextButtonContainer>
-                    <View onClick = {handleClick} onMouseLeave={handleClick}>
-                                <ViewText>View</ViewText>
-                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer>
-                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
-                            </ViewPopContainer>
-                            </View>
-                            <NextPrevious>
-                                <SkipPreviousRoundedIcon onClick={leftClick}/>
-                                <SkipNextRoundedIcon onClick={rightClick}/>
-                            </NextPrevious>
-                            <Link to="/addpublication">
-                                <View style = {{width:"15%"}}>
-                                    <ViewText>Add Publication</ViewText>
+    switch (profile) {
+        case 'UNVERIFIED':
+        case 'LOGGEDOUT':
+        return (
+            <Container>
+                <PublicationTitle>
+                    <Heading>Publications</Heading>
+                </PublicationTitle>
+                <ViewNextButtonContainer>
+                        <View onClick = {handleClick} onMouseLeave={handleClick}>
+                                    <ViewText>View</ViewText>
+                                    <DropdownDiv>
+                                    <Svg  width="20%" height="25%" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                    </Svg>
+                                    <ViewPopContainer>
+                                    <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                                    </ViewPopContainer>
+                                    </DropdownDiv>
                                 </View>
-                            </Link>
-                    </ViewNextButtonContainer>
-            <Colour>
-            <Results>
-                {
-                    pubs.map((elem, index) => {
-                        if(index >= start && index < (start + 8) && index < pubs.length){
-                            return(
-                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
-                                )
-                        }
-                        console.log(index)
-                    })
-                }
-            </Results>
-            </Colour>
-        </Container>
-    )
+                                <GuestNextPrevious>
+                                    <SkipPreviousRoundedIcon onClick={leftClick}/>
+                                    <SkipNextRoundedIcon onClick={rightClick}/>
+                                </GuestNextPrevious>
+                        </ViewNextButtonContainer>
+                <Colour>
+                <Results>
+                    {
+                        pubs.map((elem, index) => {
+                            if(index >= start && index < (start + 8) && index < pubs.length){
+                                return(
+                                    <CardDiv>
+                                        <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                    </CardDiv>
+                                    )
+                            }
+                            console.log(index)
+                        })
+                    }
+                </Results>
+                </Colour>
+            </Container>
+        )
+            break;
+        case 'VERIFIED':
+        case 'ADMIN':
+        case 'MODERATOR':
+            return (
+                <Container>
+                <PublicationTitle>
+                    <Heading>Publications</Heading>
+                </PublicationTitle>
+                <ViewNextButtonContainer>
+                        <View onClick = {handleClick} onMouseLeave={handleClick}>
+                                    <ViewText>View</ViewText>
+                                    <DropdownDiv>
+                                    <Svg  width="20%" height="25%" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                    </Svg>
+                                    <ViewPopContainer>
+                                    <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                                    </ViewPopContainer>
+                                    </DropdownDiv>
+                                </View>
+                                <NextPrevious>
+                                    <SkipPreviousRoundedIcon onClick={leftClick}/>
+                                    <SkipNextRoundedIcon onClick={rightClick}/>
+                                </NextPrevious>
+                                <Link to="/addpublication" style ={{textDecoration:"none", paddingRight:"2%"}} >
+                                    <View style ={{width:"120%", paddingLeft:"2 %"}} >
+                                        <ViewText>Add Publication</ViewText>
+                                    </View>
+                                </Link>
+                        </ViewNextButtonContainer>
+                <Colour>
+                <Results>
+                    {
+                        pubs.map((elem, index) => {
+                            if(index >= start && index < (start + 8) && index < pubs.length){
+                                return(
+                                    <CardDiv>
+                                        <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                    </CardDiv>
+                                    )
+                            }
+                            console.log(index)
+                        })
+                    }
+                </Results>
+                </Colour>
+            </Container>
+            )
+            break;
+            default:
+                return (<div></div>)
+    }
 }
 
 export default PublicationsList
@@ -132,9 +195,7 @@ const Nextpage = styled.div`
 display:flex;
     flex-direction:row;
     margin-left: 260px;
-
 `
-
 
 const Colour = styled.div`
 margin-left:2%;
@@ -149,11 +210,10 @@ border-radius: 20px;
 `
 const Results = styled.div`
     padding-top:2%;
-    padding-left:13%;
-    width:1100px;
-    height:1600px;
+    width:100%;
+    height:100%;
     display:grid;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    grid-template-rows: 200px 200px 200px 200px 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const PublicationTitle = styled.div`
     min-width: 55%;
@@ -167,7 +227,6 @@ const PublicationTitle = styled.div`
     color:white;
     background: #03204C;
     border-radius: 8px;
-
 `
 
 const Heading = styled.h3`
@@ -194,7 +253,6 @@ position:relative;
 margin-top:1%;
 z-index:1;
 top:6%;
-left:30%;
 `
 
 const ViewText = styled.h4`
@@ -213,4 +271,25 @@ const View = styled.h4`
 `
 const NextPrevious = styled.h4`
     margin-top:1%;
+`
+
+const GuestNextPrevious = styled.h4`
+    margin-top:1%;
+    margin-right:48.5%;
+`
+
+const CardDiv = styled.div`
+    position:relative;
+    left:10%;
+    right:10%;
+    width:100%;
+
+`
+const DropdownDiv = styled.div`
+    position:relative;
+    top:-85%;
+    @media only screen and (max-width: 1000px) {
+        top:-100%;
+    }
+    
 `

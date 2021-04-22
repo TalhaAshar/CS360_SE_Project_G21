@@ -303,3 +303,37 @@ const Text = styled.h5`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
 `
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //  This is for a save button inside the text editor itself. Not sure what kinda data it sends back.
+        // <Editor
+        //   value={this.state.Description}
+        //   apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
+        //   init={{
+        //     height: 200,
+        //     width: 500,
+        //     plugins: "save", //image",
+        //     toolbar: "bold italic save", // image",
+        //     menubar: false,
+        //     toolbar_location: "bottom",
+        //   }}
+        //   onEditorChange={this.handleEditorChange}
+        // />
+        // <input type="hidden" name="Description" value={this.state.Description} /><br/>
+        // </form> );

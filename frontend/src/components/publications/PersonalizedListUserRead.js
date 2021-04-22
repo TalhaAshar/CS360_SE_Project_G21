@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import Card from '../Cards'
-// import '../App.scss';
-// import Dropdown from '../Dropdown';
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import ViewPub from './SortPerList'
+import EditPub from './PubEditDropDown'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -33,28 +32,17 @@ function PersonalizedListUserRead() {
     const [sorter, setSorter] = useState('alphabetical')
     const [user, setUser] = useState('')
     const [start, setStart] = useState(0)
-
-      
+  
     const [PopView, setPopView] = useState(false)
     const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
     
-
-    function handleChange(event){
-        let temp = event.charAt(0).toLowerCase() + event.slice(1)
-        setSorter(temp)
-        
-    }
-
-    function DeleteMyList(){
+    function DeleteMyList(id){
         let url = "api/accounts/mylist/delete/" + id
+        console.log("shaka", url)
         axios.delete(url).then((res) => {
             console.log(res)
         })
         .catch(error => console.log('Error:', error))
-    }
-
-    function MarkAsRead(){
-        
     }
 
     useEffect(() => {
@@ -89,16 +77,10 @@ function PersonalizedListUserRead() {
 
     const handleClick = () =>{
         setPopView(!PopView)
-        console.log("NEW VIEW", PopView)
     }
+
     const editClick = (value) =>{
         const updated = [...PopEdit.slice(0, value), !PopEdit[value], ...PopEdit.slice(value+1)]
-        console.log(updated)
-        setPopEdit(updated)
-    }
-    const closeClick = () =>{
-        const updated = [false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false]
-        console.log(updated)
         setPopEdit(updated)
     }
 
@@ -124,25 +106,27 @@ function PersonalizedListUserRead() {
     return (
         <Overall>
         <Container>
-
             <UserNameContainer>
                 <User>{user}'s List</User>
             </UserNameContainer>
             <Background>
             <ViewNextButtonContainer>
                     <View onClick = {handleClick}>
-                                <ViewText>Sort By</ViewText>
-                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer>
-                            <ViewPub className = "view" trigger={PopView} setTrigger={changeView}/>
-                            </ViewPopContainer>
+                            <ViewText>Sort By</ViewText>
+                            <DropDiv>
+                                <Svg  width="25%" height="23%" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                </Svg>
+                                <ViewPopContainer>
+                                <ViewPub className = "view" trigger={PopView} setTrigger={changeView}/>
+                                </ViewPopContainer>
+                            </DropDiv>
                             </View>
                             <NextPrevious>
                                 <SkipPreviousRoundedIcon onClick={leftClick}/>
                                 <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
+                            <ViewPopContainer></ViewPopContainer>
                     </ViewNextButtonContainer>
 
             <Cards>
@@ -151,7 +135,18 @@ function PersonalizedListUserRead() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
-                                <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
+                                <CardContent>
+                                    <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
+                                    <StatusDiv>{elem.Status}</StatusDiv>
+                                    <Dropdiv>
+                                        <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                        </CardSvg>
+                                        <PopContainer>
+                                            <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} Delete={DeleteMyList} id={elem.id}/>
+                                        </PopContainer>
+                                    </Dropdiv>
+                                </CardContent>
                                 )
                         }
                         console.log(index)
@@ -166,7 +161,7 @@ function PersonalizedListUserRead() {
         <Lower>
         <Background2>
                 <Recommended>
-                    Recommended
+                    <h4>Recommended</h4>
                 </Recommended>
             <Cards2>
                 {
@@ -174,7 +169,9 @@ function PersonalizedListUserRead() {
                     recs.map((elem, index) => {
                         if(index < 4){
                             return(
-                                <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                    <CardContent style={{marginBottom:"4%"}}>
+                                        <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                    </CardContent>
                                 )
                         }
                         console.log(index)
@@ -196,6 +193,7 @@ const Overall = styled.h3`
     margin-right:3%;
 `
 const Lower = styled.div`
+    margin-top:3%;
     width:80%;
 
 `
@@ -206,17 +204,15 @@ const Container = styled.div`
 `
 
 const UserNameContainer = styled.div`
-min-width: 55%;
-min-height: 2%;
-margin-top: 2%;
-margin-left:2%;
-margin-right:2%;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-background: #03204C;
-border-radius: 8px;
+    min-width: 55%;
+    min-height: 4%;
+    margin-top: 2%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    background: #03204C;
+    border-radius: 8px;
 `
 const User = styled.h3`
 
@@ -233,19 +229,18 @@ border-radius: 16px;
 
 
 const Background2 = styled.div`
-    margin-top:3%;
     width:100%;
-    height: 470px;
-
+    height: 80%;
+    padding-top:1%;
+    padding-bottom:1%;
     background: #DCF2F8;
     border-radius: 16px;
 
 `
-const Recommended = styled.h4`
+const Recommended = styled.div`
     border-radius: 6px;
     margin-left:2%;
     margin-right:4%;
-    margin-top:2%;
     width: 30%;
     height: 8%;
     background: #03204C;
@@ -257,30 +252,41 @@ const Recommended = styled.h4`
     font-weight: bold;
     font-size: 20px;
     line-height: 27px;
-        color: white;
-    `
-
+    color: white;
+`
+const CardContent = styled.div`
+    padding-left:3%;
+    padding-bottom:3%;
+`
+const StatusDiv = styled.div`
+    position:relative;
+    bottom:2%;
+    left:65%;
+    z-index:2;
+`
+const DropDiv = styled.div`
+    position:relative;
+    top:-100%;
+    left:5%;
+`
 const Cards = styled.h4`
     margin-left:0px;
-    margin-right:50px;
-    margin-top:20px;
-    margin-bottom:20px;
-    display:grid;
-    height: 600px;
-    grid-template-rows: 375px 375px 375px 375px;
-    grid-template-columns: 250px 250px 250px 250px;
+    margin-right:5%;
+    margin-top:3%;
+    margin-bottom:3%;
+    height: 80%;
+    display:flex;
+    flex-flow:row wrap;
     background:#DCF2F8;
 `
-
 const Cards2 = styled.h4`
-margin-left:0px;
-    margin-right:50px;
-    margin-top:20px;
-    margin-bottom:20px;
-    display:grid;
-    height: 250px;
-    grid-template-rows: 375px 375px 375px 375px;
-    grid-template-columns: 250px 250px 250px 250px;
+    margin-left:0px;
+    margin-right:5%;
+    margin-top:3%;
+    margin-bottom:3%;
+    height: 80%;
+    display:flex;
+    flex-flow:row wrap;
     background:#DCF2F8;
 `
 const ViewNextButtonContainer = styled.div`
@@ -311,7 +317,7 @@ const ViewText = styled.h4`
 `
 const View = styled.h4`
     background:#3B058B;
-    width:10%;
+    width:15%;
     height:30px;
     color:white;
     border-radius:6px;
@@ -319,4 +325,23 @@ const View = styled.h4`
 `
 const NextPrevious = styled.h4`
     margin-top:1%;
+`
+
+const PopContainer = styled.div`
+    position:absolute;
+    margin-left:18%;
+    z-index:2;
+`
+
+const CardSvg = styled.svg`
+    z-index:1;
+    position:relative;
+    left:88%;
+    top:-20%;
+
+`
+const Dropdiv = styled.div`
+    position:relative;
+    bottom:100%;
+    top:-90%;
 `
