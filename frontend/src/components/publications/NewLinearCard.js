@@ -18,7 +18,7 @@ function NewLinearCard({title, author, front, id}) {
         
         <Container>
         <ImageUserNameContainer>
-            <Link to={j}>
+            <Link to={j} style={{textDecoration:"none"}}>
             <ImageContainer>
                
                 <Image src={front}
@@ -27,15 +27,12 @@ function NewLinearCard({title, author, front, id}) {
             </ImageContainer>
             </Link>
         </ImageUserNameContainer>
-        <PublicationDetailContainer>
-            <BookTitle>{title}</BookTitle>
-            <Author>{author}</Author>
-        </PublicationDetailContainer>
-        <ThreadTimePostContainer>
-            <TimeIcon>
-                <h5 style={{paddingTop:"4px"}}>17 Days Ago</h5>
-            </TimeIcon>
-        </ThreadTimePostContainer>
+        <Link to={j} style={{textDecoration:"none"}}>
+            <PublicationDetailContainer>
+                <BookTitle>{title}</BookTitle>
+                <Author>{author}</Author>
+            </PublicationDetailContainer>
+        </Link>
 
         </Container>
     )
@@ -46,6 +43,7 @@ export default NewLinearCard
 const Container = styled.div`
 width:1100px;
 height:180px;
+min-width: 55%;
 display:flex;
 background:white;
 border-radius:12px;
