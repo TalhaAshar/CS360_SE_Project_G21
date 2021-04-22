@@ -96,16 +96,19 @@ const BookTitleContainer = styled.div`
     align-items:center;
     margin-left: 3%;
 margin-right: 3%;
+margin-top: 2%;
 `
 
 const Results = styled.div`
-    width:1100px;
-    height:1600px;
-    display:grid;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
-    padding-top:20px;
+width:1100px;
+display:grid;
+padding-top:20px;
+padding-left:3%;
 margin-left:20px;
 margin: 0 auto;
+display:grid;
+grid-template-rows: 200px 200px 200px 200px;
+grid-template-columns: 520px 520px
 `
 const Container = styled.div`
 margin-left: 3%;
@@ -128,7 +131,7 @@ margin-top: 1%;
 const Colour = styled.div`
 background: #DCF2F8;
 width:90%;
-height:1600px;
+height:1000px;
 border-radius: 20px;
 margin-bottom:100px;
 margin-left:3%;

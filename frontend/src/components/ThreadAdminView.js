@@ -93,11 +93,8 @@ function ThreadAdmin(props) {
         case true:
             return(
                 <Container>
-            <Heading>
-                    <Background>
-                    {props.location.state.Title}
-                    </Background>
-                </Heading>
+            
+                <BookTitleContainer><h1>{props.location.state.Title}</h1></BookTitleContainer>
             <Lower>
                 
 
@@ -257,6 +254,7 @@ function ThreadAdmin(props) {
                 
                 </Lower>
 
+                    
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
             </Container>
@@ -267,17 +265,36 @@ function ThreadAdmin(props) {
 
 export default ThreadAdmin
 
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
+`
+
 const Results = styled.div`
     width:1100px;
     display:grid;
     height: 200px;
-    margin-top: 65px;
+    padding-top: 65px;
+    margin: 0 auto;
     grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const Lower = styled.div`
 background: #DCF2F8;
-width: 1100px;
-height:1600px;
+width:90%;
+height: 1000px;
+border-radius: 20px;
+margin-bottom:100px;
+margin-left:3%;
+margin-right:3%;
 `
 
 const Results1 = styled.div`
@@ -285,13 +302,11 @@ const Results1 = styled.div`
     width:1100px;
     display:grid;
     height: 200px;
-
+    margin: 0 auto;
     grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const Container = styled.div`
-margin-left: 120px;
-width: 1100px;
-height:1600px;
+
 
 `
 
@@ -336,14 +351,14 @@ height: 52px;
 background: #CE1010;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
-
+text-align: center;
 `
 
 const DText = styled.h3`
 width: 125px;
 margin-left: 13px;
 padding-top: 13px;
-
+text-align: center;
 font-family: Manrope;
 font-style: normal;
 font-weight: bold;
@@ -357,7 +372,7 @@ const RText = styled.h3`
 width: 125px;
 margin-left: 13px;
 padding-top: 13px;
-
+text-align: center;
 font-family: Manrope;
 font-style: normal;
 font-weight: bold;
@@ -369,6 +384,7 @@ cursor: pointer;
 `
 
 const RP = styled.h3`
+text-align: center;
 height: 25px;
 padding-top: 13px;
 display:flex;
