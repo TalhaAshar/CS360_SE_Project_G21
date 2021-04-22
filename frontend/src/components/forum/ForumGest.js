@@ -25,12 +25,13 @@ function ForumGest() {
 
     return (
         <Container>
-            <ThreadBar>
-                <Text>
-                    Recent Thread
-                </Text>
-            </ThreadBar>
+            
+            <BookTitleContainer><h1>Recent Threads</h1></BookTitleContainer>
+           
             <BodyRecent>
+                <Results>
+
+                
                     {
                         threads.map((elem, index) => {
                             if(index < 6){
@@ -46,6 +47,7 @@ function ForumGest() {
                             }
                         })
                     }
+                </Results>
 
             </BodyRecent>
         </Container>
@@ -57,16 +59,25 @@ export default ForumGest
 const Container = styled.div`
 
 `
-const ThreadBar = styled.div`
-    width: 1179px;
-    height: 60px;
+
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
     color:white;
-    background-color:#03204C;
-    margin-top:20px;
-    margin-left:50px;
+    min-width: 55%;
     display:flex;
     justify-content:center;
-    border-radius:12px;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+`
+const Results = styled.div`
+width:1100px;
+display:grid;
+grid-template-rows: 200px 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+padding-top:20px;
+margin-left:20px;
+margin: 0 auto;
 
 
 `
@@ -90,5 +101,6 @@ const BodyRecent = styled.div`
     padding-right:40px;
     height:1250px;
     border-radius:8px;
+    
 
 `
