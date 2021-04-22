@@ -59,7 +59,7 @@ handleSubmit = (event) =>{
               <Span style={{paddingTop:"10px"}}>Name of copyright owner*</Span><br/>
               <Span style={{paddingTop:"10px"}} >Country*</Span><br/>
               <Span style={{paddingTop:"10px"}} >Primary Email*</Span><br/>
-              <Span style={{paddingTop:"10px"}} >Publication for removal*</Span><br/>
+              <Span style={{paddingTop:"10px"}} >Publication ID for removal*</Span><br/>
             </SpanContainer>
             <InputContainer>
               <Input type="text" required name="Party" onChange={this.handleChange} /><br/>

@@ -116,7 +116,7 @@ class MyListDefault(APIView):
             new_list_item = Listings.objects.create(ListOwner=request.user, ListPub=pub_to_add, Status='UNREAD')
             new_list_item.save()
             return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_226_IM_USED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 	
     def delete(self, request, id):
 

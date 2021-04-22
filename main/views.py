@@ -271,6 +271,25 @@ class TakedownRequest(APIView):
 		if(complaint["Body"] == ""):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
+		# Generate the body of the email
+		subject = "BookBound - Takedown Request" 
+		message = render_to_string('takedown.html', {
+			'party': complaint["Party"],
+			'relationship': complaint["Relationship"],
+			'name': complaint["Copyright"],
+			'country': complaint["Country"],
+			'email': complaint["Email"],
+			'publication': complaint["Publication"],
+			'body' : complaint["Body"],
+		})
+		plain = ''
+
+		# Send the email to all admins
+		try:
+			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
+		except:
+			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
+
 		# Create a record of the takedown request for admins to review later
 		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Party"], Reason=complaint["Body"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Copyright"], Country=complaint["Country"])		
 		temp.save()
