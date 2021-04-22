@@ -108,11 +108,11 @@ function App() {
           </Route> 
            
           <Route exact path="/Columnar/">
-            <Columnar logged={auth["Status"]}/>
+            <Columnar />
           </Route>
 
           <Route exact path="/Catalogue/">
-            <Catalogue/>
+            <Catalogue />
           </Route>
 
           <Route path="/publication/:id">

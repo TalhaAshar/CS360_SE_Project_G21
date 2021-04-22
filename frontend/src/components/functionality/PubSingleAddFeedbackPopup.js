@@ -1,12 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
 
-function ThreadAddFeedbackPopup(props) {
-
-    const url = "/thread/user/" + props.thread["id"]
-    const thisThread = props.thread
-
+function PubSingleAddFeedbackPopup(props) {
     return (
         <div>
         <Shadow>
@@ -16,23 +11,18 @@ function ThreadAddFeedbackPopup(props) {
                 </Title>
                 <Body>
                     <Heading>
-                        Your thread has been created. You will now be redirected to it.
+                        The publication has been added to the database.
                     </Heading>
-                    <Link to={{
-                        pathname : url,
-                        state : thisThread
-                    }}>
-                        <Button>
+                        <Button onClick={props.toggle}>
                             Return
                         </Button>
-                    </Link>
                 </Body>
             </Container>
         </div>
     )
 }
 
-export default ThreadAddFeedbackPopup
+export default PubSingleAddFeedbackPopup
 
 const Container = styled.div`
     width: 505px;

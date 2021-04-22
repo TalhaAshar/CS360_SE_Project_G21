@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import axios from 'axios';
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -12,7 +11,6 @@ constructor(props){
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     console.log(props.auth)
-
     this.state = { username:' ', password:' ', refresh : ' ', invalid: false };
 }
 
@@ -24,7 +22,6 @@ handleSubmit = (event) =>{
   event.preventDefault();
   //const url = "api/accounts/modapps";
   const data = { username:this.state.username, password:this.state.password };
-  
   axios.post(`api/register/login`, { data })
     .then(res => {
       this.props.onChange({'Status' : 'Authentic'})

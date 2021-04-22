@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
 import SignUp from './SignUp'
@@ -17,6 +18,8 @@ import SearchIcon from '@material-ui/icons/Search';
 function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
     const [searched, setSearched] = React.useState('')
+    const [flag, setFlag] = React.useState(false)
+    const history = useHistory();
 
     console.log(searched, "kakak")
 
@@ -28,14 +31,14 @@ function Header(props) {
 
     function updateParent(event){
         props.onChange(event)
+        history.push("/");
     }
 
     function handleClick(event) {
-        //console.log(event.target.value)
-        //props.onChange(event.target.value); // pass any argument to the callback
         setTemp(event)
         updateParent(event)
-      }
+    }
+
     return (
         
         <Container>
