@@ -35,7 +35,9 @@ function Footer() {
 export default Footer
 
 const Container = styled.div`
-    
+    margin-top:2%;
+    position:relative;
+    top:150%;
 `
 const Top = styled.nav`
     height:80px;

@@ -130,7 +130,7 @@ handleSubmit = (event) =>{
                       <Span>Edition_Number</Span>
                       <Input type="number" name="Edition_Number" min="1" max="999999" onChange={this.handleChange} style={{marginLeft:"30px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Year of Publication</Span>
-                      <Input type="number" name="Year_Publication" min="1" max="9999" onChange={this.handleChange} style={{marginLeft:"125px", marginTop:"30px", marginBottom:'10px'}}  /><br/>
+                      <Input type="number" name="Year_Publication" min="1" max="9999" onChange={this.handleChange} style={{marginLeft:"15px", marginTop:"30px", marginBottom:'10px'}}  /><br/>
                       <Span>Genres*</Span>
                       <Input type="text" required name="Genres" maxLength="255" onChange={this.handleChange} style={{marginLeft:"98px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Language*</Span>

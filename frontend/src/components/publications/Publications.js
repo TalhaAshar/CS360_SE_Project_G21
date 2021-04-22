@@ -50,11 +50,6 @@ function Publications(props) {
         console.log(updated)
         setPopEdit(updated)
     }
-    const closeClick = () =>{
-        const updated = [false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false]
-        console.log(updated)
-        setPopEdit(updated)
-    }
 
     function leftClick(){
         if(start > 0){
@@ -78,20 +73,22 @@ function Publications(props) {
                     </PublicationTitle>
                     <ViewNextButtonContainer>
                     <View onClick = {handleClick} onMouseLeave={handleClick}>
-                                <ViewText>View</ViewText>
-                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer>
-                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
-                            </ViewPopContainer>
+                            <ViewText>View</ViewText>
+                            <DropdownDiv>
+                                <Svg  width="20%" height="25%" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                </Svg>
+                                <ViewPopContainer>
+                                <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                                </ViewPopContainer>
+                            </DropdownDiv>
                             </View>
                             <NextPrevious>
                                 <SkipPreviousRoundedIcon onClick={leftClick}/>
                                 <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
-                            <Link to="/addpublication">
-                                <View style = {{width:"15%"}}>
+                            <Link to="/addpublication" style ={{textDecoration:"none", paddingRight:"2%"}} >
+                                <View style ={{width:"120%", paddingLeft:"2 %"}} >
                                     <ViewText>Add Publication</ViewText>
                                 </View>
                             </Link>
@@ -102,6 +99,7 @@ function Publications(props) {
                                  console.log(elem.id)
                                  if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
+                                      
                                          <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                          )
                                  }
@@ -122,19 +120,21 @@ function Publications(props) {
                     <ViewNextButtonContainer >
                             <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
-                            <Svg  width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer >
-                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
-                            </ViewPopContainer>
+                                <DropdownDiv>
+                                <Svg  width="20%" height="25%" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                </Svg>
+                                <ViewPopContainer>
+                                <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                                </ViewPopContainer>
+                            </DropdownDiv>
                             </View>
                             <NextPrevious>
                                 <SkipPreviousRoundedIcon onClick={leftClick}/>
                                 <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
-                            <Link to="/addpublication">
-                                <View style = {{width:"15%"}}>
+                            <Link to="/addpublication" style ={{textDecoration:"none", paddingRight:"2%"}} >
+                                <View style ={{width:"120%", paddingLeft:"2 %"}} >
                                     <ViewText>Add Publication</ViewText>
                                 </View>
                             </Link>
@@ -147,13 +147,14 @@ function Publications(props) {
                                      return(
                                         <CardContent>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
-                                            <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                            <Dropdiv>
+                                                <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                                </CardSvg>
                                                 <PopContainer>
-                                                <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} id={elem.id}/>
+                                                    <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} id={elem.id}/>
                                                 </PopContainer>
-                                            </CardSvg>
-                                            
+                                            </Dropdiv>
                                         </CardContent>
                                          )
 
@@ -175,19 +176,21 @@ function Publications(props) {
                     <ViewNextButtonContainer>
                             <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
-                            <Svg width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
-                            </Svg>
-                            <ViewPopContainer>
-                            <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
-                            </ViewPopContainer>
+                                <DropdownDiv>
+                                    <Svg  width="20%" height="25%" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                    </Svg>
+                                    <ViewPopContainer>
+                                    <ViewPub className = "view" trigger={PopView} setTrigger={handleClick}/>
+                                    </ViewPopContainer>
+                                </DropdownDiv>
                             </View>
                             <NextPrevious>
                                 <SkipPreviousRoundedIcon onClick={leftClick}/>
                                 <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
-                            <Link to="/addpublication">
-                                <View style = {{width:"15%"}}>
+                            <Link to="/addpublication" style ={{textDecoration:"none", paddingRight:"2%"}} >
+                                <View style ={{width:"120%", paddingLeft:"2 %"}} >
                                     <ViewText>Add Publication</ViewText>
                                 </View>
                             </Link>
@@ -230,6 +233,15 @@ const ViewNextButtonContainer = styled.div`
     justify-content:space-between;
     align-items:center;
     `
+
+const DropdownDiv = styled.div`
+    position:relative;
+    top:-85%;
+    @media only screen and (max-width: 1000px) {
+        top:-100%;
+    }
+    
+`
 const Svg = styled.svg`
     position:relative;
     bottom:85%;
@@ -310,16 +322,20 @@ const CardContent = styled.div`
     padding-right: 2%;
 `
 const PopContainer = styled.div`
-    position:relative;
+    position:absolute;
+    margin-left:18%;
     z-index:2;
-    left:1%;
-    bottom:1%;
 `
 
 const CardSvg = styled.svg`
-    position:relative;
-    bottom:91%;
-    left:85%;
     z-index:1;
+    position:relative;
+    left:88%;
+    top:-20%;
 
+`
+const Dropdiv = styled.div`
+    position:relative;
+    bottom:100%;
+    top:-90%;
 `
