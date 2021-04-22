@@ -29,7 +29,7 @@ handleSubmit = (event) =>{
     .then(res => {
       this.props.onChange({'Status' : 'Authentic'})
     })
-    .catch(error => this.setState({ invalid:!this.state.invalid }))
+    .catch(error => this.setState({ invalid:true }))
     .then(response => console.log('Success', response))
   }
 

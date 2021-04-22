@@ -4,18 +4,24 @@ import { render } from "react-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
 import styled from 'styled-components'
+import ReportThreadFeedbackPopup from '../functionality/ReportThreadFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 class App extends Component{
-  
 constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Reason:'Spam', Body:'' };
+    this.state = { Reason:'Spam', Body:'', Thread: {}, seen: false, invalid: false };
     this.ID = props.location.state
+}
+
+togglePop = () => {
+  this.setState({
+    seen: !this.state.seen
+  })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -36,15 +42,15 @@ handleSubmit = (event) =>{
   const data = { id: this.ID, Reason:this.state.Reason, Body:this.state.Body, Type:'Post' };
   
   axios.post(`api/accounts/reports`, { data })
-    .then(res => console.log("reported"))
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
+  .then(res => this.setState({seen:true, invalid:true, Thread: res.data}))
+  .catch(error => this.setState({invalid:true}))
+  .then(response => console.log("huh"));
   }
     
   render(){
     return(
       <Container>
-      <Head>Report-Thread</Head>
+      <Head>Report Thread/Post</Head>
       <FormContainer>
           <Form onSubmit={this.handleSubmit}>
           <LabelContainer>
@@ -53,12 +59,13 @@ handleSubmit = (event) =>{
                   <Option defaultValue="Spam">Spam</Option>
                   <Option value="Offensive material">Offensive material</Option>
                   <Option value="False or misleading information">False or misleading information</Option>
-                  <Option value="Violation of community  guidelines (abuse, misuse, etc)">Violation of community  guidelines (abuse, misuse, etc)</Option>
+                  <Option value="Violation of community  guidelines (abuse, misuse, etc)">Violation of community guidelines (abuse, misuse, etc)</Option>
               </Select><br/>
           </LabelContainer>
           
           <EditorContainer>
-            <Span>Provide a brief description of the offence caused</Span>
+            <Span>Provide a brief description of the offence caused*</Span>
+            { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Description cannot be empty.</ErrorMessage> : null }
             <Editor
               value={this.state.Body}
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -73,7 +80,8 @@ handleSubmit = (event) =>{
               }}
               onEditorChange={this.handleEditorChange}
             />
-            <Submit type="submit" value="Submit" />
+            { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+            { (this.state.seen && this.state.invalid) ? <ReportThreadFeedbackPopup toggle={this.togglePop} thread={this.state.Thread} /> : null }
           </EditorContainer>
         </Form>
       </FormContainer> 
@@ -118,6 +126,12 @@ const Form = styled.form`
 const Span = styled.span`
 font-weight:bold;
 font-size:20px;
+`
+
+const ErrorMessage = styled.span`
+  font-weight:bold;
+  font-size:20px;
+  color:red;
 `
 
 const LabelContainer = styled.div`

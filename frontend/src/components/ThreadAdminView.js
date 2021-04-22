@@ -10,6 +10,7 @@ import axios from 'axios';
 import RichTextEditor from "./functionality/RichTextEditor";
 import ReplyTextEditor from "./functionality/RichTextEditor";
 import ReportThread from "./forms/ReportThread";
+import DeleteFeedbackPopup from './functionality/DeleteFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -23,6 +24,7 @@ function ThreadAdmin(props) {
     const [reply, setReply] = useState('')
     const [editFlag, setEditFlag] = useState(false)
     const [postToEdit, setPostToEdit] = useState(0)
+    const [Popup, setPopup] = useState(false)
     const d = new Date()
     const { id } = useParams();
     console.log("reply", reply)
@@ -64,9 +66,8 @@ function ThreadAdmin(props) {
 
     function deleteThread(){
         let url = `api/forum/threads/delete/` + id
-        axios.post(url).then((res) => {
-            //console.log("Deleted")
-        })
+        axios.post(url)
+        .then(res => {setPopup(true)})
         .catch(error => console.log('Error:', error))
     }
 
@@ -107,8 +108,9 @@ function ThreadAdmin(props) {
 
                 <Report onClick={deleteThread}>
                     <RText>
-                    Delete Thread
+                        Delete Thread
                     </RText>
+                    { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>
 
                 {(User == posts[0].Creator["username"]) && <Delete>
@@ -158,8 +160,9 @@ function ThreadAdmin(props) {
 
                 {(User == posts[0].Creator["username"]) &&<Report onClick={deleteThread}>
                     <RText>
-                    Delete Thread
+                        Delete Thread
                     </RText>
+                    { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>}
 
                 {(User == posts[0].Creator["username"]) && <Delete>
@@ -199,7 +202,7 @@ function ThreadAdmin(props) {
                 <Container>
             <Heading>
                     <Background>
-                    {props.location.state.Title}
+                        {props.location.state.Title}
                     </Background>
                 </Heading>
             <Lower>
@@ -215,8 +218,9 @@ function ThreadAdmin(props) {
 
                 {(User == posts[0].Creator["username"]) &&<Report onClick={deleteThread}>
                     <RText>
-                    Delete Thread
+                        Delete Thread
                     </RText>
+                    { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>}
 
                 {(User == posts[0].Creator["username"]) && <Delete>

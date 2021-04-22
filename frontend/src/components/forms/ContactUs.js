@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-// import fetch from 'cross-fetch';
 import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
 import styled from 'styled-components'
@@ -23,7 +22,6 @@ togglePop = () => {
     seen: !this.state.seen
   })
 }
-
 
 rteChange = (content, delta, source, editor) => {
     console.log(this.state.Body);
@@ -70,7 +68,7 @@ handleSubmit = (event) =>{
             
             <EditorContainer>
               <Span>Body*</Span>
-              { this.state.invalid ? <ErrorMessage>Fields set to * cannot be empty.</ErrorMessage> : null }
+              { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Body cannot be empty.</ErrorMessage> : null }
               <Editor
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -102,7 +100,6 @@ const Container = styled.div`
   max-height:100%;
   margin-left:3%;
   margin-right:3%;
-  
 `
 
 const Head = styled.h3`

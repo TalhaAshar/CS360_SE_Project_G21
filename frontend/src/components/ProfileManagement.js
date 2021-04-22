@@ -4,6 +4,7 @@ import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import ProfileUploadImage from './functionality/ProfileUploadImage'
 
 //User profile type icon needs to be added.
 
@@ -16,7 +17,7 @@ class ProfileManagement extends Component{
         this.ID = "/List" + this.props.passID
         this.handleSubmitData = this.handleSubmitData.bind(this);
         this.handleSubmitPassword = this.handleSubmitPassword.bind(this);
-        this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', 'ProfileImage':this.props.passDetails['ProfileImage'] };
+        this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', invalid: false, Pop: false, 'ProfileImage':null, Display:this.props.passDetails['ProfileImage'] };
     }
 
     removeAccount = () => {
@@ -31,6 +32,21 @@ class ProfileManagement extends Component{
         this.setState({ [event.target.name]:event.target.value });
     }
     
+    handleClick = (event) => {
+      event.preventDefault();
+      this.setState({Pop:!this.state.Pop});
+    }
+
+    onProfileImageChange = (event) => {
+      if (event.target.files && event.target.files[0]) {
+        let img = event.target.files[0];
+        this.setState({
+          ProfileImage: img,
+          Display: URL.createObjectURL(img)
+        })
+      }
+    }
+
     handleSubmitData = (event) =>{
       event.preventDefault();
       const url = `api/accounts/edit_profile`;
@@ -44,7 +60,13 @@ class ProfileManagement extends Component{
       formData.append("company", data["company"]);
       formData.append("location", data["location"]);
       formData.append("age", data["age"]);
-      //formData.append("ProfileImage", this.state.ProfileImage);
+
+      if (this.state.ProfileImage) {
+        formData.append("ProfileImage", this.state.ProfileImage, this.state.ProfileImage.name);
+      } else {
+        formData.append("ProfileImage", null);
+      }
+
       axios.put(url, formData, {
         headers: {
           'content-type': 'multipart/form-data'
@@ -63,17 +85,21 @@ class ProfileManagement extends Component{
         const data = { newpassword:this.state.newpassword, currentpassword:this.state.currentpassword };
         
         axios.post(url, { data })
-          .then(res => res.json())
-          .catch(error => console.error('Error:', error))
+          .then(res => {
+            this.props.onChange(this.props.val)
+          })
+          .catch(error => this.setState({invalid:true}))
           .then(response => console.log('Success', response));
         }
         
       render(){
         return(
           <Container>
-
             <Upper>
-              <Profilepicture src={this.state.ProfileImage} width="200px" height = "200px" />
+              <Profilepicture src={this.state.Display} width="200px" height ="200px" onClick={this.handleClick} />
+              <ProfileUploadImage trigger={this.state.Pop} setTrigger={this.handleClick} PFunc={this.onProfileImageChange} >
+                            <h1>My pop up for image</h1>
+              </ProfileUploadImage>
               <Name>{this.props.passUsername}</Name>
               <Admintag>
                 {  (this.state.User_Type === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
@@ -107,7 +133,7 @@ class ProfileManagement extends Component{
                         <textarea rows="25" cols="50" name="biography" onChange={this.handleChange} >{this.state.biography}</textarea>
                       </TellUsAboutYourself>
                     </Biography>
-                    <input type="submit" value="Save" style = {{height: "7%",width:"7%", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"70%", marginTop:"10%"}}/>
+                    <input type="submit" value="Save" style = {{height: "7%",width:"7%", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"70%", marginTop:"35%"}}/>
                 </Descone>
               </form>
               
@@ -179,6 +205,7 @@ class ProfileManagement extends Component{
                     <h2>New Password</h2>
                     <input type="text" required name="newpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
                     <input type="submit" value="Save" style = {{height: "10%", width:"10%", position:"absolute", color:"#FB0101", background:"#03204C", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
+                    { this.state.invalid && <ErrorText>Current password cannot be the same as new password.</ErrorText> }
                   </form>
                 </ChangePassword>
             </Lower>
@@ -241,6 +268,11 @@ const Admintag = styled.div`
     color:white;
     border:none;
     box-sizing: border-box;
+`
+
+const ErrorText = styled.span`
+    color: #FF0000;
+    position: absolute;
 `
 
 const Lower = styled.div`

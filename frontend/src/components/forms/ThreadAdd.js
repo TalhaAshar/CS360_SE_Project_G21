@@ -3,7 +3,7 @@ import { render } from "react-dom";
 // import fetch from 'cross-fetch';
 import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
-
+import ThreadAddFeedbackPopup from '../functionality/ThreadAddFeedbackPopup';
 import styled from 'styled-components';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -14,7 +14,13 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Title:'', Category:'Announcements', Body:'' };
+    this.state = { Title:'', Category:'Announcements', Body:'', seen: false, invalid: false, Thread: {} };
+}
+
+togglePop = () => {
+  this.setState({
+    seen: !this.state.seen
+  })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -35,9 +41,9 @@ handleSubmit = (event) =>{
   const data = { Title:this.state.Title, Category:this.state.Category, Body:this.state.Body };
   
   axios.post(`api/forum/threads/add`, { data })
-    .then(res => console.log("done adding thread"))
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
+  .then(res => this.setState({seen:true, invalid:true, Thread: res.data}))
+  .catch(error => this.setState({invalid:true}))
+  .then(response => console.log("huh"));
   }
     
   render(){
@@ -48,7 +54,7 @@ handleSubmit = (event) =>{
           <Form onSubmit={this.handleSubmit}>
           <UserInfo>
               <Span>Title*</Span>
-              <Input type="text" name="Title" onChange={this.handleChange} />
+              <Input type="text" required name="Title" onChange={this.handleChange} />
           </UserInfo>
           <LabelContainer>
               <Label for="Category">Category</Label>
@@ -61,6 +67,7 @@ handleSubmit = (event) =>{
           
           <EditorContainer>
             <Span>Body*</Span>
+            { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Body cannot be empty.</ErrorMessage> : null }
             <Editor
               value={this.state.Body}
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -75,7 +82,8 @@ handleSubmit = (event) =>{
               }}
               onEditorChange={this.handleEditorChange}
             />
-            <Submit type="submit" value="Add Thread" />
+            { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+            { (this.state.seen && this.state.invalid) ? <ThreadAddFeedbackPopup toggle={this.togglePop} thread={this.state.Thread} /> : null }
           </EditorContainer>
         </Form>
       </FormContainer> 
@@ -92,8 +100,8 @@ max-width:100%;
 max-height:100%;
 margin-left:3%;
 margin-right:3%;
-
 `
+
 const Head = styled.h3`
 min-width: 55%;
 min-height: 4%;
@@ -105,6 +113,7 @@ color:white;
 background: #03204C;
 border-radius: 8px;
 `
+
 const FormContainer = styled.div`
   width: 1000px;
   height: 950px;
@@ -127,6 +136,13 @@ const Span = styled.span`
   font-weight:bold;
   font-size:20px;
 `
+
+const ErrorMessage = styled.span`
+  font-weight:bold;
+  font-size:20px;
+  color:red;
+`
+
 const Input = styled.input`
   width: 900px;
   height: 60px;

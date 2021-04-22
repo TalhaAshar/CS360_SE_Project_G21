@@ -44,18 +44,18 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
     return (
         
         <Container>
-        <ImageUserNameContainer>
-            <ImageContainer>
-                {flag && <Image src={profile["ProfileImage"]}
-                    width="100px" height="100px"
-                />}
-            </ImageContainer>
-            <Link to={profile_url}>
-                <UserName>
-                    {username}
-                </UserName>
-            </Link>
-        </ImageUserNameContainer>
+        <Link to={profile_url}>
+            <ImageUserNameContainer>
+                <ImageContainer>
+                    {flag && <Image src={profile["ProfileImage"]}
+                        width="100px" height="100px"
+                    />}
+                </ImageContainer>
+                    <UserName>
+                        {username}
+                    </UserName>
+            </ImageUserNameContainer>
+        </Link>
         <ThreadDetailContainer>
             <ThreadTitle>{title}</ThreadTitle>
             <ThreadCategory>{category}</ThreadCategory>

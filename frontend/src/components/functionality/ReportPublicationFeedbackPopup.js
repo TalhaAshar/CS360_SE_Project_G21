@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import { PinDropSharp } from '@material-ui/icons'
 
-function TakedownFeedbackPopup() {
+function ReportPublicationFeedbackPopup(props) {
+
+    const url = "/publication/" + props.PubID
+
     return (
         <div>
         <Shadow>
@@ -12,9 +16,9 @@ function TakedownFeedbackPopup() {
                 </Title>
                 <Body>
                     <Heading>
-                        Your request has been submitted. It will be quickly reviewed and dealt with.
+                        Your report has been noted and will be dealt with shortly.
                     </Heading>
-                    <Link to="/">
+                    <Link to={url}>
                         <Button>
                             Return
                         </Button>
@@ -25,7 +29,7 @@ function TakedownFeedbackPopup() {
     )
 }
 
-export default TakedownFeedbackPopup
+export default ReportPublicationFeedbackPopup
 
 const Container = styled.div`
     width: 505px;
@@ -39,6 +43,7 @@ const Container = styled.div`
     box-shadow: 0px 2px 8px rgba(117, 131, 142, 0.08), 0px 20px 32px rgba(52, 60, 68, 0.16);
     border-radius: 20px;
 `
+
 const Shadow = styled.div`
     width: 100%;
     height: 100%;
