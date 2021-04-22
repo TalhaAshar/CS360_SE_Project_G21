@@ -20,6 +20,7 @@ class Report(models.Model):
 	Status = models.CharField(choices=StatusChoices.choices, max_length=15, null=True)
 	Relevant_Post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
 	Relevant_Pub = models.ForeignKey(Publication, on_delete=models.CASCADE, null=True)
+	Relevant_Thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True)
 
 
 class ModeratorApplication(models.Model):

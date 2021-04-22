@@ -54,7 +54,7 @@ handleSubmit = (event) =>{
           <Form onSubmit={this.handleSubmit}>
           <UserInfo>
               <Span>Title*</Span>
-              <Input type="text" required name="Title" onChange={this.handleChange} />
+              <Input type="text" required maxLength="250" name="Title" onChange={this.handleChange} />
           </UserInfo>
           <LabelContainer>
               <Label for="Category">Category</Label>
@@ -70,6 +70,7 @@ handleSubmit = (event) =>{
             { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Body cannot be empty.</ErrorMessage> : null }
             <Editor
               value={this.state.Body}
+              maxLength="5000"
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
               init={{
                 placeholder : 'You need to host your image and then upload in this text box.',

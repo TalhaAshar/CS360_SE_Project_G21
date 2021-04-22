@@ -13,14 +13,24 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 
-function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
+function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
 
     let placeholder = "Hours"
+    
     let post_time = timestamp
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
 
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
     }
 
     const [profile, setProfile] = React.useState({})
@@ -87,10 +97,10 @@ function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, reply
             </Commentf>
             <TimeIcon>
             <Comment1>
-                    <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost} onClick={() => editHandler(desc, post_id)}/>
+                   {first && <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>}
             </Comment1>
             <Comment2>
-                    <EditIcon style = {{fontSize:'30px'}}/>
+                    <EditIcon style = {{fontSize:'30px'}} onClick={() => editHandler(desc, post_id)}/>
             </Comment2>
             </TimeIcon>
         </ThreadTimePostContainer>

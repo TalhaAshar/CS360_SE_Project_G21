@@ -288,7 +288,7 @@ class Reports(APIView):
    
 			if(parsed["Type"] == 'Post'):
 				post_to_report = Post.objects.get(id=parsed["id"])
-				temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
+				temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report, Relevant_Thread=post_to_report.ParentThread)
 				temp.save()
 			else:
 				print("negitotot")

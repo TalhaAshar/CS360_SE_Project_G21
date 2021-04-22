@@ -28,7 +28,7 @@ class ReportSerializer(serializers.ModelSerializer):
     Relevant_Pub = PublicationSerializer(read_only=True)
     class Meta:
         model = Report
-        fields = ('id', 'Creator', 'Reason', 'Description', 'Date', 'Time', 'Status', 'Relevant_Post', 'Relevant_Pub')
+        fields = ('id', 'Creator', 'Reason', 'Description', 'Date', 'Time', 'Status', 'Relevant_Post', 'Relevant_Pub', 'Relevant_Thread')
 
 class ModeratorSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)
