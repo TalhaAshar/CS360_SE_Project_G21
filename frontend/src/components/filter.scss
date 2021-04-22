@@ -213,11 +213,18 @@ background-color: #0EA8D8;
 font-style: normal;
 }
 
+
 #cb1:checked + label {
 transition: 0.8s;
-background-color: #0EA8D8;
+background-color: #AE14DB;
 font-style: normal;
 }
+
+#cb1 + label {
+  transition: 0.8s;
+  background-color: #0EA8D8;
+  font-style: normal;
+  }
 
 #cb2:checked + label {
 transition: 0.8s;
