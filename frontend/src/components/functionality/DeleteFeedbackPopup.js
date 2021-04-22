@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-function TakedownFeedbackPopup() {
+function DeleteFeedbackPopup(props) {
     return (
         <div>
         <Shadow>
@@ -12,9 +12,9 @@ function TakedownFeedbackPopup() {
                 </Title>
                 <Body>
                     <Heading>
-                        Your request has been submitted. It will be quickly reviewed and dealt with.
+                        This thread has been deleted. You will now be returned to the Forum homepage.
                     </Heading>
-                    <Link to="/">
+                    <Link to="/forum/user">
                         <Button>
                             Return
                         </Button>
@@ -25,7 +25,7 @@ function TakedownFeedbackPopup() {
     )
 }
 
-export default TakedownFeedbackPopup
+export default DeleteFeedbackPopup
 
 const Container = styled.div`
     width: 505px;
@@ -39,6 +39,7 @@ const Container = styled.div`
     box-shadow: 0px 2px 8px rgba(117, 131, 142, 0.08), 0px 20px 32px rgba(52, 60, 68, 0.16);
     border-radius: 20px;
 `
+
 const Shadow = styled.div`
     width: 100%;
     height: 100%;

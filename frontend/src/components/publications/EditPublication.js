@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Editor } from "@tinymce/tinymce-react";
 import Pop from "./Modal";
 import axios from 'axios';
+import EditPublicationFeedbackPopup from '../functionality/EditPublicationFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -19,7 +20,13 @@ constructor(props){
     this.onSpineChange = this.onSpineChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Title:props.location.state['Title'], Authors:props.location.state['Authors'], Publisher:props.location.state['Publisher'], Edition_Number:props.location.state['Edition_Number'], Year_Publication:props.location.state['Year_Publication'], Genres:props.location.state['Genres'],  Lang:props.location.state['Lang'], ISBN:props.location.state['ISBN'], Related:props.location.batchIDs, Description:props.location.state['Description'], Front_Cover:props.location.state['Front_Cover'], Back_Cover:props.location.state['Back_Cover'], Spine:props.location.state['Spine'], Display:props.location.state['Front_Cover'], Pop: false, invalid: false, Front_Flag: false, Back_Flag: false, Spine_Flag: false };
+    this.state = { Title:props.location.state['Title'], Authors:props.location.state['Authors'], Publisher:props.location.state['Publisher'], Edition_Number:props.location.state['Edition_Number'], Year_Publication:props.location.state['Year_Publication'], Genres:props.location.state['Genres'],  Lang:props.location.state['Lang'], ISBN:props.location.state['ISBN'], Related:props.location.batchIDs, Description:props.location.state['Description'], Front_Cover:props.location.state['Front_Cover'], Back_Cover:props.location.state['Back_Cover'], Spine:props.location.state['Spine'], Display:props.location.state['Front_Cover'], Pop: false, invalid: false, seen: false, Front_Flag: false, Back_Flag: false, Spine_Flag: false };
+}
+
+togglePop = () => {
+    this.setState({
+      seen: !this.state.seen
+    })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -98,7 +105,7 @@ handleSubmit = (event) =>{
     if (this.state.Back_Flag) {
         formData.append("Back_Cover", this.state.Back_Cover, this.state.Back_Cover.name);
     } else {
-        formData.append("Back_Cover", nullr);
+        formData.append("Back_Cover", null);
     }
 
     if (this.state.Spine_Flag) {
@@ -108,9 +115,9 @@ handleSubmit = (event) =>{
     }
   
     axios.post(url, formData, { headers: { 'content-type': 'multipart/form-data' } })
-      .then(res => console.log(res))
-      .catch(error => this.setState({ invalid:true }))
-      .then(response => console.log('Success', response));
+    .then(res => this.setState({seen:true, invalid:true}))
+    .catch(error => this.setState({invalid:true}))
+    .then(response => console.log("huh"));
 }
     
   render(){
@@ -146,7 +153,7 @@ handleSubmit = (event) =>{
                       <Input type="text" required name="Lang" maxLength="30" value={this.state.Lang} onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>ISBN</Span>
                       <Input type="number" name="ISBN" min="1" max="9999999999999" value={this.state.ISBN} onChange={this.handleChange}  style={{marginLeft:"130px", marginTop:"30px", marginBottom:'10px'}}/><br/>
-                      <Span>Related</Span>
+                      <Span>Related Publications IDs</Span>
                       <Input type="text" name="Related"value={this.state.Related} onChange={this.handleChange}  style={{marginLeft:"105px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                   </BookDetailContainer>
               </ImageBook>
@@ -154,9 +161,8 @@ handleSubmit = (event) =>{
                   <IdTextContainer>
                       <Text>Description</Text>
                       <PublicationsID>Publication ID: {this.ID}</PublicationsID>
-                      { this.state.invalid && <ErrorText>Description is empty.</ErrorText> }
+                      { (this.state.invalid && !this.state.seen) && <ErrorText>Description is empty.</ErrorText> }
                   </IdTextContainer>
-              <Submit type="submit" value="Submit" />
               <Editor
                   value={this.state.Description}
                   apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -170,6 +176,8 @@ handleSubmit = (event) =>{
                   }}
                   onEditorChange={this.handleEditorChange}
                   />
+                { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+                { (this.state.seen && this.state.invalid) ? <EditPublicationFeedbackPopup toggle={this.togglePop} PubID={this.ID} /> : null }
               </EditorContainer>
       </Form>
       </FormContainer>
