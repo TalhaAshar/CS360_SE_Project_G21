@@ -43,6 +43,7 @@ export default NewLinearCard
 const Container = styled.div`
 width:1100px;
 height:180px;
+min-width: 55%;
 display:flex;
 background:white;
 border-radius:12px;

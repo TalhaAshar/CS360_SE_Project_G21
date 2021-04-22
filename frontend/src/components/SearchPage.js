@@ -19,7 +19,7 @@ function SearchPage() {
 
     const { param } = useParams();
     const [pubs, setPubs] = useState([])
-    const [filters, setFilters] = useState([])
+    const [filters, setFilters] = useState(["Title"])
     const [start, setStart] = useState(0)
 
     function handleFilters(value){
@@ -127,8 +127,8 @@ const BookTitleContainer = styled.div`
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-left: 5%;
-margin-right: 5%;
+    margin-left: 3%;
+margin-right: 3%;
 `
 
 const Results = styled.div`
@@ -164,8 +164,8 @@ width:90%;
 height:1600px;
 border-radius: 20px;
 margin-bottom:100px;
-margin-left:5%;
-margin-right:5%;
+margin-left:3%;
+margin-right:3%;
 `
 
 const Background = styled.div`
