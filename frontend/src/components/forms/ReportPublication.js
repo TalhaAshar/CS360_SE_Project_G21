@@ -4,6 +4,7 @@ import { render } from "react-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import styled from 'styled-components'
 import axios from 'axios';
+import ReportPublicationFeedbackPopup from '../functionality/ReportPublicationFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -14,8 +15,14 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Reason:'Incorrect data', Body:'' };
+    this.state = { Reason:'Incorrect data', Body:'', seen: false, invalid: false };
     this.ID = props.location.state
+}
+
+togglePop = () => {
+  this.setState({
+    seen: !this.state.seen
+  })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -35,9 +42,9 @@ handleSubmit = (event) =>{
   const data = { id: this.ID, Reason:this.state.Reason, Body:this.state.Body, Type: "PUB"};
   
   axios.post(`api/accounts/reports`, { data })
-    .then(res => console.log(res))
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
+  .then(res => this.setState({seen:true, invalid:true}))
+  .catch(error => this.setState({invalid:true}))
+  .then(response => console.log("huh"));
   }
     
   render(){
@@ -57,7 +64,8 @@ handleSubmit = (event) =>{
           </LabelContainer>
           
           <EditorContainer>
-            <Span>Please provide a description of what is wrong and propose suggestions/corrections:</Span> <br/>
+            <Span>Description of what is wrong and suggestions/corrections*</Span>
+            { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Description cannot be empty.</ErrorMessage> : null }
             <Editor
               value={this.state.Body}
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -72,7 +80,8 @@ handleSubmit = (event) =>{
               }}
               onEditorChange={this.handleEditorChange}
             />
-            <Submit type="submit" value="Submit" />
+            { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+            { (this.state.seen && this.state.invalid) ? <ReportPublicationFeedbackPopup toggle={this.togglePop} PubID={this.ID} /> : null }
           </EditorContainer>
         </Form>
       </FormContainer> 
@@ -118,6 +127,12 @@ const Form = styled.form`
 const Span = styled.span`
   font-weight:bold;
   font-size:20px;
+`
+
+const ErrorMessage = styled.span`
+  font-weight:bold;
+  font-size:20px;
+  color:red;
 `
 
 const LabelContainer = styled.div`

@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-function TakedownFeedbackPopup() {
+function ThreadAddFeedbackPopup(props) {
+
+    const url = "/thread/user/" + props.thread["id"]
+    const thisThread = props.thread
+
     return (
         <div>
         <Shadow>
@@ -12,9 +16,12 @@ function TakedownFeedbackPopup() {
                 </Title>
                 <Body>
                     <Heading>
-                        Your request has been submitted. It will be quickly reviewed and dealt with.
+                        Your thread has been created. You will now be redirected to the Forum homepage.
                     </Heading>
-                    <Link to="/">
+                    <Link to={{
+                        pathname : url,
+                        state : thisThread
+                    }}>
                         <Button>
                             Return
                         </Button>
@@ -25,7 +32,7 @@ function TakedownFeedbackPopup() {
     )
 }
 
-export default TakedownFeedbackPopup
+export default ThreadAddFeedbackPopup
 
 const Container = styled.div`
     width: 505px;
@@ -39,6 +46,7 @@ const Container = styled.div`
     box-shadow: 0px 2px 8px rgba(117, 131, 142, 0.08), 0px 20px 32px rgba(52, 60, 68, 0.16);
     border-radius: 20px;
 `
+
 const Shadow = styled.div`
     width: 100%;
     height: 100%;

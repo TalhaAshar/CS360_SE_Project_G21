@@ -1,46 +1,40 @@
 import React from 'react'
-import LinearCard from './LinearCard'
 import styled from 'styled-components'
-import './popup.scss';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
-import Filter from "./SearchFilter";
-import NewLinearCard from "./publications/NewLinearCard";
+import ForumLoggInCard from "./ForumLoggInCard";
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 import YoutubeSearchedForIcon from '@material-ui/icons/YoutubeSearchedFor';
+import {Link} from 'react-router-dom'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function SearchPage() {
+function ThreadCategory(props) {
 
-    const { param } = useParams();
-    const [pubs, setPubs] = useState([])
-    const [filters, setFilters] = useState(["Title"])
-    const [start, setStart] = useState(0)
+    const [threads, setThreads] = React.useState([])
+    const[start, setStart] = React.useState(0)
+    const d = new Date()
 
-    function handleFilters(value){
-        console.log(value, "YES WE ARE EHERE")
-        const temp = filters.indexOf(value)
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/forum/threads/" + props.location.state
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                console.log(res.data)
+                setThreads(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
         
-        if(temp == -1)
-        {
-            console.log("ADDING")
-            setFilters([...filters, value])
-            setStart(0)
-        }
-        else
-        {
-            console.log("Inside ELSE")
-                const updatedFilters = [...filters.slice(0, temp), ...filters.slice(temp + 1)]
-                setFilters(updatedFilters)
-                setStart(0)
-        }
-        console.log(filters)
-    }
 
     function leftClick(){
         if(start > 0){
@@ -53,60 +47,33 @@ function SearchPage() {
             setStart(start + 8)
         }
     }
-    console.log("MMMM", param)
- 
-     useEffect(() => {
-        let isComponentMounted = true;
 
-        let url = "api/main/query/?search=" + param
-        for (let index = 0; index < filters.length; index++) {
-            url = url + "&search_fields=" + filters[index]
-        }
-        console.log(url, "edfghtuehhe")
-        axios.get(url).then((res) => {
-            console.log("THEN HANDLER")
-            if (isComponentMounted){
-                console.log("COMP")
-                setPubs(res.data)
-                console.log(res)
-            }
-            setStart(0)
-        })
-        .catch(error => console.log('Error:', error))
-        return () => {
-            isComponentMounted = false;
-        }
-         //setParams(useParams())
-     }, [param, filters])
 
     return (
         <Container>
 
         
-<BookTitleContainer><h1>Search Results</h1></BookTitleContainer>
+<BookTitleContainer><h1>{props.location.state}</h1></BookTitleContainer>
 
             <Nextpage>
             <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
             <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
 
-            < Filter onChange={handleFilters}/>
             <Colour>
                 <Results>
-                {(pubs.length == 0) && <YoutubeSearchedForIcon
-                        style={{
-                            color:"black",
-                            fontSize:200,
-                            marginLeft:"40%"                       
-                            }}
-                            />}
-                 {(pubs.length == 0) && <IconText>Your applied filters returned no matching results.</IconText>}
                    {
-                    pubs.map((elem, index) => {
-                        if(index >= start && index < (start + 8) && index < pubs.length){
+                    threads.map((elem, index) => {
+                        if(index >= start && index < (start + 8) && index < threads.length){
+                            let placeholder = "/thread/user/" + elem.id
                             return(
-                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
-                                )
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }}>
+                                <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </Link>
+                            )
                         }
                         console.log(index)
                     })
@@ -117,7 +84,7 @@ function SearchPage() {
     )
 }
 
-export default SearchPage
+export default ThreadCategory
 
 const BookTitleContainer = styled.div`
     background: #0A3977;

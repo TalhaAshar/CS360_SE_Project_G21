@@ -1,13 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
-import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
-import CardMedia from '@material-ui/core/CardMedia';
 import ReplyIcon from '@material-ui/icons/Reply';
-import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { Delete } from '@material-ui/icons';
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
@@ -17,14 +13,24 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 
-function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
+function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
 
     let placeholder = "Hours"
+    
     let post_time = timestamp
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
 
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
     }
 
     const [profile, setProfile] = React.useState({})
@@ -60,19 +66,18 @@ function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, reply
     return (
         
         <Container>
-        <ImageUserNameContainer>
-            <ImageContainer>
-               
-                <Image src={profile["ProfileImage"]}
-                    width="100px" height="100px"
-                />
-            </ImageContainer>
-            <Link to={profile_url}>
-                <UserName>
-                    {username}
-                </UserName>
-            </Link>
-        </ImageUserNameContainer>
+        <Link to={profile_url}>
+            <ImageUserNameContainer>
+                <ImageContainer>
+                    <Image src={profile["ProfileImage"]}
+                        width="100px" height="100px"
+                    />
+                </ImageContainer>
+                    <UserName>
+                        {username}
+                    </UserName>
+            </ImageUserNameContainer>
+        </Link>
         <ThreadDetailContainer>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}}/>
         </ThreadDetailContainer>
@@ -92,10 +97,10 @@ function PostCardOwner({post_id, thread_id, username, timestamp, desc, id, reply
             </Commentf>
             <TimeIcon>
             <Comment1>
-                    <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost} onClick={() => editHandler(desc, post_id)}/>
+                   {first && <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>}
             </Comment1>
             <Comment2>
-                    <EditIcon style = {{fontSize:'30px'}}/>
+                    <EditIcon style = {{fontSize:'30px'}} onClick={() => editHandler(desc, post_id)}/>
             </Comment2>
             </TimeIcon>
         </ThreadTimePostContainer>

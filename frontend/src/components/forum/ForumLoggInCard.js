@@ -12,11 +12,26 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function ForumLoggInCard({username, title, category, postcount, timestamp, desc, id}) {
 
     let placeholder = "Hours"
+    let postholder = "Posts"
+
+    if(postcount == 1){
+        postholder = "Post"
+    }
+    
     let post_time = timestamp
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
 
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
     }
 
     const [profile, setProfile] = React.useState({'user':{'id':0}})
@@ -41,32 +56,32 @@ function ForumLoggInCard({username, title, category, postcount, timestamp, desc,
 
     return (
         <Container>
-        <ImageUserNameContainer>
-            <ImageContainer>
-               
-            {flag && <Image src={profile["ProfileImage"]}
-                    width="100px" height="100px"
-                />}
-            </ImageContainer>
-            <Link to={profile_url}>
-                <UserName>
-                    {username}
-                </UserName>
-            </Link>
-        </ImageUserNameContainer>
+        <Link to={profile_url}>
+            <ImageUserNameContainer>
+                <ImageContainer>
+                
+                {flag && <Image src={profile["ProfileImage"]}
+                        width="100px" height="100px"
+                    />}
+                </ImageContainer>
+                    <UserName>
+                        {username}
+                    </UserName>
+            </ImageUserNameContainer>
+        </Link>
         <ThreadDetailContainer>
             <TimeIcon>
                 <QueryBuilderIcon/>
                 <text style={{paddingTop:"1px"}}>{post_time} {placeholder}</text>
             </TimeIcon>
-            <ThreadTitle>{title}</ThreadTitle>
+            <ThreadTitle>{title.substr(0, 20)}</ThreadTitle>
             <ThreadCategory>{category}</ThreadCategory>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <text style={{paddingTop:"1px"}}>{postcount} Posts</text>
+                <text style={{paddingTop:"1px"}}>{postcount} {postholder}</text>
             </Comment>
         </ThreadTimePostContainer>
 

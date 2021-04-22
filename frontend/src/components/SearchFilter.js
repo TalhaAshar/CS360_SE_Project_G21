@@ -15,15 +15,12 @@ function SearchFilter(props) {
         <Container>
            <Flex>
                 <AT>
-                    <Author>
-                
-                    <input type="checkbox" class="hidden" name="cb" id="cb"/><label for="cb" onClick={() => props.onChange("Authors")}>Author</label>
-                        
-                    
-                    </Author>
                     <Title>
                     <input type="checkbox" class="bro" name="cb1" id="cb1"/><label for="cb1" onClick={() => props.onChange("Title")}>Title</label>
                     </Title>
+                    <Author>
+                    <input type="checkbox" class="hidden" name="cb" id="cb"/><label for="cb" onClick={() => props.onChange("Authors")}>Author</label>
+                    </Author>
                     <ISBN>
                     <input type="checkbox" class="hidden3" name="cb2" id="cb2"/><label for="cb2" onClick={() => props.onChange("ISBN")}>ISBN</label>
                     </ISBN>
@@ -51,10 +48,14 @@ function SearchFilter(props) {
 export default SearchFilter
 
 const Container = styled.div`
-    max-width: 1145px;
-    max-height: 210px;
     background: white;
     border-radius: 15px;
+    height:auto;
+    width:1100px;
+    display:grid;
+    margin: 0 auto;
+    height:auto;
+    padding-left: 50px;
 
 `
 

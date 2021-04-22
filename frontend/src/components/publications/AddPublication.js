@@ -5,6 +5,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
 import Pop from "./Modal";
 import styled from 'styled-components'
+import AddPublicationFeedbackPopup from '../functionality/AddPublicationFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -18,7 +19,13 @@ constructor(props){
     this.onSpineChange = this.onSpineChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Title:'', Authors:'', Publisher:'', Edition_Number:'', Year_Publication:'', Genres:'',  Lang:'', ISBN:'', Related:'', Description:'', Display: null, Front_Cover: null, Back_Cover: null, Spine: null, Pop: false, invalid: false };
+    this.state = { ID:0, Title:'', Authors:'', Publisher:'', Edition_Number:'', Year_Publication:'', Genres:'',  Lang:'', ISBN:'', Related:'', Description:'', Display: null, Front_Cover: null, Back_Cover: null, Spine: null, Pop: false, invalid: false, seen: false };
+}
+
+togglePop = () => {
+    this.setState({
+      seen: !this.state.seen
+    })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -98,9 +105,9 @@ handleSubmit = (event) =>{
   formData.append("Spine", this.state.Spine, this.state.Spine.name);
 
   axios.post(`api/main/add_publication`, formData, { headers: { 'content-type': 'multipart/form-data' } })
-    .then(res => res.json())
-    .catch(error => this.setState({ invalid:true }))
-    .then(response => console.log('Success', response));
+    .then(res => this.setState({seen:true, invalid:true, ID: res.data['id']}))
+    .catch(error => this.setState({invalid:true}))
+    .then(response => console.log("huh"));
   }
     
   render(){
@@ -137,16 +144,15 @@ handleSubmit = (event) =>{
                       <Input type="text" required name="Lang" maxLength="30" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>ISBN</Span>
                       <Input type="number" name="ISBN" min="1" max="9999999999999" onChange={this.handleChange} style={{marginLeft:"130px", marginTop:"30px", marginBottom:'10px'}}/><br/>
-                      <Span>Related</Span>
+                      <Span>Related Publications IDs</Span>
                       <Input type="text" name="Related" onChange={this.handleChange} style={{marginLeft:"105px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                   </BookDetailContainer>
               </ImageBook>
               <EditorContainer>
                   <IdTextContainer>
                     <Text>Description</Text>
-                    { this.state.invalid && <ErrorText>Either images are not uploaded or Description is empty.</ErrorText> }
+                    { (this.state.invalid && !this.state.seen) && <ErrorText>Either images are not uploaded or Description is empty.</ErrorText> }
                   </IdTextContainer>
-              <Submit type="submit" value="Submit" />
               <Editor
                   value={this.state.Description}
                   apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -160,6 +166,8 @@ handleSubmit = (event) =>{
                   }}
                   onEditorChange={this.handleEditorChange}
                   />
+                { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+                { (this.state.seen && this.state.invalid) ? <AddPublicationFeedbackPopup toggle={this.togglePop} PubID={this.state.ID} /> : null }
               </EditorContainer>
       </Form>
 

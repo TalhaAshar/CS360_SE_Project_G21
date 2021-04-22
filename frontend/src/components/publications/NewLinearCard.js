@@ -18,7 +18,7 @@ function NewLinearCard({title, author, front, id}) {
         
         <Container>
         <ImageUserNameContainer>
-            <Link to={j}>
+            <Link to={j} style={{textDecoration:"none"}}>
             <ImageContainer>
                
                 <Image src={front}
@@ -27,15 +27,12 @@ function NewLinearCard({title, author, front, id}) {
             </ImageContainer>
             </Link>
         </ImageUserNameContainer>
-        <PublicationDetailContainer>
-            <BookTitle>{title}</BookTitle>
-            <Author>{author}</Author>
-        </PublicationDetailContainer>
-        <ThreadTimePostContainer>
-            <TimeIcon>
-                17 Days Ago
-            </TimeIcon>
-        </ThreadTimePostContainer>
+        <Link to={j} style={{textDecoration:"none"}}>
+            <PublicationDetailContainer>
+                <BookTitle>{title}</BookTitle>
+                <Author>{author}</Author>
+            </PublicationDetailContainer>
+        </Link>
 
         </Container>
     )

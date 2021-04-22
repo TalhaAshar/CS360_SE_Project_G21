@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-# Create your models here.
 
 
+# Publication Model
 class Publication(models.Model):
 	Title = models.CharField(max_length = 150)
 	Authors = models.CharField(max_length = 255)
@@ -21,6 +21,7 @@ class Publication(models.Model):
 	Spine = models.ImageField(upload_to='publications/', blank=True, null=True)
 	Reason_for_Best_Pub = models.TextField(max_length=5000, blank=True, null=True)
 
+# User's Contributions Model
 class Contribution(models.Model):
 	Username = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	Publication_ID = models.ForeignKey(Publication, on_delete=models.SET_NULL, null=True)
@@ -28,10 +29,12 @@ class Contribution(models.Model):
 	EditChoices = models.TextChoices('EditChoices', 'ADD EDIT')
 	Edit_Type = models.CharField(choices=EditChoices.choices, max_length=10, null=True)
 
+# Related Publication Record
 class RelatedPublication(models.Model):
 	Main_Publication = models.ForeignKey(Publication, on_delete=models.CASCADE, related_name="Main")
 	Rel_Publication = models.ForeignKey(Publication, on_delete=models.CASCADE, related_name="Rel")
 
+# Emails Model
 class Email(models.Model):
 	Sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="Comm")
 	Recipients = models.CharField(max_length=255)
@@ -40,6 +43,7 @@ class Email(models.Model):
 	Date = models.DateField(auto_now_add=True)
 	Time = models.TimeField(auto_now_add=True)
 
+# Copyright Claims Model
 class Copyright(models.Model):
 	Copy_Pub = models.ForeignKey(Publication, on_delete=models.SET_NULL, null=True)
 	Authority = models.CharField(max_length=255)
