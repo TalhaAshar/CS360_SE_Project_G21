@@ -28,9 +28,14 @@ function ForumLoggedIn() {
             <Head>Discussion Forum</Head>
             <AnnouncementsContainer>
                 <HeadContainer>
+                    <Link to={{
+                        pathname : "/forum/category/user",
+                        state : "Announcements"
+                    }}>
                     <CategoryTitle>
                         Announcements
                     </CategoryTitle>
+                    </Link>
                     <Link to="/thread/add">
                     <AddThread>
                         Add Thread
@@ -57,9 +62,14 @@ function ForumLoggedIn() {
             </AnnouncementsContainer>
             <GeneralContainer>
             <HeadContainer>
+                    <Link to={{
+                        pathname : "/forum/category/user",
+                        state : "General"
+                    }}>
                     <CategoryTitle>
                         General
                     </CategoryTitle>
+                    </Link>
                 </HeadContainer>
                 <CategoryThreadContainer>
                     {
@@ -82,9 +92,14 @@ function ForumLoggedIn() {
             </GeneralContainer>
             <OtherContainer>
                 <HeadContainer>
+                    <Link to={{
+                        pathname : "/forum/category/user",
+                        state : "Other"
+                    }}>
                         <CategoryTitle>
                             Other
                         </CategoryTitle>
+                    </Link>
                     </HeadContainer>
                     <CategoryThreadContainer>
                     {

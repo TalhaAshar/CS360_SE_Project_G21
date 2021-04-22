@@ -14,10 +14,21 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) {
 
     let placeholder = "Hours"
+    
     let post_time = timestamp
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
+
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
     }
 
     const [profile, setProfile] = React.useState({})

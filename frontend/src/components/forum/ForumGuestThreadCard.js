@@ -13,11 +13,26 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function ForumGuestThreadCard({username, title, category, postcount, timestamp, desc, id}) {
 
     let placeholder = "Hours"
+    let postholder = "Posts"
+
+    if(postcount == 1){
+        postholder = "Post"
+    }
+    
     let post_time = timestamp
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
 
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
     }
 
     const [profile, setProfile] = React.useState({'user':{'id':0}})
@@ -57,14 +72,14 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
             </ImageUserNameContainer>
         </Link>
         <ThreadDetailContainer>
-            <ThreadTitle>{title}</ThreadTitle>
+            <ThreadTitle>{title.substr(0, 20)}</ThreadTitle>
             <ThreadCategory>{category}</ThreadCategory>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}}/>
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>{postcount} Posts</h5>
+                <h5 style={{paddingTop:"4px"}}>{postcount} {postholder}</h5>
             </Comment>
             <TimeIcon>
                 <QueryBuilderIcon/>

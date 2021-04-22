@@ -37,7 +37,7 @@ function ThreadAdmin(props) {
             if (isComponentMounted){
                 
                 //console.log(posts, "set new")
-                //console.log(res.data, "Nptt")
+                console.log(res.data, "Nptt")
                 setPosts(res.data)
             };
         })
@@ -102,7 +102,7 @@ function ThreadAdmin(props) {
                 
 
                 <Results1>
-                    <PostCardAdmin editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={posts[0].id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)} />
+                    <PostCardAdmin first={false} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={posts[0].id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)} />
                 </Results1>
                 <RP>
 
@@ -125,7 +125,7 @@ function ThreadAdmin(props) {
                         posts.map((elem, index)  => {
                             if(index > 0){
                                 return(
-                                    <PostCardAdmin editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    <PostCardAdmin first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                 )
                             }
                         })
@@ -152,7 +152,7 @@ function ThreadAdmin(props) {
                 
 
                 <Results1>
-                    {(User == posts[0].Creator["username"]) && <PostCardOwner editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {(User == posts[0].Creator["username"]) && <PostCardOwner post_id={posts[0].id} irst={false} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
                     {(User != posts[0].Creator["username"]) && <PostCardLogged replyHandler={replyPost} post_id={posts[0].id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
                     {/* <ThreadCardGuest id={props.location.state.Creator["id"]} title={props.location.state.Title} username={props.location.state.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(props.location.state.Timestamp)) / 3600000)} category={props.location.state.Category} postcount={props.location.state.PostCount} desc={posts[0].Body}/> */}
                 </Results1>
@@ -176,13 +176,18 @@ function ThreadAdmin(props) {
                     {/* is current user creator or no*/}
                     {
                         posts.map((elem, index)  => {
+                            
                             if(index > 0){
+                                
                                 if(User == elem.Creator["username"]){
+                                    
                                     return(
-                                        <PostCardOwner editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardOwner post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }else{
-                                    <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    return(
+                                        <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    )
                                 }
                             }
                         })
@@ -209,8 +214,8 @@ function ThreadAdmin(props) {
                 
 
                 <Results1>
-                    {(User == posts[0].Creator["username"]) && <PostCardOwner editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
-                    {(User != posts[0].Creator["username"]) && <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {(User == posts[0].Creator["username"]) && <PostCardOwner post_id={posts[0].id} first={false} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
+                    {(User != posts[0].Creator["username"]) && <PostCardLogged replyHandler={replyPost} post_id={posts[0].id} id={posts[0].Creator["id"]} username={posts[0].Creator["username"]} desc={posts[0].Body} timestamp={parseInt ((d.getTime() - Date.parse(posts[0].TimeStamp)) / 3600000)}/>}
                     {/*Two cases to be handled, is current viewer the creator or not?*/}
                     {/* <ThreadCardGuest id={props.location.state.Creator["id"]} title={props.location.state.Title} username={props.location.state.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(props.location.state.Timestamp)) / 3600000)} category={props.location.state.Category} postcount={props.location.state.PostCount} desc={posts[0].Body}/> */}
                 </Results1>
@@ -237,10 +242,12 @@ function ThreadAdmin(props) {
                             if(index > 0){
                                 if(User == elem.Creator["username"]){
                                     return(
-                                        <PostCardOwner editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardOwner post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }else{
-                                    <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    return(
+                                        <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    )
                                 }
                             }
                         })
@@ -358,6 +365,7 @@ font-size: 18px;
 line-height: 25px;
 color: #FFFFFF;
 text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+cursor: pointer;
 `
 
 const RP = styled.h3`

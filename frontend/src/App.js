@@ -36,6 +36,7 @@ import AddPublication from "./components/publications/AddPublication";
 import ProfileGuest from "./components/ProfileGuest";
 import ListGuest from "./components/publications/PersonalizedListGuest"
 import MyActivity from "./components/MyActivity";
+import ForumCategoryUser from "./components/forum/ThreadCategoryUser";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -179,6 +180,8 @@ function App() {
           <Route exact path="/forum/user">
             <ForumUser />
           </Route>
+
+          <Route exact path="/forum/category/user" component={(props) => <ForumCategoryUser {...props}/>} />
 
           
           

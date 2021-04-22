@@ -13,14 +13,24 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-function PostCardAdmin({thread_id, post_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
+function PostCardAdmin({first, thread_id, post_id, username, timestamp, desc, id, replyHandler, postHandler, editHandler}) {
 
     let placeholder = "Hours"
+    
     let post_time = timestamp
-    console.log("Ninpa id", id)
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
+
     if(post_time > 24){
         placeholder = "Days"
         post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
     }
 
     const [profile, setProfile] = React.useState({})
@@ -96,7 +106,7 @@ function PostCardAdmin({thread_id, post_id, username, timestamp, desc, id, reply
             </Commentf>
             <TimeIcon>
             <Comment1>
-            <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>
+            {first && <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>}
             </Comment1>
             <Comment2>
             <EditIcon style = {{fontSize:'30px'}} onClick={() => editHandler(desc, post_id)}/>
