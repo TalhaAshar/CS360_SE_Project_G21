@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import Card from '../Cards'
-// import '../App.scss';
-// import Dropdown from '../Dropdown';
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import ViewPub from './SortPerList'
+import EditPub from './PubEditDropDown'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -33,28 +32,17 @@ function PersonalizedListUserRead() {
     const [sorter, setSorter] = useState('alphabetical')
     const [user, setUser] = useState('')
     const [start, setStart] = useState(0)
-
-      
+  
     const [PopView, setPopView] = useState(false)
     const [PopEdit, setPopEdit] = useState([false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false])    
     
-
-    function handleChange(event){
-        let temp = event.charAt(0).toLowerCase() + event.slice(1)
-        setSorter(temp)
-        
-    }
-
-    function DeleteMyList(){
+    function DeleteMyList(id){
         let url = "api/accounts/mylist/delete/" + id
+        console.log("shaka", url)
         axios.delete(url).then((res) => {
             console.log(res)
         })
         .catch(error => console.log('Error:', error))
-    }
-
-    function MarkAsRead(){
-        
     }
 
     useEffect(() => {
@@ -89,16 +77,10 @@ function PersonalizedListUserRead() {
 
     const handleClick = () =>{
         setPopView(!PopView)
-        console.log("NEW VIEW", PopView)
     }
+
     const editClick = (value) =>{
         const updated = [...PopEdit.slice(0, value), !PopEdit[value], ...PopEdit.slice(value+1)]
-        console.log(updated)
-        setPopEdit(updated)
-    }
-    const closeClick = () =>{
-        const updated = [false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false]
-        console.log(updated)
         setPopEdit(updated)
     }
 
@@ -124,7 +106,6 @@ function PersonalizedListUserRead() {
     return (
         <Overall>
         <Container>
-
             <UserNameContainer>
                 <User>{user}'s List</User>
             </UserNameContainer>
@@ -157,6 +138,14 @@ function PersonalizedListUserRead() {
                                 <CardContent>
                                     <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
                                     <StatusDiv>{elem.Status}</StatusDiv>
+                                    <Dropdiv>
+                                        <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
+                                        </CardSvg>
+                                        <PopContainer>
+                                            <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} Delete={DeleteMyList} id={elem.id}/>
+                                        </PopContainer>
+                                    </Dropdiv>
                                 </CardContent>
                                 )
                         }
@@ -336,4 +325,23 @@ const View = styled.h4`
 `
 const NextPrevious = styled.h4`
     margin-top:1%;
+`
+
+const PopContainer = styled.div`
+    position:absolute;
+    margin-left:18%;
+    z-index:2;
+`
+
+const CardSvg = styled.svg`
+    z-index:1;
+    position:relative;
+    left:88%;
+    top:-20%;
+
+`
+const Dropdiv = styled.div`
+    position:relative;
+    bottom:100%;
+    top:-90%;
 `

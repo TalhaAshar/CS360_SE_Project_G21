@@ -8,6 +8,7 @@ import axios from 'axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import FlagIcon from '@material-ui/icons/Flag';
+import PubSingleAddFeedbackPopup from '../functionality/PubSingleAddFeedbackPopup';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -16,11 +17,19 @@ function PubSinglePage(props) {
     const { id } = useParams();
     const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Best_Edition' : false ,'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
     const [IDs, setIDs] = useState();
+    const [seen, setSeen] = useState(false);
+    const [invalid, setInvalid] = useState(false);
+    const [profile, setProfile] = useState({"User_Type":"LOGGEDOUT"});
+
+    function togglePop () {
+        setSeen(!seen)
+    }
 
     useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/main/publication/" + id
-        axios.get(url).then((res) => {
+
+        let url1 = "api/main/publication/" + id
+        axios.get(url1).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
                 let Temp = []
@@ -31,6 +40,15 @@ function PubSinglePage(props) {
             };
         })
         .catch(error => console.log('Error:', error))
+
+        let url2 = "api/accounts/profile"
+        axios.get(url2).then((res) => {
+            if (isComponentMounted){
+                setProfile(res.data["User_Type"])
+            };
+        })
+        .catch(error => setProfile("LOGGEDOUT"))
+
         return () => {
             isComponentMounted = false;
         }
@@ -38,10 +56,9 @@ function PubSinglePage(props) {
 
     function AddToMyList(){
         let url = "api/accounts/mylist/add/" + id
-        axios.post(url).then((res) => {
-            console.log(res)
-        })
-        .catch(error => console.log('Error:', error))
+        axios.post(url)
+        .then(res => setSeen(true))
+        .catch(error => setInvalid(true))
     }
 
     return (
@@ -59,8 +76,9 @@ function PubSinglePage(props) {
                         <Text>Language: {pubs[0].Lang}</Text>
                         <Text>ISBN: {pubs[0].ISBN}</Text>
                     </BookDetails>
-                    <ButtonIcons>
+                    { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED') && <ButtonIcons>
                             <AddCircleIcon onClick={AddToMyList}/>
+                            { seen ? <PubSingleAddFeedbackPopup toggle={togglePop} /> : null }
                             <Link to={{
                                         pathname: "/editpublication",
                                         state: pubs[0],
@@ -74,7 +92,9 @@ function PubSinglePage(props) {
                             }}>
                                 <FlagIcon/>
                             </Link>
-                    </ButtonIcons>
+                    </ButtonIcons> }
+                    { (profile == 'UNVERIFIED' || profile == 'LOGGEDOUT') && 
+                        <span style={{textAlign:'justify-center'}}>You must be logged in to use these features.</span>}
                 </BookImageDetailContainer>
                 <BookDescriptionComment>
                     {pubs[0].Best_Edition && <BookComment>

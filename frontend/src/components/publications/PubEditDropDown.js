@@ -1,19 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import EditIcon from '@material-ui/icons/Edit';
-import FlagIcon from '@material-ui/icons/Flag';
+import DeleteIcon from '@material-ui/icons/Delete';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 function SortPerList(props) {
     return (props.trigger)?(
         <Container onMouseLeave={() => props.setTrigger(!props.trigger)}>
-            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} style={{borderBottom:"1px solid"}}>
-                <AddCircleIcon/>
-                <Text>Add to My List</Text>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} onClick={() => props.Delete(props.id)} style={{cursor:"pointer", borderBottom:"1px solid"}}>
+                <DeleteIcon/>
+                <Text>Remove From List</Text>
             </TextContainer>
-            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)}>
-                <FlagIcon/>
-                <Text>Report Publications</Text>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} style={{cursor:"pointer", borderBottom:"1px solid"}}>
+                <BookmarkIcon/>
+                <Text>Mark As Read</Text>
+            </TextContainer>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} style={{cursor:"pointer"}}>
+                <BookmarkBorderIcon/>
+                <Text>Mark As Unread</Text>
             </TextContainer>
         </Container>
     ):"";
@@ -23,7 +27,7 @@ export default SortPerList
 
 const Container = styled.div`
 width: 200px;
-height: 80px;
+height: 105px;
 background:white;
 filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 padding-top:2px;
