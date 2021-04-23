@@ -67,16 +67,15 @@ function PostCardGuest({username, timestamp, desc, id}) {
                     </UserName>
             </ImageUserNameContainer>
         </Link>
-        <ThreadDetailContainer>
-            <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />
-        </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
                 <h5 style={{paddingTop:"4px"}}>{post_time}{placeholder}</h5>
-            </Comment>s
+            </Comment>
         </ThreadTimePostContainer>
-
+        <ThreadDetailContainer>
+            <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />
+        </ThreadDetailContainer>
         </Container>
     )
 }
@@ -85,10 +84,9 @@ export default PostCardGuest
 
 const Container = styled.div`
     width:90%;
-    height:100%;
-    display:flex;
     background:white;
     border-radius:12px;
+    margin-bottom:5%;
 `
 const ImageUserNameContainer = styled.div`
     margin-left:20px;
@@ -105,41 +103,18 @@ const ThreadDetailContainer = styled.div`
     margin-top:30px;
     margin-left:20px;
 `
-const ThreadTitle = styled.h4`
-padding-right: 155px;
-`
-const ThreadCategory = styled.h4`
-`
-const ThreadMinorDetail = styled.h4`
+
+const ThreadMinorDetail = styled.div`
     margin-top:10px;
-    overflow-wrap:break-work;
+    overflow-wrap:break-word;
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:670px;
-    margin-top:20px;
+    margin-left:80%;
+    margin-top:-6%;
 `
 const Comment = styled.div`
-display:flex;
-margin-bottom:10px;
-padding-bottom: 30px;
+    display:flex;
+    margin-bottom:10px;
+    padding-bottom: 30px;
 `
 
-const Commentf = styled.div`
-display:flex;
-margin-bottom:10px;
-`
-
-const TimeIcon = styled.div`
-display:flex;
-padding-top: 10px;
-`
-const Comment1 = styled.div`
-display:flex;
-`
-const Comment2 = styled.div`
-display:flex;
-margin-left:10px;
-`
-const Commentb = styled.div`
-display:flex;
-`
