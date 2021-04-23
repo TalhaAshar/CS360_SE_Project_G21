@@ -25,6 +25,7 @@ function ThreadAdmin(props) {
     const [editFlag, setEditFlag] = useState(false)
     const [postToEdit, setPostToEdit] = useState(0)
     const [Popup, setPopup] = useState(false)
+    const [thread, setThread] = useState()
     const d = new Date()
     const { id } = useParams();
     console.log("reply", reply)
@@ -32,8 +33,8 @@ function ThreadAdmin(props) {
     useEffect(() => {
         let isComponentMounted = true;
 
-        let url = `api/forum/threads/` + id
-        axios.get(url).then((res) => {
+        let url1 = `api/forum/threads/` + id
+        axios.get(url1).then((res) => {
             if (isComponentMounted){
                 
                 //console.log(posts, "set new")
@@ -50,13 +51,17 @@ function ThreadAdmin(props) {
                 if(res.data['User_Type'] == 'ADMIN' || res.data['User_Type'] == 'MODERATOR'){
                     setFlag(true)
                 }
-
             };
         })
         .catch(error => console.log('Error:', error))
 
-        
-
+        let url2 = `api/forum/threads/retrieve/` + id
+        axios.get(url2).then((res) => {
+            if (isComponentMounted){
+                setThread(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
         
         return () => {
             isComponentMounted = false;
@@ -93,8 +98,11 @@ function ThreadAdmin(props) {
         case true:
             return(
                 <Container>
-            
-                <BookTitleContainer><h1>{props.location.state.Title}</h1></BookTitleContainer>
+            <Heading>
+                    <Background>
+                        { thread ? thread['Title'] : null }
+                    </Background>
+                </Heading>
             <Lower>
                 
 
@@ -142,7 +150,7 @@ function ThreadAdmin(props) {
                 <Container>
             <Heading>
                     <Background>
-                    {props.location.state.Title}
+                        { thread ? thread['Title'] : null }
                     </Background>
                 </Heading>
             <Lower>
@@ -204,7 +212,7 @@ function ThreadAdmin(props) {
                 <Container>
             <Heading>
                     <Background>
-                        {props.location.state.Title}
+                        { thread ? thread['Title'] : null }
                     </Background>
                 </Heading>
             <Lower>

@@ -1,33 +1,35 @@
 import React from 'react'
-import ThreadCardGuest from './ThreadCardGuest'
 import PostCardGuest from "./PostCardGuest";
 import styled from 'styled-components'
 import { useLocation, useParams} from "react-router-dom"
 import {useEffect, useState} from "react";
 import axios from 'axios';
-import RichTextEditor from "./functionality/RichTextEditor";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function ThreadGuest(props) {
+function ThreadGuest() {
 
     const [posts, setPosts] = React.useState([{"id":'',"Creator":{"id":0,"username":"","email":""},"TimeStamp":"","Body":"","Poll_Title":null,"Poll_Yes":'',"Poll_No":''}])
-    const [flag, setFlag] = useState(false)
+    const [thread, setThread] = React.useState()
     const d = new Date()
     const { id } = useParams();
-    console.log("ningo", posts)
 
     useEffect(() => {
         let isComponentMounted = true;
 
-        let url = `api/forum/threads/` + id
-        axios.get(url).then((res) => {
+        let url1 = `api/forum/threads/` + id
+        axios.get(url1).then((res) => {
             if (isComponentMounted){
-                
-                console.log(posts, "set new")
-                console.log(res.data, "Nptt")
                 setPosts(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+
+        let url2 = `api/forum/threads/retrieve/` + id
+        axios.get(url2).then((res) => {
+            if (isComponentMounted){
+                setThread(res.data)
             };
         })
         .catch(error => console.log('Error:', error))
@@ -39,7 +41,11 @@ function ThreadGuest(props) {
 
             return(
                 <Container>
-            <BookTitleContainer><h1>{props.location.state.Title}</h1></BookTitleContainer>
+            <Heading>
+                    <Background>
+                        { thread ? thread['Title'] : null }
+                    </Background>
+                </Heading>
             <Lower>
                 
                 <Results>

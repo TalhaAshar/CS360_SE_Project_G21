@@ -255,5 +255,3 @@ class IndividualThread(APIView):
 		
 		serializer = ThreadSerializer(thread_to_get)
 		return Response(serializer.data, status=status.HTTP_200_OK)
-
-

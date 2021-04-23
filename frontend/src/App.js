@@ -126,7 +126,9 @@ function App() {
 
           <Route path="/thread/user/:id" component={(props) => <ThreadAdmin {...props} />} /> 
 
-          <Route path="/thread/guest/:id" component={(props) => <ThreadGuest {...props} />} /> 
+          <Route path="/thread/guest/:id">
+            <ThreadGuest />
+          </Route>
           
           <Route exact path="/List">
             <List />  
@@ -181,11 +183,10 @@ function App() {
             <ForumUser />
           </Route>
 
-          <Route exact path="/forum/category/user" component={(props) => <ForumCategoryUser {...props}/>} />
+          <Route path="/forum/category/:category">
+            <ForumCategoryUser />
+          </Route>
 
-          
-          
-          
         </Switch>
 
       <Footer/>

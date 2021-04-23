@@ -12,13 +12,11 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function ReportsUser(props) {
-
+function ReportsUser() {
     const [reports, setReports] = useState([])
     const [flag, setFlag] = useState(false)
     const [start, setStart] = useState(0)
-    const [type, setType] = useState(props.location.state)
-    console.log(type)
+    const [type, setType] = useState({'User_Type':''})
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -26,10 +24,17 @@ function ReportsUser(props) {
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setReports(res.data)
-                console.log(res.data, "UMAMAM")
             };
         })
         .catch(error => console.log('Error:', error))
+
+        axios.get(`api/accounts/profile`).then((res) => {
+            if (isComponentMounted){
+                setType(res.data['User_Type'])
+            };
+        })
+        .catch(error => console.log('Error:', error))
+
         return () => {
             isComponentMounted = false;
         }
@@ -67,11 +72,9 @@ function ReportsUser(props) {
                 {
                     reports.map((elem, index) => {
                         let placeholder = 'You'
-                        console.log(type)
                         if(type == 'ADMIN' || type == 'MODERATOR'){
                             placeholder = elem.Creator["username"]
                         }
-
                         if(index >= start && index < (start + 15) && index < reports.length)
                         {
                             if (elem.Status == 'UNRESOLVED' && elem.Relevant_Post == null){
