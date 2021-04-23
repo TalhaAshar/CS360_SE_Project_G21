@@ -116,16 +116,18 @@ border-radius: 8px;
 `
 
 const FormContainer = styled.div`
-  width: 1000px;
-  height: 950px;
-  margin-top:20px;
+max-width: 100%;
+max-height: 100%;
+margin-top: 2%;
   display:flex;
   justify-content:space-between;
   background:#DCF2F8;
   border-radius: 16px;
-
 `
 const Form = styled.form`
+flex:1;
+margin-right:3%;
+margin-bottom:1%;
 `
 const UserInfo = styled.div`
   display:grid;
@@ -180,15 +182,16 @@ const Option = styled.option`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `
 const EditorContainer = styled.div`
-  margin-left:50px;
-
+  margin-left:3%;
+  margin-top:3%;
+  flex:1;
 `
 const Submit = styled.input`
-  width:120px;
-  height:30px;
+  width:8%;
+  height:15%;
   position:relative;
   bottom:55px;
-  left:750px;
+  left:91%;
   background-color:#03204C;
   color:white;
   z-index:2;

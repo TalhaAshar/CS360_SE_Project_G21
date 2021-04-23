@@ -50,7 +50,7 @@ class Index(generics.ListCreateAPIView):
 		
 		# Find the publication IDs for 5 random publications as recommendations
 		new = []
-		while j < 5:
+		while j < 6:
 			temp = random.randint(1, total)
 			if temp not in collected and temp not in new:
 				new.append(temp)

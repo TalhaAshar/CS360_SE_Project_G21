@@ -38,6 +38,8 @@ class ModeratorSerializer(serializers.ModelSerializer):
 
 class ActivitySerializer(serializers.ModelSerializer):
     Owner = UserSerializer(read_only=True)
+    FiledReport = ReportSerializer(read_only=True)
+    ModApp = ModeratorSerializer(read_only=True)
     class Meta:
         model = MyActivity
         fields = ('id', 'Owner', 'FiledReport', 'ModApp', 'CreatedThread', 'CreatedPost')

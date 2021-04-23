@@ -6,6 +6,7 @@ import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from 'axios';
+import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -53,24 +54,37 @@ function MyActivity() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 15) && index < pubs.length){
                             let activity_type = ""
-                            if(elem.FiledReport){
-                                activity_type = "Pub"
+                            if(elem.FiledReport != null && elem.FiledReport["Relevant_Pub"] != null){
+                                console.log("here")
+                                activity_type = "ReportPub"
                             }
-                            else if(elem.ModApp){
+                            else if(elem.FiledReport != null && elem.FiledReport["Relevant_Pub"] == null){
+                                console.log("here")
+                                activity_type = "ReportPost"
+                            }
+                            else if(elem.ModApp != null){
                                 activity_type = "Mod"
                             }
-                            else if(elem.Thread){
+                            else if(elem.CreatedThread != null){
                                 activity_type = "Thread"
                             }
                             else{
                                 activity_type = "Post"
                             }
                             return(
-                                <Activity key={index} pub={elem} type={activity_type}/>
+                                <Flag>
+                    <Activity key={index} pub={elem} type={activity_type}/>
+                    <NLine></NLine>
+                </Flag>
                             )
                         }
                     })
                 }
+                {(pubs.length == 0) && <Flag>
+                    <Activity type={"Empty"}/>
+                    <NLine></NLine> 
+                </Flag>}
+
             </ActivityContainer>
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
@@ -101,13 +115,11 @@ background: #0A3977;
 `
 const ActivityText = styled.h3`
 max-height:50px;
-max-width:380px;
 background-color: #0A3977;
 color:white;
 font-size:50px;
 font-weight:bold;
 border:1px;
-padding-left:335px;
 padding-top:15px;
 text-align: center;
 letter-spacing: -1px;
@@ -120,8 +132,6 @@ height: 1155px;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
-background: #DCF2F8;
-box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
 `
 
 const ViewNextButtonContainer = styled.div`
@@ -133,4 +143,37 @@ align-items: Center;
 margin-top:40px;
 background: #DCF2F8;
 border-radius:10px;
+`
+
+const Flag = styled.h3`
+width:1050px;
+height:60px;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 32px;
+display: flex;
+align-items: center;
+color: Black;
+background: #DCF2F8;
+`
+
+
+const NLine = styled.line`
+position:absolute;
+width:1050px;
+heigth:0px;
+margin-top: 60px;
+border: 1px solid #F9F7FC;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`
+
+const Text = styled.text`
+margin-left:40px;
+position:absolute;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 32px;
+color: #060606;
 `

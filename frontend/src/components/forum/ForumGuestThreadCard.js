@@ -59,7 +59,9 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
     return (
         
         <Container>
-        <Link to={profile_url}>
+            <ContainerDiv>
+        <ContainerImageThreadDetails>
+        <Link to={profile_url} style={{textDecoration:"none"}}>
             <ImageUserNameContainer>
                 <ImageContainer>
                     {flag && <Image src={profile["ProfileImage"]}
@@ -76,17 +78,18 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
             <ThreadCategory>{category}</ThreadCategory>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}}/>
         </ThreadDetailContainer>
+        </ContainerImageThreadDetails>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>{postcount} {postholder}</h5>
+                <h5 style={{paddingTop:"4px", marginLeft:"10%"}}>{postcount} {postholder}</h5>
             </Comment>
             <TimeIcon>
                 <QueryBuilderIcon/>
-                <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
+                <h5 style={{paddingTop:"4px", marginLeft:"10%"}}>{post_time} {placeholder}</h5>
             </TimeIcon>
         </ThreadTimePostContainer>
-
+        </ContainerDiv>
         </Container>
     )
 }
@@ -94,17 +97,24 @@ function ForumGuestThreadCard({username, title, category, postcount, timestamp, 
 export default ForumGuestThreadCard
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
-
+    width:100%;
+    height:100%;
+    background:white;
+    border-radius:12px;
+    margin-bottom:3%;
+`
+const ContainerDiv = styled.div`
 
 `
+const ContainerImageThreadDetails = styled.div`
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    
+`
 const ImageUserNameContainer = styled.div`
-    margin-left:20px;
-    margin-top:20px;
+    margin-left:10%;
+    margin-top:20%;
 
 `
 const ImageContainer = styled.div`
@@ -116,8 +126,8 @@ const Image = styled.img`
 const UserName = styled.h3`
 `
 const ThreadDetailContainer = styled.div`
-    margin-top:30px;
-    margin-left:20px;
+    margin-top:-2%;
+    margin-left:2%;
 `
 const ThreadTitle = styled.h4`
 `
@@ -126,16 +136,19 @@ const ThreadCategory = styled.h4`
 const ThreadMinorDetail = styled.h6`
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:620px;
-    margin-top:30px;
-
+    margin:20px 0% 0% 500px;
+    display:flex;
+    justify-content:flex-end;
 `
 const Comment = styled.div`
-display:flex;
-margin-bottom:10px;
-
+    display:flex;
+    margin-bottom:2%;
+    margin-left:20%;
+    margin-right:20%;
 
 `
 const TimeIcon = styled.div`
-display:flex;
+    display:flex;
+    margin-left:30%;
+    margin-right:30%;
 `
