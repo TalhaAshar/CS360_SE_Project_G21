@@ -76,11 +76,12 @@ border-radius: 10px 10px 0px 0px;
 const HeaderText = styled.text`
 position: absolute;
 margin-left:40%;
-margin-top:2.5%;
+margin-top:3%;
 
 font-family: Manrope;
 font-style: normal;
 font-weight: bold;
+font-size:28px;
 line-height: 14px;
 
 display: flex;
