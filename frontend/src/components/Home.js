@@ -184,10 +184,10 @@ const Cards = styled.div`
     }
 `
 const CardDiv = styled.div`
-    margin-top:3%;
-    margin-bottom:3%;
-    margin-left:2%;
-    margin-right:2%;
+    padding-top:5%;
+    padding-bottom:3%;
+    padding-left:2%;
+    padding-right:2%;
 
 `
 const RecommendationContainer = styled.div`
