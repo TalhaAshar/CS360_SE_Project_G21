@@ -49,90 +49,93 @@ class Recommendations(APIView):
 
 class MyListDefault(APIView):
 
-    def get(self, request):
+	def get(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
-        try:
-            display_type = PersonalizedList.objects.get(Owner=request.user).Display_Type
-        except:
-            return Response({'Message' : 'Empty!'},status=status.HTTP_404_NOT_FOUND)
-        print("ye", request.user)
-        if display_type == 'ALPHABETICAL':
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		try:
+			display_type = PersonalizedList.objects.get(Owner=request.user).Display_Type
+		except:
+			return Response({'Message' : 'Empty!'},status=status.HTTP_404_NOT_FOUND)
+		print("ye", request.user)
+		if display_type == 'ALPHABETICAL':
 
-            try:
-                queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
-            except:
-                return Response({'Message' : 'Empty!'}, status=status.HTTP_204_NO_CONTENT)
+			try:
+				queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+			except:
+				return Response({'Message' : 'Empty!'}, status=status.HTTP_204_NO_CONTENT)
 
-            temp = ListingsSerializer(queryset, many=True)
-            return Response(temp.data, status=status.HTTP_200_OK)
+			temp = ListingsSerializer(queryset, many=True)
+			return Response(temp.data, status=status.HTTP_200_OK)
 		
-        elif display_type == 'UNREAD':
-            try:
-                user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
-            except:
-                try:
-                    user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-                temp = ListingsSerializer(user_list_read, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            try:
-                user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
-            except:
-                temp = ListingsSerializer(user_list_unread, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            user_list = user_list_unread.union(user_list_read, all=True)
-            temp = ListingsSerializer(user_list, many=True)
-            return Response(temp.data, status=status.HTTP_200_OK)
-        elif display_type == 'READ':
-            try:
-                user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
-            except:
-                try:
-                    user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-                temp = ListingsSerializer(user_list_unread, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            try:
-                user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
-            except:
-                temp = ListingsSerializer(user_list_read, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            user_list = user_list_read.union(user_list_unread, all=True)
-            temp = ListingsSerializer(user_list, many=True)
-            return Response(temp.data, status=status.HTTP_200_OK)
+		elif display_type == 'UNREAD':
+			try:
+				user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
+			except:
+				try:
+					user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
+				temp = ListingsSerializer(user_list_read, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			try:
+				user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
+			except:
+				temp = ListingsSerializer(user_list_unread, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			user_list = user_list_unread.union(user_list_read, all=True)
+			temp = ListingsSerializer(user_list, many=True)
+			return Response(temp.data, status=status.HTTP_200_OK)
+		elif display_type == 'READ':
+			try:
+				user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
+			except:
+				try:
+					user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
+				temp = ListingsSerializer(user_list_unread, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			try:
+				user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
+			except:
+				temp = ListingsSerializer(user_list_read, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			user_list = user_list_read.union(user_list_unread, all=True)
+			temp = ListingsSerializer(user_list, many=True)
+			return Response(temp.data, status=status.HTTP_200_OK)
 	
-    def post(self, request, id):
+	def post(self, request, id):
 
-        try:
-            pub_to_add = Publication.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+		try:
+			pub_to_add = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
 		
-        if(not Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_add)).exists()):
-            new_list_item = Listings.objects.create(ListOwner=request.user, ListPub=pub_to_add, Status='UNREAD')
-            new_list_item.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+		if(not Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_add)).exists()):
+			new_list_item = Listings.objects.create(ListOwner=request.user, ListPub=pub_to_add, Status='UNREAD')
+			new_list_item.save()
+			return Response(status=status.HTTP_201_CREATED)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
 	
-    def delete(self, request, id):
+	def delete(self, request, id):
 
-        try:
-            pub_to_del = Publication.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+		try:
+			pub_to_del = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+
+		user = User.objects.get(username=request.user)
 		
-        if Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_del)).exists():
-            pub_exists_in_list = Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_del))[0]
-            pub_exists_in_list.delete()
-            print("Deleted")
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_del)).exists():
+			pub_exists_in_list = Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_del))[0]
+			pub_exists_in_list.delete()
+		else:
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response(status=status.HTTP_200_OK)
+		queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+		serializer = ListingsSerializer(queryset, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class MyListAlphabetical(APIView):
 
@@ -512,3 +515,33 @@ class ReportResolution(APIView):
 			report_to_resolve.Status = 'RESOLVED'
 			report_to_resolve.save(update_fields=["Status"])
 		return Response({'Message' : 'Success!'}, status=status.HTTP_200_OK)
+
+class ChangeListStatus(APIView):
+
+	def post(self, request, id, state):
+
+		try:
+			pub_to_edit = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+
+		user = User.objects.get(username=request.user)
+		
+		if Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_edit)).exists():
+			pub_exists_in_list = Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_edit))[0]
+
+			if(pub_exists_in_list.Status == state):
+				return Response(status=status.HTTP_404_NOT_FOUND)
+				
+			if(pub_exists_in_list.Status == "UNREAD"):
+				pub_exists_in_list.Status = state
+			else:
+				pub_exists_in_list.Status = state
+			pub_exists_in_list.save(update_fields=["Status"])
+		else:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+
+		queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+		serializer = ListingsSerializer(queryset, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
