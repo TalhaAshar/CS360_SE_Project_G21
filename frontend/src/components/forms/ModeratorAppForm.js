@@ -48,16 +48,17 @@ handleSubmit = (event) =>{
   render(){
     return(
       <Container>
-        <Head>Moderator Application</Head>
+        <BookTitleContainer><h1>DMCA Takedown Request</h1></BookTitleContainer>
         <FormContainer>
+        <Ub>
             <Form onSubmit={this.handleSubmit}>
             <UserInfo>
             <Span>Full Name*</Span>
             <Span>Location*</Span>
             <Input1 type="text" required name="Name" onChange={this.handleChange} />
             <Input1 type="text" required name="Location" onChange={this.handleChange} />
-            <Span style={{paddingTop:"80px"}} >Why do you want to be a moderator?*</Span><br/>
-            <Input2 required name="Why" style={{marginTop:"120px",marginBottom:"50px",width:"950px" ,height:"300px", resize:"none"}} onChange={this.handleChange} /><br/>
+            <Span style={{paddingTop:"40px"}} >Why do you want to be a moderator?*</Span><br/>
+            <Input2 required name="Why" style={{marginTop:"65px",marginBottom:"50px",width:"950px" ,height:"300px", resize:"none"}} onChange={this.handleChange} /><br/>
             </UserInfo>
             
             <EditorContainer>
@@ -68,7 +69,7 @@ handleSubmit = (event) =>{
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
                 init={{
                   placeholder: "You need to host your image and then upload in this text box.",
-                  height: 600,
+                  height: 400,
                   width: 950,
                   plugins: "image",
                   toolbar: "bold italic image",
@@ -81,6 +82,7 @@ handleSubmit = (event) =>{
             { (this.state.seen && this.state.invalid) ? <ModAppFormFeedbackPopup toggle={this.togglePop} /> : null }
             </EditorContainer>
           </Form>
+          </Ub>
         </FormContainer> 
       </Container>
         );
@@ -89,43 +91,56 @@ handleSubmit = (event) =>{
 
 export default App;
 
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
+`
+
 const Container = styled.div`
 max-width:100%;
 max-height:100%;
-margin-left:3%;
-margin-right:3%;
+
 `
 
-const Head = styled.h3`
-  width:1040px;
-  height:50px;
-  margin-top:30px;
-  margin-left:5px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  background: #03204C;
-  border-radius: 8px;
+const Ub = styled.h3`
+margin: 0 auto;
 `
 const FormContainer = styled.div`
-  width: 1050px;
-  height: 1200px;
-  margin-top:20px;
-  display:flex;
-  justify-content:space-between;
-  background:#DCF2F8;
-  border-radius: 16px;
+max-width: 100%;
+max-height: 100%;
+margin-top: 2%;
+display:flex;
+justify-content:space-between;
+background:#DCF2F8;
+border-radius: 16px;
+  margin-left: 3%;
+margin-right: 3%;
+
 
 `
 const Form = styled.form`
 `
 const UserInfo = styled.div`
+  
+
+  width:1100px;
+  display:grid;
+  padding-top:20px;
+  padding-left:7%;
+  padding-right:5.5%;
+  margin: 0 auto;
   display:grid;
   grid-template-rows:20px 60px 20px 200px;
   grid-template-columns:500px 500px;
-  margin-top:20px;
-  padding-left:50px;
 `
 
 const Span = styled.span`
@@ -140,19 +155,20 @@ const ErrorMessage = styled.span`
 `
 
 const Input1 = styled.input`
-  width: 400px;
-  height: 60px;
-  margin-top:10px;
-  background: #F9F7FC;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius:6px;
-  outline:none;
-  border:none;
+width: 90%;
+height: 60px;
+margin-top:10px;
+margin-right:5%;
+background: #F9F7FC;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius:6px;
+outline:none;
+border:none;
 `
 
 const Input2 = styled.textarea`
   width: 400px;
-  height: 60px;
+  height: 30px;
   margin-top:10px;
   background: #F9F7FC;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -162,8 +178,14 @@ const Input2 = styled.textarea`
 `
 
 const EditorContainer = styled.div`
-  margin-left:50px;
-  margin-top:230px;
+margin-left:3%;
+margin-top:3%;
+flex:1;
+width:1100px;
+padding-top:200px;
+padding-left:7%;
+margin-left:20px;
+margin: 0 auto;
 
 `
 const Submit = styled.input`
