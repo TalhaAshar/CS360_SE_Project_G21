@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from .views import GuestRecentThreads, AddThread, UserRecentThreads, ThreadsHome , EditPost, DeleteThread, DeletePost, ThreadCategory
+from .views import GuestRecentThreads, AddThread, UserRecentThreads, ThreadsHome , EditPost, DeleteThread, DeletePost, ThreadCategory, IndividualThread
 
 urlpatterns = [
 
@@ -16,7 +16,7 @@ urlpatterns = [
 	path("threads/edit/<int:id>/<int:tid>", EditPost.as_view()),
 	path("threads/delete/<int:id>", DeleteThread.as_view()),
 	path("post/delete/<int:id>/<int:tid>", DeletePost.as_view()),
-
+	path("threads/retrieve/<int:id>", IndividualThread.as_view()),
 	path("threads/<str:category>", ThreadCategory.as_view()),
 ]
 

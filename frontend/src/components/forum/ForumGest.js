@@ -37,11 +37,8 @@ function ForumGest() {
                             if(index < 6){
                             let placeholder = "/thread/guest/" + elem.id
                             return(
-                                <Link to={{
-                                    pathname : placeholder,
-                                    state : threads[index]
-                                }}>
-                                <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                <Link to={placeholder}>
+                                    <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
                                 </Link>
                             )
                             }

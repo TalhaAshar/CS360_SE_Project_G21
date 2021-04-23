@@ -105,10 +105,7 @@ function Profile() {
                                     </MyListBackground>
                                 </MyList>
                             </Link>
-                            <Link to={{
-                                pathname : '/reports',
-                                state : Details['User_Type'],
-                            }} value="Reports" style={{textDecoration:"none"}}>
+                            <Link to={'/reports'} value="Reports" style={{textDecoration:"none"}}>
                                 <Report>
                                     <ReportBackground>
                                         Report History
@@ -122,10 +119,7 @@ function Profile() {
                             </Settings>
                         {
                             ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
-                            <Link to={{
-                                pathname : '/modhist',
-                                state : Details['User_Type'],
-                            }} value="Moderator Applications" style={{textDecoration:"none"}}>
+                            <Link to={'/modhist'} value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Applications

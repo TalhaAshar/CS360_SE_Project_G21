@@ -13,13 +13,11 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function ModAppHistoryUser(props) {
-
+function ModAppHistoryUser() {
     const [apps, setApps] = useState([])
     const [flag, setFlag] = useState(false)
     const [start, setStart] = useState(0)
-    const [type, setType] = useState(props.location.state)
-    console.log(type)
+    const [type, setType] = useState({'User_Type':''})
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -31,6 +29,14 @@ function ModAppHistoryUser(props) {
             };
         })
         .catch(error => console.log('Error:', error))
+
+        axios.get(`api/accounts/profile`).then((res) => {
+            if (isComponentMounted){
+                setType(res.data['User_Type'])
+            };
+        })
+        .catch(error => console.log('Error:', error))
+
         return () => {
             isComponentMounted = false;
         }
@@ -68,7 +74,6 @@ function ModAppHistoryUser(props) {
             <MDAContainer>
                 {
                     apps.map((elem, index) => {
-                        console.log(type)
                         if(index >= start && index < (start + 15) && index < apps.length)
                         {
                             if(type == 'ADMIN' || type == 'MODERATOR'){
@@ -140,9 +145,7 @@ function ModAppHistoryUser(props) {
                         }
                     })
                 }       
-
             </MDAContainer>
-
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
@@ -150,7 +153,6 @@ function ModAppHistoryUser(props) {
         </Container>
     )
 }
-
 
 export default ModAppHistoryUser
 
