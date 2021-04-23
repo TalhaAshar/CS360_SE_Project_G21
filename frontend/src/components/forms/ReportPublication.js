@@ -50,7 +50,7 @@ handleSubmit = (event) =>{
   render(){
     return(
       <Container>
-      <Head>Publication Report</Head>
+      <BookTitleContainer><h1>Publication Report</h1></BookTitleContainer>
       <FormContainer>
           <Form onSubmit={this.handleSubmit}>
           <LabelContainer>
@@ -71,7 +71,7 @@ handleSubmit = (event) =>{
               apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
               init={{
                 placeholder: 'You need to host your image and then upload in this text box.',
-                height: 900,
+                height: 400,
                 width: '100%',
                 plugins: "image",
                 toolbar: "bold italic image",
@@ -92,11 +92,24 @@ handleSubmit = (event) =>{
 
 export default App;
 
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
+`
+
 const Container = styled.div`
   max-width:100%;
   max-height:100%;
-  margin-left:3%;
-  margin-right:3%;
+
 `
 const Head = styled.h3`
   min-width: 55%;
@@ -110,6 +123,8 @@ const Head = styled.h3`
   border-radius: 8px;
 `
 const FormContainer = styled.div`
+margin-left: 3%;
+margin-right: 3%;
   max-width: 100%;
   max-height: 100%;
   margin-top: 2%;
