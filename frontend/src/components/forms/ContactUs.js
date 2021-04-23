@@ -53,8 +53,8 @@ handleSubmit = (event) =>{
             <UserInfo>
                 <Span>Name*</Span>
                 <Span>Email*</Span>
-                <Input type="text" required name="Name" onChange={this.handleChange} />
-                <Input type="text" required name="Email" onChange={this.handleChange} />
+                <Input type="text" required name="Name" maxLength="150" onChange={this.handleChange} />
+                <Input type="text" required name="Email" maxLength="150" onChange={this.handleChange} />
             </UserInfo>
             <LabelContainer>
                 <Label for="Reason">Reason</Label>

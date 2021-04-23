@@ -76,25 +76,26 @@ function PubSinglePage(props) {
                         <Text>Language: {pubs[0].Lang}</Text>
                         <Text>ISBN: {pubs[0].ISBN}</Text>
                     </BookDetails>
-                    { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED') && <ButtonIcons>
+                    { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED' || profile == 'UNVERIFIED') &&<ButtonIcons>
                             <AddCircleIcon onClick={AddToMyList}/>
                             { seen ? <PubSingleAddFeedbackPopup toggle={togglePop} /> : null }
-                            <Link to={{
+                            
+                            { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED') && <Link to={{
                                         pathname: "/editpublication",
                                         state: pubs[0],
                                         batchIDs: IDs
                                     }}>
                                 <EditIcon/>
-                            </Link>                        
+                            </Link>}                        
                             <Link to={{
                                 pathname: "/reportpublication",
                                 state : pubs[0].id
                             }}>
                                 <FlagIcon/>
                             </Link>
-                    </ButtonIcons> }
-                    { (profile == 'UNVERIFIED' || profile == 'LOGGEDOUT') && 
-                        <span style={{textAlign:'justify-center'}}>You must be logged in to use these features.</span>}
+                    </ButtonIcons>}
+                    { (profile == 'LOGGEDOUT') && 
+                        <span style={{textAlign:'justify-center'}}>You must be logged in to use other features.</span>}
                 </BookImageDetailContainer>
                 <BookDescriptionComment>
                     {pubs[0].Best_Edition && <BookComment>

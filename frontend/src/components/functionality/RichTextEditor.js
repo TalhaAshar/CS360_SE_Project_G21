@@ -92,8 +92,10 @@ class App extends React.Component {
           apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
           init={{
             height: 500,
+            plugins: "image",
+            toolbar: "bold italic image",
             menubar: false,
-            toolbar: "bold italic"
+            toolbar_location: "bottom",
           }}
           onEditorChange={this.handleChange}
         />

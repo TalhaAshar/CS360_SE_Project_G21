@@ -62,12 +62,12 @@ handleSubmit = (event) =>{
               <Span style={{paddingTop:"10px"}} >Publication ID for removal*</Span><br/>
             </SpanContainer>
             <InputContainer>
-              <Input type="text" required name="Party" onChange={this.handleChange} /><br/>
-              <Input type="text" required name="Relationship" onChange={this.handleChange} /><br/>
-              <Input type="text" required name="Copyright" onChange={this.handleChange} /><br/>
-              <Input type="text" required name="Country" onChange={this.handleChange} /><br/>
-              <Input type="text" required name="Email" onChange={this.handleChange} /><br/>
-              <Input type="text" required name="Publication" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Party" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Relationship" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Copyright" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Country" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Email" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="number" required name="Publication" onChange={this.handleChange} /><br/>
             </InputContainer>
             </UserInfo>
             <EditorContainer>
