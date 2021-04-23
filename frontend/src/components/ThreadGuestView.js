@@ -66,17 +66,37 @@ function ThreadGuest() {
 
 export default ThreadGuest
 
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
+`
+
 const Results = styled.div`
+padding-top: 20px;
     width:1100px;
     display:grid;
     height: 200px;
     margin-top: 65px;
+    margin: 0 auto;
     grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const Lower = styled.div`
 background: #DCF2F8;
-width: 1100px;
-height:1600px;
+width:90%;
+height: 1000px;
+border-radius: 20px;
+margin-bottom:100px;
+margin-left:3%;
+margin-right:3%;
 `
 
 const Results1 = styled.div`
@@ -88,9 +108,7 @@ const Results1 = styled.div`
     grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const Container = styled.div`
-margin-left: 120px;
-width: 1100px;
-height:1600px;
+
 
 `
 
