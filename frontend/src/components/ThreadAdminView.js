@@ -262,12 +262,20 @@ function ThreadAdmin(props) {
                 
                 </Lower>
 
-                 <Editor>   
-                {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
-                </Editor>
-                <Editor>
-                {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
-                </Editor>
+                    
+                {
+                    <Editor>
+                        (reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>
+                        
+                    </Editor>        
+                }
+                
+                {
+                    <Editor>
+                        (reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>
+                        
+                    </Editor>        
+                }
             </Container>
         )
     }
@@ -293,6 +301,7 @@ const BookTitleContainer = styled.div`
 const Results = styled.div`
     width:100%;
     display:flex;
+    flex-flow:row wrap;
     padding-top: 65px;
     margin-left:5%;
 `
@@ -401,7 +410,8 @@ margin-top: 13px;
 `
 
 const Editor = styled.div`
-
+    padding-left:3%;
+    padding-right:3%;
     margin-left:3%;
     margin-right:3%;
 `

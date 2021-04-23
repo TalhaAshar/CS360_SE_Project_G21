@@ -91,18 +91,13 @@ function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id
             <Comment1>
             <ReplyIcon style = {{fontSize:'30px'}} onClick={() => replyHandler("@" + username)}/>
             </Comment1>
-            <Comment2>
-            
-            </Comment2>
 
-            <TimeIcon>
             <Comment1>
                    {first && <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>}
             </Comment1>
             <Comment2>
                     <EditIcon style = {{fontSize:'30px', marginLeft:"auto"}} onClick={() => editHandler(desc, post_id)}/>
             </Comment2>
-            </TimeIcon>
         </ThreadTimePostContainer>
 
         </Container>
@@ -140,7 +135,7 @@ const ThreadMinorDetail = styled.div`
 const ThreadTimePostContainer = styled.div`
     display:flex;
     flex-flow: row wrap;
-    margin-left:85%;
+    margin-left:70%;
     margin-top:-6%;
 `
 const Comment = styled.div`

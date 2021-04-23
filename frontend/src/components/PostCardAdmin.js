@@ -93,20 +93,18 @@ function PostCardAdmin({first, thread_id, post_id, username, timestamp, desc, id
             <Link to={{
                 pathname : "/reportpost",
                 state : post_id
-            }} style={{textDecoration:"none"}}>
+            }} style={{textDecoration:"none", marginRight:"6%"}}>
                 <Comment2>
                     <ReportProblemIcon style = {{fontSize:'30px'}}/>
                 </Comment2>
             </Link>
 
-            <TimeIcon>
                 <Comment1>
-                {first && <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>}
+                {first && <DeleteIcon style = {{fontSize:'30px', marginLeft:"10%"}} onClick={deletePost}/>}
                 </Comment1>
                 <Comment2>
                 <EditIcon style = {{fontSize:'30px',marginLeft:"auto"}} onClick={() => editHandler(desc, post_id)}/>
                 </Comment2>
-            </TimeIcon>
         </ThreadTimePostContainer>
         <ThreadDetailContainer>
             <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />
@@ -145,7 +143,7 @@ const ThreadMinorDetail = styled.div`
 const ThreadTimePostContainer = styled.div`
     display:flex;
     flex-flow: row wrap;
-    margin-left:85%;
+    margin-left:80%;
     margin-top:-6%;
 `
 const Comment = styled.div`
@@ -165,10 +163,10 @@ padding-top: 10px;
 margin-right:5%;
 `
 const Comment1 = styled.div`
-margin-right:5%;
+    margin-right:6%;
 `
 const Comment2 = styled.div`
-margin-left:10px;
+margin-left:unset;
 `
 const Commentb = styled.div`
 display:flex;
