@@ -20,15 +20,15 @@ from django.template.loader import render_to_string
 from .filters import *
 
 
-# Create your views here.
-
+# Function to generate publications for home page
 class Index(generics.ListCreateAPIView):
 	
+	# Function to find publications for home page
 	def FindSet():
+
+		# Find the most recently added best edition
 		try:
-			#Best_Edition_Daily = Contribution.objects.select_related.filter(Publication_ID__Best_Edition=True).order_by('-Date')[:1]
 			Best_Edition_Daily = Publication.objects.filter(Best_Edition=True).order_by('-contribution__Date')
-			#Best_Edition_Daily = Publication.objects.filter(id=35)
 		except:
 			return Response({'Message' : 'There was an error loading this page.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -36,6 +36,7 @@ class Index(generics.ListCreateAPIView):
 		for k in Best_Edition_Daily:
 			collected.append(k.id)
 		
+		# Find recent additions in descending order of date of addition ensuring no duplicates
 		try:
 			recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:5]
 		except:
@@ -47,6 +48,7 @@ class Index(generics.ListCreateAPIView):
 		for k in recents:
 			collected.append(k.id)
 		
+		# Find the publication IDs for 5 random publications as recommendations
 		new = []
 		while j < 5:
 			temp = random.randint(1, total)
@@ -54,43 +56,40 @@ class Index(generics.ListCreateAPIView):
 				new.append(temp)
 				j = j + 1
 
-		#recs = Publication.objects.all()[limit:limit+5]
+		# Find the relevant recommendations as per the IDs generated above
 		temp = Best_Edition_Daily.union(recents, all=True)
-		print(temp)
+
 		for i in new:
 			try:
 				recs = Publication.objects.filter(id=i)
 				temp = temp.union(recs, all=True)
 			except:
 				continue
-	
-		#print(Best_Edition_Daily)
-		#print(temp)
-		#temp = 'new'
+
 		return temp
 	
 	queryset = FindSet()
-	print("negrito")
 	serializer_class = PublicationSerializer
 
+# Return all publications for the grid-like catalogue view
 class CatalogueColumnar(APIView):
 
 	def get(self, request):
 
 		queryset = Publication.objects.all().order_by('Title')
-		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
+# Return all publications for the column-like catalogue view
 class CatalogueList(APIView):
 
 	def get(self, request):
 
 		queryset = Publication.objects.all().order_by('Title')
-		print(queryset)
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
+# Return all relevant publications as per search query and applied filters
 class Search(generics.ListCreateAPIView):
     
 	filter_backends = (DynamicSearchFilter,)
@@ -98,14 +97,18 @@ class Search(generics.ListCreateAPIView):
 	serializer_class = PublicationSerializer
     
 
+# API to return the data relevant to a particular publication
 class ViewPublication(APIView):
 
 	def get(self, response, id):
+
+		# Ensure that publication exists
 		try:
 			temp = Publication.objects.filter(id=id)
 		except Exception as e:
 			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_400_BAD_REQUEST)
 		
+		# Find the list of all related publications
 		try:
 			rel_obj = Publication.objects.get(id=id)
 			related = Publication.objects.filter(Main__Rel_Publication=rel_obj)
@@ -114,112 +117,139 @@ class ViewPublication(APIView):
 		except:		
 			queryset = temp
 		
+		# Return a list of publications
 		serializer = PublicationSerializer(queryset, many=True)
 		return Response(serializer.data)
 
+# API to add a publication to the database
 class AddPublication(APIView):
 
+	# Defining a parser class to parse form data from the frontend
 	parser_classes = (MultiPartParser, FormParser)
 	serializer_class = PublicationSerializer
 
 	def post(self, request):
-		print(request.data)
+		
+		# Ensure that only a logged in user can add publications
 		if request.user.is_authenticated:
-			print("AUTHENTIC")
+			
+			# Check if the user has the authorization to add a publication
 			user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
 			if user_to_check == 'UNVERIFIED':
 				return Response({'Message' : 'You do not have the permission to perform this task!'}, status=status.HTTP_401_UNAUTHORIZED)
 
+			# Ensure that the description of the publication was not empty
+			if(request.data["Description"] == ""):
+				return Response(status=status.HTTP_400_BAD_REQUEST)
+			
 			serializer = PublicationSerializer(data=request.data)
-			print(request.data)
+			
+			# Validate the input form data
 			if serializer.is_valid(): 
 				serializer.save()
+
 				user = User.objects.get(username=request.user)
 				main = Publication.objects.get(id=serializer.data["id"])
+
+				# Create a record of the user's contribution to the database
 				temp = Contribution.objects.create(Username=user, Publication_ID=main, Edit_Type='ADD')
 				temp.save()
+
+				# Parse the input data for the related publication fields
 				try:
 					related_pubs = request.data["Related"].split(',')
 				except:
 					related_pubs = []
 
+				# For each related publication, create a pair of related objects
 				for i in related_pubs:
 					try:
-						rel = Publication.objects.get(id=int(i))
-						new_rel = RelatedPublication.create(Main=main, Rel=rel)
+						rel = Publication.objects.get(id=i)
+						new_rel = RelatedPublication.objects.create(Main=main, Rel=rel)
 						new_rel.save()
-						second_rel = RelatedPublication.create(Main=rel, Rel=main)
+						second_rel = RelatedPublication.objects.create(Main=rel, Rel=main)
 						second_rel.save()
 					except:
 						pass
-				return Response(status=status.HTTP_201_CREATED)
-			print(serializer.errors)
+
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		print("UNAUTHENTIC")
+
 		return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+# API to edit the data of an existing publication
 class EditPublication(APIView):
 
 	serializer_class = PublicationSerializer
 
 	def post(self, request, id):
+
+		# Ensure the user is logged in
 		if request.user.is_authenticated:
 			user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
+			
+			# Ensure the user's authorization to perform this task
 			if user_to_check == 'UNVERIFIED':
 				return Response(status=status.HTTP_401_UNAUTHORIZED)
 			
+			# Ensure that the publication exists
 			try:
 				pub_to_edit = Publication.objects.get(id=id)
 				print("found")
 			except:
 				return Response(status=status.HTTP_404_NOT_FOUND)
-			print(request.data)
-			serializer = PublicationSerializer(data=request.data)
-			if serializer.is_valid():
-				pub_to_edit.Title = request.data["Title"]
-				pub_to_edit.Authors = request.data["Authors"]
-				pub_to_edit.Publisher = request.data["Publisher"]
-				pub_to_edit.Year_Publication = request.data["Year_Publication"]
-				pub_to_edit.Edition_Number = request.data["Edition_Number"]
-				pub_to_edit.ISBN = request.data["ISBN"]
-				pub_to_edit.Lang = request.data["Lang"]
-				pub_to_edit.Description = request.data["Description"]
-				try:
-					if request.data["Best_Edition"] == 'true':
-						pub_to_edit.Best_Edition = True
-					elif request.data["Best_Edition"] == 'false':
-						pub_to_edit.Best_Edition = False
-				except:
-					pass
-				pub_to_edit.Front_Cover = request.data["Front_Cover"]
-				pub_to_edit.Back_Cover = request.data["Back_Cover"]
-				pub_to_edit.Spine_Cover = request.data["Spine"]
-				pub_to_edit.Reason_for_Best_Pub = request.data["Reason_for_Best_Pub"]
-				pub_to_edit.save(update_fields=["Title", "Authors", "Publisher", "Year_Publication", "Edition_Number", "ISBN", "Lang", "Description", "Best_Edition", "Front_Cover", "Back_Cover", "Spine", "Reason_for_Best_Pub"])
-				parse = request.data
-				try:
-					related_pubs = parse["Related"].split(',')
-				except:
-					related_pubs = []
+			
+			# Ensure that the edited description is not empty
+			if(request.data["Description"] == ""):
+				return Response(status=status.HTTP_400_BAD_REQUEST)
+			
+			try:
+				parsed = request.data
+				edited_pub = {}
 
-				main = pub_to_edit
-				for i in related_pubs:
-					rel = Publication.objects.get(id=int(i))
-					if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)):
-						new_rel = RelatedPublication.create(Main=main, Rel=rel)
-						new_rel.save()
-						second_rel = RelatedPublication.create(Main=rel, Rel=main)
-						second_rel.save()
-			else:
-				print("Invalid")
-			return Response(status=status.HTTP_200_OK)
+				# Find all the attributes from the form that are not null for updating	
+				for key in parsed:
+					if parsed[key] != 'null' and key != 'Related':
+						edited_pub[key] = parsed[key]
+                
+				serializer = PublicationSerializer(pub_to_edit, data=edited_pub, partial=True)
+			except:
+				return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
+
+			# Update the publication's data if its valid
+			if serializer.is_valid():
+				serializer.save()
+
+			# Parse the input data for the related publication fields
+			try:
+				related_pubs = parse["Related"].split(',')
+			except:
+				related_pubs = []
+
+			main = pub_to_edit
+
+			# For each related publication, create a pair of related objects
+			for i in related_pubs:
+				rel = Publication.objects.get(id=i)
+				if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)).exists():
+					new_rel = RelatedPublication.objects.create(Main=main, Rel=rel)
+					new_rel.save()
+					second_rel = RelatedPublication.objects.create(Main=rel, Rel=main)
+					second_rel.save()
+
+			return Response(serializer.data, status=status.HTTP_200_OK)
 		else:
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+
+# API to handle TakeDown Requests
 class TakedownRequest(APIView):
 
 	def get(self, request):
 
+		# Generate a list of all takedown requests filed in the system
 		try:
 			queryset = Copyright.objects.all().order_by('-Date')
 		except:
@@ -229,21 +259,63 @@ class TakedownRequest(APIView):
 
 	def post(self, request, id):
 
+		# Ensure that the publication that is being copyrighted exists
 		try:
 			copyrighted_pub = Publication.objects.get(id=id)
 		except:
 			return Response({'Message' : 'The given publication does not exist!'},status=status.HTTP_404_NOT_FOUND)
 		
 		complaint = request.data["data"]
+
+		# Ensure a reason for the copyright is given
+		if(complaint["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		# Check if the length of the body is within 5000 characters
+		if(len(complaint["Body"]) > 5000):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+		# Generate the body of the email
+		subject = "BookBound - Takedown Request" 
+		message = render_to_string('takedown.html', {
+			'party': complaint["Party"],
+			'relationship': complaint["Relationship"],
+			'name': complaint["Copyright"],
+			'country': complaint["Country"],
+			'email': complaint["Email"],
+			'publication': complaint["Publication"],
+			'body' : complaint["Body"],
+		})
+		plain = ''
+
+		# Send the email to all admins
+		try:
+			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
+		except:
+			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
+
+		# Create a record of the takedown request for admins to review later
 		temp = Copyright.objects.create(Copy_Pub=copyrighted_pub, Authority=complaint["Party"], Reason=complaint["Body"], Email=complaint["Email"], Relationship=complaint["Relationship"], Name=complaint["Copyright"], Country=complaint["Country"])		
 		temp.save()
 		return Response(status=status.HTTP_200_OK)
 
+# API View to send a contact us Email to the site administrators
 class ContactUs(APIView):
 
 	def post(self, request):
 		
 		parsed = request.data["data"]
+
+		# Ensure that the form has data in the body
+		if(parsed["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+		# Check if the length of the body is within 5000 characters
+		if(len(parsed["Body"]) > 5000):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+		# Generate the body of the email
 		subject = "BookBound - " + parsed["Reason"]
 		message = render_to_string('contact_us.html', {
 			'user': parsed["Name"],
@@ -251,6 +323,8 @@ class ContactUs(APIView):
 			'body' : parsed["Body"],
 		})
 		plain = ''
+
+		# Send the email to all admins
 		try:
 			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
 		except:

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from main.models import Publication
-from forum.models import Post
+from forum.models import Post, Thread
 
 # Create your models here.
 class PersonalizedList(models.Model):
@@ -20,6 +20,7 @@ class Report(models.Model):
 	Status = models.CharField(choices=StatusChoices.choices, max_length=15, null=True)
 	Relevant_Post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
 	Relevant_Pub = models.ForeignKey(Publication, on_delete=models.CASCADE, null=True)
+	Relevant_Thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True)
 
 
 class ModeratorApplication(models.Model):
@@ -38,3 +39,10 @@ class Listings(models.Model):
 	ListPub = models.ForeignKey(Publication, on_delete=models.CASCADE)
 	StatusChoices = models.TextChoices('StatusChoices', 'READ UNREAD')
 	Status = models.CharField(choices=StatusChoices.choices, max_length=15, null=True)
+
+class MyActivity(models.Model):
+	Owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	FiledReport = models.ForeignKey(Report, on_delete=models.CASCADE, null=True, blank=True)
+	ModApp =  models.ForeignKey(ModeratorApplication, on_delete=models.CASCADE, null=True, blank=True)
+	CreatedThread =  models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True, related_name="Thread")
+	CreatedPost =  models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True, related_name="Post")

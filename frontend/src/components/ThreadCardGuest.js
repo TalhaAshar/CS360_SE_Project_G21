@@ -3,34 +3,85 @@ import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import CardMedia from '@material-ui/core/CardMedia';
+import ReplyIcon from '@material-ui/icons/Reply';
+import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import { Delete } from '@material-ui/icons';
+import {useEffect, useState} from "react";
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-function ForumGuestThreadCard() {
+function ForumGuestThreadCard({username, title, category, postcount, timestamp, desc, id}) {
+
+    let placeholder = "Hours"
+    let post_time = timestamp
+
+    if(post_time > 24){
+        placeholder = "Days"
+        post_time = Math.floor(post_time / 24)
+    }
+
+    const [profile, setProfile] = React.useState({})
+    const [flag, setFlag] = React.useState(false)
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/accounts/profile/" + id
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setProfile(res.data)
+                setFlag(true)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
     return (
         
         <Container>
-        <ImageUserNameContainer>
-            <ImageContainer>
-               
-                <Image src="http://www.pngall.com/wp-content/uploads/5/Aesthetic-Anime-Girl-PNG-File-Download-Free.png"
-                    width="100px" height="100px"
-                />
-            </ImageContainer>
-            <UserName>Alachigari</UserName>
-        </ImageUserNameContainer>
+        <Link to={profile_url}>
+            <ImageUserNameContainer>
+                <ImageContainer>
+                {flag && <Image src={profile["ProfileImage"]}
+                        width="100px" height="100px"
+                    />}
+                </ImageContainer>
+                <UserName>{username}</UserName>
+            </ImageUserNameContainer>
+        </Link>
         <ThreadDetailContainer>
-            <ThreadTitle>Forum Ruels:Must Read!!1</ThreadTitle>
-            <ThreadCategory>Announcements</ThreadCategory>
-            <ThreadMinorDetail>This thread is for new users</ThreadMinorDetail>
+            <ThreadTitle>{title}</ThreadTitle>
+            <ThreadCategory>{category}</ThreadCategory>
+            <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}} />
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Posts</h5>
+                <h5 style={{paddingTop:"4px"}}>{postcount} Posts</h5>
+            </Comment>
+            <Comment>
+            
+            <Comment1>
+            <ReplyIcon style = {{fontSize:'30px'}}/>
+            </Comment1>
+            <Comment2>
+            <ReportProblemIcon style = {{fontSize:'30px'}}/>
+            </Comment2>
             </Comment>
             <TimeIcon>
-                <QueryBuilderIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Hours</h5>
+            <Comment1>
+                    <DeleteIcon style = {{fontSize:'30px'}}/>
+            </Comment1>
+            <Comment2>
+                    <EditIcon style = {{fontSize:'30px'}}/>
+            </Comment2>
             </TimeIcon>
         </ThreadTimePostContainer>
 
@@ -69,13 +120,24 @@ const ThreadCategory = styled.h4`
 const ThreadMinorDetail = styled.h6`
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:620px;
-    margin-top:30px;
+    margin-left:680px;
+    margin-top:60px;
 `
 const Comment = styled.div`
 display:flex;
 margin-bottom:10px;
 `
 const TimeIcon = styled.div`
+display:flex;
+padding-top: 10px;
+`
+const Comment1 = styled.div`
+display:flex;
+`
+const Comment2 = styled.div`
+display:flex;
+margin-left:10px;
+`
+const Commentb = styled.div`
 display:flex;
 `

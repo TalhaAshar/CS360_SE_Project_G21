@@ -8,7 +8,7 @@ function forgetpassword() {
             </Title>
             <Body>
                 <Heading>
-                    Please check your Email account for the updated authentication details.
+                    If the input email ID is correct, please check your Email account for the updated authentication details. 
                 </Heading>
             </Body>
         </Container>

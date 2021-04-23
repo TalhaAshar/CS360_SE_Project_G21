@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-// import fetch from 'cross-fetch';
 import { Editor } from "@tinymce/tinymce-react";
 import styled from 'styled-components'
 import axios from 'axios';
@@ -15,7 +14,7 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Party:'', Relationship:'', Copyright:'', Country:'', Email:'', Publication:'', Body:'', seen: false };
+    this.state = { Party:'', Relationship:'', Copyright:'', Country:'', Email:'', Publication:'', Body:'', seen: false, invalid: false };
 }
 
 togglePop = () => {
@@ -38,13 +37,13 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication"; //TALHA
+  const url = "api/main/takedown/" + this.state.Publication;
   const data = { Party:this.state.Party, Relationship:this.state.Relationship, Copyright:this.state.Copyright, Country:this.state.Country, Email:this.state.Email, Publication:this.state.Publication, Body:this.state.Body };
   
-  axios.post(`api/main/takedown`, { data })
-    .then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
+  axios.post(url, { data })
+  .then(res => this.setState({seen:true, invalid:true}))
+  .catch(error => this.setState({invalid:true}))
+  .then(response => console.log("huh"));
   }
     
   render(){
@@ -55,24 +54,25 @@ handleSubmit = (event) =>{
             <Form onSubmit={this.handleSubmit}>
             <UserInfo>
             <SpanContainer>
-            <Span>Affected Party*</Span><br/>
-            <Span>Relationship to copyrighted content*</Span><br/>
-            <Span style={{paddingTop:"10px"}}>Name of copyright owner*</Span><br/>
-            <Span style={{paddingTop:"10px"}} >Country*</Span><br/>
-            <Span style={{paddingTop:"10px"}} >Primary Email*</Span><br/>
-            <Span style={{paddingTop:"10px"}} >Publication for removal*</Span><br/>
+              <Span>Affected Party*</Span><br/>
+              <Span>Relationship to copyrighted content*</Span><br/>
+              <Span style={{paddingTop:"10px"}}>Name of copyright owner*</Span><br/>
+              <Span style={{paddingTop:"10px"}} >Country*</Span><br/>
+              <Span style={{paddingTop:"10px"}} >Primary Email*</Span><br/>
+              <Span style={{paddingTop:"10px"}} >Publication ID for removal*</Span><br/>
             </SpanContainer>
             <InputContainer>
-            <Input type="text" name="Party" onChange={this.handleChange} /><br/>
-            <Input type="text" name="Relationship" onChange={this.handleChange} /><br/>
-            <Input type="text" name="Copyright" onChange={this.handleChange} /><br/>
-            <Input type="text" name="Country" onChange={this.handleChange} /><br/>
-            <Input type="text" name="Email" onChange={this.handleChange} /><br/>
-            <Input type="text" name="Publication" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Party" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Relationship" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Copyright" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Country" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="text" required name="Email" maxLength="150" onChange={this.handleChange} /><br/>
+              <Input type="number" required name="Publication" onChange={this.handleChange} /><br/>
             </InputContainer>
             </UserInfo>
             <EditorContainer>
               <Span>Body*</Span>
+              { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Body cannot be empty.</ErrorMessage> : null }
               <Editor
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
@@ -87,8 +87,8 @@ handleSubmit = (event) =>{
                 }}
                 onEditorChange={this.handleEditorChange}
               />
-              <Submit type="submit" value="Submit" onClick={this.togglePop} />
-              { this.state.seen ? <TakedownFeedbackPopup toggle={this.togglePop} /> : null}
+              { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+              { (this.state.seen && this.state.invalid) ? <TakedownFeedbackPopup toggle={this.togglePop} /> : null }
             </EditorContainer>
           </Form>
         </FormContainer> 
@@ -146,8 +146,14 @@ const InputContainer = styled.div`
 const Span = styled.h5`
   font-weight:bold;
   font-size:20px;
-  margin-top:10px;
+  margin-top:10px
 `
+const ErrorMessage = styled.span`
+  font-weight:bold;
+  font-size:20px;
+  color:red;
+`
+
 const Input = styled.input`
   width: 400px;
   height: 60px;

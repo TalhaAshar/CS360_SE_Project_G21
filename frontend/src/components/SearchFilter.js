@@ -15,27 +15,21 @@ function SearchFilter(props) {
         <Container>
            <Flex>
                 <AT>
-                    <Author>
-                
-                    <input type="checkbox" class="hidden" name="cb" id="cb"/><label for="cb" onClick={() => props.onChange("Authors")}>Author</label>
-                        
-                    
-                    </Author>
                     <Title>
                     <input type="checkbox" class="bro" name="cb1" id="cb1"/><label for="cb1" onClick={() => props.onChange("Title")}>Title</label>
                     </Title>
+                    <Author>
+                    <input type="checkbox" class="hidden" name="cb" id="cb"/><label for="cb" onClick={() => props.onChange("Authors")}>Author</label>
+                    </Author>
                     <ISBN>
                     <input type="checkbox" class="hidden3" name="cb2" id="cb2"/><label for="cb2" onClick={() => props.onChange("ISBN")}>ISBN</label>
                     </ISBN>
                     <Genre>
-                    <input type="checkbox" class="hidden2" name="cb3" id="cb3"/><label for="cb3" onClick={() => props.onChange("Genre")}>Genre</label>
+                    <input type="checkbox" class="hidden2" name="cb3" id="cb3"/><label for="cb3" onClick={() => props.onChange("Genres")}>Genre</label>
                     </Genre>
                     <Publisher>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb4"/><label for="cb4" onClick={() => props.onChange("Publisher")}>Publisher</label>
                     </Publisher>
-                    <Year>
-                    <input type="checkbox" class="hidden2" name="cb4" id="cb5"/><label for="cb5" onClick={() => props.onChange("Year_Publication")}>Year</label>
-                    </Year>
                     <D>
                     <input type="checkbox" class="hidden2" name="cb4" id="cb6"/><label for="cb6" onClick={() => props.onChange("Year_Publication")}>Date</label>
                     </D>
@@ -54,10 +48,14 @@ function SearchFilter(props) {
 export default SearchFilter
 
 const Container = styled.div`
-    max-width: 1145px;
-    max-height: 210px;
     background: white;
     border-radius: 15px;
+    height:auto;
+    width:1100px;
+    display:grid;
+    margin: 0 auto;
+    height:auto;
+    padding-left: 50px;
 
 `
 

@@ -24,12 +24,11 @@ from django.conf.urls import url
 
 urlpatterns = [
     
-    path('admin/', admin.site.urls),
+    # Redirecting URLs
     path('api/main/', include("main.urls")),
     path('api/register/', include("register.urls")),
     path('api/accounts/', include("accounts.urls")),
     path('api/forum/', include("forum.urls")),
-    path('image.jpg', Index.as_view()),
     path('', include("frontend.urls")),
     re_path(r'^.*$', include("frontend.urls")),
     

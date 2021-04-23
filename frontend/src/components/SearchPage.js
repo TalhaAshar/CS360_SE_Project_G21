@@ -7,6 +7,10 @@ import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
 import Filter from "./SearchFilter";
+import NewLinearCard from "./publications/NewLinearCard";
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
+import YoutubeSearchedForIcon from '@material-ui/icons/YoutubeSearchedFor';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -14,8 +18,8 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 function SearchPage() {
 
     const { param } = useParams();
-    const [pubs, setPubs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
-    const [filters, setFilters] = useState([])
+    const [pubs, setPubs] = useState([])
+    const [filters, setFilters] = useState(["Title"])
     const [start, setStart] = useState(0)
 
     function handleFilters(value){
@@ -26,12 +30,14 @@ function SearchPage() {
         {
             console.log("ADDING")
             setFilters([...filters, value])
+            setStart(0)
         }
         else
         {
             console.log("Inside ELSE")
                 const updatedFilters = [...filters.slice(0, temp), ...filters.slice(temp + 1)]
                 setFilters(updatedFilters)
+                setStart(0)
         }
         console.log(filters)
     }
@@ -64,6 +70,7 @@ function SearchPage() {
                 setPubs(res.data)
                 console.log(res)
             }
+            setStart(0)
         })
         .catch(error => console.log('Error:', error))
         return () => {
@@ -76,29 +83,29 @@ function SearchPage() {
         <Container>
 
         
-            <Heading>
-                <Background>
-                    <Text>
-
-                Search Results
-                </Text>
-                </Background>
-            </Heading>
+<BookTitleContainer><h1>Search Results</h1></BookTitleContainer>
 
             <Nextpage>
-                <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}} onClick={leftClick}/>
-                <PlayCircleFilledIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}} onClick={rightClick}/>
+            <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+            <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
 
             < Filter onChange={handleFilters}/>
             <Colour>
-            
                 <Results>
+                {(pubs.length == 0) && <YoutubeSearchedForIcon
+                        style={{
+                            color:"black",
+                            fontSize:200,
+                            marginLeft:"40%"                       
+                            }}
+                            />}
+                 {(pubs.length == 0) && <IconText>Your applied filters returned no matching results.</IconText>}
                    {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
-                                <LinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                 )
                         }
                         console.log(index)
@@ -112,16 +119,31 @@ function SearchPage() {
 
 export default SearchPage
 
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+`
+
 const Results = styled.div`
     width:1100px;
     height:1600px;
     display:grid;
     grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
     padding-top:20px;
-padding-left:20px;
+margin-left:20px;
+margin: 0 auto;
 `
 const Container = styled.div`
-margin-left: 120px;
+margin-left: 3%;
+margin-right: 3%;
+
 `
 
 const Heading = styled.div`
@@ -130,18 +152,20 @@ margin-left: 20px;
 const Nextpage = styled.div`
 cursor: pointer;
 display:flex;
-    flex-direction:row;
-    margin-left: 530px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+flex-direction:row;
+margin-left: 48%;
+margin-right: 48%;
+margin-top: 1%;
 `
 
 const Colour = styled.div`
 background: #DCF2F8;
-width:1140px;
+width:90%;
 height:1600px;
 border-radius: 20px;
 margin-bottom:100px;
+margin-left:3%;
+margin-right:3%;
 `
 
 const Background = styled.div`
@@ -165,4 +189,15 @@ padding-left: 360px;
 `
 const Text = styled.h3`
 margin-right: 180px;
+`
+
+const IconText = styled.h5`
+color:black;
+min-width: 55%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-left: 5%;
+margin-right: 5%;
+font-size: 35px;
 `

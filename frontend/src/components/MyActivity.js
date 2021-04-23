@@ -3,32 +3,77 @@ import styled from 'styled-components'
 import Activity from './ActivityContainer'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function MyActivity() {
+
+    const [pubs, setPubs] = useState([])
+    const [flag, setFlag] = useState(false)
+    const [start, setStart] = useState(0)
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/accounts/my_activity"
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setPubs(res.data)
+                console.log(res.data, "UMAMAM")
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 15)
+        }
+    }
+
+    function rightClick(){
+        if(start + 15 < pubs.length){
+            setStart(start + 15)
+        }
+    }
+
     return (
         <Container>
             <ActivityHeader>
                 <ActivityText>My Activity</ActivityText>
             </ActivityHeader>
             <ActivityContainer>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
-                <Activity/>
+                {
+                    pubs.map((elem, index) => {
+                        if(index >= start && index < (start + 15) && index < pubs.length){
+                            let activity_type = ""
+                            if(elem.FiledReport){
+                                activity_type = "Pub"
+                            }
+                            else if(elem.ModApp){
+                                activity_type = "Mod"
+                            }
+                            else if(elem.Thread){
+                                activity_type = "Thread"
+                            }
+                            else{
+                                activity_type = "Post"
+                            }
+                            return(
+                                <Activity key={index} pub={elem} type={activity_type}/>
+                            )
+                        }
+                    })
+                }
             </ActivityContainer>
             <ViewNextButtonContainer>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}}/><SkipNextRoundedIcon style = {{}}/>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
         </Container>
     )
@@ -75,9 +120,7 @@ height: 1155px;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
-
 background: #DCF2F8;
-
 box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
 `
 

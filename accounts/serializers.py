@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from main.models import Publication
-from .models import PersonalizedList, Listings, Report, ModeratorApplication
+from .models import PersonalizedList, Listings, Report, ModeratorApplication, MyActivity
 from register.models import Profile
 from django.contrib.auth.models import User
 from main.serializers import PublicationSerializer
@@ -25,12 +25,19 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ReportSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)
+    Relevant_Pub = PublicationSerializer(read_only=True)
     class Meta:
         model = Report
-        fields = ('id', 'Creator', 'Reason', 'Description', 'Date', 'Time', 'Status', 'Relevant_Post', 'Relevant_Pub')
+        fields = ('id', 'Creator', 'Reason', 'Description', 'Date', 'Time', 'Status', 'Relevant_Post', 'Relevant_Pub', 'Relevant_Thread')
 
 class ModeratorSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)
     class Meta:
         model = ModeratorApplication
         fields = ('id', 'Creator', 'Name', 'Location' ,'Reason', 'Description', 'Date', 'Time', 'Status')
+
+class ActivitySerializer(serializers.ModelSerializer):
+    Owner = UserSerializer(read_only=True)
+    class Meta:
+        model = MyActivity
+        fields = ('id', 'Owner', 'FiledReport', 'ModApp', 'CreatedThread', 'CreatedPost')

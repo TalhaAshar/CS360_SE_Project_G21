@@ -10,8 +10,8 @@ from rest_framework.response import Response
 
 from main.models import Publication, Contribution
 from forum.models import Post
-from .models import PersonalizedList, Listings, Report, ModeratorApplication
-from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer
+from .models import PersonalizedList, Listings, Report, ModeratorApplication, MyActivity
+from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer, ActivitySerializer
 from main.serializers import ContributionSerializer, PublicationSerializer
 from mysite.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
@@ -42,97 +42,100 @@ class Recommendations(APIView):
                 j = j + 1
         
         recs = Publication.objects.filter(Q(id=recs[0]) | Q(id=recs[1]) | Q(id=recs[2]) | Q(id=recs[3]) | Q(id=recs[4]))
-        
+        print("recs", recs)
         temp = PublicationSerializer(recs, many=True)
         return Response(temp.data, status=status.HTTP_200_OK)
 
 
 class MyListDefault(APIView):
 
-    def get(self, request):
+	def get(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
-        try:
-            display_type = PersonalizedList.objects.get(Owner=request.user).Display_Type
-        except:
-            return Response({'Message' : 'Empty!'},status=status.HTTP_404_NOT_FOUND)
-        print("ye", request.user)
-        if display_type == 'ALPHABETICAL':
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		try:
+			display_type = PersonalizedList.objects.get(Owner=request.user).Display_Type
+		except:
+			return Response({'Message' : 'Empty!'},status=status.HTTP_404_NOT_FOUND)
+		print("ye", request.user)
+		if display_type == 'ALPHABETICAL':
 
-            try:
-                queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
-            except:
-                return Response({'Message' : 'Empty!'}, status=status.HTTP_204_NO_CONTENT)
+			try:
+				queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+			except:
+				return Response({'Message' : 'Empty!'}, status=status.HTTP_204_NO_CONTENT)
 
-            temp = ListingsSerializer(queryset, many=True)
-            return Response(temp.data, status=status.HTTP_200_OK)
+			temp = ListingsSerializer(queryset, many=True)
+			return Response(temp.data, status=status.HTTP_200_OK)
 		
-        elif display_type == 'UNREAD':
-            try:
-                user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
-            except:
-                try:
-                    user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-                temp = ListingsSerializer(user_list_read, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            try:
-                user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
-            except:
-                temp = ListingsSerializer(user_list_unread, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            user_list = user_list_unread.union(user_list_read, all=True)
-            temp = ListingsSerializer(user_list, many=True)
-            return Response(temp.data, status=status.HTTP_200_OK)
-        elif display_type == 'READ':
-            try:
-                user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
-            except:
-                try:
-                    user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-                temp = ListingsSerializer(user_list_unread, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            try:
-                user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
-            except:
-                temp = ListingsSerializer(user_list_read, many=True)
-                return Response(temp.data, status=status.HTTP_200_OK)
-            user_list = user_list_read.union(user_list_unread, all=True)
-            temp = ListingsSerializer(user_list, many=True)
-            return Response(temp.data, status=status.HTTP_200_OK)
+		elif display_type == 'UNREAD':
+			try:
+				user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
+			except:
+				try:
+					user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
+				temp = ListingsSerializer(user_list_read, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			try:
+				user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
+			except:
+				temp = ListingsSerializer(user_list_unread, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			user_list = user_list_unread.union(user_list_read, all=True)
+			temp = ListingsSerializer(user_list, many=True)
+			return Response(temp.data, status=status.HTTP_200_OK)
+		elif display_type == 'READ':
+			try:
+				user_list_read = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='READ')).order_by('ListPub__Title')
+			except:
+				try:
+					user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
+				temp = ListingsSerializer(user_list_unread, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			try:
+				user_list_unread = Listings.objects.filter(Q(ListOwner=request.user) & Q(Status='UNREAD')).order_by('ListPub__Title')
+			except:
+				temp = ListingsSerializer(user_list_read, many=True)
+				return Response(temp.data, status=status.HTTP_200_OK)
+			user_list = user_list_read.union(user_list_unread, all=True)
+			temp = ListingsSerializer(user_list, many=True)
+			return Response(temp.data, status=status.HTTP_200_OK)
 	
-    def post(self, request, id):
+	def post(self, request, id):
 
-        try:
-            pub_to_add = Publication.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+		try:
+			pub_to_add = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
 		
-        if(not Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_add)).exists()):
-            new_list_item = Listings.objects.create(ListOwner=request.user, ListPub=pub_to_add, Status='UNREAD')
-            new_list_item.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_226_IM_USED)
+		if(not Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_add)).exists()):
+			new_list_item = Listings.objects.create(ListOwner=request.user, ListPub=pub_to_add, Status='UNREAD')
+			new_list_item.save()
+			return Response(status=status.HTTP_201_CREATED)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
 	
-    def delete(self, request, id):
+	def delete(self, request, id):
 
-        try:
-            pub_to_del = Publication.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+		try:
+			pub_to_del = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+
+		user = User.objects.get(username=request.user)
 		
-        if Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_del)).exists():
-            pub_exists_in_list = Listings.objects.filter(Q(ListOwner=request.user) & Q(ListPub=pub_to_del))[0]
-            pub_exists_in_list.delete()
-            print("Deleted")
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_del)).exists():
+			pub_exists_in_list = Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_del))[0]
+			pub_exists_in_list.delete()
+		else:
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response(status=status.HTTP_200_OK)
+		queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+		serializer = ListingsSerializer(queryset, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
 
 class MyListAlphabetical(APIView):
 
@@ -215,6 +218,7 @@ class MyListGuest(APIView):
 		try:
 			user = User.objects.get(id=id)
 		except:
+			print("failed")
 			return Response({'Message' : 'The user does not exist!'},status=status.HTTP_404_NOT_FOUND)
 
 		try:
@@ -241,133 +245,164 @@ class UserAccountView(APIView):
 
 class UserGuestView(APIView):
     def get(self, request, id):
-
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
 		
         try:
             user = Profile.objects.get(user__id=id)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         temp = ProfileSerializer(user)
+        print(temp.data)
         return Response(temp.data, status=status.HTTP_200_OK)
 
 
 class Reports(APIView):
 
-    serializer_class = ReportSerializer
-    def get(self, request):
+	serializer_class = ReportSerializer
+	def get(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            user = Profile.objects.get(user=request.user).User_Type
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        if user == 'UNVERIFIED' or user == 'VERIFIED':
-            return self.NormalReport(request)
-        else:
-            return self.AdminReport()
-        
+		try:
+			user = Profile.objects.get(user=request.user).User_Type
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+		if user == 'UNVERIFIED' or user == 'VERIFIED':
+			print("neither")
+			return self.NormalReport(request)
+		else:
+			print("nor")
+			return self.AdminReport()
+
     
-    def post(self, request):
+	def post(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        user = User.objects.get(username=request.user)
-        parsed = request.data["data"]
-        print(parsed)
-        print(parsed["Type"])
-        try:
+		user = User.objects.get(username=request.user)
+		parsed = request.data["data"]
+
+		if(parsed["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		print(parsed)
+		print(parsed["Type"])
+		try:
+   
+			if(parsed["Type"] == 'Post'):
+				post_to_report = Post.objects.get(id=parsed["id"])
+				temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report, Relevant_Thread=post_to_report.ParentThread)
+				temp.save()
+			else:
+				print("negitotot")
+				pub_to_report = Publication.objects.get(id=parsed["id"])
+				temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
+				temp.save()
             
-            if(parsed["Type"] == 'Post'):
-                print("faggot")
-                post_to_report = Post.objects.get(id=parsed["id"])
-                Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Post=post_to_report)
-            else:
-                print("negitotot")
-                pub_to_report = Publication.objects.get(id=parsed["id"])
-                temp = Report.objects.create(Creator=user, Reason=parsed["Reason"], Description=parsed["Body"], Status='UNRESOLVED', Relevant_Pub=pub_to_report)
-                temp.save()
-            return Response(status=status.HTTP_201_CREATED)
-        except:
-            print(request.data)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+			user_activity = MyActivity.objects.create(Owner=user, FiledReport=temp)
+			user_activity.save()
 
-    def NormalReport(self, request):
+			return Response(status=status.HTTP_201_CREATED)
+		except:
+			print(request.data)
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            queryset = Report.objects.filter(Creator=request.user).order_by("-Date")
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        report_list = ReportSerializer(queryset, many=True)
-        return Response(report_list.data, status=status.HTTP_200_OK)
+	def NormalReport(self, request):
+
+		try:
+			queryset = Report.objects.filter(Creator=request.user).order_by("-Date")
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+		report_list = ReportSerializer(queryset, many=True)
+		return Response(report_list.data, status=status.HTTP_200_OK)
     
-    def AdminReport(self):
+	def AdminReport(self):
 
-        try:
-            queryset = Report.objects.all().order_by("-Date")
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        report_list = ReportSerializer(queryset, many=True)
-        return Response(report_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = Report.objects.all().order_by("-Date")
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+		report_list = ReportSerializer(queryset, many=True)
+		return Response(report_list.data, status=status.HTTP_200_OK)
 
 class ModeratorApps(APIView):
 
-    serializer_class = ModeratorSerializer
-    def NormalUser(self, request):
+	serializer_class = ModeratorSerializer
+	def NormalUser(self, request):
 
-        try:
-            queryset = ModeratorApplication.objects.filter(Creator=request.user).order_by("-Date")
-        except:
-            return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
-        mod_list = ModeratorSerializer(queryset, many=True)
-        return Response(mod_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = ModeratorApplication.objects.filter(Creator=request.user).order_by("-Date")
+		except:
+			return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
+		mod_list = ModeratorSerializer(queryset, many=True)
+		return Response(mod_list.data, status=status.HTTP_200_OK)
     
-    def AdminUser(self):
+	def AdminUser(self):
 
-        try:
-            queryset = ModeratorApplication.objects.all().order_by("-Date")
-        except:
-            return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
-        mod_list = ModeratorSerializer(queryset, many=True)
-        return Response(mod_list.data, status=status.HTTP_200_OK)
+		try:
+			queryset = ModeratorApplication.objects.all().order_by("-Date")
+		except:
+			return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
+		mod_list = ModeratorSerializer(queryset, many=True)
+		print(mod_list.data)
+		return Response(mod_list.data, status=status.HTTP_200_OK)
 
-    def get(self, request):
+	def get(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            user = Profile.objects.get(user=request.user).User_Type
-        except:
-            return Response({'Message' : 'Please login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
-        if user == 'UNVERIFIED' or user == 'VERIFIED':
-            return self.NormalUser(request)
-        else:
-            return self.AdminUser()
+		try:
+			user = Profile.objects.get(user=request.user).User_Type
+		except:
+			return Response({'Message' : 'Please login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		if user == 'UNVERIFIED' or user == 'VERIFIED':
+			return self.NormalUser(request)
+		else:
+			print("Got this far")
+			return self.AdminUser()
         
     
-    def post(self, request):
+	def post(self, request):
 
-        if(not request.user.is_authenticated):
-            return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'Please login to continue!'}, status=status.HTTP_404_NOT_FOUND)
         
-        user = User.objects.get(username=request.user)
-        parsed = request.data["data"]
-        print(parsed)
-        try:
-            ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')
-            return Response(status=status.HTTP_201_CREATED)
-        except Exception as e:
-            print(e)
-            return Response({'Message' : 'Your application has been submitted!'}, status=status.HTTP_400_BAD_REQUEST)
+		user = User.objects.get(username=request.user)
+		parsed = request.data["data"]
+
+		if(parsed["Why"] == "" or parsed["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		print(parsed)
+		try:
+			temp = ModeratorApplication.objects.create(Creator=user, Name=parsed["Name"], Location=parsed["Location"] ,Reason=parsed["Why"], Description=parsed["Body"], Status='PENDING')
+			temp.save()
+
+			user_activity = MyActivity.objects.create(Owner=user, ModApp=temp)
+			user_activity.save()
+			return Response(status=status.HTTP_201_CREATED)
+		except Exception as e:
+			print(e)
+			return Response({'Message' : 'There was an error!'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 #Do when forum models made
-#class MyActivity(APIView)
+class UserActivityHistory(APIView):
+
+	def get(self, request):
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
+        
+		user = User.objects.get(username=request.user)
+
+		try:
+			queryset = MyActivity.objects.filter(Owner=user).order_by('-id')
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+        
+		activity_list = ActivitySerializer(queryset, many=True)
+		return Response(activity_list.data, status=status.HTTP_200_OK)
+
 
 class MyPubActivity(APIView):
 
@@ -452,3 +487,61 @@ class EditProfileView(APIView):
         else:
             print(serializer.errors)
             return Response({'Message' : 'Invalid data input!'}, status=status.HTTP_400_BAD_REQUEST)
+
+class ReportResolution(APIView):
+
+	def post(self, request, id):
+		
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'You must login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+        
+		try:
+			user = Profile.objects.get(user=request.user)
+		except:
+			return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		
+		if(user.User_Type != 'ADMIN' and user.User_Type != 'MODERATOR'):
+			return Response({'Message' : 'You are not authorized to perform this action!'}, status=status.HTTP_404_NOT_FOUND)
+
+		try:
+			report_to_resolve = Report.objects.get(id=id)
+		except:
+			return Response({'Message' : 'The report does not exist!'}, status=status.HTTP_404_NOT_FOUND)
+		
+		if(report_to_resolve.Status == 'RESOLVED'):
+			report_to_resolve.Status = 'UNRESOLVED'
+			report_to_resolve.save(update_fields=["Status"])
+		else:
+			report_to_resolve.Status = 'RESOLVED'
+			report_to_resolve.save(update_fields=["Status"])
+		return Response({'Message' : 'Success!'}, status=status.HTTP_200_OK)
+
+class ChangeListStatus(APIView):
+
+	def post(self, request, id, state):
+
+		try:
+			pub_to_edit = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_204_NO_CONTENT)
+
+		user = User.objects.get(username=request.user)
+		
+		if Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_edit)).exists():
+			pub_exists_in_list = Listings.objects.filter(Q(ListOwner=user) & Q(ListPub=pub_to_edit))[0]
+
+			if(pub_exists_in_list.Status == state):
+				return Response(status=status.HTTP_404_NOT_FOUND)
+				
+			if(pub_exists_in_list.Status == "UNREAD"):
+				pub_exists_in_list.Status = state
+			else:
+				pub_exists_in_list.Status = state
+			pub_exists_in_list.save(update_fields=["Status"])
+		else:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+
+		queryset = Listings.objects.filter(ListOwner=request.user).order_by('ListPub__Title')
+		serializer = ListingsSerializer(queryset, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+

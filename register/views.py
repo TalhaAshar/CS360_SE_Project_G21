@@ -28,6 +28,8 @@ from knox.models import AuthToken
 
 from django.core.validators import validate_email
 from accounts.models import PersonalizedList 
+import random
+import string
 
 value = "foo.bar@baz.qux"
 
@@ -46,6 +48,13 @@ class SignUpView(generics.GenericAPIView):
 	serializer_class = RegisterSerializer
 
 	def post(self, request, *args, **kwargs):
+
+		# Checking for duplicate username or email
+		if(User.objects.filter(email=request.data["data"]["email"]).exists()):
+			return Response({'Message' : 'Email Taken!'}, status=status.HTTP_400_BAD_REQUEST)
+		
+		if(User.objects.filter(username=request.data["data"]["username"]).exists()):
+			return Response({'Message' : 'Username Taken!'}, status=status.HTTP_400_BAD_REQUEST)
 
 		# Parsing and validating data from the user's POST request
 		serializer = self.get_serializer(data=request.data["data"])
@@ -122,15 +131,18 @@ class ForgotPassword(APIView):
 			Valid_Email = User.objects.filter(email=parsed["email"])[0]
 		except:
 			return Response({"Error" : "Non-existent email"}, status=status.HTTP_400_BAD_REQUEST)
-	
+
+		#generating new 10-digit random password
+		new_password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+
 		# Sending the password reset email
 		current_site = get_current_site(request)
 		subject = 'Password Reset'
-		message = "Here are your details:\nUsername: " + Valid_Email.username + "\nPassword: PureGPlay"
+		message = "Here are your details:\nUsername: " + Valid_Email.username + "\nPassword: " + new_password
 		send_mail(subject, message, EMAIL_HOST_USER, [parsed["email"]], fail_silently = False)
 
 		# Updating the user's intermediary password in the database
-		Valid_Email.set_password('PureGPlay')
+		Valid_Email.set_password(new_password)
 		Valid_Email.save(update_fields=["password"])
 		return Response({"Result":"Gucci"}, status=status.HTTP_200_OK)
 
@@ -223,6 +235,7 @@ class UserAccountRemoval(APIView):
 		user.is_active = False
 		user.save()
 		logout(request)
+		return Response(status=status.HTTP_200_OK)
 
 # Administrator view for account removal requests
 class AdminAccountRemoval(APIView):

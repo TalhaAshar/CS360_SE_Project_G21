@@ -15,7 +15,7 @@ class Profile(models.Model):
 	blacklisted = models.BooleanField(default=False)
 	UserChoices = models.TextChoices('UserType', 'ADMIN MODERATOR VERIFIED UNVERIFIED')
 	User_Type = models.CharField(choices=UserChoices.choices, max_length=15, default="UNVERIFIED")
-	ProfileImage = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+	ProfileImage = models.ImageField(upload_to='users/', blank=True, default='users/default.jpg')
 
 # Model to hold information about account deletion requests
 class AccountRemoval(models.Model):

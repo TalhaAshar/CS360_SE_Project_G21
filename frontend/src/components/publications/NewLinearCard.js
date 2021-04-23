@@ -18,7 +18,7 @@ function NewLinearCard({title, author, front, id}) {
         
         <Container>
         <ImageUserNameContainer>
-            <Link to={j}>
+            <Link to={j} style={{textDecoration:"none"}}>
             <ImageContainer>
                
                 <Image src={front}
@@ -27,15 +27,12 @@ function NewLinearCard({title, author, front, id}) {
             </ImageContainer>
             </Link>
         </ImageUserNameContainer>
-        <PublicationDetailContainer>
-            <BookTitle>{title}</BookTitle>
-            <Author>{author}</Author>
-        </PublicationDetailContainer>
-        <ThreadTimePostContainer>
-            <TimeIcon>
-                <h5 style={{paddingTop:"4px"}}>17 Days Ago</h5>
-            </TimeIcon>
-        </ThreadTimePostContainer>
+        <Link to={j} style={{textDecoration:"none"}}>
+            <PublicationDetailContainer>
+                <BookTitle>{title}</BookTitle>
+                <Author>{author}</Author>
+            </PublicationDetailContainer>
+        </Link>
 
         </Container>
     )
@@ -44,47 +41,55 @@ function NewLinearCard({title, author, front, id}) {
 export default NewLinearCard
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
+    width:80%;
+    height:88%;
+    display:flex;
+    background:white;
+    border-radius:12px;
 `
 const ImageUserNameContainer = styled.div`
+    width:100%:
+    height:90%;
     margin-left:0px;
     margin-top:0px;
 `
 const ImageContainer = styled.div`
+    width:90%;
+    height:90%:
 `
 const Image = styled.img`
     border-radius:30px;
 `
 
 const PublicationDetailContainer = styled.div`
-    margin-top:30px;
-    margin-left:20px;
+    margin-top:5%;
+    margin-left:3%;
 `
 const BookTitle = styled.h4`
-width: 800px;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 25px;
-color: #081F32
+    width: 80%;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 25px;
+    color: #081F32
 `
 const Author = styled.h4`
-font-style: normal;
-font-weight: normal;
-font-size: 20px;
-line-height: 25px;
-margin-top:30px;
-color: #081F32
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+    margin-top:5%;
+    color: #081F32
 `
 const ThreadTimePostContainer = styled.div`
-    position: absolute;
-    margin-left:690px;
-    margin-top:5px;
+    margin-left:70%;
+    margin-top:2%;
+    position:absolute;
+    @media only screen and (max-width: 900px) {
+        margin-left:60%;
+    }
 `
 
-const TimeIcon = styled.h4`
+const TimeIcon = styled.h5`
+    paddding-top:2%;
 `

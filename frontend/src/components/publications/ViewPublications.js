@@ -6,15 +6,16 @@ import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 function View(props) {
     return (props.trigger)?(
         <Container >
-            <Link to="/Catalogue/">
-            <TextContainer>
+            <Link to="/Catalogue/" style={{textDecoration:"none"}} >
+            <TextContainer style ={{borderBottom:"1px solid"}} >
                 <Text>List</Text>
             </TextContainer>
             </Link>
-            <Line></Line>
+            <Link to="/Columnar/" style={{textDecoration:"none"}}>
             <TextContainer onClick ={()=>props.setTrigger(!props.trigger)}>
                 <Text>Grid</Text>
             </TextContainer>
+            </Link>
         </Container>
     ):"";
 }

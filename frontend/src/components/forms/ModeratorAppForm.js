@@ -6,6 +6,7 @@ import axios from 'axios';
 import styled from 'styled-components'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+import ModAppFormFeedbackPopup from '../functionality/ModAppFormFeedbackPopup';
 
 class App extends Component{
   
@@ -13,7 +14,13 @@ constructor(props){
     super(props);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { Name:'', Location:'', Why:'', Body:'You need to host your image and then upload in this text box.' };
+    this.state = { Name:'', Location:'', Why:'', Body:'', seen: false, invalid: false };
+}
+
+togglePop = () => {
+  this.setState({
+    seen: !this.state.seen
+  })
 }
 
 rteChange = (content, delta, source, editor) => {
@@ -30,13 +37,12 @@ handleEditorChange(Body, editor) {
 
 handleSubmit = (event) =>{
   event.preventDefault();
-  const url = "api/main/add_publication";
   const data = { Name:this.state.Name, Location:this.state.Location, Why:this.state.Why, Body:this.state.Body };
   
-  axios.post(`api/main/add_publication`, { data })
-    .then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success', response));
+  axios.post(`api/accounts/modapps`, { data })
+  .then(res => this.setState({seen:true, invalid:true}))
+  .catch(error => this.setState({invalid:true}))
+  .then(response => console.log("huh"));
   }
     
   render(){
@@ -48,18 +54,20 @@ handleSubmit = (event) =>{
             <UserInfo>
             <Span>Full Name*</Span>
             <Span>Location*</Span>
-            <Input type="text" name="Name" onChange={this.handleChange} />
-            <Input type="text" name="Location" onChange={this.handleChange} />
+            <Input1 type="text" required name="Name" onChange={this.handleChange} />
+            <Input1 type="text" required name="Location" onChange={this.handleChange} />
             <Span style={{paddingTop:"80px"}} >Why do you want to be a moderator?*</Span><br/>
-            <Input type="text" name="Why" style={{marginTop:"120px",marginBottom:"50px",width:"950px" ,height:"300px"}} onChange={this.handleChange} /><br/>
+            <Input2 required name="Why" style={{marginTop:"120px",marginBottom:"50px",width:"950px" ,height:"300px", resize:"none"}} onChange={this.handleChange} /><br/>
             </UserInfo>
             
             <EditorContainer>
               <Span>Describe your qualifications.*</Span>
+              { (this.state.invalid && !this.state.seen) ? <ErrorMessage>Description cannot be empty.</ErrorMessage> : null }
               <Editor
                 value={this.state.Body}
                 apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
                 init={{
+                  placeholder: "You need to host your image and then upload in this text box.",
                   height: 600,
                   width: 950,
                   plugins: "image",
@@ -69,7 +77,8 @@ handleSubmit = (event) =>{
                 }}
                 onEditorChange={this.handleEditorChange}
               />
-              <Submit type="submit" value="Submit" />
+            { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
+            { (this.state.seen && this.state.invalid) ? <ModAppFormFeedbackPopup toggle={this.togglePop} /> : null }
             </EditorContainer>
           </Form>
         </FormContainer> 
@@ -85,8 +94,8 @@ max-width:100%;
 max-height:100%;
 margin-left:3%;
 margin-right:3%;
-
 `
+
 const Head = styled.h3`
   width:1040px;
   height:50px;
@@ -122,9 +131,26 @@ const UserInfo = styled.div`
 const Span = styled.span`
   font-weight:bold;
   font-size:20px;
-  
 `
-const Input = styled.input`
+
+const ErrorMessage = styled.span`
+  font-weight:bold;
+  font-size:20px;
+  color:red;
+`
+
+const Input1 = styled.input`
+  width: 400px;
+  height: 60px;
+  margin-top:10px;
+  background: #F9F7FC;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius:6px;
+  outline:none;
+  border:none;
+`
+
+const Input2 = styled.textarea`
   width: 400px;
   height: 60px;
   margin-top:10px;

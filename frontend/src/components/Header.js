@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
 import SignUp from './SignUp'
@@ -17,6 +18,8 @@ import SearchIcon from '@material-ui/icons/Search';
 function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
     const [searched, setSearched] = React.useState('')
+    const [flag, setFlag] = React.useState(false)
+    const history = useHistory();
 
     console.log(searched, "kakak")
 
@@ -28,14 +31,14 @@ function Header(props) {
 
     function updateParent(event){
         props.onChange(event)
+        history.push("/");
     }
 
     function handleClick(event) {
-        //console.log(event.target.value)
-        //props.onChange(event.target.value); // pass any argument to the callback
         setTemp(event)
         updateParent(event)
-      }
+    }
+
     return (
         
         <Container>
@@ -44,10 +47,12 @@ function Header(props) {
 
           <Bottom>
             
-              <LogoContainer>
-                    <img src="\frontend\src\images\icons\Logo.png"
-                    style={{borderRadius:"10px"}} />
-              </LogoContainer>
+            <Link to="/"> 
+                <LogoContainer>
+                        <img src="\frontend\src\images\icons\Logo.png"
+                        style={{borderRadius:"10px"}} />
+                </LogoContainer>
+            </Link>
                     <Link to="/" style={{color:"#04396B"}}>
                       <Home>
                         <HomeOutlined
@@ -60,7 +65,7 @@ function Header(props) {
                             <IconText>Home</IconText>
                         </Home>
                     </Link>
-                        <Link to="/Forum" style={{color:"#04396B"}}> 
+                        <Link to="/forum/guest" style={{color:"#04396B"}}> 
                             <Forum>
                                 <ForumIcon
                                     style={{
@@ -133,7 +138,7 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
+                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
                     <Link to={searched}>
                         <Button style={{
                             display:"flex",
@@ -195,6 +200,7 @@ const LogoContainer = styled.div`
     height: 80px;
     margin-top:25px;
     margin-left:40px;
+    cursor: pointer;
 `
 const Home = styled.div`
     height:60px;
@@ -208,9 +214,13 @@ const Publications = styled.div`
 `
 const SignUpContainer = styled.div`
     height:60px;
+    cursor: pointer;
+
 `
 const LogInContainer = styled.div`
     height:60px;
+    cursor: pointer;
+
 `
 const SearchContainer = styled.div`
     margin-right: 45px;
@@ -263,4 +273,6 @@ const Button = styled.button`
     &:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }
+      cursor: pointer;
+
 `

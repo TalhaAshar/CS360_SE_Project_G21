@@ -5,9 +5,7 @@ import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import styled from 'styled-components'
 import Home from './components/Home'
 import Footer from './components/Footer'
-import LogIn from './components/LogIn'
 import React, {Component} from "react"
-import Forum from "./components/ForumGest";
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
 import Publications from "./components/publications/Publications";
@@ -23,8 +21,22 @@ import axios from 'axios';
 import { ContactSupportOutlined } from '@material-ui/icons';
 import Search from "./components/SearchPage";
 import ReportPublication from "./components/forms/ReportPublication";
-
-
+import ReportHistory from "./components/ReportUser";
+import ModHistory from "./components/ModAppHistoryUser";
+import ModeratorAppForm from "./components/forms/ModeratorAppForm";
+import PubActivity from "./components/PubActivity";
+import AccountRemoval from "./components/AccountRemovalList";
+import ForumGuest from "./components/forum/ForumGest";
+import ForumUser from "./components/forum/ForumLoggedIn";
+import ThreadAdmin from "./components/ThreadAdminView";
+import ThreadGuest from "./components/ThreadGuestView";
+import ReportThread from "./components/forms/ReportThread";
+import EditPublication from "./components/publications/EditPublication";
+import AddPublication from "./components/publications/AddPublication";
+import ProfileGuest from "./components/ProfileGuest";
+import ListGuest from "./components/publications/PersonalizedListGuest"
+import MyActivity from "./components/MyActivity";
+import ForumCategoryUser from "./components/forum/ThreadCategoryUser";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -72,11 +84,6 @@ function App() {
             <Home/>
           </Route>
 
-          <Route exact path="/Forum">
-            {console.log("FORUM INSIDE")}
-            <Forum />
-          </Route>
-
           <Route exact path="/Contact">
             {console.log("CONTACT INSIDE")}
             <ContactUs />
@@ -88,8 +95,11 @@ function App() {
           </Route>
 
           <Route exact path="/UserAccount">
-            {console.log("CONTACT INSIDE")}
             <Profile /> 
+          </Route>
+
+          <Route path="/profile/:id">
+            <ProfileGuest /> 
           </Route>
 
            <Route exact path="/management">
@@ -97,21 +107,35 @@ function App() {
             <ProfileManagement /> 
           </Route> 
            
-          <Route path="/Columnar/">
-            <Columnar logged={auth["Status"]}/>
+          <Route exact path="/Columnar/">
+            <Columnar />
           </Route>
 
-          <Route path="/Catalogue/">
-            <Catalogue/>
+          <Route exact path="/Catalogue/">
+            <Catalogue />
           </Route>
 
           <Route path="/publication/:id">
             {console.log("single")}
             <SinglePub />  
           </Route>
+
+          <Route exact path="/thread/add">
+            <Thread />
+          </Route>
+
+          <Route path="/thread/user/:id" component={(props) => <ThreadAdmin {...props} />} /> 
+
+          <Route path="/thread/guest/:id">
+            <ThreadGuest />
+          </Route>
           
-          <Route path="/List">
+          <Route exact path="/List">
             <List />  
+          </Route>
+
+          <Route path="/List/guest/:id">
+            <ListGuest />
           </Route>
 
           <Route path="/searched/:param">
@@ -119,8 +143,50 @@ function App() {
             <Search />  
           </Route>
 
-          <Route path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
-          
+          <Route path="/contributions">
+            {console.log("IM HERE")}
+            <PubActivity />  
+          </Route>
+
+          <Route path="/my_activity">
+            {console.log("IM HERE")}
+            <MyActivity />  
+          </Route>
+
+          <Route path="/addpublication">
+            <AddPublication />  
+          </Route>
+
+          <Route exact path="/editpublication" component={(props) => <EditPublication {...props}/>} />
+
+          <Route exact path="/reportpublication" component={(props) => <ReportPublication {...props}/>} />
+
+          <Route exact path="/reportpost" component={(props) => <ReportThread {...props}/>} />
+
+          <Route exact path="/reports" component={(props) => <ReportHistory {...props}/>} />
+
+          <Route exact path="/modhist" component={(props) => <ModHistory {...props}/>} />
+
+          <Route exact path="/modapps">
+            <ModeratorAppForm />
+          </Route>
+
+          <Route exact path="/remove_account/admin">
+            <AccountRemoval />
+          </Route>
+
+          <Route exact path="/forum/guest">
+            <ForumGuest />
+          </Route>
+
+          <Route exact path="/forum/user">
+            <ForumUser />
+          </Route>
+
+          <Route path="/forum/category/:category">
+            <ForumCategoryUser />
+          </Route>
+
         </Switch>
 
       <Footer/>
@@ -134,7 +200,7 @@ export default App;
 //the whole page container
 const Container = styled.div`
 width:100%;
-height:1580px;
+height:100%;
 display: grid;
 grid-template-rows: 115px auto 110px;
 `

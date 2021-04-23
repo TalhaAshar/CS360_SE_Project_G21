@@ -2,35 +2,88 @@ import React from 'react'
 import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
+import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 import CardMedia from '@material-ui/core/CardMedia';
+import {useEffect} from "react";
+import axios from 'axios';
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function ForumGuestThreadCard() {
+function ForumGuestThreadCard({username, title, category, postcount, timestamp, desc, id}) {
+
+    let placeholder = "Hours"
+    let postholder = "Posts"
+
+    if(postcount == 1){
+        postholder = "Post"
+    }
+    
+    let post_time = timestamp
+
+    if(post_time == 1){
+        placeholder = "Hour"
+    }
+
+    if(post_time > 24){
+        placeholder = "Days"
+        post_time = Math.floor(post_time / 24)
+    }
+
+    if(post_time == 0){
+        placeholder = "Now"
+        post_time = ""
+    }
+
+    const [profile, setProfile] = React.useState({'user':{'id':0}})
+    const [profile_url, setUrl] = React.useState('/profile/')
+    const [flag, setFlag] = React.useState(false)
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/accounts/profile/" + id
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setProfile(res.data)
+                setFlag(true)
+                setUrl(profile_url + res.data["user"]["id"])
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
+    console.log("Post time", post_time)
     return (
         
         <Container>
-        <ImageUserNameContainer>
-            <ImageContainer>
-               
-                <Image src="http://www.pngall.com/wp-content/uploads/5/Aesthetic-Anime-Girl-PNG-File-Download-Free.png"
-                    width="100px" height="100px"
-                />
-            </ImageContainer>
-            <UserName>Alachigari</UserName>
-        </ImageUserNameContainer>
+        <Link to={profile_url}>
+            <ImageUserNameContainer>
+                <ImageContainer>
+                    {flag && <Image src={profile["ProfileImage"]}
+                        width="100px" height="100px"
+                    />}
+                </ImageContainer>
+                    <UserName>
+                        {username}
+                    </UserName>
+            </ImageUserNameContainer>
+        </Link>
         <ThreadDetailContainer>
-            <ThreadTitle>Forum Ruels:Must Read!!1</ThreadTitle>
-            <ThreadCategory>Announcements</ThreadCategory>
-            <ThreadMinorDetail>This thread is for new users</ThreadMinorDetail>
+            <ThreadTitle>{title.substr(0, 20)}</ThreadTitle>
+            <ThreadCategory>{category}</ThreadCategory>
+            <ThreadMinorDetail dangerouslySetInnerHTML={{ __html:desc}}/>
         </ThreadDetailContainer>
         <ThreadTimePostContainer>
             <Comment>
                 <CommentIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Posts</h5>
+                <h5 style={{paddingTop:"4px"}}>{postcount} {postholder}</h5>
             </Comment>
             <TimeIcon>
                 <QueryBuilderIcon/>
-                <h5 style={{paddingTop:"4px"}}>12 Hours</h5>
+                <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
             </TimeIcon>
         </ThreadTimePostContainer>
 

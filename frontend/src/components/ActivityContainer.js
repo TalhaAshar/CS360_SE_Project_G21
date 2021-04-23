@@ -1,15 +1,46 @@
 import React from 'react'
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 import styled from 'styled-components'
+import {Link} from "react-router-dom";
 
-function Activity() {
-    return (
-        <ActivityContainer>
-            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-            <Text></Text>
-            <NLine></NLine>
-        </ActivityContainer>
-    )
+function Activity(props) {
+    if(props.type == 'Pub'){
+        let placeholder = "/publication/" + props.pub.Publication_ID["id"]
+        return (
+            <ActivityContainer>
+                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                <Text>You {(props.pub.Edit_Type).toLowerCase()}ed the publication "<Link to={placeholder}>{props.pub.Publication_ID["Title"]}</Link>".</Text>
+                <NLine></NLine>
+            </ActivityContainer>
+        )
+    }
+    else if(props.type == 'Mod'){
+        return (
+            <ActivityContainer>
+                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                <Text>You applied for moderatorship.</Text>
+                <NLine></NLine>
+            </ActivityContainer>
+        )
+    }
+    else if(props.type == 'Thread'){
+        return (
+            <ActivityContainer>
+                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                <Text>You created the thread.</Text>
+                <NLine></NLine>
+            </ActivityContainer>
+        )
+    }
+    else{
+        return (
+            <ActivityContainer>
+                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                <Text>You created the post.</Text>
+                <NLine></NLine>
+            </ActivityContainer>
+        )
+    }
 }
 
 export default Activity
@@ -21,10 +52,8 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
-
 display: flex;
 align-items: center;
-
 color: Black;
 `
 
