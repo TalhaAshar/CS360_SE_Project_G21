@@ -11,11 +11,11 @@ function SortPerList(props) {
                 <DeleteIcon/>
                 <Text>Remove From List</Text>
             </TextContainer>
-            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} style={{cursor:"pointer", borderBottom:"1px solid"}}>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} onClick={() => props.MarkRead(props.id)} style={{cursor:"pointer", borderBottom:"1px solid"}}>
                 <BookmarkIcon/>
                 <Text>Mark As Read</Text>
             </TextContainer>
-            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} style={{cursor:"pointer"}}>
+            <TextContainer onClick ={()=>props.setTrigger(!props.trigger)} onClick={() => props.MarkUnread(props.id)} style={{cursor:"pointer"}}>
                 <BookmarkBorderIcon/>
                 <Text>Mark As Unread</Text>
             </TextContainer>

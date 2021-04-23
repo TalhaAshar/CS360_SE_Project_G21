@@ -40,7 +40,46 @@ function PersonalizedListUserRead() {
         let url = "api/accounts/mylist/delete/" + id
         console.log("shaka", url)
         axios.delete(url).then((res) => {
-            console.log(res)
+            if(res.data.length > 0){
+                setPubs(res.data)
+                setUser(res.data[0]["ListOwner"]["username"])
+            }
+            else{
+                console.log(res.data)
+                setUser(res.data["ListOwner"])
+            }
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    function MarkAsRead(id){
+        let url = "api/accounts/listings/" + id + "/READ"
+        console.log("shaka", url)
+        axios.post(url).then((res) => {
+            if(res.data.length > 0){
+                setPubs(res.data)
+                setUser(res.data[0]["ListOwner"]["username"])
+            }
+            else{
+                console.log(res.data)
+                setUser(res.data["ListOwner"])
+            }
+        })
+        .catch(error => console.log('Error:', error))
+    }
+
+    function MarkAsUnread(id){
+        let url = "api/accounts/listings/" + id + "/UNREAD"
+        console.log("shaka", url)
+        axios.post(url).then((res) => {
+            if(res.data.length > 0){
+                setPubs(res.data)
+                setUser(res.data[0]["ListOwner"]["username"])
+            }
+            else{
+                console.log(res.data)
+                setUser(res.data["ListOwner"])
+            }
         })
         .catch(error => console.log('Error:', error))
     }
@@ -103,6 +142,8 @@ function PersonalizedListUserRead() {
     }
 
 
+
+
     return (
         <Overall>
         <Container>
@@ -143,7 +184,7 @@ function PersonalizedListUserRead() {
                                             <path d="M16 20L0.411545 0.5H31.5885L16 20Z" fill="#66CEF2"/>
                                         </CardSvg>
                                         <PopContainer>
-                                            <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} Delete={DeleteMyList} id={elem.id}/>
+                                            <EditPub className = "view" trigger={PopEdit[index]} setTrigger={() => editClick(index)} Delete={DeleteMyList} MarkRead={MarkAsRead} MarkUnread={MarkAsUnread} id={elem.ListPub["id"]}/>
                                         </PopContainer>
                                     </Dropdiv>
                                 </CardContent>
