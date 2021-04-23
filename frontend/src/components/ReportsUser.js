@@ -1,126 +1,124 @@
-import React from 'react';
-import styled from 'styled-components';
-import AcceptedButton from './Buttons(ModReport)/AcceptedButton';
-import RejectedButton from './Buttons(ModReport)/RejectedButton';
-import PendingButton from './Buttons(ModReport)/PendingButton';
+import React from 'react'
+import styled from 'styled-components'
+import ResolvedButton from './Buttons(ModReport)/ResolvedButton';
+import UnresolvedButton from './Buttons(ModReport)/UnresolvedButton';
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 
-function ModAppHistoryAdmin() {
+function ReportsUser() {
     return (
         <Container>
-            <MDAHeader>
-                <MDAText>Moderator Applications</MDAText>
-            </MDAHeader>
-            <MDAContainer>
-                
-            <Flag>
+            <ReportsHeader>
+                <ReportsText>Reports</ReportsText>
+            </ReportsHeader>
+            <ReportsContainer>
+                <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <RejectedButton/>
+                    <UnresolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <RejectedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <UnresolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <PendingButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <PendingButton/>
+                    <UnresolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <RejectedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <UnresolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <UnresolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <PendingButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <RejectedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <UnresolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
                 <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text></Text>
-                    <AcceptedButton/>
+                    <ResolvedButton/>
                     <NLine></NLine>
                 </Flag>
 
-            </MDAContainer>
+            </ReportsContainer>
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}}/><SkipNextRoundedIcon style = {{}}/>
             </ViewNextButtonContainer>
@@ -129,7 +127,7 @@ function ModAppHistoryAdmin() {
 }
 
 
-export default ModAppHistoryAdmin
+export default ReportsUser
 
 const Container = styled.div`
 max-width: 1570px;
@@ -137,7 +135,7 @@ margin: 0 auto;
 height: auto;
 background-color: white;
 `
-const MDAHeader = styled.h3`
+const ReportsHeader = styled.h3`
 width: 1050px;
 height: 80px;
 margin-left:150px;
@@ -148,7 +146,7 @@ margin-top:150px;
 border-radius: 20px;
 background: #0A3977;
 `
-const MDAText = styled.h3`
+const ReportsText = styled.h3`
 max-height:50px;
 background-color: #0A3977;
 color:white;
@@ -161,13 +159,15 @@ letter-spacing: -1px;
 border-radius:6px;
 `
 
-const MDAContainer = styled.h3`
+const ReportsContainer = styled.h3`
 width:1050px;
 height: 1155px;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
+
 background: #DCF2F8;
+
 box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
 `
 
@@ -213,4 +213,7 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
+
+
+color: #060606;
 `

@@ -66,6 +66,7 @@ function ModAppHistoryUser() {
     }
 
 
+function ModAppHistoryUser() {
     return (
         <Container>
             <MDAHeader>
@@ -154,7 +155,6 @@ function ModAppHistoryUser() {
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
-
         </Container>
     )
 }
@@ -197,6 +197,11 @@ height: 1155px;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
+
+background: #DCF2F8;
+
+box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
+
 `
 
 const ViewNextButtonContainer = styled.div`
@@ -217,8 +222,10 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
+
 display: flex;
 align-items: center;
+
 color: Black;
 background: #DCF2F8;
 `
