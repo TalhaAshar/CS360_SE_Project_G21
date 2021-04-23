@@ -13,15 +13,17 @@ import {Link} from 'react-router-dom'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-function ThreadCategory(props) {
-
+function ThreadCategory() {
     const [threads, setThreads] = React.useState([])
     const[start, setStart] = React.useState(0)
     const d = new Date()
+    const { category } = useParams();
+
+    console.log(category, "ig")
 
     useEffect(() => {
         let isComponentMounted = true;
-        let url = "api/forum/threads/" + props.location.state
+        let url = "api/forum/threads/" + category
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 console.log(res.data)
@@ -32,9 +34,7 @@ function ThreadCategory(props) {
         return () => {
             isComponentMounted = false;
         }
-    }, [])
-
-        
+    }, [category])
 
     function leftClick(){
         if(start > 0){
@@ -51,15 +51,11 @@ function ThreadCategory(props) {
 
     return (
         <Container>
-
-        
-<BookTitleContainer><h1>{props.location.state}</h1></BookTitleContainer>
-
+            <BookTitleContainer><h1>{category}</h1></BookTitleContainer>
             <Nextpage>
-            <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
-            <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
-
             <Colour>
                 <Results>
                    {

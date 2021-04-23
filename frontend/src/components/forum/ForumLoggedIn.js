@@ -28,18 +28,15 @@ function ForumLoggedIn() {
             <Head>Discussion Forum</Head>
             <AnnouncementsContainer>
                 <HeadContainer>
-                    <Link to={{
-                        pathname : "/forum/category/user",
-                        state : "Announcements"
-                    }}>
-                    <CategoryTitle>
-                        Announcements
-                    </CategoryTitle>
+                    <Link to={"/forum/category/Announcements"}>
+                        <CategoryTitle>
+                            Announcements
+                        </CategoryTitle>
                     </Link>
                     <Link to="/thread/add">
-                    <AddThread>
-                        Add Thread
-                    </AddThread>
+                        <AddThread>
+                            Add Thread
+                        </AddThread>
                     </Link>
                 </HeadContainer>
                 <CategoryThreadContainer>
@@ -48,10 +45,7 @@ function ForumLoggedIn() {
                             if(index < 4){
                             let placeholder = "/thread/user/" + elem.id
                             return(
-                                <Link to={{
-                                    pathname : placeholder,
-                                    state : threads[index]
-                                }}>
+                                <Link to={placeholder}>
                                 <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
                                 </Link>
                             )
@@ -62,13 +56,10 @@ function ForumLoggedIn() {
             </AnnouncementsContainer>
             <GeneralContainer>
             <HeadContainer>
-                    <Link to={{
-                        pathname : "/forum/category/user",
-                        state : "General"
-                    }}>
-                    <CategoryTitle>
-                        General
-                    </CategoryTitle>
+                    <Link to={"/forum/category/General"}>
+                        <CategoryTitle>
+                            General
+                        </CategoryTitle>
                     </Link>
                 </HeadContainer>
                 <CategoryThreadContainer>
@@ -92,10 +83,7 @@ function ForumLoggedIn() {
             </GeneralContainer>
             <OtherContainer>
                 <HeadContainer>
-                    <Link to={{
-                        pathname : "/forum/category/user",
-                        state : "Other"
-                    }}>
+                    <Link to={"/forum/category/Other"}>
                         <CategoryTitle>
                             Other
                         </CategoryTitle>
