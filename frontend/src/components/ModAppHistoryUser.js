@@ -144,7 +144,12 @@ function ModAppHistoryUser() {
                             }
                         }
                     })
-                }       
+                }
+                 {(apps.length == 0) && <Flag>
+                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                    <Text>There are no submitted moderator application forms.</Text>
+                    <NLine></NLine> 
+                </Flag>}       
             </MDAContainer>
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
@@ -188,12 +193,10 @@ border-radius:6px;
 
 const MDAContainer = styled.h3`
 width:1050px;
-height: 300px;
+height: 1155px;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
-background: #DCF2F8;
-box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
 `
 
 const ViewNextButtonContainer = styled.div`
@@ -217,6 +220,7 @@ line-height: 32px;
 display: flex;
 align-items: center;
 color: Black;
+background: #DCF2F8;
 `
 
 

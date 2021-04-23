@@ -66,7 +66,7 @@ function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id
     return (
         
         <Container>
-        <Link to={profile_url}>
+        <Link to={profile_url} style={{textDecoration:"none"}}>
             <ImageUserNameContainer>
                 <ImageContainer>
                     <Image src={profile["ProfileImage"]}
@@ -86,23 +86,18 @@ function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id
                 <CommentIcon/>
                 <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
             </Comment>
-            <Commentf>
+            
             
             <Comment1>
             <ReplyIcon style = {{fontSize:'30px'}} onClick={() => replyHandler("@" + username)}/>
             </Comment1>
-            <Comment2>
-            
-            </Comment2>
-            </Commentf>
-            <TimeIcon>
+
             <Comment1>
                    {first && <DeleteIcon style = {{fontSize:'30px'}} onClick={deletePost}/>}
             </Comment1>
             <Comment2>
-                    <EditIcon style = {{fontSize:'30px'}} onClick={() => editHandler(desc, post_id)}/>
+                    <EditIcon style = {{fontSize:'30px', marginLeft:"auto"}} onClick={() => editHandler(desc, post_id)}/>
             </Comment2>
-            </TimeIcon>
         </ThreadTimePostContainer>
 
         </Container>
@@ -112,11 +107,10 @@ function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id
 export default PostCardOwner
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
+    width:90%;
+    background:white;
+    border-radius:12px;
+    margin-bottom:5%;
 `
 const ImageUserNameContainer = styled.div`
     margin-left:20px;
@@ -133,38 +127,37 @@ const ThreadDetailContainer = styled.div`
     margin-top:30px;
     margin-left:20px;
 `
-const ThreadTitle = styled.h4`
-padding-right: 155px;
-`
-const ThreadCategory = styled.h4`
-`
-const ThreadMinorDetail = styled.h4`
-margin-top:10px;
+
+const ThreadMinorDetail = styled.div`
+    margin-top:10px;
+    overflow-wrap:break-word;
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:670px;
-    margin-top:20px;
+    display:flex;
+    flex-flow: row wrap;
+    margin-left:70%;
+    margin-top:-6%;
 `
 const Comment = styled.div`
-display:flex;
-margin-bottom:10px;
-padding-bottom: 30px;
+    margin-bottom:10px;
+    padding-bottom: 30px;
+    margin-right:5%;
 `
 
+
 const Commentf = styled.div`
-display:flex;
 margin-bottom:10px;
+margin-right:5%;
 `
 
 const TimeIcon = styled.div`
-display:flex;
 padding-top: 10px;
+margin-right:5%;
 `
 const Comment1 = styled.div`
-display:flex;
+margin-right:5%;
 `
 const Comment2 = styled.div`
-display:flex;
 margin-left:10px;
 `
 const Commentb = styled.div`

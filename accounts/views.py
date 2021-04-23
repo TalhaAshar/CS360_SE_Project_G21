@@ -150,8 +150,7 @@ class MyListAlphabetical(APIView):
         preference = PersonalizedList.objects.get(Owner=request.user)
         preference.Display_Type = 'ALPHABETICAL'
         preference.save(update_fields=["Display_Type"])
-        if(len(temp.data) == 0):
-            return JsonResponse({'ListOwner' : request.user.username}, status=status.HTTP_200_OK)
+
         return Response(temp.data, status=status.HTTP_200_OK)
 		
 
