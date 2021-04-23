@@ -17,6 +17,7 @@ urlpatterns = [
 	path("threads/delete/<int:id>", DeleteThread.as_view()),
 	path("post/delete/<int:id>/<int:tid>", DeletePost.as_view()),
 	path("threads/retrieve/<int:id>", IndividualThread.as_view()),
+  
 	path("threads/<str:category>", ThreadCategory.as_view()),
 ]
 

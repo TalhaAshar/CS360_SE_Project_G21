@@ -243,15 +243,15 @@ class ThreadCategory(APIView):
 		threads = ThreadSerializer(queryset, many=True)
 		return Response(threads.data, status=status.HTTP_200_OK)
 
-#API View to get an individual thread.
+# API view to return a single thread
 class IndividualThread(APIView):
 
-    def get(self, request, id):
+	def get(self, request, id):
 
-        try:
-            thread_to_get = Thread.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = ThreadSerializer(thread_to_get)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+		try:
+			thread_to_get = Thread.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		serializer = ThreadSerializer(thread_to_get)
+		return Response(serializer.data, status=status.HTTP_200_OK)
