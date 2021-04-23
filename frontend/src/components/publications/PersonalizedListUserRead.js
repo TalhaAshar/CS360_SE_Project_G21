@@ -27,8 +27,8 @@ const items = [
 
 function PersonalizedListUserRead() {
 
-	const [pubs, setPubs] = useState([{'id' : 0, 'ListOwner' : {}, 'ListPub' : {}, 'Status' : ''}])
-    const [recs, setRecs] = useState([{'id' : 0, 'Title' : '', 'Authors' : '', 'Publisher' : '', 'Edition_Number' : 0, 'Year_Publication' : 0, 'Lang' : '', 'ISBN' : 0, 'Description' : '', 'Reason_for_Best_Pub' : '' ,'Front_Cover' : '../images/publications/Screenshot_1.png'}])
+	const [pubs, setPubs] = useState([])
+    const [recs, setRecs] = useState([])
     const [sorter, setSorter] = useState('alphabetical')
     const [user, setUser] = useState('')
     const [start, setStart] = useState(0)
@@ -46,6 +46,7 @@ function PersonalizedListUserRead() {
             }
             else{
                 console.log(res.data)
+                setPubs(res.data)
                 setUser(res.data["ListOwner"])
             }
         })
@@ -97,6 +98,7 @@ function PersonalizedListUserRead() {
                 }
                 else{
                     console.log(res.data)
+                    setPubs(res.data)
                     setUser(res.data["ListOwner"])
                 }
             };
@@ -151,7 +153,7 @@ function PersonalizedListUserRead() {
                 <User>{user}'s List</User>
             </UserNameContainer>
             <Background>
-            <ViewNextButtonContainer>
+            {(pubs.length > 0) && <ViewNextButtonContainer>
                     <View onClick = {handleClick}>
                             <ViewText>Sort By</ViewText>
                             <DropDiv>
@@ -168,11 +170,10 @@ function PersonalizedListUserRead() {
                                 <SkipNextRoundedIcon onClick={rightClick}/>
                             </NextPrevious>
                             <ViewPopContainer></ViewPopContainer>
-                    </ViewNextButtonContainer>
+                    </ViewNextButtonContainer>}
 
             <Cards>
                {
-                    
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
@@ -193,6 +194,7 @@ function PersonalizedListUserRead() {
                         console.log(index)
                     })
                 }
+                {(pubs.length == 0) && <p>Your list is empty.</p>}
                 
            </Cards>
             </Background>
@@ -200,7 +202,7 @@ function PersonalizedListUserRead() {
         
         
         <Lower>
-        <Background2>
+        {(pubs.length > 0) && <Background2>
                 <Recommended>
                     <h4>Recommended</h4>
                 </Recommended>
@@ -219,7 +221,7 @@ function PersonalizedListUserRead() {
                     })
                 }
            </Cards2>
-            </Background2>
+            </Background2>}
         </Lower>
         </Overall>
     )

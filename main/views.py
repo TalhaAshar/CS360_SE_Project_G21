@@ -270,6 +270,10 @@ class TakedownRequest(APIView):
 		# Ensure a reason for the copyright is given
 		if(complaint["Body"] == ""):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		# Check if the length of the body is within 5000 characters
+		if(len(complaint["Body"]) > 5000):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 		# Generate the body of the email
 		subject = "BookBound - Takedown Request" 
@@ -305,6 +309,11 @@ class ContactUs(APIView):
 		# Ensure that the form has data in the body
 		if(parsed["Body"] == ""):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+		# Check if the length of the body is within 5000 characters
+		if(len(parsed["Body"]) > 5000):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 		# Generate the body of the email
 		subject = "BookBound - " + parsed["Reason"]

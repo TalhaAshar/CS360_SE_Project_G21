@@ -73,6 +73,10 @@ class ThreadsHome(APIView):
         # Ensure the user is not trying to make an empty post
         if(request.data["data"]["Body"] == ""):
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the body is less than 5000 characters
+        if(len(request.data["data"]["Body"]) > 5000):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         
         # Update thread metadata
         user = User.objects.get(username=request.user)
@@ -112,6 +116,10 @@ class AddThread(APIView):
 
         #  Ensure the user is not trying to make an empty post
         if(parse["Body"] == ""):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the body is less than 5000 characters
+        if(len(parse["Body"]) > 5000):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # Create the thread
@@ -175,6 +183,10 @@ class EditPost(APIView):
 
         # Ensure that the user is not trying to send an empty post
 		if(request.data["data"]["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+		# Check if the body is less than 5000 characters
+		if(len(request.data["data"]["Body"]) > 5000):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
     
 		user = User.objects.get(username=request.user)

@@ -27,6 +27,7 @@ function ForumLoggedIn() {
         <Container>
             <BookTitleContainer><h1>Discussion Forum</h1></BookTitleContainer>
             <AnnouncementsContainer>
+            <HeadContainer1>
                 <HeadContainer>
                     <Link to={"/forum/category/Announcements"}>
                         <CategoryTitle>
