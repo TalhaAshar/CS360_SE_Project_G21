@@ -37,8 +37,13 @@ function ForumGest() {
                             if(index < 6){
                             let placeholder = "/thread/guest/" + elem.id
                             return(
-                                <Link to={placeholder}>
-                                    <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }} style={{textDecoration:"none", marginBottom:"1%"}}>
+                                <ThreadDiv>
+                                <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </ThreadDiv>
                                 </Link>
                             )
                             }
@@ -54,6 +59,8 @@ function ForumGest() {
 export default ForumGest
 
 const Container = styled.div`
+    width:100%;
+    height:100%;
 
 `
 
@@ -66,17 +73,20 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
+    margin-right: 3%;
 `
 const Results = styled.div`
-width:1100px;
-display:grid;
-grid-template-rows: 200px 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
-padding-top:20px;
-margin-left:20px;
-margin: 0 auto;
+    width:100%;
+    display:flex;
+    flex-flow:row wrap;
+    padding-top:20px;
+    margin-left:22px;
+    margin-bottom:5%;
 
-
+`
+const ThreadDiv = styled.div`
+    width:100%;
+    padding-left:10%;
 `
 const Text = styled.h3`
     display:flex;
@@ -85,19 +95,18 @@ const Text = styled.h3`
 `
 
 const BodyRecent = styled.div`
-    margin-left:50px;
-    margin-right:50px;
-    margin-top:20px;
-    margin-bottom:20px;
-    display:grid;
-    grid-template-rows: 200px 200px 200px 200px;
+    margin-left:3%;
+    margin-right:3%;
+    margin-top:2%;
+    margin-bottom:5%;
+    display:flex;
+    flex-flow:row wrap;
     background:#DCF2F8;
-    padding-left:40px;
-    padding-top:20px;
-    padding-bottom:20px;
-    padding-right:40px;
-    height:1250px;
+    padding-top:2%;
+    padding-bottom:2%;
+    padding-right:5.5%;
+    padding-left:5.5%;
+    height:90%;
     border-radius:8px;
-    
-
 `
+

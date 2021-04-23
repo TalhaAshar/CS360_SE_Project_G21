@@ -75,9 +75,9 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
-margin-top: 2%;
-margin-bottom: 2%;
+    margin-right: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 `
 
 const Results = styled.div`

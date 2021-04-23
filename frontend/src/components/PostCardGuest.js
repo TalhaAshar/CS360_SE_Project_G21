@@ -84,11 +84,11 @@ function PostCardGuest({username, timestamp, desc, id}) {
 export default PostCardGuest
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
+    width:90%;
+    height:100%;
+    display:flex;
+    background:white;
+    border-radius:12px;
 `
 const ImageUserNameContainer = styled.div`
     margin-left:20px;
@@ -111,7 +111,8 @@ padding-right: 155px;
 const ThreadCategory = styled.h4`
 `
 const ThreadMinorDetail = styled.h4`
-margin-top:10px;
+    margin-top:10px;
+    overflow-wrap:break-work;
 `
 const ThreadTimePostContainer = styled.div`
     margin-left:670px;

@@ -33,7 +33,8 @@ function ForumLoggedIn() {
                             Announcements
                         </CategoryTitle>
                     </Link>
-                    </HeadContainer>
+                </HeadContainer>
+                <HeadContainer1>
                     <Link to="/thread/add">
                         <AddThread>
                             Add Thread
