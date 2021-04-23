@@ -39,20 +39,20 @@ function ThreadGuest(props) {
 
             return(
                 <Container>
-            <BookTitleContainer><h1>{props.location.state.Title}</h1></BookTitleContainer>
-            <Lower>
-                
-                <Results>
-                    {
-                        posts.map((elem, index)  => {
-                                return(
-                                    <PostCardGuest id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
-                                )
-                        })
-                    }
-                </Results>
+                    <BookTitleContainer><h1>{props.location.state.Title}</h1></BookTitleContainer>
+                    <Lower>
+                        
+                        <Results>
+                            {
+                                posts.map((elem, index)  => {
+                                        return(
+                                            <PostCardGuest id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        )
+                                })
+                            }
+                        </Results>
 
-                </Lower>
+                    </Lower>
             </Container>
             )
     
@@ -69,28 +69,28 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
-margin-top: 2%;
-margin-bottom: 2%;
+    margin-right: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 `
 
 const Results = styled.div`
-padding-top: 20px;
-    width:1100px;
-    display:grid;
-    height: 200px;
+    padding-top: 20px;
+    width:100%;
+    display:flex;
+    flex-flow: column wrap;
+    height: 100%;
     margin-top: 65px;
     margin: 0 auto;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const Lower = styled.div`
-background: #DCF2F8;
-width:90%;
-height: 1000px;
-border-radius: 20px;
-margin-bottom:100px;
-margin-left:3%;
-margin-right:3%;
+    background: #DCF2F8;
+    width:90%;
+    height: 1000px;
+    border-radius: 20px;
+    margin-bottom:100px;
+    margin-left:3%;
+    margin-right:3%;
 `
 
 const Results1 = styled.div`

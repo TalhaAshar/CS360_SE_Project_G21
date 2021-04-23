@@ -54,7 +54,7 @@ function PostCardGuest({username, timestamp, desc, id}) {
     return (
         
         <Container>
-        <Link to={profile_url}>
+        <Link to={profile_url} style={{textDecoration:"none"}}>
             <ImageUserNameContainer>
                 <ImageContainer>
                 
@@ -84,11 +84,12 @@ function PostCardGuest({username, timestamp, desc, id}) {
 export default PostCardGuest
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
+    width:90%;
+    display:flex;
+    background:white;
+    border-radius:12px;
+    margin-left:5%;
+    margin-right:1%;
 `
 const ImageUserNameContainer = styled.div`
     margin-left:20px;
@@ -111,7 +112,10 @@ padding-right: 155px;
 const ThreadCategory = styled.h4`
 `
 const ThreadMinorDetail = styled.h4`
-margin-top:10px;
+    margin-top:10%;
+    margin-left:5%;
+    margin-right:5%;
+    margin-bottom:4%;
 `
 const ThreadTimePostContainer = styled.div`
     margin-left:670px;
