@@ -16,6 +16,7 @@ class Profile(models.Model):
 	UserChoices = models.TextChoices('UserType', 'ADMIN MODERATOR VERIFIED UNVERIFIED')
 	User_Type = models.CharField(choices=UserChoices.choices, max_length=15, default="UNVERIFIED")
 	ProfileImage = models.ImageField(upload_to='users/', blank=True, default='users/default.jpg')
+	Disable = models.BooleanField(default=False)
 
 # Model to hold information about account deletion requests
 class AccountRemoval(models.Model):

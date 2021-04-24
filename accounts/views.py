@@ -9,10 +9,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from main.models import Publication, Contribution
-from forum.models import Post
+from forum.models import Post, Thread
 from .models import PersonalizedList, Listings, Report, ModeratorApplication, MyActivity
 from .serializers import ListingsSerializer, ProfileSerializer, ReportSerializer, ModeratorSerializer, ActivitySerializer
 from main.serializers import ContributionSerializer, PublicationSerializer
+from forum.serializers import ThreadSerializer
 from mysite.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import random
@@ -250,7 +251,6 @@ class UserGuestView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         temp = ProfileSerializer(user)
-        print(temp.data)
         return Response(temp.data, status=status.HTTP_200_OK)
 
 
@@ -300,6 +300,11 @@ class Reports(APIView):
             
 			user_activity = MyActivity.objects.create(Owner=user, FiledReport=temp)
 			user_activity.save()
+
+			if(parsed["Type"] == 'Post'):
+				thread = Thread.objects.get(id=post_to_report.ParentThread.id)
+				serializer = ThreadSerializer(thread)
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 			return Response(status=status.HTTP_201_CREATED)
 		except Exception as e:

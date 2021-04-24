@@ -21,7 +21,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'email_confirmed', 'profession', 'company', 'education', 'institution', 'location', 'age', 'biography', 'blacklisted', 'User_Type', 'ProfileImage')
+        fields = ('id', 'user', 'email_confirmed', 'profession', 'company', 'education', 'institution', 'location', 'age', 'biography', 'blacklisted', 'User_Type', 'ProfileImage', 'Disable')
 
 class ReportSerializer(serializers.ModelSerializer):
     Creator = UserSerializer(read_only=True)

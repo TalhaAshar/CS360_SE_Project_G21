@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Thread, Post
+from .models import Thread, Post, Notification
 from django.contrib.auth.models import User
 from accounts.serializers import UserSerializer
 
@@ -16,3 +16,12 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'Creator', 'TimeStamp', 'Body', 'Poll_Title', 'Poll_Yes', 'Poll_No')
+
+# Serializer for Notification Instance
+class NotificationSerializer(serializers.ModelSerializer):
+    Owner = UserSerializer(read_only=True)
+    Commentor = UserSerializer(read_only=True)
+    ParentThread = ThreadSerializer(read_only=True)
+    class Meta:
+        model = Notification
+        fields = ('id', 'Owner', 'Timestamp', 'ParentThread', 'Body', 'Commentor')

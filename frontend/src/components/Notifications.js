@@ -3,107 +3,79 @@ import styled from 'styled-components'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function Notifications() {
+
+    const [notifs, setNotifs] = useState([])
+    const [start, setStart] = useState(0)
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/forum/notifications"
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setNotifs(res.data)
+                console.log(res.data, "UMAMAM")
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 15)
+        }
+    }
+
+    function rightClick(){
+        if(start + 15 < pubs.length){
+            setStart(start + 15)
+        }
+    }
+
+
     return (
         <Container>
             <NotificationsHeader>
                 <NotificationsText>Notifications</NotificationsText>
             </NotificationsHeader>
             <NotificationsContainer>
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
+                {
+                    notifs.map((elem, index) => {
+                        if(index >= start && index < (start + 15) && index < notifs.length){
+                            let threadLink = "/thread/user/" + elem.ParentThread["id"]
+                            return(
+                                <Link to={threadLink} style={{textDecoration:"none"}}>
+                                    <Flag>
+                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                        <Text>{elem.Body}</Text>
+                                        <NLine></NLine>
+                                    </Flag>
+                                </Link>
+                            )
+                        }
+                    })
+                }
+                
 
-                <Flag>
+                {(notifs.length == 0) && <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
+                    <Text>You have no new notifications</Text>
                     <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
-
-                <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text></Text>
-                    <NLine></NLine>
-                </Flag>
+                </Flag>}
 
             </NotificationsContainer>
             <ViewNextButtonContainer>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}}/><SkipNextRoundedIcon style = {{}}/>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick} /><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
         </Container>
     )
