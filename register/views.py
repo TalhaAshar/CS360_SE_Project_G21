@@ -280,7 +280,11 @@ class AdminAccountRemoval(APIView):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
 		user_to_delete.delete()
-		return Response(status=status.HTTP_200_OK)
+
+		# Fetch all pending account removal requests
+		queryset = AccountRemoval.objects.all().order_by('-Date')
+		temp = RemovalSerializer(queryset, many=True)
+		return Response(temp.data, status=status.HTTP_200_OK)
 
 # View for handling blacklisted users
 class Blacklist(APIView):
