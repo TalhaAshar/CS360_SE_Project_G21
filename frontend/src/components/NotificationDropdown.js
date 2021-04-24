@@ -4,9 +4,9 @@ import NotificationButton from './NotificationButton';
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 
 
-function NotificationDropdown() {
-    return (
-        <Container>
+function NotificationDropdown(props) {
+    return(props.trigger) ? (
+        <Container onMouseLeave={props.setTrigger}>
             <Header>
                 <HeaderText>Notifications</HeaderText>
             </Header>
@@ -37,13 +37,14 @@ function NotificationDropdown() {
                     <NotificationText>Notification</NotificationText>
                 </Notification>
                 
+                <NotificationButton/>
 
             </NotificationContainer>
 
-            <NotificationButton/>
+            
 
         </Container>
-    )
+    ) : null;
 }
 
 export default NotificationDropdown
@@ -53,11 +54,13 @@ max-width: 700px;
 margin: 0 auto;
 height: auto;
 background-color: white;
+border-radius: 10px;
 `
 const NotificationContainer = styled.h4`
 heigth: 320px;
 width: 600px;
 background: white;
+padding-bottom: 4%;
 `
 const Header = styled.h3`
 position:relative;

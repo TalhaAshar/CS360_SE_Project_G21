@@ -302,8 +302,8 @@ class Reports(APIView):
 			user_activity.save()
 
 			return Response(status=status.HTTP_201_CREATED)
-		except:
-			print(request.data)
+		except Exception as e:
+			print(e)
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 	def NormalReport(self, request):
@@ -355,7 +355,7 @@ class ModeratorApps(APIView):
 			user = Profile.objects.get(user=request.user).User_Type
 		except:
 			return Response({'Message' : 'Please login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
-		if user == 'UNVERIFIED' or user == 'VERIFIED':
+		if user == 'UNVERIFIED' or user == 'VERIFIED' or user == 'MODERATOR':
 			return self.NormalUser(request)
 		else:
 			print("Got this far")
@@ -419,42 +419,79 @@ class MyPubActivity(APIView):
 
 class ModeratorDecision(APIView):
 
-    def post(self, request, act, id):
+	def get(self, request, id):
+
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		try:
+			user = Profile.objects.get(user=request.user).User_Type
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            user = Profile.objects.get(user=request.user).User_Type
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		if user == 'ADMIN':
+
+			try:
+				mod_app = ModeratorApplication.objects.get(id=id)
+			except:
+				return Response(status=status.HTTP_400_BAD_REQUEST)
+			
+			serializer = ModeratorSerializer(mod_app)
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		else:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+	def post(self, request, id, act):
         
-        if user == 'ADMIN':
-            if act == 'accept':
-                try:
-                    new_mod = Profile.objects.get(user__id=id)
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
+
+		print("reach")
+
+		try:
+			app_to_check = ModeratorApplication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		print("reach")
+		try:
+			user = Profile.objects.get(user=request.user).User_Type
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+        
+		if user == 'ADMIN':
+			if act == 'accept':
+				try:
+					new_mod = Profile.objects.get(user__id=app_to_check.Creator.id)
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
                 
-                new_mod.User_Type = 'MODERATOR'
-                new_mod.save(update_fields=["User_Type"])
+				new_mod.User_Type = 'MODERATOR'
+				new_mod.save(update_fields=["User_Type"])
 
-                try:
-                    user = User.objects.get(id=id)
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
+				try:
+					user = User.objects.get(id=app_to_check.Creator.id)
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
 
-                message = "Congratulations " + user.username + "! You have been appointed as a moderator for BookBound!"
-            elif act == 'reject':
-                try:
-                    user = User.objects.get(id=id)
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
+				message = "Congratulations " + user.username + "! You have been appointed as a moderator for BookBound!"
+				app_to_check.Status = "ACCEPTED"
+			elif act == 'reject':
+				try:
+					user = User.objects.get(id=app_to_check.Creator.id)
+				except:
+					return Response(status=status.HTTP_404_NOT_FOUND)
 
-                message = "Hello " + user.username + "! We regret to inform you that your moderator application for BookBound has been rejected."
+				message = "Hello " + user.username + "! We regret to inform you that your moderator application for BookBound has been rejected."
+				app_to_check.Status = "REJECTED"
+			
+			subject = 'BookBound Moderator Application Decision'
+			send_mail(subject, message, EMAIL_HOST_USER, [user.email], fail_silently = True)
+			print("reach")
+			app_to_check.save(update_fields=["Status"])
+			return Response(status=status.HTTP_200_OK)
+		else:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 
-            subject = 'BookBound Moderator Application Decision'
-            send_mail(subject, message, EMAIL_HOST_USER, [user.email], fail_silently = False)
 
 
 class EditProfileView(APIView):
@@ -489,6 +526,27 @@ class EditProfileView(APIView):
 
 class ReportResolution(APIView):
 
+	def get(self, request, id):
+
+		if(not request.user.is_authenticated):
+			return Response({'Message' : 'You must login to continue!'}, status=status.HTTP_404_NOT_FOUND)
+        
+		try:
+			user = Profile.objects.get(user=request.user)
+		except:
+			return Response({'Message' : 'You must login or signup to continue!'}, status=status.HTTP_404_NOT_FOUND)
+		
+		if(user.User_Type != 'ADMIN' and user.User_Type != 'MODERATOR'):
+			return Response({'Message' : 'You are not authorized to perform this action!'}, status=status.HTTP_404_NOT_FOUND)
+
+		try:
+			report_to_resolve = Report.objects.get(id=id)
+		except:
+			return Response({'Message' : 'The report does not exist!'}, status=status.HTTP_404_NOT_FOUND)
+
+		serializer = ReportSerializer(report_to_resolve)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+	
 	def post(self, request, id):
 		
 		if(not request.user.is_authenticated):
@@ -507,12 +565,10 @@ class ReportResolution(APIView):
 		except:
 			return Response({'Message' : 'The report does not exist!'}, status=status.HTTP_404_NOT_FOUND)
 		
-		if(report_to_resolve.Status == 'RESOLVED'):
-			report_to_resolve.Status = 'UNRESOLVED'
-			report_to_resolve.save(update_fields=["Status"])
-		else:
+		if(report_to_resolve.Status == 'UNRESOLVED'):
 			report_to_resolve.Status = 'RESOLVED'
 			report_to_resolve.save(update_fields=["Status"])
+		
 		return Response({'Message' : 'Success!'}, status=status.HTTP_200_OK)
 
 class ChangeListStatus(APIView):

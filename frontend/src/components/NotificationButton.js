@@ -1,11 +1,14 @@
 import React from 'react'
 import styled from 'styled-components';
+import {Link} from "react-router-dom";
 
 function NotificationButton() {
     return (
-        <Container>
-            <TextContainer>More</TextContainer>
-        </Container>
+        <Link to="/notifications" style={{textDecoration: "none"}}>
+            <Container>
+                <TextContainer>More</TextContainer>
+            </Container>
+        </Link>
     )
 }
 
@@ -16,22 +19,17 @@ position: relative;
 height: 50px;
 width:350px;
 margin-left:19%;    
-align:center;
 border-radius:8px; 
 background: #583192;
+display: flex;
+align-items: center;
+justify-content: center;
 `
 const TextContainer = styled.text`
 color:white;
-align:center;
 font-style: normal;
 font-weight: bold;
 font-size:25px;
-margin-left:43%;
-padding-top:3%;
-
-display: flex;
-align-items: center;
-text-align: center;
 letter-spacing: -1px;
 
 color: #FFFFFF;

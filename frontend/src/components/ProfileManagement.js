@@ -155,7 +155,7 @@ class ProfileManagement extends Component{
                   </Link>
                   {
                     ((this.state.User_Type === 'MODERATOR') || (this.state.User_Type === 'ADMIN')) &&
-                      <Link to='/' value="Blacklist">
+                      <Link to='/blacklist' value="Blacklist">
                         <Settings>
                           <SettingsBackground>
                             Blacklist

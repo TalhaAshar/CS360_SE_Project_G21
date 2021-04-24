@@ -15,6 +15,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
+import NotificationDropdown from "./NotificationDropdown";
 
 import axios from 'axios';
 
@@ -38,7 +39,13 @@ function Header(props) {
     const [logged, setLogged] = React.useState(true)
     const [searched, setSearched] = React.useState('')
     const [NavStatus, setNavStatus] = React.useState(false)
+    const [PopView, setPopView] = React.useState(false)
     console.log(searched, "kakak")
+
+    const handleNotification = () =>{
+        setPopView(!PopView)
+        console.log("NEW VIEW", PopView)
+    }
 
     const handleChange = (event) => {
         let temp = "/search/" + event.target.value
@@ -81,10 +88,12 @@ function Header(props) {
         <Container>
           <Top>
             <NotificationIconContainer>
-                <Link to="/Notification" style={{color:"white"}}>
-                    <NotificationsIcon/>
-                </Link>
+                    <NotificationsIcon onClick={handleNotification}/>
+                    
             </NotificationIconContainer>
+            <NotDropdownDiv>
+                <NotificationDropdown trigger={PopView} setTrigger={handleNotification} />
+            </NotDropdownDiv>
             <UserAccountIconContainer>
                 <Link to="/UserAccount" style={{color:"white"}}>
                     <AccountCircleIcon/>
@@ -182,18 +191,20 @@ function Header(props) {
           </Bottom>
         </Container>
         <ContainerMini>
-                <Top>
-                    <NotificationIconContainer>
-                        <Link to="/Notification" style={{color:"white"}}>
-                            <NotificationsIcon/>
-                        </Link>
-                    </NotificationIconContainer>
-                    <UserAccountIconContainer>
-                        <Link to="/UserAccount" style={{color:"white"}}>
-                            <AccountCircleIcon/>
-                        </Link>
-                    </UserAccountIconContainer>
-                </Top>
+        <Top>
+            <NotificationIconContainer>
+                    <NotificationsIcon onClick={handleNotification}/>
+                    
+            </NotificationIconContainer>
+            <NotDropdownDiv>
+                <NotificationDropdown trigger={PopView} setTrigger={handleNotification} />
+            </NotDropdownDiv>
+            <UserAccountIconContainer>
+                <Link to="/UserAccount" style={{color:"white"}}>
+                    <AccountCircleIcon/>
+                </Link>
+            </UserAccountIconContainer>
+          </Top>
                 <Bottom style={{justifyContent:"flex-start"}}>
                             <Link to="/" >  
                                 <LogoContainer>
@@ -265,6 +276,14 @@ const ContainerMini = styled.div`
     width:100%;
 }
 `
+
+const NotDropdownDiv = styled.div`
+    z-index: 1000;
+    position: relative;
+    top: 8%;
+    padding-top: 22.5%;
+    border-radius: 8px;
+`
 const BottomNew = styled.div`
     height:20px;
     margin-bottom:3%;
@@ -285,6 +304,8 @@ const Top = styled.div`
 const NotificationIconContainer = styled.div`
 padding-right:10px;
 margin-top:5px;
+position: absolute;
+right: 2%;
 `
 const UserAccountIconContainer = styled.div`
 padding-right:10px;

@@ -12,7 +12,7 @@ class PersonalizedList(models.Model):
 class Report(models.Model):
 	Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	ReasonChoices = models.TextChoices('ReasonChoices', 'SPAM OFFENSIVE MISLEADING ABUSE INCORRECT_DATA INACCURATE_DESCRIPTION NOT_EXIST_PUBLICATION IMAGE_UNCLEAR')
-	Reason = models.CharField(choices=ReasonChoices.choices, max_length=25, null=True)
+	Reason = models.CharField(choices=ReasonChoices.choices, max_length=60, null=True)
 	Description = models.TextField(max_length=5000)
 	Date = models.DateField(auto_now_add=True)
 	Time = models.TimeField(auto_now_add=True)

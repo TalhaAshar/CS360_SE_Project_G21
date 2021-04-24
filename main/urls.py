@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Index, CatalogueList, CatalogueColumnar, Search, ViewPublication, AddPublication, EditPublication, TakedownRequest, ContactUs
+from .views import Index, CatalogueList, CatalogueColumnar, Search, ViewPublication, AddPublication, EditPublication, TakedownRequest, ContactUs, DeletePublication
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -21,6 +21,7 @@ urlpatterns = [
 	path('publication/<int:id>', ViewPublication.as_view()),
 	path("add_publication", AddPublication.as_view()),
 	path("edit_publication/<int:id>", EditPublication.as_view()),
+	path("delete_publication/<int:id>", DeletePublication.as_view()),
 
 	# URLs for contacting site admins
 	path("takedown", TakedownRequest.as_view()),

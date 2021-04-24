@@ -12,8 +12,9 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function Profile() {
     const { id } = useParams();
-    const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{} } )
+    const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{}, 'blacklisted' : false } )
     const [User, setUser] = useState('')
+    const [visitor, setVisitor] = useState({'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{}, 'blacklisted' : false })
 
     let Path = "/List/guest/" + id
 
@@ -23,7 +24,17 @@ function Profile() {
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setDetails(res.data)
+                console.log(res.data)
                 setUser(res.data['user']['username'])
+            };
+        })
+        .catch(error => console.log('Error:', error))
+
+        url = `api/accounts/profile`
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                console.log(res.data)
+                setVisitor(res.data)
             };
         })
         .catch(error => console.log('Error:', error))
@@ -31,6 +42,17 @@ function Profile() {
             isComponentMounted = false;
         }
     }, [id])
+
+    function addBlacklist(){
+        let url = `api/register/blacklist/add/` + id
+        axios.post(url).then((res) => {
+            
+                setDetails(res.data)
+                setUser(res.data['user']['username'])
+            
+        })
+        .catch(error => console.log('Error:', error))
+    }
 
             return (
                 <Container>
@@ -100,13 +122,12 @@ function Profile() {
                                     </MyList>
                                 </Link>
                                 <Line></Line>
-                                <Link to='/' value="Private Messages" style={{textDecoration:"none"}}>
-                                    <PrivateMessages>
+                                
+                                    {((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false) && <PrivateMessages onClick={addBlacklist}>
                                         <PMBackground>
-                                            Private Messages
+                                            Add to Blacklist
                                         </PMBackground>
-                                    </PrivateMessages>
-                                </Link>
+                                    </PrivateMessages> }
                             </Activity>
                         </ButtonsActivity>
                 </Lower>

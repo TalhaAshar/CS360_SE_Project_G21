@@ -37,6 +37,12 @@ import ProfileGuest from "./components/ProfileGuest";
 import ListGuest from "./components/publications/PersonalizedListGuest"
 import MyActivity from "./components/MyActivity";
 import ForumCategoryUser from "./components/forum/ThreadCategoryUser";
+import ResolvePubReport from "./components/PubReportView";
+import ResolvePostReport from "./components/ThreadReportView";
+import ResolveModApp from "./components/ModeratorAppView";
+import Notification from "./components/Notifications";
+import Blacklist from "./components/Blacklist";
+
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -185,6 +191,26 @@ function App() {
 
           <Route path="/forum/category/:category">
             <ForumCategoryUser />
+          </Route>
+
+          <Route path="/resolve/report/publication/:id">
+            <ResolvePubReport />
+          </Route>
+
+          <Route path="/resolve/report/post/:id">
+            <ResolvePostReport />
+          </Route>
+
+          <Route path="/resolve/modapp/:id">
+            <ResolveModApp />
+          </Route>
+
+          <Route exact path="/notifications">
+            <Notification />
+          </Route>
+
+          <Route exact path="/blacklist">
+            <Blacklist />
           </Route>
 
         </Switch>
