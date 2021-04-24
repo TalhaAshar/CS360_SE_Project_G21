@@ -46,14 +46,13 @@ function AccountRemoval() {
     }
 
     function changeStatus(id){
-        // let url = "api/accounts/reports/" + id
-        // console.log("am here")
-        // axios.post(url).then((res) => {
-        //     console.log("success")
-        //     setFlag(!Flag)
-        // })
-        // .catch(error => console.log('Error:', error))
-        console.log("big data")
+        
+        let url = "api/register/admin/delete/" + id
+        axios.post(url).then((res) => {
+                setApps(res.data)
+                console.log(res.data, "UMAMAM")
+        })
+        .catch(error => console.log('Error:', error))
     }
 
 
@@ -86,7 +85,9 @@ function AccountRemoval() {
                                     <Flag>
                                         <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                         <Text> <Link to={placeholder} style = {{textDecoration:'none'}}>{elem.user["username"]} </Link>  made an account removal request.</Text>
-                                        <PendingButton/>
+                                        <BlacklistContainer onClick={() => changeStatus(elem.user["id"])}>
+                                            <TextContainer>Remove from blacklist</TextContainer>
+                                        </BlacklistContainer>
                                         <NLine></NLine>
                                     </Flag>
                                 )
@@ -189,4 +190,28 @@ font-weight: normal;
 font-size: 18px;
 line-height: 32px;
 color: #060606;
+`
+
+const BlacklistContainer = styled.div`
+height: 35px;
+width:90px;
+align:center;
+margin-left:920px;
+border-radius:5px; 
+background: #583192;
+`
+
+const TextContainer = styled.text`
+color:white;
+align:center;
+font-style: normal;
+font-weight: bold;
+margin-left:8px;
+
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: -1px;
+
+color: #FFFFFF;
 `
