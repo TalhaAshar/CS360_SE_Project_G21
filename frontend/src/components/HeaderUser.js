@@ -71,6 +71,11 @@ function Header(props) {
 
         setNavStatus(!NavStatus)
     }
+
+    function NavBarUpdate(event){
+        console.log(event)
+    }
+
     return (
         <Overall>
         <Container>
@@ -229,7 +234,7 @@ function Header(props) {
                                 </SearchContainer>
                         </Bottom>
                         <BottomNew>
-                            <NavBar trigger={NavStatus} setTrigger={handleNav}/>
+                            <NavBar trigger={NavStatus} setTrigger={handleNav} changeMyParent={logUserOut}/>
                         </BottomNew>
         </ContainerMini>
         </Overall> 
