@@ -25,7 +25,8 @@ function ThreadAdmin(props) {
     const [editFlag, setEditFlag] = useState(false)
     const [postToEdit, setPostToEdit] = useState(0)
     const [Popup, setPopup] = useState(false)
-    const [thread, setThread] = useState()
+    const [thread, setThread] = useState() 
+    const [notif, setNotif] = useState(false)
     const d = new Date()
     const { id } = useParams();
     console.log("reply", reply)
@@ -38,11 +39,22 @@ function ThreadAdmin(props) {
             if (isComponentMounted){
                 
                 //console.log(posts, "set new")
-                console.log(res.data, "Nptt")
+                console.log(res.data, res.data[0].Creator["id"], "Nptt")
                 setPosts(res.data)
-            };
+                let notif_url = "api/forum/notifications/" + res.data[0].Creator["id"]
+                axios.get(notif_url).then((res2) => {
+                    if (isComponentMounted){
+                        
+                        //console.log(posts, "set new")
+                        console.log(res2.data, "THE MAN")
+                        setNotif(res2.data["Disable"])
+                    };
+                })
+                .catch(error => console.log('Error:', error))
+                    };
         })
         .catch(error => console.log('Error:', error))
+
 
         axios.get(`api/accounts/profile`).then((res) => {
             if (isComponentMounted){
@@ -94,6 +106,14 @@ function ThreadAdmin(props) {
         console.log("Finished edit handler")
     }
 
+    function manageNotifications(choice){
+        let url = "api/forum/notifications/update/" + choice 
+        axios.post(url).then((res) => {
+                console.log(res.data, "Nptt")
+                setNotif(res.data["Disable"])
+        });
+    }
+
     switch(flag){
         case true:
             return(
@@ -118,11 +138,17 @@ function ThreadAdmin(props) {
                     { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>
 
-                {(User == posts[0].Creator["username"]) && <Delete>
+                {(User == posts[0].Creator["username"] && notif == false) && <Delete onClick={() => manageNotifications("disable")}>
                     <DText>
                     Unnotify Me
                     </DText>
                 </Delete>}
+                {(User == posts[0].Creator["username"] && notif == true) && <Delete onClick={() => manageNotifications("enable")}>
+                    <DText>
+                    Notify Me
+                    </DText>
+                </Delete>}
+
 
                 </RP>
                 <Results>
@@ -170,9 +196,14 @@ function ThreadAdmin(props) {
                     { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>}
 
-                {(User == posts[0].Creator["username"]) && <Delete>
+                {(User == posts[0].Creator["username"] && notif == false) && <Delete onClick={() => manageNotifications("disable")}>
                     <DText>
                     Unnotify Me
+                    </DText>
+                </Delete>}
+                {(User == posts[0].Creator["username"] && notif == true) && <Delete onClick={() => manageNotifications("enable")}>
+                    <DText>
+                    Notify Me
                     </DText>
                 </Delete>}
 
@@ -233,9 +264,14 @@ function ThreadAdmin(props) {
                     { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>}
 
-                {(User == posts[0].Creator["username"]) && <Delete>
+                {(User == posts[0].Creator["username"] && notif == false) && <Delete onClick={() => manageNotifications("disable")}>
                     <DText>
                     Unnotify Me
+                    </DText>
+                </Delete>}
+                {(User == posts[0].Creator["username"] && notif == true) && <Delete onClick={() => manageNotifications("enable")}>
+                    <DText>
+                    Notify Me
                     </DText>
                 </Delete>}
 
@@ -263,19 +299,9 @@ function ThreadAdmin(props) {
                 </Lower>
 
                     
-                {
-                    <Editor>
-                        (reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>
-                        
-                    </Editor>        
-                }
-                
-                {
-                    <Editor>
-                        (reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>
-                        
-                    </Editor>        
-                }
+                {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
+                {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
+
             </Container>
         )
     }

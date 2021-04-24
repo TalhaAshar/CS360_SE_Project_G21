@@ -2,40 +2,60 @@ import React from 'react';
 import styled from 'styled-components';
 import NotificationButton from './NotificationButton';
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 function NotificationDropdown(props) {
+    
+    const [notifs, setNotifs] = useState([])
+
+    useEffect(() => {
+        let isComponentMounted = true;
+        let url = "api/forum/notifications"
+        axios.get(url).then((res) => {
+            if (isComponentMounted){
+                setNotifs(res.data)
+            };
+        })
+        .catch(error => console.log('Error:', error))
+        return () => {
+            isComponentMounted = false;
+        }
+    }, [])
+
     return(props.trigger) ? (
         <Container onMouseLeave={props.setTrigger}>
             <Header>
                 <HeaderText>Notifications</HeaderText>
             </Header>
 
-            <NotificationContainer>    
-                <Notification>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/> 
-                    <NotificationText>Notification</NotificationText>
-                </Notification>
+            <NotificationContainer>
+                {
+                    notifs.map((elem, index) => {
+                        if(index < 5){
+                            let threadLink = "/thread/user/" + elem.ParentThread["id"]                            
+                            return(
+                                <Link to={threadLink} style={{textDecoration:"none"}}>
+                                <Notification>
+                                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/> 
+                                    <NotificationText>{elem.Body}</NotificationText>
+                                </Notification>
+                                </Link>
+                            )
+                        }
+                    })
+                }   
+                
 
-                <Notification>
+                {(notifs.length == 0) && <Notification>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/>
-                    <NotificationText>Notification</NotificationText>
-                </Notification>
-
-                <Notification>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/>
-                    <NotificationText>Notification</NotificationText>
-                </Notification>
-
-                <Notification>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/>
-                    <NotificationText>Notification</NotificationText>
-                </Notification>
-
-                <Notification>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/>
-                    <NotificationText>Notification</NotificationText>
-                </Notification>
+                    <NotificationText>You have no new notifications</NotificationText>
+                </Notification>}
                 
                 <NotificationButton/>
 

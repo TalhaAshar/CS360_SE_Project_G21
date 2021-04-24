@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Thread, Post
+from .models import Thread, Post, Notification
 from django.contrib.auth.models import User
 
 from django.shortcuts import render
@@ -10,9 +10,9 @@ from django.db.models import Q
 from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PostSerializer, ThreadSerializer
+from .serializers import PostSerializer, ThreadSerializer, NotificationSerializer
 from accounts.models import MyActivity
-from accounts.serializers import ActivitySerializer
+from accounts.serializers import ActivitySerializer, ProfileSerializer
 
 # API to get the most recently added threads for guest user's views
 class GuestRecentThreads(APIView):
@@ -90,12 +90,33 @@ class ThreadsHome(APIView):
         temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
         temp.save()
 
-        all_posts = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
-        all_posts = PostSerializer(all_posts, many=True)
+        all_posts_queryset = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+        all_posts = PostSerializer(all_posts_queryset, many=True)
 
         # Record the user's activity
         user_activity = MyActivity.objects.create(Owner=user, CreatedPost=queryset)
         user_activity.save()
+
+        # Find all unique users following this particular thread
+        users_to_notify = []
+        for i in all_posts_queryset:
+            
+            if i.Creator not in users_to_notify and i.Creator.username != user.username:
+                users_to_notify.append(i.Creator)
+            
+        # If the users have not disabled notifications, create one for each user
+        for i in users_to_notify:
+           
+            check_notification_status = Profile.objects.get(user=i).Disable
+
+            if(not check_notification_status):
+                if(i.username == queryset.Creator.username):
+                    message = user.username + " posted on a thread you created."
+                else:
+                    message = user.username + " posted on a thread you are following."
+                
+                new_notification = Notification.objects.create(Owner=i, Commentor=user, ParentThread=queryset, Body=message)
+                new_notification.save()
 
         return Response(all_posts.data, status=status.HTTP_200_OK)
 
@@ -309,4 +330,66 @@ class PostParent(APIView):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 		
 		serializer = ThreadSerializer(thread_to_get)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API to change all future notifications for a user
+class ManageNotification(APIView):
+
+	def get(self, request):
+
+		# Ensure that the user is logged in
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Retrieve user's record
+		try:
+			user = User.objects.get(username=request.user)
+		except:
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Retrieve the user's notifications ordered by most recent
+		notifications = Notification.objects.filter(Owner=user).order_by('-Timestamp')
+
+		# Return all notifications
+		serializer = NotificationSerializer(notifications, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+	def post(self, request, act):
+
+		# Ensure that the user is logged in
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Retrieve user's record
+		try:
+			user = Profile.objects.get(user=request.user)
+		except:
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Depending on the action, turn their notifications on/off
+		if(act == 'enable'):
+			user.Disable = False
+		elif(act == 'disable'):
+			user.Disable = True
+
+		user.save(update_fields=['Disable'])
+
+		serializer = ProfileSerializer(user)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API to get a particular thread's notification status
+class ThreadNotification(APIView):
+
+	def get(self, request, id):
+
+		# Retrieve user's record
+		try:
+			user = User.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+		temp = Profile.objects.get(user=user)
+
+		serializer = ProfileSerializer(temp)
+		print(serializer.data)
 		return Response(serializer.data, status=status.HTTP_200_OK)
