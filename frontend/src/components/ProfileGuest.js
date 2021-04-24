@@ -123,7 +123,7 @@ function Profile() {
                                 </Link>
                                 <Line></Line>
                                 
-                                    {((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false) && <PrivateMessages onClick={addBlacklist}>
+                                    {((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false && Details['User_Type'] != 'ADMIN') && <PrivateMessages onClick={addBlacklist}>
                                         <PMBackground>
                                             Add to Blacklist
                                         </PMBackground>
