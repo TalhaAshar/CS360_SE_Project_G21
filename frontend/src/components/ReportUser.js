@@ -173,7 +173,7 @@ border-radius:6px;
 
 const ReportsContainer = styled.h3`
 width:1050px;
-height: 1155px;
+height: 0 auto;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
@@ -185,7 +185,7 @@ width:100px;
 height:50px;
 margin-left:635px;
 align-items: Center;
-margin-top:40px;
+margin-top: 3%;
 background: #DCF2F8;
 border-radius:10px;
 `
@@ -197,10 +197,11 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
+
 display: flex;
 align-items: center;
-color: Black;
 background: #DCF2F8;
+color: Black;
 `
 
 
@@ -220,5 +221,7 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
+
+
 color: #060606;
 `

@@ -191,12 +191,10 @@ border-radius:6px;
 
 const MDAContainer = styled.h3`
 width:1050px;
-height: 1155px;
+height: 0 auto;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;
-background: #DCF2F8;
-box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
 `
 
 const ViewNextButtonContainer = styled.div`
@@ -205,7 +203,7 @@ width:100px;
 height:50px;
 margin-left:635px;
 align-items: Center;
-margin-top:40px;
+margin-top: 3%;
 background: #DCF2F8;
 border-radius:10px;
 `
