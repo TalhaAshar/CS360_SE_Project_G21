@@ -440,7 +440,7 @@ margin-bottom: 10px;
 `
 const Companyfilled = styled.h3`
 margin-bottom: 30px;
-    width: 52px;
+    width: 0 auto;
     height: 27px;
    
 

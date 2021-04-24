@@ -70,6 +70,9 @@ function ModAppHistoryUser() {
             <MDAHeader>
                 <MDAText>Moderator Applications</MDAText>
             </MDAHeader>
+            <ViewNextButtonContainer>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </ViewNextButtonContainer>
             <MDAContainer>
                 {
                     apps.map((elem, index) => {
@@ -153,9 +156,7 @@ function ModAppHistoryUser() {
                     <NLine></NLine> 
                 </Flag>}       
             </MDAContainer>
-            <ViewNextButtonContainer>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
-            </ViewNextButtonContainer>
+            
         </Container>
     )
 }
@@ -170,23 +171,21 @@ background-color: white;
 `
 const MDAHeader = styled.h3`
 width: 1050px;
-height: 80px;
+height: 40px;
 margin-left:150px;
 margin-right:150px;
 padding-left: 10px;
 padding-right: 10px;
-margin-top:150px;
 border-radius: 20px;
 background: #0A3977;
 `
 const MDAText = styled.h3`
 max-height:50px;
-background-color: #0A3977;
 color:white;
-font-size:50px;
+font-size:25px;
 font-weight:bold;
 border:1px;
-padding-top:15px;
+margin-top:2%;
 text-align: center;
 letter-spacing: -1px;
 border-radius:6px;
@@ -196,7 +195,7 @@ const MDAContainer = styled.h3`
 width:1050px;
 height: 0 auto;
 margin-left:160px;
-margin-top:75px;
+margin-top:3%;
 border-radius:10px;
 `
 
@@ -206,7 +205,7 @@ width:100px;
 height:50px;
 margin-left:635px;
 align-items: Center;
-margin-top: 3%;
+margin-top:3%;
 background: #DCF2F8;
 border-radius:10px;
 `
