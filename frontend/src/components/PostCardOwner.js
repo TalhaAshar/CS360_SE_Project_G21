@@ -142,6 +142,7 @@ const Comment = styled.div`
     margin-bottom:10px;
     padding-bottom: 30px;
     margin-right:5%;
+    cursor: pointer;
 `
 
 
@@ -156,9 +157,11 @@ margin-right:5%;
 `
 const Comment1 = styled.div`
 margin-right:5%;
+cursor: pointer;
 `
 const Comment2 = styled.div`
 margin-left:10px;
+cursor: pointer;
 `
 const Commentb = styled.div`
 display:flex;

@@ -118,11 +118,8 @@ function ThreadAdmin(props) {
         case true:
             return(
                 <Container>
-            <Heading>
-                    <Background>
-                        { thread ? thread['Title'] : null }
-                    </Background>
-                </Heading>
+                    <BookTitleContainer><h1>{thread ? thread['Title'] : null}</h1></BookTitleContainer>
+
             <Lower>
                 
 
@@ -407,6 +404,7 @@ font-size: 18px;
 line-height: 25px;
 color: #FFFFFF;
 text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+cursor: pointer;
 `
 
 const RText = styled.h3`

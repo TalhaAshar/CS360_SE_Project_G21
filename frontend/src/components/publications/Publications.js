@@ -68,9 +68,7 @@ function Publications(props) {
             return (
                 <Container>
                     
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
+                    <BookTitleContainer><h1>Publications</h1></BookTitleContainer>
                     <ViewNextButtonContainer>
                     <View onClick = {handleClick} onMouseLeave={handleClick}>
                             <ViewText>View</ViewText>
@@ -108,9 +106,7 @@ function Publications(props) {
         case 'MODERATOR':
             return (
                 <Container>
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
+                    <BookTitleContainer><h1>Publications</h1></BookTitleContainer>
                     <ViewNextButtonContainer >
                             <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
@@ -153,6 +149,18 @@ function Publications(props) {
 }
 
 export default Publications
+
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+margin-bottom: 2%;
+`
 
 const Container = styled.div`
     max-width:100%;
@@ -197,6 +205,8 @@ const ViewText = styled.h4`
     display:flex;
     justify-content:center;
     align-items:center;
+    text-align: center;
+    cursor: pointer;
 `
 const View = styled.h4`
     background:#3B058B;
@@ -205,14 +215,17 @@ const View = styled.h4`
     color:white;
     border-radius:6px;
     margin-top:1%;
+    cursor: pointer;
 `
 const GuestNextPrevious = styled.h4`
     margin-top:1%;
     margin-right:48.5%;
+    cursor: pointer;
 `
 
 const NextPrevious = styled.h4`
     margin-top:1%;
+    cursor: pointer;
 `
 
 const PublicationTitle = styled.div`
