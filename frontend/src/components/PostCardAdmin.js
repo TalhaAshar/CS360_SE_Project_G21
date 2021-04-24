@@ -164,9 +164,11 @@ margin-right:5%;
 `
 const Comment1 = styled.div`
     margin-right:6%;
+    cursor: pointer;
 `
 const Comment2 = styled.div`
 margin-left:unset;
+cursor: pointer;
 `
 const Commentb = styled.div`
 display:flex;

@@ -77,7 +77,7 @@ function PubSinglePage(props) {
                         <Text>ISBN: {pubs[0].ISBN}</Text>
                     </BookDetails>
                     { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED' || profile == 'UNVERIFIED') &&<ButtonIcons>
-                            <AddCircleIcon onClick={AddToMyList}/>
+                            <AddCircleIcon onClick={AddToMyList} style={{cursor: "pointer"}}/>
                             { seen ? <PubSingleAddFeedbackPopup toggle={togglePop} /> : null }
                             
                             { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED') && <Link to={{

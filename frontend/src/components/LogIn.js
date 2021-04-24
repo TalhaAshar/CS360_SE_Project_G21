@@ -93,4 +93,5 @@ const ForgetContainer = styled.div`
     left:20px;
     color:#583192;
     font-size:20px;
+    cursor: pointer;
 `
