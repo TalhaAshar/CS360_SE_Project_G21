@@ -68,6 +68,9 @@ function ReportsUser() {
             <ReportsHeader>
                 <ReportsText>Reports</ReportsText>
             </ReportsHeader>
+            <ViewNextButtonContainer>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </ViewNextButtonContainer>
             <ReportsContainer>
                 {
                     reports.map((elem, index) => {
@@ -158,9 +161,7 @@ function ReportsUser() {
                 </Flag>} 
                 
             </ReportsContainer>
-            <ViewNextButtonContainer>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
-            </ViewNextButtonContainer>
+            
         </Container>
     )
 }
@@ -176,23 +177,21 @@ background-color: white;
 `
 const ReportsHeader = styled.h3`
 width: 1050px;
-height: 80px;
+height: 40px;
 margin-left:150px;
 margin-right:150px;
 padding-left: 10px;
 padding-right: 10px;
-margin-top:150px;
 border-radius: 20px;
 background: #0A3977;
 `
 const ReportsText = styled.h3`
 max-height:50px;
-background-color: #0A3977;
 color:white;
-font-size:50px;
+font-size:25px;
 font-weight:bold;
 border:1px;
-padding-top:15px;
+margin-top:2%;
 text-align: center;
 letter-spacing: -1px;
 border-radius:6px;
@@ -202,7 +201,7 @@ const ReportsContainer = styled.h3`
 width:1050px;
 height: 0 auto;
 margin-left:160px;
-margin-top:75px;
+margin-top:3%;
 border-radius:10px;
 `
 
@@ -212,7 +211,7 @@ width:100px;
 height:50px;
 margin-left:635px;
 align-items: Center;
-margin-top: 3%;
+margin-top:3%;
 background: #DCF2F8;
 border-radius:10px;
 `
@@ -224,11 +223,10 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
-
 display: flex;
 align-items: center;
-background: #DCF2F8;
 color: Black;
+background: #DCF2F8;
 `
 
 
@@ -248,7 +246,5 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
-
-
 color: #060606;
 `
