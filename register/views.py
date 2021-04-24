@@ -305,8 +305,8 @@ class Blacklist(APIView):
 		except:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
-		blaclisted_users = BlacklistSerializer(queryset, many=True)
-		return Response(blaclisted_users.data, status=status.HTTP_200_OK)
+		blacklisted_users = BlacklistSerializer(queryset, many=True)
+		return Response(blacklisted_users.data, status=status.HTTP_200_OK)
 	
 	def post(self, request, act, id):
 
@@ -319,7 +319,7 @@ class Blacklist(APIView):
 		except:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
-		if user != 'ADMIN':
+		if user != 'ADMIN' and user != 'MODERATOR':
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 		# Find the user of interest
@@ -339,5 +339,17 @@ class Blacklist(APIView):
 			user_to_blacklist.blacklisted = True
 		elif act == "delete":
 			user_to_blacklist.blacklisted = False
-		user_to_blacklist.save()
-		return Response(status=status.HTTP_200_OK)
+		user_to_blacklist.save(update_fields=["blacklisted"])
+
+		# Fetch all blacklisted users
+		try:
+			queryset = Profile.objects.filter(blacklisted=True)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+		
+		if(act == "delete"):
+			blacklisted_users = BlacklistSerializer(queryset, many=True)
+			return Response(blacklisted_users.data, status=status.HTTP_200_OK)
+		else:
+			temp = BlacklistSerializer(user_to_blacklist)
+			return Response(temp.data, status=status.HTTP_200_OK)

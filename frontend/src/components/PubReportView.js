@@ -2,29 +2,83 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 // import fetch from 'cross-fetch';
 import styled from 'styled-components'
+import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
 import axios from 'axios';
+import { useLocation, useParams} from "react-router-dom";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function PubReportView () {
+
+  const [report, setReport] = useState({'Reason' : '', 'Description' : ''})
+  const { id } = useParams();
+
+
+  useEffect(() => {
+    let isComponentMounted = true;
+    let url = "api/accounts/reports/" + id
+    axios.get(url).then((res) => {
+        if (isComponentMounted){
+            setReport(res.data)
+        };
+    })
+    .catch(error => console.log('Error:', error))
+
+    return () => {
+        isComponentMounted = false;
+    }
+  }, [id])
+
+
+  function removeItem(){
+    let url = "api/main/delete_publication/" + report.Relevant_Pub["id"]
+
+    axios.post(url).then((res) => {
+      console.log("The pub was deleted")
+    })
+    .catch(error => console.log('Error:', error))
+
+    url = "api/accounts/reports/" + id
+    axios.post(url).then((res) => {
+      console.log("The state was changed")
+    })
+    .catch(error => console.log('Error:', error))
+
+  }
+
+  function changeStatus(){
+    let url = "api/accounts/reports/" + id
+    axios.post(url).then((res) => {
+      console.log("The state was changed")
+    })
+    .catch(error => console.log('Error:', error))
+  }
+
+
     return(
       <Container>
       <Head>Publication Report</Head>
       <FormContainer>
           <LabelContainer>
-              <Label for="Reason">Reason</Label>
-              <Reason>xyz</Reason>
-              <Span>Provide a description of what is wrong and suggestions/corrections required</Span>
-              <Details style = {{wordWrap:'break-word'}}>xyz</Details>
+              <Label for="Reason">Reason
+              <br/>
+              <Reason>{report.Reason}</Reason>
+              </Label>
+              
+              <Span>Provide a description of what is wrong and suggestions/corrections required
+              <Details style = {{wordWrap:'break-word'}} dangerouslySetInnerHTML={{ __html:report.Description}} />
+              </Span>
+              
           </LabelContainer>
 
           <RemoveItemContainer>
-              <RemoveItemTextContainer>Remove Item</RemoveItemTextContainer>
+              <RemoveItemTextContainer onClick={removeItem}>Remove Item</RemoveItemTextContainer>
             </RemoveItemContainer>
 
           <IgnoreContainer>
-            <IgnoreTextContainer>Ignore</IgnoreTextContainer>
+            <IgnoreTextContainer onClick={changeStatus}>Ignore</IgnoreTextContainer>
           </IgnoreContainer>
 
       </FormContainer> 
@@ -62,20 +116,22 @@ const FormContainer = styled.div`
 
 `
 
-const Span = styled.span`
+const Span = styled.div`
   font-weight:bold;
   font-size:20px;
+  margin-top: -40%;
 `
 
 const LabelContainer = styled.div`
-  display:grid;
-  grid-template-rows:20px 65px;
+  display:flex;
+  flex-flow: row wrap;
   margin-left:50px;
   margin-top:20px;
 `
-const Label = styled.label`
+const Label = styled.div`
   font-weight:bold;
   font-size:20px;
+  margin-bottom: -40%;
 `
 
 const Reason = styled.text`
@@ -87,19 +143,19 @@ margin-top: 2%;
 const Details = styled.text`
 font-weight:Normal;
 font-size:18px;
-margin-top:-52%
 `
 
 const RemoveItemContainer = styled.div`
 height: 35px;
 position:relative;
 display:flex; 
-width:120px;
+width:200px;
 align:center;
 margin-top:82%;
-margin-left:-20%;
+margin-left:15%;
 border-radius:5px; 
 background: #06AF47;
+right: 10%;
 `
 const RemoveItemTextContainer = styled.text`
 color:white;
@@ -119,9 +175,11 @@ color: #FFFFFF;
 const IgnoreContainer = styled.div`
 height: 35px;
 position:relative;
-display:flex; 
-width:80px;
-align:center;
+display:flex;
+justify-content:center; 
+width:130px;
+align-items:center;
+padding: 0% 1% 1% 0%;
 margin-left:-5%;
 margin-top:82%;
 margin-right:2%;

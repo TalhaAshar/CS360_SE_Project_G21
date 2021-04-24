@@ -233,12 +233,27 @@ class DeletePost(APIView):
 			parent_thread.PostCount = count
 			parent_thread.save(update_fields=["PostCount"])
             
-			post_to_delete.delete()
+			# Find all the posts under this particular thread
+			all_children_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
+			
 
-			all_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
-			all_posts = PostSerializer(all_posts, many=True)
+			# If the post is the first post in the thread, delete the thread as well
+			if(all_children_posts[0].id == id):
 
-			return Response(all_posts.data, status=status.HTTP_200_OK)
+				# Delete the post in question
+				post_to_delete.delete()
+				
+				parent_thread.delete()
+				return Response(status=status.HTTP_200_OK)
+			else:
+
+				# Delete the post in question
+				post_to_delete.delete()
+				
+				all_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
+				all_posts = PostSerializer(all_posts, many=True)
+				return Response(all_posts.data, status=status.HTTP_200_OK)
+
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 

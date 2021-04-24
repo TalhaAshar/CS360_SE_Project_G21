@@ -1,13 +1,47 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 // import fetch from 'cross-fetch';
-import axios from 'axios';
 import styled from 'styled-components';
+import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import axios from 'axios';
+import { useLocation, useParams} from "react-router-dom";
+
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 function ModAppView() {
+
+  const [app, setApp] = useState({'Reason' : '', 'Description' : '', 'Name' : '', 'Location' : '', })
+  const { id } = useParams();
+
+
+  useEffect(() => {
+    let isComponentMounted = true;
+    let url = "api/accounts/modapps/" + id
+    axios.get(url).then((res) => {
+        if (isComponentMounted){
+            setApp(res.data)
+        };
+    })
+    .catch(error => console.log('Error:', error))
+
+    return () => {
+        isComponentMounted = false;
+    }
+  }, [id])
+
+
+  function changeStatus(choice){
+    let url = "api/accounts/modapps/" + id + "/" + choice
+    axios.post(url).then((res) => {
+      console.log("The state was changed")
+    })
+    .catch(error => console.log('Error:', error))
+  }
+
+
     return(
       <Container>
 
@@ -18,20 +52,20 @@ function ModAppView() {
             <UserInfo>
               <Span>Full Name</Span>
               <Span>Location</Span>
-              <Name>xyz</Name>              
-              <Location>xyz</Location>
+              <Name>{app.Name}</Name>              
+              <Location>{app.Location}</Location>
               <Span>Why do you want to be a moderator?</Span><br/>
-              <Why>xyz</Why>  
+              <Why>{app.Reason}</Why>  
               <Span style = {{marginTop:'25%',position:'relative',marginLeft:'-100%'}}>Describe your qualifications.</Span>
-              <Qualifications style = {{wordWrap:'break-word'}}>xyz</Qualifications>  
+              <Qualifications style = {{wordWrap:'break-word'}} dangerouslySetInnerHTML={{ __html:app.Description}} /> 
             </UserInfo>
 
             <AcceptedContainer>
-              <AcceptedTextContainer>Accepted</AcceptedTextContainer>
+              <AcceptedTextContainer onClick={() => changeStatus("accept")}>Accepted</AcceptedTextContainer>
             </AcceptedContainer>
 
             <RejectedContainer>
-              <RejectedTextContainer>Rejected</RejectedTextContainer>
+              <RejectedTextContainer onClick={() => changeStatus("reject")}>Rejected</RejectedTextContainer>
             </RejectedContainer>
 
         </FormContainer> 

@@ -330,3 +330,28 @@ class ContactUs(APIView):
 		except:
 			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 		return Response(status=status.HTTP_200_OK)
+
+# API VIew to delete a particular publication
+class DeletePublication(APIView):
+
+	def post(self, request, id):
+
+		# Ensure that only a logged in user can delete publications
+		if not request.user.is_authenticated:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+			
+		# Check if the user has the authorization to delete a publication
+		user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
+		if user_to_check == 'UNVERIFIED' or user_to_check == 'VERIFIED':
+			return Response({'Message' : 'You do not have the permission to perform this task!'}, status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Check if the publication exists in the database
+		try:
+			pub_to_delete = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		# Deleting the publication
+		pub_to_delete.delete()
+		return Response(status=status.HTTP_200_OK)
+

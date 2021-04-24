@@ -79,46 +79,67 @@ function ReportsUser() {
                         {
                             if (elem.Status == 'UNRESOLVED' && elem.Relevant_Post == null){
                                 let dest = "/publication/" + elem.Relevant_Pub["id"]
+                                let reportLink = "resolve/report/publication/" + elem.id
                                 return(
-                                    <Flag>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                    
+                                        <Flag>
+                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
 
-                                        <Text>{placeholder} reported the publication, <Link to={dest}> {elem.Relevant_Pub["Title"]} </Link>, for {elem.Reason}.</Text>
-                                        <UnresolvedButton onClick={changeStatus(elem.id)}/>
-                                        <NLine></NLine>
-                                    </Flag>
+                                            <Text>{placeholder} reported the publication, <Link to={dest}> {elem.Relevant_Pub["Title"]} </Link>, for {elem.Reason}.</Text>
+                                            {(type == 'MODERATOR' || type == 'ADMIN') && <Link to={reportLink} style={{textDecoration:"none"}}>
+                                                <UnresolvedButton onClick={changeStatus(elem.id)}/>
+                                            </Link>}
+                                            {(type != 'MODERATOR' && type != 'ADMIN') && 
+                                                <UnresolvedButton onClick={changeStatus(elem.id)}/>
+                                            }
+                                            <NLine></NLine>
+                                        </Flag>
                                 )
                             }
                             else if (elem.Status == 'RESOLVED' && elem.Relevant_Post == null){
                                 let dest = "/publication/" + elem.Relevant_Pub["id"]
+                                let reportLink = "resolve/report/publication/" + elem.id
                                 return(
-                                    <Flag>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text>{placeholder} reported the publication, <Link to={dest}> {elem.Relevant_Pub["Title"]} </Link>, for {elem.Reason}.</Text>
-                                        <ResolvedButton onClick={changeStatus(elem.id)}/>
-                                        <NLine></NLine>
-                                    </Flag>
+                                    
+                                        <Flag>
+                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                            <Text>{placeholder} reported the publication, <Link to={dest}> {elem.Relevant_Pub["Title"]} </Link>, for {elem.Reason}.</Text>
+                                                <ResolvedButton onClick={changeStatus(elem.id)}/>
+
+                                            <NLine></NLine>
+                                        </Flag>
                                 )
                             }
                             else if (elem.Status == 'UNRESOLVED'){
                                 console.log(elem)
+                                let reportLink = "resolve/report/post/" + elem.id
                                 return(
-                                    <Flag>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text>{placeholder} reported a post for {elem.Reason}.</Text>
-                                        <UnresolvedButton onClick={changeStatus(elem.id)}/>
-                                        <NLine></NLine>
-                                    </Flag>
+                                        <Flag>
+                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                            <Text>{placeholder} reported a post for {elem.Reason}.</Text>
+                                            {(type == 'MODERATOR' || type == 'ADMIN') && <Link to={reportLink} style={{textDecoration:"none"}}>
+                                                <UnresolvedButton onClick={changeStatus(elem.id)}/>
+                                            </Link>}
+                                            {(type != 'MODERATOR' && type != 'ADMIN') && 
+                                                <UnresolvedButton onClick={changeStatus(elem.id)}/>
+                                            }
+                                            <NLine></NLine>
+                                        </Flag>
+                                    
                                 )
                             }
                             else{
+                                let reportLink = "resolve/report/post/" + elem.id
                                 return(
-                                    <Flag>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text>{placeholder} reported a post for {elem.Reason}.</Text>
-                                        <ResolvedButton onClick={changeStatus(elem.id)}/>
-                                        <NLine></NLine>
-                                    </Flag>
+                                    
+                                        <Flag>
+                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                            <Text>{placeholder} reported a post for {elem.Reason}.</Text>
+                                            
+                                                <ResolvedButton onClick={changeStatus(elem.id)}/>
+                                            <NLine></NLine>
+                                        </Flag>
+                                    
                                 )
                             }
                         }

@@ -75,7 +75,7 @@ function ModAppHistoryUser() {
                     apps.map((elem, index) => {
                         if(index >= start && index < (start + 15) && index < apps.length)
                         {
-                            if(type == 'ADMIN' || type == 'MODERATOR'){
+                            if(type == 'ADMIN'){
                                 let placeholder = "/profile/" + elem.Creator["id"]
                                 if(elem.Status == 'ACCEPTED'){
                                     return(
@@ -98,11 +98,14 @@ function ModAppHistoryUser() {
                                     )
                                 }
                                 else{
+                                    let appLink = "/resolve/modapp/" + elem.id
                                     return(
                                         <Flag>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
-                                            <PendingButton/>
+                                            <Link to={appLink} style={{textDecoration:"none"}}>
+                                                <PendingButton/>
+                                            </Link>
                                             <NLine></NLine>
                                         </Flag>
                                     )
