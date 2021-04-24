@@ -65,7 +65,6 @@ function ThreadGuest() {
 }
 
 export default ThreadGuest
-
 const Container = styled.div`
     height:100%;
 `

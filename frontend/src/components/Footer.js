@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import CopyrightIcon from '@material-ui/icons/Copyright';
 
 function Footer() {
@@ -36,8 +36,9 @@ export default Footer
 
 const Container = styled.div`
     margin-top:2%;
+    width:100%;
     position:relative;
-    top:150%;
+    top:0%;
 `
 const Top = styled.nav`
     height:80px;

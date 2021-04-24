@@ -159,6 +159,8 @@ const Container = styled.div`
     max-height:100%;
     margin-left:3%;
     margin-right:3%;
+    margin-top:3%;
+    margin-bottom:3%;
     @media only screen and (max-width: 1200px) {
         height:auto;
     }
@@ -247,6 +249,5 @@ const Cards = styled.div`
         justify-content:left;
         flex-wrap:wrap;
         flex:1;
-        background:black;
     }
 `

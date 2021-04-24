@@ -54,7 +54,7 @@ function PostCardGuest({username, timestamp, desc, id}) {
     return (
         
         <Container>
-        <Link to={profile_url}>
+        <Link to={profile_url} style={{textDecoration:"none"}}>
             <ImageUserNameContainer>
                 <ImageContainer>
                 
@@ -117,3 +117,4 @@ const Comment = styled.div`
     margin-bottom:10px;
     padding-bottom: 30px;
 `
+
