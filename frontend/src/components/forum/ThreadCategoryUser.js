@@ -43,7 +43,7 @@ function ThreadCategory() {
     }
 
     function rightClick(){
-        if(start + 8 < pubs.length){
+        if(start + 8 < threads.length){
             setStart(start + 8)
         }
     }

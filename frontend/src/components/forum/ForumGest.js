@@ -4,16 +4,20 @@ import ForumGuestThreadCard from './ForumGuestThreadCard';
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import {Link} from "react-router-dom";
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 
 function ForumGest() {
 
     const [threads, setThreads] = React.useState([])
+    const[start, setStart] = React.useState(0)
     const d = new Date()
 
     useEffect(() => {
         let isComponentMounted = true;
         axios.get(`api/forum/guest/home`).then((res) => {
             if (isComponentMounted){
+                console.log(res.data.length)
                 setThreads(res.data)
             };
         })
@@ -23,10 +27,26 @@ function ForumGest() {
         }
     }, [])
 
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 6)
+        }
+    }
+
+    function rightClick(){
+        if(start + 6 < threads.length){
+            setStart(start + 6)
+        }
+    }
+
     return (
         <Container>
             
             <BookTitleContainer><h1>Recent Threads</h1></BookTitleContainer>
+            <Nextpage>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
            
             <BodyRecent>
                 <Results>
@@ -34,7 +54,7 @@ function ForumGest() {
                 
                     {
                         threads.map((elem, index) => {
-                            if(index < 6){
+                            if(index >= start && index < (start + 6) && index < threads.length){
                             let placeholder = "/thread/guest/" + elem.id
                             return(
                                 <Link to={{
@@ -77,6 +97,15 @@ const BookTitleContainer = styled.div`
     margin-left: 3%;
     margin-right: 3%;
 `
+const Nextpage = styled.div`
+cursor: pointer;
+display:flex;
+flex-direction:row;
+margin-left: 48%;
+margin-right: 48%;
+margin-top: 1%;
+`
+
 const Results = styled.div`
     width:100%;
     display:flex;
