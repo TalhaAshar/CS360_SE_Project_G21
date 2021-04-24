@@ -12,10 +12,10 @@ function NotificationButton() {
 export default NotificationButton
 
 const Container = styled.div`
-position: absolute;
+position: relative;
 height: 50px;
 width:350px;
-margin-left:9%;    
+margin-left:19%;    
 align:center;
 border-radius:8px; 
 background: #583192;
@@ -26,8 +26,8 @@ align:center;
 font-style: normal;
 font-weight: bold;
 font-size:25px;
-margin-left:44%;
-margin-top:3%;
+margin-left:43%;
+padding-top:3%;
 
 display: flex;
 align-items: center;
