@@ -31,10 +31,7 @@ function Modal(props) {
     }
 
     function logUserOut(){
-        const url = `api/register/logout`
-        axios.post(url).then((res) => {
-            props.onChange({'Status' : 'Unauthentic'})
-        })
+        props.changeMyParent()
     }
 
     return (props.trigger) ? (
