@@ -249,6 +249,8 @@ const Overall = styled.h3`
     height:100%;
     margin-left:3%;
     margin-right:3%;
+    margin-top:3%;
+    margin-bottom:3%;
 `
 const Lower = styled.div`
     margin-top:3%;

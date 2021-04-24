@@ -37,8 +37,13 @@ function ForumGest() {
                             if(index < 6){
                             let placeholder = "/thread/guest/" + elem.id
                             return(
-                                <Link to={placeholder} style={{textDecoration:"none", marginBottom:"1%"}}>
-                                    <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }} style={{textDecoration:"none", marginBottom:"1%"}}>
+                                <ThreadDiv>
+                                <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </ThreadDiv>
                                 </Link>
                             )
                             }
@@ -56,6 +61,9 @@ export default ForumGest
 const Container = styled.div`
     width:100%;
     height:100%;
+    margin-top:3%;
+    margin-bottom:3%;
+
 `
 
 const BookTitleContainer = styled.div`
@@ -76,6 +84,7 @@ const Results = styled.div`
     padding-top:20px;
     margin-left:22px;
     margin-bottom:5%;
+
 `
 const ThreadDiv = styled.div`
     width:100%;
@@ -102,3 +111,4 @@ const BodyRecent = styled.div`
     height:90%;
     border-radius:8px;
 `
+

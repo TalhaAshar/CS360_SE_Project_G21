@@ -263,8 +263,19 @@ function ThreadAdmin(props) {
                 </Lower>
 
                     
-                {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
-                {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
+                {
+                    <Editor>
+                        (reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>
+                        
+                    </Editor>        
+                }
+                
+                {
+                    <Editor>
+                        (reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>
+                        
+                    </Editor>        
+                }
             </Container>
         )
     }
@@ -282,23 +293,22 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
-margin-top: 2%;
-margin-bottom: 2%;
+    margin-right: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 `
 
 const Results = styled.div`
-    width:1100px;
-    display:grid;
-    height: 200px;
+    width:100%;
+    display:flex;
+    flex-flow:row wrap;
     padding-top: 65px;
-    margin: 0 auto;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    margin-left:5%;
 `
 const Lower = styled.div`
 background: #DCF2F8;
 width:90%;
-height: 1000px;
+height: auto;
 border-radius: 20px;
 margin-bottom:100px;
 margin-left:3%;
@@ -307,38 +317,35 @@ margin-right:3%;
 
 const Results1 = styled.div`
     padding-top: 20px;
-    width:1100px;
-    display:grid;
-    height: 200px;
-    margin: 0 auto;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    width:100%;
+    display:flex;
+    margin-left:5%;
 `
 const Container = styled.div`
-
+    margin-bottom:5%;
 
 `
 
 const Heading = styled.div`
 `
 const Background = styled.div`
-border-radius: 20px 20px 20px 20px;
-color:white;
+    border-radius: 20px 20px 20px 20px;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    width:1100px;
-    height:80px;
+    width:90%;
+    height:40%;
     background: #0A3977;
-    left: 8.56%;
     font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 45px;
-line-height: 142%;
-right: 8.43%;
-top: 9.11%;
-bottom: 87.28%;
-margin-bottom: 30px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 142%;
+    margin-bottom: 3%;
+    margin-top:5%;
+    margin-left:3%;
+    margin-right:3%;
     
 `
 const Report = styled.h3`
@@ -392,11 +399,19 @@ cursor: pointer;
 `
 
 const RP = styled.h3`
-text-align: center;
+text-align: end;
 height: 25px;
 padding-top: 13px;
 display:flex;
+justify-content:flex-end;
 flex-direction:row;
-margin-left: 779px;
+margin-right:5%;
 margin-top: 13px;
+`
+
+const Editor = styled.div`
+    padding-left:3%;
+    padding-right:3%;
+    margin-left:3%;
+    margin-right:3%;
 `

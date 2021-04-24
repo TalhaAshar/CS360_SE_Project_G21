@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
 import SignUp from './SignUp'
+import NavBar from './NavBar'
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
@@ -13,6 +14,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
+import MenuIcon from '@material-ui/icons/Menu';
 
 import axios from 'axios';
 
@@ -35,7 +37,7 @@ function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
     const [logged, setLogged] = React.useState(true)
     const [searched, setSearched] = React.useState('')
-
+    const [NavStatus, setNavStatus] = React.useState(false)
     console.log(searched, "kakak")
 
     const handleChange = (event) => {
@@ -65,8 +67,12 @@ function Header(props) {
     function searchSubmit(event){
 
     }
+    function handleNav(event){
 
+        setNavStatus(!NavStatus)
+    }
     return (
+        <Overall>
         <Container>
           <Top>
             <NotificationIconContainer>
@@ -153,7 +159,7 @@ function Header(props) {
                 <Search>
                     <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
                         
-                        <Link to={searched}>
+                        <Link to={searched}  style={{textDecoration:"none"}}>
                         <Button style={{
                             display:"flex",
                             justify:"center",
@@ -169,17 +175,99 @@ function Header(props) {
                 </Search>
             </SearchContainer>
           </Bottom>
-        </Container> 
+        </Container>
+        <ContainerMini>
+                <Top>
+                    <NotificationIconContainer>
+                        <Link to="/Notification" style={{color:"white"}}>
+                            <NotificationsIcon/>
+                        </Link>
+                    </NotificationIconContainer>
+                    <UserAccountIconContainer>
+                        <Link to="/UserAccount" style={{color:"white"}}>
+                            <AccountCircleIcon/>
+                        </Link>
+                    </UserAccountIconContainer>
+                </Top>
+                <Bottom style={{justifyContent:"flex-start"}}>
+                            <Link to="/" >  
+                                <LogoContainer>
+                                        <img src="\frontend\src\images\icons\Logo.png"
+                                        style={{borderRadius:"10px"}} />
+                                </LogoContainer>
+                            </Link>
+                            <MenuIcon color="white" style={{marginRight:"18%", marginLeft:"5%"}} onClick={handleNav}/>
+                            <SearchContainer style ={{marginLeft:"5%", marginRight:"6%"}} >
+                                    <SearchIconContainer> 
+                                        <SearchIcon
+                                        style={{
+                                        color:"#5F6368",
+                                        fontSize:30,
+                                        display:"flex",
+                                        justify:"center",
+                                        alignItems:"center"
+                                        }}
+                                    />
+                                </SearchIconContainer>
+                                    <Search>
+                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
+                                            
+                                            <Link to={searched} style={{textDecoration:"none"}}>
+                                            <Button style={{
+                                                display:"flex",
+                                                justify:"center",
+                                                alignItems:"center",
+                                                background:"#04396B",
+                                                marginTop:"10px",
+                                                marginRight:"5px",
+                                                borderRadius:"20px",
+                                                height: "20px"
+                                            }}
+                                        >Search</Button>
+                                        </Link>
+                                    </Search>
+                                </SearchContainer>
+                        </Bottom>
+                        <BottomNew>
+                            <NavBar trigger={NavStatus} setTrigger={handleNav}/>
+                        </BottomNew>
+        </ContainerMini>
+        </Overall> 
     )
 }
 
 export default Header
 
-const Container = styled.div`
-height:150px;
-color:white;
+const Overall = styled.div`
+    height:150px;
+    color:white;
+    width:100%;
 `
-
+const Container = styled.div`
+    height:150px;
+    color:white;
+    width:100%;
+    @media only screen and (max-width: 800px){
+        display:none;
+    }
+`
+const ContainerMini = styled.div`
+    display:none;
+    @media only screen and (max-width: 800px){
+    display:block;
+    height:150px;
+    color:white;
+    width:100%;
+}
+`
+const BottomNew = styled.div`
+    height:20px;
+    margin-bottom:3%;
+    background:#04396B;
+    display:flex;
+    flex-flow:row wrap;
+    
+`
 const Top = styled.div`
     width:100%;
     height:35px;

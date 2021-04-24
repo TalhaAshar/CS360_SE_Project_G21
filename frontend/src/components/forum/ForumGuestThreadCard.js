@@ -110,7 +110,7 @@ const ContainerImageThreadDetails = styled.div`
     display:flex;
     align-items:center;
     justify-content:flex-start;
-    
+
 `
 const ImageUserNameContainer = styled.div`
     margin-left:10%;
@@ -152,3 +152,4 @@ const TimeIcon = styled.div`
     margin-left:30%;
     margin-right:30%;
 `
+

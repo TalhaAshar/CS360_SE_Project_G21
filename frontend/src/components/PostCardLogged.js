@@ -138,8 +138,7 @@ const ThreadMinorDetail = styled.div`
 const ThreadTimePostContainer = styled.div`
     display:flex;
     flex-flow: row wrap;
-    margin-left:85%;
-    margin-top:-6%;
+    margin-left:90%;
 `
 const Comment = styled.div`
     margin-bottom:10px;

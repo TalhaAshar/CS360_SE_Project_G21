@@ -151,6 +151,7 @@ const BookTitleContainer = styled.div`
     align-items:center;
     margin-left: 3%;
     margin-right: 3%;
+    margin-top:3%;
 `
 
 const Results = styled.div`
@@ -169,9 +170,9 @@ const CardDiv = styled.div`
     padding-bottom:8%;
 `
 const Container = styled.div`
-    margin-top: 2%;
+    margin-top: 4%%;
     background:white;
-    
+
 `
 const Head = styled.div`
     display:flex;
@@ -249,6 +250,7 @@ const CategoryThreadContainer = styled.div`
 const GeneralContainer = styled.div`
     margin-top:20px;
     margin-bottom:2px;
+
 `
 const OtherContainer = styled.div`
     margin-bottom:20px;
