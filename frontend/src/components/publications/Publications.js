@@ -98,6 +98,14 @@ function Publications(props) {
                              })
                          }
                     </Cards>
+                    <ViewNextButtonContainer >
+                        <View style={{background:"white"}}></View>
+                        <NextPrevious>
+                            <SkipPreviousRoundedIcon onClick={leftClick}/>
+                            <SkipNextRoundedIcon onClick={rightClick}/>
+                        </NextPrevious>
+                        <View style={{background:"white"}}></View>
+                    </ViewNextButtonContainer>
                 </Container>
              )
             break;
@@ -134,12 +142,23 @@ function Publications(props) {
                              pubs.map((elem, index) => {
                                  if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
-                                        <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                        <CardDiv>
+                                            <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                        </CardDiv>
                                     )
                                  }
                              })
                          }
                     </Cards>
+                    
+                    <ViewNextButtonContainer >
+                        <View style={{background:"white"}}></View>
+                        <NextPrevious>
+                            <SkipPreviousRoundedIcon onClick={leftClick}/>
+                            <SkipNextRoundedIcon onClick={rightClick}/>
+                        </NextPrevious>
+                        <View style={{background:"white"}}></View>
+                    </ViewNextButtonContainer>
                 </Container>
             )
             break;
@@ -158,20 +177,23 @@ const BookTitleContainer = styled.div`
     display:flex;
     justify-content:center;
     align-items:center;
+    margin-top: 2%;
 
 margin-bottom: 2%;
 `
 
 const Container = styled.div`
-    max-width:100%;
-    max-height:100%;
+    width:90%;
+    height:90%;
     margin-left:3%;
     margin-right:3%;
-    margin-top:3%;
+    margin-top:5%;
     margin-bottom:3%;
     @media only screen and (max-width: 1200px) {
-        height:auto;
+        top-margin: 5%;
+        height:90%;
     }
+    background: white;
 `
 const ViewNextButtonContainer = styled.div`
     display:flex;
@@ -208,7 +230,7 @@ const ViewText = styled.h4`
     text-align: center;
     cursor: pointer;
 `
-const View = styled.h4`
+const View = styled.div`
     background:#3B058B;
     width:10%;
     height:30px;
@@ -216,6 +238,8 @@ const View = styled.h4`
     border-radius:6px;
     margin-top:1%;
     cursor: pointer;
+
+    
 `
 const GuestNextPrevious = styled.h4`
     margin-top:1%;
@@ -256,11 +280,26 @@ const Cards = styled.div`
     flex-basis:10%;
     flex-flow: row wrap;
     background:#DCF2F8;
+    height: auto;
     @media only screen and (max-width: 1200px) {
         height:auto;
         display:flex;
         justify-content:left;
         flex-wrap:wrap;
         flex:1;
+        padding-bottom: 5%;
+    }
+    padding-bottom: 4%;
+
+    
+`
+
+const CardDiv = styled.div`
+    margin: 2% 2% 2% 2%;
+    padding: 1% 1% 1% 1%;
+
+    @media only screen and (max-width: 670px) {
+        padding: 3% 3% 3% 3%;
+        margin: 4% 4% 4% 4%;
     }
 `

@@ -258,6 +258,7 @@ const Overall = styled.div`
     height:150px;
     color:white;
     width:100%;
+    margin-bottom: 3%;
 `
 const Container = styled.div`
     height:150px;
