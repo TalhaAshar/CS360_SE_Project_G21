@@ -160,12 +160,10 @@ function ThreadAdmin(props) {
                     }
                 </Results>
 
-                
-                </Lower>
-
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
 
+                </Lower>
             </Container>
             )
         case false:
@@ -227,12 +225,12 @@ function ThreadAdmin(props) {
                     }
                 </Results>
 
-                
-                </Lower>
-
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
 
+                </Lower>
+
+              
             </Container>
             )
         default:
@@ -292,13 +290,13 @@ function ThreadAdmin(props) {
                     }
                 </Results>
 
-                
-                </Lower>
-
-                    
+                     
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
 
+                </Lower>
+
+               
             </Container>
         )
     }

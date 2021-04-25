@@ -5,6 +5,7 @@ import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
 import SignUp from './SignUp'
 import NavBar from './NavBar'
+import { useHistory } from "react-router-dom";
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
@@ -41,6 +42,7 @@ function Header(props) {
     const [NavStatus, setNavStatus] = React.useState(false)
     const [PopView, setPopView] = React.useState(false)
     console.log(searched, "kakak")
+    const history = useHistory();
 
     const handleNotification = () =>{
         setPopView(!PopView)
@@ -81,6 +83,11 @@ function Header(props) {
 
     function NavBarUpdate(event){
         console.log(event)
+    }
+    function handleKeyPress(e){
+        if(e.key==="Enter"){
+            history.push(searched)
+        }
     }
 
     return (
@@ -171,7 +178,7 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
+                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)} ></SearchInput>
                         
                         <Link to={searched}  style={{textDecoration:"none"}}>
                         <Button style={{
@@ -226,21 +233,7 @@ function Header(props) {
                                     />
                                 </SearchIconContainer>
                                     <Search>
-                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
-                                            
-                                            <Link to={searched} style={{textDecoration:"none"}}>
-                                            <Button style={{
-                                                display:"flex",
-                                                justify:"center",
-                                                alignItems:"center",
-                                                background:"#04396B",
-                                                marginTop:"10px",
-                                                marginRight:"5px",
-                                                borderRadius:"20px",
-                                                height: "20px"
-                                            }}
-                                        >Search</Button>
-                                        </Link>
+                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)} ></SearchInput>
                                     </Search>
                                 </SearchContainer>
                         </Bottom>

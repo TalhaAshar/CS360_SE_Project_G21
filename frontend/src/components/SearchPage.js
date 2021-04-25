@@ -1,8 +1,6 @@
 import React from 'react'
-import LinearCard from './LinearCard'
 import styled from 'styled-components'
 import './popup.scss';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
@@ -83,7 +81,7 @@ function SearchPage() {
         <Container>
 
         
-<BookTitleContainer><h1>Search Results</h1></BookTitleContainer>
+        <BookTitleContainer><h1>Search Results</h1></BookTitleContainer>
 
             <Nextpage>
             <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
@@ -105,7 +103,9 @@ function SearchPage() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
-                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                <CardDiv>
+                                    <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                </CardDiv>
                                 )
                         }
                         console.log(index)
@@ -113,6 +113,10 @@ function SearchPage() {
                 }
                 </Results>
             </Colour>
+            <Nextpage>
+            <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+            <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
         </Container>
     )
 }
@@ -128,21 +132,32 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
+    margin-right: 3%;
+    margin-top:3%;
 `
 
 const Results = styled.div`
-    width:1100px;
-    height:1600px;
-    display:grid;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-flow:row wrap;
     padding-top:20px;
-margin-left:20px;
-margin: 0 auto;
+    margin-left:20px;
+    margin: 0 auto;
+    padding-bottom:5%;
 `
 const Container = styled.div`
-margin-left: 3%;
-margin-right: 3%;
+max-width:100%;
+height:95%;
+margin-left:3%;
+margin-right:3%;
+margin-top:3%;
+margin-bottom:10%;
+background:white;
+padding-bottom:5%;
+@media only screen and (max-width: 1200px) {
+    height:95%;
+}
 
 `
 
@@ -161,7 +176,6 @@ margin-top: 1%;
 const Colour = styled.div`
 background: #DCF2F8;
 width:90%;
-height:1600px;
 border-radius: 20px;
 margin-bottom:100px;
 margin-left:3%;
@@ -200,4 +214,13 @@ align-items:center;
 margin-left: 5%;
 margin-right: 5%;
 font-size: 35px;
+`
+
+const CardDiv = styled.div`
+    position:relative;
+    left:10%;
+    right:10%;
+    width:100%;
+    padding-bottom:5%;
+
 `

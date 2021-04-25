@@ -184,14 +184,14 @@ margin-bottom: 2%;
 
 const Container = styled.div`
     width:90%;
-    height:90%;
+    height:96%;
     margin-left:3%;
     margin-right:3%;
     margin-top:5%;
-    margin-bottom:3%;
+    margin-bottom:5%;
     @media only screen and (max-width: 1200px) {
         top-margin: 5%;
-        height:90%;
+        height:96%;
     }
     background: white;
 `
@@ -276,6 +276,9 @@ const Heading = styled.h3`
 const Cards = styled.div`
     margin-top:4%;
     margin-bottom:4%;
+    margin-left:3%;
+    margin-right:3%;
+    border-radius:20px;
     display:flex;
     flex-basis:10%;
     flex-flow: row wrap;
