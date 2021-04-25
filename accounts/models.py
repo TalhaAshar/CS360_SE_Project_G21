@@ -10,7 +10,7 @@ class PersonalizedList(models.Model):
 	Display_Type = models.CharField(choices=DisplayChoices.choices, max_length=15, null=True)
 
 class Report(models.Model):
-	Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+	Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	ReasonChoices = models.TextChoices('ReasonChoices', 'SPAM OFFENSIVE MISLEADING ABUSE INCORRECT_DATA INACCURATE_DESCRIPTION NOT_EXIST_PUBLICATION IMAGE_UNCLEAR')
 	Reason = models.CharField(choices=ReasonChoices.choices, max_length=60, null=True)
 	Description = models.TextField(max_length=5000)
@@ -24,7 +24,7 @@ class Report(models.Model):
 
 
 class ModeratorApplication(models.Model):
-	Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+	Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	Name = models.CharField(max_length=255)
 	Location = models.CharField(max_length=255)
 	Reason = models.TextField(max_length=5000)
