@@ -76,6 +76,10 @@ function ThreadCategory() {
                 }
                 </Results>
             </Colour>
+            <Nextpage>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
         </Container>
     )
 }
@@ -109,6 +113,7 @@ grid-template-columns: 520px 520px
 const Container = styled.div`
 margin-left: 3%;
 margin-right: 3%;
+background:white;
 
 `
 

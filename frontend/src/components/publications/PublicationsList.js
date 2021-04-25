@@ -120,6 +120,14 @@ function PublicationsList() {
                     }
                 </Results>
                 </Colour>
+                <ViewNextButtonContainer>
+                        <View></View>
+                        <GuestNextPrevious>
+                            <SkipPreviousRoundedIcon onClick={leftClick}/>
+                            <SkipNextRoundedIcon onClick={rightClick}/>
+                        </GuestNextPrevious>
+                        <View></View>
+                </ViewNextButtonContainer>
             </Container>
         )
             break;
@@ -129,7 +137,7 @@ function PublicationsList() {
             return (
                 <Container>
                 <PublicationTitle>
-                    <Heading>bruh</Heading>
+                    <h1>Publications</h1>
                 </PublicationTitle>
                 <ViewNextButtonContainer>
                         <View onClick = {handleClick} onMouseLeave={handleClick}>
@@ -169,6 +177,14 @@ function PublicationsList() {
                     }
                 </Results>
                 </Colour>
+                <ViewNextButtonContainer >
+                        <View style={{background:"white"}}></View>
+                        <NextPrevious>
+                            <SkipPreviousRoundedIcon onClick={leftClick}/>
+                            <SkipNextRoundedIcon onClick={rightClick}/>
+                        </NextPrevious>
+                        <View style={{background:"white"}}></View>
+                    </ViewNextButtonContainer>
             </Container>
             )
             break;
@@ -180,26 +196,29 @@ function PublicationsList() {
 export default PublicationsList
 
 const BookTitleContainer = styled.div`
-    background: #0A3977;
-    border-radius:20px;
-    color:white;
-    min-width: 55%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+background: #0A3977;
+border-radius:20px;
+color:white;
+min-width: 55%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top: 2%;
 
 margin-bottom: 2%;
 `
 
 const Container = styled.div`
     max-width:100%;
-    max-height:100%;
+    height:95%;
     margin-left:3%;
     margin-right:3%;
     margin-top:3%;
     margin-bottom:3%;
+    background:white;
+    padding-bottom:5%;
     @media only screen and (max-width: 1200px) {
-        height:auto;
+        height:100%;
     }
 `
 const Nextpage = styled.div`
@@ -209,14 +228,14 @@ display:flex;
 `
 
 const Colour = styled.div`
-margin-left:2%;
+margin-left:5%;
 margin-right:3%;
 margin-top:3%;
-margin-bottom:20%;
+margin-bottom:2%;
 
 background: #DCF2F8;
-width:95%;
-height:80%;
+width:90%;
+height:90%;
 border-radius: 20px;
 `
 const Results = styled.div`
@@ -227,17 +246,16 @@ const Results = styled.div`
     grid-template-rows: 200px 200px 200px 200px 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
 `
 const PublicationTitle = styled.div`
-    min-width: 55%;
-    min-height: 2%;
-    margin-top: 2%;
-    margin-left:2%;
-    margin-right:2%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    background: #03204C;
-    border-radius: 8px;
+background: #0A3977;
+border-radius:20px;
+color:white;
+min-width: 55%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top: 2%;
+
+margin-bottom: 2%;
 `
 
 const Heading = styled.h3`
@@ -280,9 +298,6 @@ const View = styled.h4`
     border-radius:6px;
     margin-top:1%;
 `
-const NextPrevious = styled.h4`
-    margin-top:1%;
-`
 
 const GuestNextPrevious = styled.h4`
     margin-top:1%;
@@ -304,4 +319,8 @@ const DropdownDiv = styled.div`
         top:-100%;
     }
     
+`
+const NextPrevious = styled.h4`
+    margin-top:1%;
+    cursor: pointer;
 `

@@ -47,7 +47,11 @@ function Header(props) {
 
         setNavStatus(!NavStatus)
     }
-
+    function handleKeyPress(e){
+        if(e.key==="Enter"){
+            history.push(searched)
+        }
+    }
     return (
         <Overall>
         <Container>
@@ -147,7 +151,7 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
+                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)}></SearchInput>
                     <Link to={searched}  style={{textDecoration:"none"}}>
                         <Button style={{
                             display:"flex",
@@ -221,21 +225,7 @@ function Header(props) {
                                     />
                                 </SearchIconContainer>
                                     <Search>
-                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
-                                            
-                                            <Link to={searched}  style={{textDecoration:"none"}}>
-                                            <Button style={{
-                                                display:"flex",
-                                                justify:"center",
-                                                alignItems:"center",
-                                                background:"#04396B",
-                                                marginTop:"10px",
-                                                marginRight:"5px",
-                                                borderRadius:"20px",
-                                                height: "20px"
-                                            }}
-                                        >Search</Button>
-                                        </Link>
+                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)}></SearchInput>
                                     </Search>
                                 </SearchContainer>
                         </Bottom>

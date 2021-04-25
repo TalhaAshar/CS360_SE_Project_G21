@@ -15,26 +15,24 @@ function NewLinearCard({title, author, front, id}) {
   const [path, setPath] = useState(useLocation().pathname)
 
     return (
-        
+        <Link to={j} style={{textDecoration:"none"}}>
         <Container>
         <ImageUserNameContainer>
-            <Link to={j} style={{textDecoration:"none"}}>
+           
             <ImageContainer>
                
                 <Image src={front}
-                    width="180px" height="180px"
+                    width="180px" height="160px"
                 />
             </ImageContainer>
-            </Link>
+            
         </ImageUserNameContainer>
-        <Link to={j} style={{textDecoration:"none"}}>
             <PublicationDetailContainer>
                 <BookTitle>{title}</BookTitle>
                 <Author>{author}</Author>
             </PublicationDetailContainer>
-        </Link>
-
         </Container>
+        </Link>
     )
 }
 
@@ -42,7 +40,6 @@ export default NewLinearCard
 
 const Container = styled.div`
     width:80%;
-    height:88%;
     display:flex;
     background:white;
     border-radius:12px;
@@ -56,14 +53,19 @@ const ImageUserNameContainer = styled.div`
 const ImageContainer = styled.div`
     width:90%;
     height:90%:
+    margin-top:2%;
+    margin-bottom:2%;
+    margin-left:3%;
 `
 const Image = styled.img`
     border-radius:30px;
+    margin-top:5%;
+    margin-left:5%;
 `
 
 const PublicationDetailContainer = styled.div`
-    margin-top:5%;
-    margin-left:3%;
+    margin-top:3%;
+    margin-left:5%;
 `
 const BookTitle = styled.h4`
     width: 80%;

@@ -23,7 +23,7 @@ function ProfileUploadImage (props) {
 export default ProfileUploadImage;
 
 const Container = styled.div`
-
+cursor:pointer;
 `
 
 const Form = styled.form`
@@ -66,6 +66,11 @@ const Button = styled.button`
     position:relative;
     top:16px;
     right:16px;
+    width:100px;
+    height:50px;
+    background:#03204C;
+    color:white;
+    border-radius:15px;
 
 `
 const ContentContainer = styled.div`

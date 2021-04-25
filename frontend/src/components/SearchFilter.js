@@ -9,7 +9,6 @@ let c = document.querySelector('#isbn')
 
 function SearchFilter(props) {
     return (
-        <body>
 
         
         <Container>
@@ -41,7 +40,6 @@ function SearchFilter(props) {
            </Flex>
            
         </Container>
-        </body>
     )
 }
 
@@ -51,7 +49,7 @@ const Container = styled.div`
     background: white;
     border-radius: 15px;
     height:auto;
-    width:1100px;
+    width:100%;
     display:grid;
     margin: 0 auto;
     height:auto;

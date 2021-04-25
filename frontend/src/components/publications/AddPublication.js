@@ -113,7 +113,7 @@ handleSubmit = (event) =>{
   render(){
     return(
       <Container>
-      <Head>Add Publication</Head>
+      <Head><h1>Add Publication</h1></Head>
       <FormContainer>
       <Form onSubmit={this.handleSubmit}>
           <ImageBook>
@@ -122,30 +122,29 @@ handleSubmit = (event) =>{
                       { (this.state.Display != null) && <Image src={this.state.Display} /> }
                       <UploadButton onClick={this.handleClick}>Upload Image</UploadButton>
                       <Pop trigger={this.state.Pop} setTrigger={this.handleClick} FFunc={this.onFrontChange} SFunc={this.onSpineChange} BFunc={this.onBackChange}>
-                            <h1>My pop up for image</h1>
                       </Pop>
                   </ImageContainer>
                   <BookDetailContainer>
                       <Span>
                           Book Title*
                       </Span>
-                      <Input type="text" required name="Title" maxLength="150" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Title" maxLength="150" onChange={this.handleChange} style={{marginLeft:"95px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Author(s)*</Span>
-                      <Input type="text" required name="Authors" maxLength="255" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Authors" maxLength="255" onChange={this.handleChange} style={{marginLeft:"95px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Publisher(s)</Span>
-                      <Input type="text" name="Publisher" maxLength="255" onChange={this.handleChange} style={{marginLeft:"65px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" name="Publisher" maxLength="255" onChange={this.handleChange} style={{marginLeft:"85px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Edition_Number</Span>
-                      <Input type="number" name="Edition_Number" min="1" max="999999" onChange={this.handleChange} style={{marginLeft:"30px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="number" name="Edition_Number" min="1" max="999999" onChange={this.handleChange} style={{marginLeft:"53px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Year of Publication</Span>
-                      <Input type="number" name="Year_Publication" min="1" max="9999" onChange={this.handleChange} style={{marginLeft:"15px", marginTop:"30px", marginBottom:'10px'}}  /><br/>
+                      <Input type="number" name="Year_Publication" min="1" max="9999" onChange={this.handleChange} style={{marginLeft:"35px", marginTop:"30px", marginBottom:'10px'}}  /><br/>
                       <Span>Genres*</Span>
-                      <Input type="text" required name="Genres" maxLength="255" onChange={this.handleChange} style={{marginLeft:"98px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Genres" maxLength="255" onChange={this.handleChange} style={{marginLeft:"120px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>Language*</Span>
-                      <Input type="text" required name="Lang" maxLength="30" onChange={this.handleChange} style={{marginLeft:"75px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" required name="Lang" maxLength="30" onChange={this.handleChange} style={{marginLeft:"100px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                       <Span>ISBN</Span>
-                      <Input type="number" name="ISBN" min="1" max="9999999999999" onChange={this.handleChange} style={{marginLeft:"130px", marginTop:"30px", marginBottom:'10px'}}/><br/>
+                      <Input type="number" name="ISBN" min="1" max="9999999999999" onChange={this.handleChange} style={{marginLeft:"155px", marginTop:"30px", marginBottom:'10px'}}/><br/>
                       <Span>Related Publications IDs</Span>
-                      <Input type="text" name="Related" onChange={this.handleChange} style={{marginLeft:"105px", marginTop:"30px", marginBottom:'10px'}} /><br/>
+                      <Input type="text" name="Related" onChange={this.handleChange} style={{marginLeft:"5px", marginTop:"30px", marginBottom:'10px'}} /><br/>
                   </BookDetailContainer>
               </ImageBook>
               <EditorContainer>
@@ -158,7 +157,7 @@ handleSubmit = (event) =>{
                   apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
                   init={{
                       height: 500,
-                      width: 1256,
+                      width:"90%",
                       //plugins: "image",
                       toolbar: "bold italic", // image",
                       menubar: false,
@@ -181,39 +180,47 @@ export default App;
 
 const Container = styled.div`
     max-width:100%;
-    max-height:100%;
+    height:95%;
     margin-left:3%;
     margin-right:3%;
+    margin-top:5%;
+    margin-bottom:10%;
+    background:white;
 `
-const Head = styled.h2`
-    min-width: 55%;
-    min-height: 4%;
+const Head = styled.div`
+background: #0A3977;
+border-radius:20px;
+color:white;
+min-width: 55%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top: 2%;
+margin-bottom: 2%;
+`
+const FormContainer = styled.div`
+    width: 95%;
+    height: 85%;
     margin-top: 2%;
+    padding-left:5%;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:white;
-    background: #03204C;
-    border-radius: 8px;
-`
-const FormContainer = styled.div`
-    max-width: 100%;
-    max-height: 100%;
-    margin-top: 2%;
-    display:flex;
-    justify-content:space-between;
     background:#DCF2F8;
     border-radius: 16px;
+    margin-bottom:5%;
+    margin-left:3%;
+    marign-right:3%:
+    padding-left:5%;
 `
 const Form = styled.form`
-
 `
 const Span = styled.span`
     margin-top:30px;
 
 `
 const Input = styled.input`
-    width: 400px;
+    width: 50%;
     height: 40px;
     background: #F9F7FC;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -226,26 +233,29 @@ const Input = styled.input`
 const ImageBook = styled.div`
     display:grid;
     grid-template-columns: auto 800px;
+    width:100%;
+    height:60%;
 `
 const ImageContainer = styled.div`
     position: relative;
     color: white;
     margin:30px 30px 30px 30px;
+    width:400px;
 
 `
 const Image = styled.img`
-    height: 624px;
-    width:650px;
+    height: 100%;
+    width:120%;
 
     background: linear-gradient(135deg, #04396B 0%, #E9ACFF 95.31%);
     border-radius: 16px 16px 0px 0px;
 
 `
 const UploadButton = styled.button`
-    bottom: 10px;
     position: relative;
-    width: 650px;
-    height: 61px;
+    bottom: 10%;
+    width: 120%;
+    height: 10%;
     left: 0px;
     margin-left:0px;
     color:white;    
@@ -254,7 +264,7 @@ const UploadButton = styled.button`
 `
 const BookDetailContainer = styled.div`
  diplay:flex;
- margin-left:10px;
+ margin-left:20%;
 `
 const EditorContainer = styled.div`
     position:relative;
