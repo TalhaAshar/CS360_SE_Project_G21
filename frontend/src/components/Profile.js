@@ -188,8 +188,8 @@ function Profile() {
                         </Name>
 
                         <Admintag>
-                            {  (Details['User_Type'] === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
-                            {  (Details['User_Type'] === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                            {  (Details['User_Type'] === 'ADMIN') && <SecurityIcon style = {{color:"#00FF00", height:"100%", width:"100%", marginLeft: "-15%"}}/>    }
+                            {  (Details['User_Type'] === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%", marginLeft:"11%" }}/>    }
                             {  (Details['User_Type'] === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
                             {  (Details['User_Type'] === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
                             {Details['User_Type']}
@@ -350,7 +350,7 @@ const Name = styled.h3`
     width: 511px;
     height: 55px;
     margin-top:60px;
-    margin-left:0px;
+    margin-left:2%;
 
     font-family: Manrope;
     font-style: normal;
