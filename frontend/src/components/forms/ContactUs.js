@@ -77,7 +77,7 @@ handleSubmit = (event) =>{
                 init={{
                   placeholder: 'You need to host your image and then upload in this text box.',
                   height: 400,
-                  width: '94%',
+                  width: '92%',
                   plugins: "image",
                   toolbar: "bold italic image",
                   menubar: false,
@@ -225,7 +225,7 @@ width:8%;
 height:15%;
 position:relative;
 bottom:55px;
-left:85%;
+left:83%;
 background-color:#03204C;
 color:white;
 z-index:2;
