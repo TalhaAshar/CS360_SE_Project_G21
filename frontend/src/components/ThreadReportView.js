@@ -2,83 +2,29 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 // import fetch from 'cross-fetch';
 import styled from 'styled-components'
-import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
 import axios from 'axios';
-import { useLocation, useParams} from "react-router-dom";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 function ThreadReportView () {
-
-  const [report, setReport] = useState({'Reason' : '', 'Description' : ''})
-  const { id } = useParams();
-
-
-  useEffect(() => {
-    let isComponentMounted = true;
-    let url = "api/accounts/reports/" + id
-    axios.get(url).then((res) => {
-        if (isComponentMounted){
-            setReport(res.data)
-        };
-    })
-    .catch(error => console.log('Error:', error))
-
-    return () => {
-        isComponentMounted = false;
-    }
-  }, [id])
-
-  function removeItem(){
-    let url = "api/forum/post/delete/" + report.Relevant_Post + "/" + report.Relevant_Thread
-
-    axios.post(url).then((res) => {
-      console.log("The post was deleted")
-    })
-    .catch(error => console.log('Error:', error))
-
-    url = "api/accounts/reports/" + id
-    axios.post(url).then((res) => {
-      console.log("The state was changed")
-    })
-    .catch(error => console.log('Error:', error))
-
-  }
-
-  function changeStatus(){
-    let url = "api/accounts/reports/" + id
-    axios.post(url).then((res) => {
-      console.log("The state was changed")
-    })
-    .catch(error => console.log('Error:', error))
-  }
-
-
     return(
       <Container>
       <Head>Report Thread/Post</Head>
       <FormContainer>
           <LabelContainer>
-              <Label for="Reason">Reason
-              <br/>
-              <Reason>{report.Reason}</Reason>
-              </Label>
-
-              <Span>Provide a description of the offence caused
-              <Details style = {{wordWrap:'break-word'}} dangerouslySetInnerHTML={{ __html:report.Description}} />
-              </Span>
-              
-              
+              <Label for="Reason">Reason</Label>
+              <Reason>xyz</Reason>
+              <Span>Provide a description of the offence caused</Span>
+              <Details style = {{wordWrap:'break-word'}}>xyz</Details>
           </LabelContainer>
 
           <RemoveItemContainer>
-              <RemoveItemTextContainer onClick={removeItem}>Remove Item</RemoveItemTextContainer>
+              <RemoveItemTextContainer>Remove Item</RemoveItemTextContainer>
             </RemoveItemContainer>
 
           <IgnoreContainer>
-            <IgnoreTextContainer onClick={changeStatus}>Ignore</IgnoreTextContainer>
+            <IgnoreTextContainer>Ignore</IgnoreTextContainer>
           </IgnoreContainer>
 
       </FormContainer> 
@@ -116,22 +62,20 @@ const FormContainer = styled.div`
 
 `
 
-const Span = styled.div`
+const Span = styled.span`
   font-weight:bold;
   font-size:20px;
-  margin-top: -40%;
 `
 
 const LabelContainer = styled.div`
-  display:flex;
-  flex-flow: row wrap;
+  display:grid;
+  grid-template-rows:20px 65px;
   margin-left:50px;
   margin-top:20px;
 `
-const Label = styled.div`
+const Label = styled.label`
   font-weight:bold;
   font-size:20px;
-  margin-bottom: -40%;
 `
 
 const Reason = styled.text`
@@ -143,19 +87,19 @@ margin-top: 2%;
 const Details = styled.text`
 font-weight:Normal;
 font-size:18px;
+margin-top:-90%;
 `
 
 const RemoveItemContainer = styled.div`
 height: 35px;
 position:relative;
 display:flex; 
-width:200px;
+width:120px;
 align:center;
 margin-top:82%;
 margin-left:15%;
 border-radius:5px; 
 background: #06AF47;
-right: 10%;
 `
 const RemoveItemTextContainer = styled.text`
 color:white;
@@ -175,11 +119,9 @@ color: #FFFFFF;
 const IgnoreContainer = styled.div`
 height: 35px;
 position:relative;
-display:flex;
-justify-content:center; 
-width:130px;
-align-items:center;
-padding: 0% 1% 1% 0%;
+display:flex; 
+width:80px;
+align:center;
 margin-left:-5%;
 margin-top:82%;
 margin-right:2%;
