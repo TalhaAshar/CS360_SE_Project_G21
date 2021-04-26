@@ -157,8 +157,15 @@ class AddPublication(APIView):
 				temp.save()
 
 				# Parse the input data for the related publication fields
+				related_pubs = []
 				try:
-					related_pubs = request.data["Related"].split(',')
+					temp = parsed["Related"].split(',')
+					for i in temp:
+						try:
+							if(isinstance(int(i), int)):
+								related_pubs.append(int(i))
+						except:
+							pass
 				except:
 					related_pubs = []
 
