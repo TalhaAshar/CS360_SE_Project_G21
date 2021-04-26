@@ -64,19 +64,22 @@ function PubReportView() {
 
     return (
         <Container>
-            <Header>Report Publication</Header>
+            <Header><h1>Reported Publication</h1></Header>
             <View>
                 <Reason>Reason</Reason>
                 <ReasonText>{report.Reason}</ReasonText>
                 <Details>Provide a description of what is wrong and suggestions/corrections required.</Details>
                 <DetailsText dangerouslySetInnerHTML={{ __html:report.Description}} />
-                <RemoveItemContainer onClick={togglePop}>
-                  <RemoveItemTextContainer>Remove Item</RemoveItemTextContainer>
-                </RemoveItemContainer>
-                { seen ? <ReportHistoryFeedbackPubPopup toggle={togglePop} remove={removeItem}/> : null }
-                <IgnoreContainer onClick={changeStatus}>
-                  <IgnoreTextContainer >Ignore</IgnoreTextContainer>
-                </IgnoreContainer>
+                
+                <ButtonContainer>
+                  <RemoveItemContainer onClick={togglePop}>
+                    <RemoveItemTextContainer>Remove</RemoveItemTextContainer>
+                  </RemoveItemContainer>
+                  { seen ? <ReportHistoryFeedbackPubPopup toggle={togglePop} remove={removeItem}/> : null }
+                  <IgnoreContainer onClick={changeStatus}>
+                    <IgnoreTextContainer >Ignore</IgnoreTextContainer>
+                  </IgnoreContainer>
+                </ButtonContainer>
             </View>
         </Container>
     )
@@ -84,34 +87,40 @@ function PubReportView() {
 
 export default PubReportView
 
+
 const Container = styled.div`
-  margin-left:11%;
-  height: 0 auto; 
+max-width:100%;
+max-height:100%;
+background:white;
+padding-bottom:5%;
+
 `
 const Header = styled.h3`
-  width:1040px;
-  height:50px;
-  margin-top:30px;
-  margin-left:5px;
-  display:flex;
-  font-size:25px;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  background: #03204C;
-  border-radius: 8px;
+background: #0A3977;
+border-radius:20px;
+color:white;
+min-width: 55%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
 `
 const View = styled.h3`
-width: 1050px;
-height: 900px;
-justify-content:space-between;
-background:#DCF2F8;
-border-radius: 16px;
+  margin-left: 3%;
+  margin-right: 3%;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 2%;
+  background:#DCF2F8;
+  border-radius: 16px;
 `
 
 const Reason = styled.h3`
 position:relative;
-margin-left:5%;
+margin-left:1%;
 padding-top:2%;
 font-weight:Bold;
 font-size:22px;
@@ -119,7 +128,7 @@ font-size:22px;
 
 const Details = styled.h3`
 position:relative;
-margin-left:5%;
+margin-left:1%;
 margin-top:10%;
 font-weight:Bold;
 font-size:22px;
@@ -127,46 +136,49 @@ font-size:22px;
 
 const ReasonText = styled.text`
 position:relative;
-width: 900px;
-height: 0 auto;
+width: 100%;
+height:auto;
 display:flex;
 word-break:break-word;
-margin-left:5%;
+margin-left:1%;
 font-weight:Normal;
 font-size:18px;
 `
 
 const DetailsText = styled.text`
 position:relative;
-width: 900px;
-margin-left:5%;
+width:100%;
+margin-left:1%;
 margin-top: 1%;
 display:flex;
+flex-flow:row wrap;
 word-break:break-word;
 font-weight:Normal;
-font-size:18px;`
+font-size:18px;
+overflow-wrap:break-word;
+`
 
 const RemoveItemContainer = styled.div`
 height: 35px;
 position:relative;
 display:flex; 
-width:120px;
+width:80px;
 align:center;
-margin-top:50%;
-margin-left:65%;
 border-radius:5px; 
+padding-right:2%;
+margin-right:2%;
 background: #06AF47;
+cursor:pointer;
 `
 const RemoveItemTextContainer = styled.text`
 color:white;
 align:center;
 font-style: normal;
 font-weight: bold;
-margin-left:7%;
-
 display: flex;
 align-items: center;
 text-align: center;
+padding-right:2%;
 letter-spacing: -1px;
 
 color: #FFFFFF;
@@ -178,22 +190,26 @@ position:relative;
 display:flex; 
 width:80px;
 align:center;
-margin-left:85%;
-margin-top:-3.3%;
 border-radius:5px; 
 background: #CC0C0C;
+padding-left:1%;
+cursor:pointer;
 `
 const IgnoreTextContainer = styled.text`
 color:white;
 align:center;
 font-style: normal;
 font-weight: bold;
-margin-left:17%;
-margin-top:8%;
 
 align-items: center;
 text-align: center;
 letter-spacing: -1px;
 
 color: #FFFFFF;
+`
+const ButtonContainer = styled.div`
+  display:flex;
+  justify-content:flex-end;
+  padding-right:2%;
+  padding-bottom:2%;
 `

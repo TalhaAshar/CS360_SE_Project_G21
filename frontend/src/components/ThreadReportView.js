@@ -162,6 +162,7 @@ border-radius:5px;
 padding-right:2%;
 margin-right:2%;
 background: #06AF47;
+cursor:pointer;
 `
 const RemoveItemTextContainer = styled.text`
 color:white;
@@ -186,6 +187,7 @@ align:center;
 border-radius:5px; 
 background: #CC0C0C;
 padding-left:1%;
+cursor:pointer;
 `
 const IgnoreTextContainer = styled.text`
 color:white;

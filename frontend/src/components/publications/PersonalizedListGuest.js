@@ -111,6 +111,7 @@ function PersonalizedListGuest() {
  const Container = styled.div`
     margin-top:3%;
     margin-bottom:3%;
+    background: white;
  `
  const NextButtonContainer = styled.div`
      display:flex;

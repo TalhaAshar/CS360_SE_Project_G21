@@ -372,7 +372,7 @@ class Reports(APIView):
 	def AdminReport(self):
 
 		try:
-			queryset = Report.objects.all().order_by("-Date")
+			queryset = Report.objects.all().order_by("-id")
 		except:
 			return Response(status=status.HTTP_204_NO_CONTENT)
 		report_list = ReportSerializer(queryset, many=True)
@@ -397,7 +397,7 @@ class ModeratorApps(APIView):
 	def AdminUser(self):
 
 		try:
-			queryset = ModeratorApplication.objects.all().order_by("-Date")
+			queryset = ModeratorApplication.objects.all().order_by("-id")
 		except:
 			return Response({'Message' : 'Empty'}, status=status.HTTP_204_NO_CONTENT)
 		mod_list = ModeratorSerializer(queryset, many=True)

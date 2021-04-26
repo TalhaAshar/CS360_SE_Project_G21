@@ -17,7 +17,7 @@ width:100px;
 align:center;
 border-radius:5px; 
 background: #06AF47;
-margin-left: 23%;
+margin-left: 20%;
 margin-right: 1%;
 `
 const TextContainer = styled.text`

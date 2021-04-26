@@ -24,6 +24,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 const StyledPopup = styled(Popup)`
+
 //   // use your custom style for ".popup-overlay"
 //   &-overlay {
 //     ...;
@@ -40,16 +41,18 @@ function Header(props) {
     const [searched, setSearched] = React.useState('')
     const [NavStatus, setNavStatus] = React.useState(false)
     const [PopView, setPopView] = React.useState(false)
-    
+    console.log(searched, "kakak")
     const history = useHistory();
 
     const handleNotification = () =>{
         setPopView(!PopView)
+        console.log("NEW VIEW", PopView)
     }
 
     const handleChange = (event) => {
         let temp = "/search/" + event.target.value
         setSearched(temp);
+        console.log(temp, searched, "SEARCHED")
     }
     
     function logUserOut(){
@@ -78,7 +81,9 @@ function Header(props) {
         setNavStatus(!NavStatus)
     }
 
-    
+    function NavBarUpdate(event){
+        console.log(event)
+    }
     function handleKeyPress(e){
         if(e.key==="Enter"){
             history.push(searched)
@@ -268,9 +273,9 @@ const ContainerMini = styled.div`
 
 const NotDropdownDiv = styled.div`
     z-index: 1000;
-    position: absolute;
-    top: 30px;
-    padding-top: 10px;
+    position: relative;
+    top: 8%;
+    padding-top: 22.5%;
     border-radius: 8px;
 `
 const BottomNew = styled.div`
@@ -291,14 +296,13 @@ const Top = styled.div`
     filter:drop-shadow(0px 2px 4px rgba(38, 50, 56, 0.16)), drop-shadow(0px 4px 8px rgba(38, 50, 56, 0.08));
 `
 const NotificationIconContainer = styled.div`
-padding-right:4%;
+padding-right:10px;
 margin-top:5px;
 position: absolute;
 right: 2%;
-cursor: pointer;
 `
 const UserAccountIconContainer = styled.div`
-padding-right:2%;
+padding-right:10px;
 margin-top:5px;
 `
 
@@ -308,7 +312,6 @@ const Bottom = styled.nav`
     display:flex;
     align-items:center;
     justify-content:space-between;
-    width: 100%;
 `
 
 const LogoContainer = styled.div`
@@ -319,6 +322,7 @@ const LogoContainer = styled.div`
 `
 const Home = styled.div`
     height:60px;
+
 `
 const Forum = styled.div`
     height:60px;
@@ -330,6 +334,7 @@ const Publications = styled.div`
 const LogOutContainer = styled.div`
     height:60px;
     cursor: pointer;
+
 `
 const SearchContainer = styled.div`
     margin-right: 45px;
@@ -367,6 +372,7 @@ const IconText = styled.h5`
     border-style: double;
     border-color:#04396B;
     border-radius:6px;
+
     &:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }
@@ -377,6 +383,7 @@ const Button = styled.button`
     border-style: double;
     border-color:#04396B;
     border-radius:6px;
+
     &:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }

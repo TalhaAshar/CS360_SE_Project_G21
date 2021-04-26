@@ -225,11 +225,19 @@ class EditPublication(APIView):
 				serializer.save()
 
 			# Parse the input data for the related publication fields
+			related_pubs = []
 			try:
-				related_pubs = parsed["Related"].split(',')
+				temp = parsed["Related"].split(',')
+				for i in temp:
+					try:
+						if(isinstance(int(i), int)):
+							related_pubs.append(int(i))
+					except:
+						pass
+
 			except:
 				related_pubs = []
-
+			 
 			main = pub_to_edit
 			# For each related publication, create a pair of related objects
 			for i in related_pubs:
@@ -245,7 +253,7 @@ class EditPublication(APIView):
 			all_related_pubs = []
 			for i in temp:
 
-				if(str(i.Rel_Publication.id) not in related_pubs):
+				if((i.Rel_Publication.id) not in related_pubs):
 					all_related_pubs.append(i.Rel_Publication.id)
 			
 			for i in all_related_pubs:
