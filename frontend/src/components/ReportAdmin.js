@@ -48,7 +48,7 @@ function ReportsAdmin() {
     return (
         <Container>
             <ReportsHeader>
-                <ReportsText>Reports</ReportsText>
+                <h1>Reports</h1>
             </ReportsHeader>
             <ReportsContainer>
                 {
@@ -112,22 +112,24 @@ function ReportsAdmin() {
 export default ReportsAdmin
 
 const Container = styled.div`
-max-width: 1570px;
-margin: 0 auto;
-height: auto;
+width: 100%;
+height: 95%;
 background-color: white;
 `
-const ReportsHeader = styled.h3`
-width: 1050px;
-height: 80px;
-margin-left:150px;
-margin-right:150px;
-padding-left: 10px;
-padding-right: 10px;
-margin-top:150px;
-border-radius: 20px;
+const ReportsHeader = styled.div`
 background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
 `
+
 const ReportsText = styled.h3`
 max-height:50px;
 background-color: #0A3977;
@@ -141,9 +143,9 @@ letter-spacing: -1px;
 border-radius:6px;
 `
 
-const ReportsContainer = styled.h3`
-width:1050px;
-height: 1155px;
+const ReportsContainer = styled.div`
+width:100%;
+height: 95%;
 margin-left:160px;
 margin-top:75px;
 border-radius:10px;

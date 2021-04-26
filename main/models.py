@@ -23,8 +23,8 @@ class Publication(models.Model):
 
 # User's Contributions Model
 class Contribution(models.Model):
-	Username = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-	Publication_ID = models.ForeignKey(Publication, on_delete=models.SET_NULL, null=True)
+	Username = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	Publication_ID = models.ForeignKey(Publication, on_delete=models.CASCADE, null=True)
 	Date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 	EditChoices = models.TextChoices('EditChoices', 'ADD EDIT')
 	Edit_Type = models.CharField(choices=EditChoices.choices, max_length=10, null=True)
@@ -45,7 +45,7 @@ class Email(models.Model):
 
 # Copyright Claims Model
 class Copyright(models.Model):
-	Copy_Pub = models.ForeignKey(Publication, on_delete=models.SET_NULL, null=True)
+	Copy_Pub = models.ForeignKey(Publication, on_delete=models.CASCADE, null=True)
 	Authority = models.CharField(max_length=255)
 	Reason = models.TextField(max_length=5000)
 	Relationship = models.CharField(max_length=255, default='Owner')

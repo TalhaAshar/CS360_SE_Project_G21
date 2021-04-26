@@ -25,10 +25,10 @@ function ThreadAdmin(props) {
     const [editFlag, setEditFlag] = useState(false)
     const [postToEdit, setPostToEdit] = useState(0)
     const [Popup, setPopup] = useState(false)
-    const [thread, setThread] = useState()
+    const [thread, setThread] = useState() 
+    const [notif, setNotif] = useState(false)
     const d = new Date()
     const { id } = useParams();
-    console.log("reply", reply)
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -36,13 +36,18 @@ function ThreadAdmin(props) {
         let url1 = `api/forum/threads/` + id
         axios.get(url1).then((res) => {
             if (isComponentMounted){
-                
-                //console.log(posts, "set new")
-                console.log(res.data, "Nptt")
                 setPosts(res.data)
-            };
+                let notif_url = "api/forum/notifications/" + res.data[0].Creator["id"]
+                axios.get(notif_url).then((res2) => {
+                    if (isComponentMounted){
+                        setNotif(res2.data["Disable"])
+                    };
+                })
+                .catch(error => console.log('Error:', error))
+                    };
         })
         .catch(error => console.log('Error:', error))
+
 
         axios.get(`api/accounts/profile`).then((res) => {
             if (isComponentMounted){
@@ -62,7 +67,7 @@ function ThreadAdmin(props) {
             };
         })
         .catch(error => console.log('Error:', error))
-        
+        window.scrollTo(0, 0)
         return () => {
             isComponentMounted = false;
         }
@@ -78,31 +83,36 @@ function ThreadAdmin(props) {
 
     function replyPost(value){
         setReply(value)
-        console.log(reply, value, "THIS IS MY REPLY")
+        window.scrollTo(192000, 192000)
     }
 
     function updatePosts(newPosts){
-        console.log("New Posts", newPosts)
+        window.scrollTo(0, 0)
         setPosts(newPosts)
         setReply('')
+        
     }
 
     function editPost(value, post_id){
         setEditFlag(!editFlag)
         setPostToEdit(post_id)
         setReply(value)
-        console.log("Finished edit handler")
+        window.scrollTo(192000, 192000)
+    }
+
+    function manageNotifications(choice){
+        let url = "api/forum/notifications/update/" + choice 
+        axios.post(url).then((res) => {
+                setNotif(res.data["Disable"])
+        });
     }
 
     switch(flag){
         case true:
             return(
                 <Container>
-            <Heading>
-                    <Background>
-                        { thread ? thread['Title'] : null }
-                    </Background>
-                </Heading>
+                    <BookTitleContainer><h1>{thread ? thread['Title'] : null}</h1></BookTitleContainer>
+
             <Lower>
                 
 
@@ -118,11 +128,17 @@ function ThreadAdmin(props) {
                     { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>
 
-                {(User == posts[0].Creator["username"]) && <Delete>
+                {(User == posts[0].Creator["username"] && notif == false) && <Delete onClick={() => manageNotifications("disable")}>
                     <DText>
                     Unnotify Me
                     </DText>
                 </Delete>}
+                {(User == posts[0].Creator["username"] && notif == true) && <Delete onClick={() => manageNotifications("enable")}>
+                    <DText>
+                    Notify Me
+                    </DText>
+                </Delete>}
+
 
                 </RP>
                 <Results>
@@ -130,19 +146,17 @@ function ThreadAdmin(props) {
                         posts.map((elem, index)  => {
                             if(index > 0){
                                 return(
-                                    <PostCardAdmin first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    <PostCardAdmin key={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                 )
                             }
                         })
                     }
                 </Results>
 
-                
-                </Lower>
-
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
 
+                </Lower>
             </Container>
             )
         case false:
@@ -170,9 +184,14 @@ function ThreadAdmin(props) {
                     { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>}
 
-                {(User == posts[0].Creator["username"]) && <Delete>
+                {(User == posts[0].Creator["username"] && notif == false) && <Delete onClick={() => manageNotifications("disable")}>
                     <DText>
                     Unnotify Me
+                    </DText>
+                </Delete>}
+                {(User == posts[0].Creator["username"] && notif == true) && <Delete onClick={() => manageNotifications("enable")}>
+                    <DText>
+                    Notify Me
                     </DText>
                 </Delete>}
 
@@ -187,11 +206,11 @@ function ThreadAdmin(props) {
                                 if(User == elem.Creator["username"]){
                                     
                                     return(
-                                        <PostCardOwner post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardOwner key={elem.id} post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }else{
                                     return(
-                                        <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardLogged key={elem.id} replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }
                             }
@@ -199,12 +218,12 @@ function ThreadAdmin(props) {
                     }
                 </Results>
 
-                
-                </Lower>
-
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
 
+                </Lower>
+
+              
             </Container>
             )
         default:
@@ -233,9 +252,14 @@ function ThreadAdmin(props) {
                     { Popup ? <DeleteFeedbackPopup /> : null }
                 </Report>}
 
-                {(User == posts[0].Creator["username"]) && <Delete>
+                {(User == posts[0].Creator["username"] && notif == false) && <Delete onClick={() => manageNotifications("disable")}>
                     <DText>
                     Unnotify Me
+                    </DText>
+                </Delete>}
+                {(User == posts[0].Creator["username"] && notif == true) && <Delete onClick={() => manageNotifications("enable")}>
+                    <DText>
+                    Notify Me
                     </DText>
                 </Delete>}
 
@@ -247,11 +271,11 @@ function ThreadAdmin(props) {
                             if(index > 0){
                                 if(User == elem.Creator["username"]){
                                     return(
-                                        <PostCardOwner post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardOwner key={elem.id} post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }else{
                                     return(
-                                        <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardLogged  key={elem.id} replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }
                             }
@@ -259,12 +283,13 @@ function ThreadAdmin(props) {
                     }
                 </Results>
 
-                
-                </Lower>
-
-                    
+                     
                 {(reply == '') && <RichTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
                 {(reply != '') && <ReplyTextEditor post_id={postToEdit} editHandler={editPost} ID={id} original={reply} replyHandler={replyPost} postHandler={updatePosts} isEdit={editFlag}/>}
+
+                </Lower>
+
+               
             </Container>
         )
     }
@@ -282,23 +307,22 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
-margin-top: 2%;
-margin-bottom: 2%;
+    margin-right: 4%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 `
 
 const Results = styled.div`
-    width:1100px;
-    display:grid;
-    height: 200px;
+    width:100%;
+    display:flex;
+    flex-flow:row wrap;
     padding-top: 65px;
-    margin: 0 auto;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    margin-left:5%;
 `
 const Lower = styled.div`
 background: #DCF2F8;
-width:90%;
-height: 1000px;
+width:92.4%;
+height: auto;
 border-radius: 20px;
 margin-bottom:100px;
 margin-left:3%;
@@ -307,38 +331,35 @@ margin-right:3%;
 
 const Results1 = styled.div`
     padding-top: 20px;
-    width:1100px;
-    display:grid;
-    height: 200px;
-    margin: 0 auto;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    width:100%;
+    display:flex;
+    margin-left:5%;
 `
 const Container = styled.div`
-
-
+    margin-bottom:5%;
+    background: white;
 `
 
 const Heading = styled.div`
 `
 const Background = styled.div`
-border-radius: 20px 20px 20px 20px;
-color:white;
+    border-radius: 20px 20px 20px 20px;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    width:1100px;
-    height:80px;
+    width:90%;
+    height:40%;
     background: #0A3977;
-    left: 8.56%;
     font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 45px;
-line-height: 142%;
-right: 8.43%;
-top: 9.11%;
-bottom: 87.28%;
-margin-bottom: 30px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 142%;
+    margin-bottom: 3%;
+    margin-top:5%;
+    margin-left:3%;
+    margin-right:3%;
     
 `
 const Report = styled.h3`
@@ -374,6 +395,7 @@ font-size: 18px;
 line-height: 25px;
 color: #FFFFFF;
 text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+cursor: pointer;
 `
 
 const RText = styled.h3`
@@ -392,11 +414,19 @@ cursor: pointer;
 `
 
 const RP = styled.h3`
-text-align: center;
+text-align: end;
 height: 25px;
 padding-top: 13px;
 display:flex;
+justify-content:flex-end;
 flex-direction:row;
-margin-left: 779px;
+margin-right:5%;
 margin-top: 13px;
+`
+
+const Editor = styled.div`
+    padding-left:3%;
+    padding-right:3%;
+    margin-left:3%;
+    margin-right:3%;
 `

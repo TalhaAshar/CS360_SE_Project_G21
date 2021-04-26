@@ -19,3 +19,11 @@ class Post(models.Model):
     Poll_Yes = models.IntegerField(default=0, blank=True, null=True)
     Poll_No = models.IntegerField(default=0, blank=True, null=True)
     ParentThread = models.ForeignKey(Thread, on_delete=models.CASCADE, default=1)
+
+# Model for a Notification object
+class Notification(models.Model):
+    Owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Owner")
+    Timestamp = models.DateTimeField(auto_now_add=True)
+    ParentThread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    Body = models.CharField(max_length=255)
+    Commentor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Commentor")

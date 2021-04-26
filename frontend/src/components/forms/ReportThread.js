@@ -50,9 +50,11 @@ handleSubmit = (event) =>{
   render(){
     return(
       <Container>
-      <Head>Report Thread/Post</Head>
+      <BookTitleContainer><h1>Report Thread/Post</h1></BookTitleContainer>
       <FormContainer>
+      <LInfo>
           <Form onSubmit={this.handleSubmit}>
+          
           <LabelContainer>
               <Label for="Reason">Reason</Label>
               <Select name="Reason" id="Reason" value={this.state.Reason} onChange={this.handleChange}>
@@ -83,7 +85,9 @@ handleSubmit = (event) =>{
             { (!this.state.seen || !this.state.invalid) ? <Submit type="submit" value="Submit" /> : null }
             { (this.state.seen && this.state.invalid) ? <ReportThreadFeedbackPopup toggle={this.togglePop} thread={this.state.Thread} /> : null }
           </EditorContainer>
+          
         </Form>
+        </LInfo>
       </FormContainer> 
     </Container>
     );
@@ -95,29 +99,45 @@ export default App;
 const Container = styled.div`
   max-width:100%;
   max-height:100%;
-  margin-left:3%;
-  margin-right:3%;
+  background: white;
 
 `
-const Head = styled.h3`
-min-width: 55%;
-    min-height: 4%;
-    margin-top: 2%;
+
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:white;
-    background: #03204C;
-    border-radius: 8px;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
+`
+const LInfo = styled.h3`
+width:1100px;
+display:grid;
+padding-top:20px;
+margin: 0 auto;
+
+  
 `
 const FormContainer = styled.div`
-width: 1000px;
-height: 950px;
-margin-top:20px;
-display:flex;
-justify-content:space-between;
-background:#DCF2F8;
-border-radius: 16px;
+
+
+max-width: 100%;
+  max-height: 100%;
+  margin-top: 2%;
+  display:flex;
+  justify-content:space-between;
+  background:#DCF2F8;
+  border-radius: 16px;
+  margin-left: 3%;
+margin-right: 3%;
+
+
 
 `
 const Form = styled.form`
@@ -139,6 +159,7 @@ display:grid;
 grid-template-rows:20px 65px;
 margin-left:50px;
 margin-top:20px;
+
 `
 const Label = styled.label`
 font-weight:bold;

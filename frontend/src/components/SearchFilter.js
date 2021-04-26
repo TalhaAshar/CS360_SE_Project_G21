@@ -9,14 +9,13 @@ let c = document.querySelector('#isbn')
 
 function SearchFilter(props) {
     return (
-        <body>
 
         
         <Container>
            <Flex>
                 <AT>
                     <Title>
-                    <input type="checkbox" class="bro" name="cb1" id="cb1"/><label for="cb1" onClick={() => props.onChange("Title")}>Title</label>
+                    <input style={{width:"40%"}} type="checkbox" class="bro" name="cb1" id="cb1"/><label for="cb1" onClick={() => props.onChange("Title")}>Title</label>
                     </Title>
                     <Author>
                     <input type="checkbox" class="hidden" name="cb" id="cb"/><label for="cb" onClick={() => props.onChange("Authors")}>Author</label>
@@ -41,7 +40,6 @@ function SearchFilter(props) {
            </Flex>
            
         </Container>
-        </body>
     )
 }
 
@@ -51,8 +49,9 @@ const Container = styled.div`
     background: white;
     border-radius: 15px;
     height:auto;
-    width:1100px;
-    display:grid;
+    width:100%;
+    display: flex;
+    flex-flow: row wrap;
     margin: 0 auto;
     height:auto;
     padding-left: 50px;
@@ -74,13 +73,15 @@ color: #000000;
 const AT = styled.div`
 padding-top: 5px;
 
-display:flex;
-flex-direction:row;
-
+display: flex;
+flex-flow: row wrap;
+justify-content: center;
+align-items: center;
 `
 const Author = styled.div`
 `
 const Title = styled.div`
+    
 `
 
 const IG = styled.div`

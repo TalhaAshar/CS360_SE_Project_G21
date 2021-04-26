@@ -1,8 +1,6 @@
 import React from 'react'
-import LinearCard from './LinearCard'
 import styled from 'styled-components'
 import './popup.scss';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import { useLocation, useParams} from "react-router-dom"
@@ -28,7 +26,6 @@ function SearchPage() {
         
         if(temp == -1)
         {
-            console.log("ADDING")
             setFilters([...filters, value])
             setStart(0)
         }
@@ -45,15 +42,16 @@ function SearchPage() {
     function leftClick(){
         if(start > 0){
             setStart(start - 8)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 8 < pubs.length){
             setStart(start + 8)
+            window.scrollTo(0, 0)
         }
     }
-    console.log("MMMM", param)
  
      useEffect(() => {
         let isComponentMounted = true;
@@ -62,13 +60,11 @@ function SearchPage() {
         for (let index = 0; index < filters.length; index++) {
             url = url + "&search_fields=" + filters[index]
         }
-        console.log(url, "edfghtuehhe")
+
         axios.get(url).then((res) => {
-            console.log("THEN HANDLER")
+
             if (isComponentMounted){
-                console.log("COMP")
                 setPubs(res.data)
-                console.log(res)
             }
             setStart(0)
         })
@@ -83,14 +79,19 @@ function SearchPage() {
         <Container>
 
         
-<BookTitleContainer><h1>Search Results</h1></BookTitleContainer>
+        <BookTitleContainer><h1>Search Results</h1></BookTitleContainer>
 
             <Nextpage>
             <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
             <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
 
+            <FilterContainer>
+                <div></div>
             < Filter onChange={handleFilters}/>
+            <div></div>
+            </FilterContainer>
+
             <Colour>
                 <Results>
                 {(pubs.length == 0) && <YoutubeSearchedForIcon
@@ -105,14 +106,19 @@ function SearchPage() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
-                                <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                <CardDiv key={elem.id}>
+                                    <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                </CardDiv>
                                 )
                         }
-                        console.log(index)
                     })
                 }
                 </Results>
             </Colour>
+            <Nextpage>
+            <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+            <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
         </Container>
     )
 }
@@ -128,21 +134,39 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
+    margin-right: 3%;
+    margin-top:3%;
+`
+
+const FilterContainer = styled.div`
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-left: 5%;
 `
 
 const Results = styled.div`
-    width:1100px;
-    height:1600px;
-    display:grid;
-    grid-template-rows: 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-flow:row wrap;
     padding-top:20px;
-margin-left:20px;
-margin: 0 auto;
+    margin-left:20px;
+    margin: 0 auto;
+    padding-bottom:5%;
 `
 const Container = styled.div`
-margin-left: 3%;
-margin-right: 3%;
+max-width:100%;
+height:95%;
+margin-left:3%;
+margin-right:3%;
+margin-top:3%;
+margin-bottom:10%;
+background:white;
+padding-bottom:5%;
+@media only screen and (max-width: 1200px) {
+    height:95%;
+}
 
 `
 
@@ -161,7 +185,6 @@ margin-top: 1%;
 const Colour = styled.div`
 background: #DCF2F8;
 width:90%;
-height:1600px;
 border-radius: 20px;
 margin-bottom:100px;
 margin-left:3%;
@@ -200,4 +223,13 @@ align-items:center;
 margin-left: 5%;
 margin-right: 5%;
 font-size: 35px;
+`
+
+const CardDiv = styled.div`
+    position:relative;
+    left:10%;
+    right:10%;
+    width:100%;
+    padding-bottom:5%;
+
 `

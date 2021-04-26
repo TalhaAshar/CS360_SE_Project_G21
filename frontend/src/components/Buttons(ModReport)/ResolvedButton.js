@@ -15,9 +15,10 @@ const Container = styled.div`
 height: 35px;
 width:100px;
 align:center;
-margin-left:910px;
 border-radius:5px; 
 background: #06AF47;
+margin-left: 20%;
+margin-right: 1%;
 `
 const TextContainer = styled.text`
 color:white;

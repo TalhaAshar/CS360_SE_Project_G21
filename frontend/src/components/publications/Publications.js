@@ -26,8 +26,6 @@ function Publications(props) {
         axios.get(url1).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
-                console.log('ye boi', res.data)
-                console.log('nu boi', pubs.length)
             };
         })
         .catch(error => console.log('Error:', error))
@@ -47,18 +45,19 @@ function Publications(props) {
     
     const handleClick = () =>{
         setPopView(!PopView)
-        console.log("NEW VIEW", PopView)
     }
 
     function leftClick(){
         if(start > 0){
             setStart(start - 16)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 16 < pubs.length){
             setStart(start + 16)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -68,9 +67,7 @@ function Publications(props) {
             return (
                 <Container>
                     
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
+                    <BookTitleContainer><h1>Publications</h1></BookTitleContainer>
                     <ViewNextButtonContainer>
                     <View onClick = {handleClick} onMouseLeave={handleClick}>
                             <ViewText>View</ViewText>
@@ -91,15 +88,25 @@ function Publications(props) {
                     <Cards>
                          {
                              pubs.map((elem, index) => {
-                                 console.log(elem.id)
                                  if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
+                                        <CardDiv>
                                          <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                         </CardDiv>
                                          )
+                                         
                                  }
                              })
                          }
                     </Cards>
+                    <ViewNextButtonContainer >
+                        <View style={{background:"white"}}></View>
+                        <NextPrevious>
+                            <SkipPreviousRoundedIcon onClick={leftClick}/>
+                            <SkipNextRoundedIcon onClick={rightClick}/>
+                        </NextPrevious>
+                        <View style={{background:"white"}}></View>
+                    </ViewNextButtonContainer>
                 </Container>
              )
             break;
@@ -108,9 +115,7 @@ function Publications(props) {
         case 'MODERATOR':
             return (
                 <Container>
-                    <PublicationTitle>
-                        <Heading>Publications</Heading>
-                    </PublicationTitle>
+                    <BookTitleContainer><h1>Publications</h1></BookTitleContainer>
                     <ViewNextButtonContainer >
                             <View onClick = {handleClick} onMouseLeave={handleClick}>
                                 <ViewText>View</ViewText>
@@ -138,12 +143,23 @@ function Publications(props) {
                              pubs.map((elem, index) => {
                                  if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
-                                        <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                        <CardDiv>
+                                            <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                        </CardDiv>
                                     )
                                  }
                              })
                          }
                     </Cards>
+                    
+                    <ViewNextButtonContainer >
+                        <View style={{background:"white"}}></View>
+                        <NextPrevious>
+                            <SkipPreviousRoundedIcon onClick={leftClick}/>
+                            <SkipNextRoundedIcon onClick={rightClick}/>
+                        </NextPrevious>
+                        <View style={{background:"white"}}></View>
+                    </ViewNextButtonContainer>
                 </Container>
             )
             break;
@@ -154,19 +170,36 @@ function Publications(props) {
 
 export default Publications
 
+const BookTitleContainer = styled.div`
+    background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top: 2%;
+    margin-left: 3%;
+    margin-right: 3%;
+margin-bottom: 2%;
+`
+
 const Container = styled.div`
-    max-width:100%;
-    max-height:100%;
-    margin-left:3%;
-    margin-right:3%;
+    width:100%;
+    height:100%;
+   
+    margin-top:5%;
+    margin-bottom:5%;
     @media only screen and (max-width: 1200px) {
-        height:auto;
+        top-margin: 5%;
+        height:96%;
     }
+    background: white;
 `
 const ViewNextButtonContainer = styled.div`
     display:flex;
-    margin-left:2%;
-    margin-right:2%;
+    margin-left:3%;
+    margin-right:3%;
     justify-content:space-between;
     align-items:center;
     `
@@ -195,22 +228,29 @@ const ViewText = styled.h4`
     display:flex;
     justify-content:center;
     align-items:center;
+    text-align: center;
+    cursor: pointer;
 `
-const View = styled.h4`
+const View = styled.div`
     background:#3B058B;
     width:10%;
     height:30px;
     color:white;
     border-radius:6px;
     margin-top:1%;
+    cursor: pointer;
+
+    
 `
 const GuestNextPrevious = styled.h4`
     margin-top:1%;
     margin-right:48.5%;
+    cursor: pointer;
 `
 
 const NextPrevious = styled.h4`
     margin-top:1%;
+    cursor: pointer;
 `
 
 const PublicationTitle = styled.div`
@@ -237,16 +277,33 @@ const Heading = styled.h3`
 const Cards = styled.div`
     margin-top:4%;
     margin-bottom:4%;
+    margin-left:3%;
+    margin-right:3%;
+    border-radius:20px;
     display:flex;
     flex-basis:10%;
     flex-flow: row wrap;
     background:#DCF2F8;
+    height: auto;
     @media only screen and (max-width: 1200px) {
         height:auto;
         display:flex;
         justify-content:left;
         flex-wrap:wrap;
         flex:1;
-        background:black;
+        padding-bottom: 5%;
+    }
+    padding-bottom: 4%;
+
+    
+`
+
+const CardDiv = styled.div`
+    margin: 2% 2% 2% 2%;
+    padding: 1% 1% 1% 1%;
+
+    @media only screen and (max-width: 670px) {
+        padding: 3% 3% 3% 3%;
+        margin: 4% 4% 4% 4%;
     }
 `

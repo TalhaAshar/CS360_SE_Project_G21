@@ -19,8 +19,6 @@ function ThreadCategory() {
     const d = new Date()
     const { category } = useParams();
 
-    console.log(category, "ig")
-
     useEffect(() => {
         let isComponentMounted = true;
         let url = "api/forum/threads/" + category
@@ -39,12 +37,14 @@ function ThreadCategory() {
     function leftClick(){
         if(start > 0){
             setStart(start - 8)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
-        if(start + 8 < pubs.length){
+        if(start + 8 < threads.length){
             setStart(start + 8)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -52,10 +52,12 @@ function ThreadCategory() {
     return (
         <Container>
             <BookTitleContainer><h1>{category}</h1></BookTitleContainer>
+            <br/>
             <Nextpage>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
                 <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
+            <br/>
             <Colour>
                 <Results>
                    {
@@ -66,16 +68,19 @@ function ThreadCategory() {
                                 <Link to={{
                                     pathname : placeholder,
                                     state : threads[index]
-                                }}>
-                                <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                }} style={{textDecoration:"none"}}>
+                                <ForumLoggInCard key={elem.id} id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
                                 </Link>
                             )
                         }
-                        console.log(index)
                     })
                 }
                 </Results>
             </Colour>
+            <Nextpage style={{paddingBottom:"5%"}}>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
         </Container>
     )
 }
@@ -109,6 +114,7 @@ grid-template-columns: 520px 520px
 const Container = styled.div`
 margin-left: 3%;
 margin-right: 3%;
+background:white;
 
 `
 
@@ -126,12 +132,12 @@ margin-top: 1%;
 
 const Colour = styled.div`
 background: #DCF2F8;
-width:90%;
+width:90.5%;
 height:1000px;
 border-radius: 20px;
 margin-bottom:100px;
-margin-left:3%;
-margin-right:3%;
+margin-left:5%;
+margin-right:5%;
 `
 
 const Background = styled.div`

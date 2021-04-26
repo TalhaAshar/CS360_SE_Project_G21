@@ -27,20 +27,22 @@ function ForumLoggedIn() {
         <Container>
             <BookTitleContainer><h1>Discussion Forum</h1></BookTitleContainer>
             <AnnouncementsContainer>
-            <HeadContainer1>
-                <HeadContainer>
-                    <Link to={"/forum/category/Announcements"}>
+                <Head>
+                <HeadContainer style={{marginLeft:"8%"}}>
+                    <Link to={"/forum/category/Announcements"} style={{textDecoration:"none"}}>
                         <CategoryTitle>
                             Announcements
                         </CategoryTitle>
                     </Link>
-                    </HeadContainer>
-                    <Link to="/thread/add">
+                </HeadContainer>
+                <HeadContainer1>
+                    <Link to="/thread/add" style={{textDecoration:"none"}}>
                         <AddThread>
                             Add Thread
                         </AddThread>
                     </Link>
                 </HeadContainer1>
+                </Head>
                 <Colour>
                         <Results>
                         {
@@ -48,8 +50,10 @@ function ForumLoggedIn() {
                                 if(index < 4){
                                     let placeholder = "/thread/user/" + elem.id
                                     return(
-                                        <Link to={placeholder}>
-                                          <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                        <Link to={placeholder} style={{textDecoration:"none"}}>
+                                            <CardDiv>
+                                          <ForumLoggInCard key={elem.id} id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                          </CardDiv>
                                         </Link>
                                     )
                                 }
@@ -59,8 +63,8 @@ function ForumLoggedIn() {
                     </Colour>
             </AnnouncementsContainer>
             <GeneralContainer>
-            <HeadContainer>
-                    <Link to={"/forum/category/General"}>
+            <HeadContainer style={{marginBottom:"2%"}}>
+                    <Link to={"/forum/category/General"} style={{textDecoration:"none"}}>
                         <CategoryTitle>
                             General
                         </CategoryTitle>
@@ -77,8 +81,10 @@ function ForumLoggedIn() {
                                         <Link to={{
                                             pathname : placeholder,
                                             state : threads[index]
-                                        }}>
+                                        }} style={{textDecoration:"none"}}>
+                                        <CardDiv>
                                         <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                        </CardDiv>
                                         </Link>
                                     )
                                 }
@@ -89,8 +95,8 @@ function ForumLoggedIn() {
                     </Colour>
             </GeneralContainer>
             <OtherContainer>
-                <HeadContainer>
-                    <Link to={"/forum/category/Other"}>
+                <HeadContainer style={{marginBottom:"2%"}}>
+                    <Link to={"/forum/category/Other"} style={{textDecoration:"none"}}>
                         <CategoryTitle>
                             Other
                         </CategoryTitle>
@@ -106,8 +112,10 @@ function ForumLoggedIn() {
                                         <Link to={{
                                             pathname : placeholder,
                                             state : threads[index]
-                                        }}>
+                                        }} style={{textDecoration:"none"}}>
+                                        <CardDiv>
                                         <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                        </CardDiv>
                                         </Link>
                                     )
                                 }
@@ -124,13 +132,13 @@ function ForumLoggedIn() {
 export default ForumLoggedIn
 
 const Colour = styled.div`
-background: #DCF2F8;
-width:80%;
-height:450px;
-border-radius: 20px;
-margin-bottom:100px;
-margin-left:10%;
-margin-right:10%;
+    background: #DCF2F8;
+    width:80%;
+    height:100%;
+    border-radius: 20px;
+    margin-bottom:100px;
+    margin-left:10%;
+    margin-right:10%;
 `
 
 const BookTitleContainer = styled.div`
@@ -142,40 +150,38 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
+    margin-right: 3%;
+    margin-top:3%;
 `
 
 const Results = styled.div`
-width:1100px;
-display:grid;
-padding-top:20px;
-padding-left:3%;
-margin-left:20px;
-margin: 0 auto;
-display:grid;
-grid-template-rows: 200px 200px;
-grid-template-columns: 520px 520px
-
-
+    width:100%;
+    height:100%;
+    padding-top:20px;
+    padding-left:3%;
+    padding-right:4%;
+    display:flex;
+    flex-flow:row wrap;
+    justify-content:space-between;
+    
 `
-
+const CardDiv = styled.div`
+    margin-left:2%;
+    padding-bottom:8%;
+`
 const Container = styled.div`
-    margin-top: 2%;
+    margin-top: 4%%;
+    background:white;
 
 `
 const Head = styled.div`
     display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#03204C;
-    color:white;
-    font-size:30px;
-    font-weight:bold;
-    margin-top:30px;
-    width:1080px;
-    height:60px;
-    border-radius: 10.8594px;
-
+    justify-content:space-between;
+    margin-top:3%;
+    margin-left:3%;
+    margin-right:3%;
+    margin-bottom:5%;
+    
 `
 const HeadContainer = styled.div`
     background: #0A3977;
@@ -183,45 +189,29 @@ const HeadContainer = styled.div`
     color:white;
     min-width: 14%;
     width: 1%;
+    height:5%;
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-left: 10%;
-margin-right: 10%;
-margin-bottom: 2%;
-margin-top: 2%;
+    margin-top: 2%;
+    margin-left:10%;
 `
 
 const HeadContainer1 = styled.div`
     display:flex;
     justify-content:space-between;
-    
-
+    margin-right:8%;
 `
 const CategoryTitle = styled.h4`
     color:white;
     background: #0A3977;
     font-size: 20px;
+    border-radius:8px;
 `
 
-const CategoryTitle1 = styled.h4`
-width:110%;
-font-size: 20px;
-    padding-right:4px;
-    padding-left:4px;
-    margin-right:25px;
-    margin-left:10%;
-    margin-top:20px;
-    background:#0A3977;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius: 20px;
-`
 const AddThread = styled.h4`
     width:250px;
-    height:40px;
+    height:60%;
     padding-right:4px;
     padding-left:4px;
     margin-right:25px;

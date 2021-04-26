@@ -56,7 +56,7 @@ function ForumLoggInCard({username, title, category, postcount, timestamp, desc,
 
     return (
         <Container>
-        <Link to={profile_url}>
+        <Link to={profile_url} style={{textDecoration:"none"}}>
             <ImageUserNameContainer>
                 <ImageContainer>
                 
@@ -103,8 +103,8 @@ const Container = styled.div`
 
 `
 const ImageUserNameContainer = styled.div`
-    margin-left:20px;
-    margin-top:20px;
+    margin-left:10%;
+    margin-top:10%;
 
 `
 const ImageContainer = styled.div`
@@ -116,22 +116,27 @@ const Image = styled.img`
 const UserName = styled.h3`
 `
 const ThreadDetailContainer = styled.div`
-    margin-top:10px;
-    margin-left:10px;
+    margin-top:5%;
+    margin-left:10%;
 `
 const ThreadTitle = styled.h4`
-    min-width:200px;
+    width:200px;
+    overflow:hidden;
 `
 const ThreadCategory = styled.h4`
     min-width:200px;
+    overflow:hidden;
 `
 const ThreadMinorDetail = styled.h6`
-    min-width:200px;
+    width:200px;
+    overflow:hidden;
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:80px;
-    margin-top:10px;
+    position:relative;
+    left:1%;
+    margin-top:5%;
     padding-right:4px;
+    justify-content:flex-end;
     
 
 `

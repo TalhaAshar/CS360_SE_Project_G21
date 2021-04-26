@@ -8,7 +8,6 @@ function LinearCard({title, author, front, id}) {
 
     let j = "/publication/" + id
   //location = useLocation()
-  console.log(j)
   const [path, setPath] = useState(useLocation().pathname)
 
     return (

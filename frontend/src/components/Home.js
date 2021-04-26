@@ -1,5 +1,3 @@
-// import { Container } from '@material-ui/core'
-import { CardTravelSharp } from '@material-ui/icons'
 import React from 'react'
 import styled from 'styled-components'
 import BestEdition from './BestEdition'
@@ -20,7 +18,6 @@ function Home() {
             if (isComponentMounted){
             setPubs(res.data)
             };
-            console.log('ye boi', res.data)
         })
         .catch(error => console.log('Error:', error))
         return () => {
@@ -47,7 +44,7 @@ function Home() {
                                     pubs.map((elem, index) => {
                                         if(index > 0 && index < 6){
                                             return(
-                                                <CardDiv>
+                                                <CardDiv key={elem.id}>
                                                 <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                                 </CardDiv>
                                             )
@@ -64,7 +61,7 @@ function Home() {
                                 pubs.map((elem, index) => {
                                     if(index > 5 && index <= 10){
                                         return(
-                                            <CardDiv>
+                                            <CardDiv key={elem.id}>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                             </CardDiv>
                                         )
@@ -184,10 +181,10 @@ const Cards = styled.div`
     }
 `
 const CardDiv = styled.div`
-    margin-top:3%;
-    margin-bottom:3%;
-    margin-left:2%;
-    margin-right:2%;
+    padding-top:5%;
+    padding-bottom:3%;
+    padding-left:2%;
+    padding-right:2%;
 
 `
 const RecommendationContainer = styled.div`

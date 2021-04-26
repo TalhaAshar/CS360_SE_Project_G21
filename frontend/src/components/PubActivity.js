@@ -57,8 +57,17 @@ function PubActivity() {
     return (
         <Container>
             <ActivityHeader>
-                <ActivityText>My Activity</ActivityText>
+                <h1>My Contributions</h1>
             </ActivityHeader>
+            <ButtonContainer>
+                <div></div>
+            <ViewNextButtonContainer>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </ViewNextButtonContainer>
+            <div></div>
+            </ButtonContainer>
+
+            <FormContainer>
             <ActivityContainer>
                 {
                     pubs.map((elem, index) => {
@@ -66,16 +75,23 @@ function PubActivity() {
                         if(elem.Publication_ID != null){
                             if(index >= start && index < (start + 15) && index < pubs.length){
                                 return(
+                                    <Flag>
                                     <Activity key={index} pub={elem} type="Pub"/>
+                                    <NLine></NLine>
+                                    </Flag>
                                 )
                             }
                         }
                     })
                 }
+
+                {(pubs.length == 0) && <Flag>
+                    <Activity type={"Empty"}/>
+                    <NLine></NLine> 
+                </Flag>}
             </ActivityContainer>
-            <ViewNextButtonContainer>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
-            </ViewNextButtonContainer>
+        </FormContainer>
+            
         </Container>
     )
 }
@@ -84,54 +100,102 @@ function PubActivity() {
 export default PubActivity
 
 const Container = styled.div`
-max-width: 1570px;
-margin: 0 auto;
-height: auto;
+width: 100%
+height: 95%;
 background-color: white;
 `
+
+const FormContainer = styled.div`
+margin-left: 3%;
+margin-right: 3%;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 2%;
+  display:flex;
+  justify-content:center;
+  background:white;
+  border-radius: 16px;
+  align-items: center;
+  padding-bottom: 3%;
+  padding-left: 3%;
+`
+
 const ActivityHeader = styled.h3`
-width: 1050px;
-height: 80px;
-margin-left:150px;
-margin-right:150px;
-padding-left: 10px;
-padding-right: 10px;
-margin-top:150px;
-border-radius: 20px;
 background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
 `
 const ActivityText = styled.h3`
 max-height:50px;
-max-width:380px;
-background-color: #0A3977;
 color:white;
-font-size:50px;
+font-size:25px;
 font-weight:bold;
 border:1px;
-padding-left:335px;
-padding-top:15px;
+margin-top:2%;
 text-align: center;
 letter-spacing: -1px;
 border-radius:6px;
 `
 
 const ActivityContainer = styled.h3`
-width:1050px;
-height: 1155px;
-margin-left:160px;
-margin-top:75px;
+width:95%;
+height: 100%;
+margin-top:3%;
 border-radius:10px;
-background: #DCF2F8;
-box-shadow: 0px 8px 8px rgba(38, 50, 56, 0.12), 0px 16px 24px rgba(38, 50, 56, 0.08);
 `
 
 const ViewNextButtonContainer = styled.div`
 display:flex;
 width:100px;
 height:50px;
-margin-left:635px;
 align-items: Center;
-margin-top:40px;
-background: #DCF2F8;
+margin-top:3%;
 border-radius:10px;
+`
+
+const Flag = styled.div`
+width:95%;
+height:60px;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 32px;
+display: flex;
+align-items: center;
+color: Black;
+background: #DCF2F8;
+`
+
+
+const NLine = styled.line`
+position:absolute;
+width:82%;
+heigth:0px;
+margin-top: 60px;
+border: 1px solid #F9F7FC;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`
+
+const Text = styled.text`
+margin-left:40px;
+position:absolute;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 32px;
+color: #060606;
+`
+
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `

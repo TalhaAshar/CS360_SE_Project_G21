@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch , Link} from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
 import SignUp from './SignUp'
+import NavBar from './NavBar'
+import { useHistory } from "react-router-dom";
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
@@ -13,6 +15,8 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
+import MenuIcon from '@material-ui/icons/Menu';
+import NotificationDropdown from "./NotificationDropdown";
 
 import axios from 'axios';
 
@@ -35,8 +39,15 @@ function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
     const [logged, setLogged] = React.useState(true)
     const [searched, setSearched] = React.useState('')
-
+    const [NavStatus, setNavStatus] = React.useState(false)
+    const [PopView, setPopView] = React.useState(false)
     console.log(searched, "kakak")
+    const history = useHistory();
+
+    const handleNotification = () =>{
+        setPopView(!PopView)
+        console.log("NEW VIEW", PopView)
+    }
 
     const handleChange = (event) => {
         let temp = "/search/" + event.target.value
@@ -65,15 +76,31 @@ function Header(props) {
     function searchSubmit(event){
 
     }
+    function handleNav(event){
+
+        setNavStatus(!NavStatus)
+    }
+
+    function NavBarUpdate(event){
+        console.log(event)
+    }
+    function handleKeyPress(e){
+        if(e.key==="Enter"){
+            history.push(searched)
+        }
+    }
 
     return (
+        <Overall>
         <Container>
           <Top>
             <NotificationIconContainer>
-                <Link to="/Notification" style={{color:"white"}}>
-                    <NotificationsIcon/>
-                </Link>
+                    <NotificationsIcon onClick={handleNotification}/>
+                    
             </NotificationIconContainer>
+            <NotDropdownDiv>
+                <NotificationDropdown trigger={PopView} setTrigger={handleNotification} />
+            </NotDropdownDiv>
             <UserAccountIconContainer>
                 <Link to="/UserAccount" style={{color:"white"}}>
                     <AccountCircleIcon/>
@@ -151,9 +178,9 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} ></SearchInput>
+                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)} ></SearchInput>
                         
-                        <Link to={searched}>
+                        <Link to={searched}  style={{textDecoration:"none"}}>
                         <Button style={{
                             display:"flex",
                             justify:"center",
@@ -169,17 +196,96 @@ function Header(props) {
                 </Search>
             </SearchContainer>
           </Bottom>
-        </Container> 
+        </Container>
+        <ContainerMini>
+        <Top>
+            <NotificationIconContainer>
+                    <NotificationsIcon onClick={handleNotification}/>
+                    
+            </NotificationIconContainer>
+            <NotDropdownDiv>
+                <NotificationDropdown trigger={PopView} setTrigger={handleNotification} />
+            </NotDropdownDiv>
+            <UserAccountIconContainer>
+                <Link to="/UserAccount" style={{color:"white"}}>
+                    <AccountCircleIcon/>
+                </Link>
+            </UserAccountIconContainer>
+          </Top>
+                <Bottom style={{justifyContent:"flex-start"}}>
+                            <Link to="/" >  
+                                <LogoContainer>
+                                        <img src="\frontend\src\images\icons\Logo.png"
+                                        style={{borderRadius:"10px"}} />
+                                </LogoContainer>
+                            </Link>
+                            <MenuIcon color="white" style={{marginRight:"18%", marginLeft:"5%"}} onClick={handleNav}/>
+                            <SearchContainer style ={{marginLeft:"5%", marginRight:"6%"}} >
+                                    <SearchIconContainer> 
+                                        <SearchIcon
+                                        style={{
+                                        color:"#5F6368",
+                                        fontSize:30,
+                                        display:"flex",
+                                        justify:"center",
+                                        alignItems:"center"
+                                        }}
+                                    />
+                                </SearchIconContainer>
+                                    <Search>
+                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)} ></SearchInput>
+                                    </Search>
+                                </SearchContainer>
+                        </Bottom>
+                        <BottomNew>
+                            <NavBar trigger={NavStatus} setTrigger={handleNav} changeMyParent={logUserOut}/>
+                        </BottomNew>
+        </ContainerMini>
+        </Overall> 
     )
 }
 
 export default Header
 
+const Overall = styled.div`
+    height:150px;
+    color:white;
+    width:100%;
+    margin-bottom: 3%;
+`
 const Container = styled.div`
-height:150px;
-color:white;
+    height:150px;
+    color:white;
+    width:100%;
+    @media only screen and (max-width: 800px){
+        display:none;
+    }
+`
+const ContainerMini = styled.div`
+    display:none;
+    @media only screen and (max-width: 800px){
+    display:block;
+    height:150px;
+    color:white;
+    width:100%;
+}
 `
 
+const NotDropdownDiv = styled.div`
+    z-index: 1000;
+    position: relative;
+    top: 8%;
+    padding-top: 22.5%;
+    border-radius: 8px;
+`
+const BottomNew = styled.div`
+    height:20px;
+    margin-bottom:3%;
+    background:#04396B;
+    display:flex;
+    flex-flow:row wrap;
+    
+`
 const Top = styled.div`
     width:100%;
     height:35px;
@@ -192,6 +298,8 @@ const Top = styled.div`
 const NotificationIconContainer = styled.div`
 padding-right:10px;
 margin-top:5px;
+position: absolute;
+right: 2%;
 `
 const UserAccountIconContainer = styled.div`
 padding-right:10px;

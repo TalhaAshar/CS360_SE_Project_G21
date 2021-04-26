@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Thread, Post
+from .models import Thread, Post, Notification
 from django.contrib.auth.models import User
 
 from django.shortcuts import render
@@ -10,9 +10,9 @@ from django.db.models import Q
 from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PostSerializer, ThreadSerializer
+from .serializers import PostSerializer, ThreadSerializer, NotificationSerializer
 from accounts.models import MyActivity
-from accounts.serializers import ActivitySerializer
+from accounts.serializers import ActivitySerializer, ProfileSerializer
 
 # API to get the most recently added threads for guest user's views
 class GuestRecentThreads(APIView):
@@ -45,60 +45,76 @@ class UserRecentThreads(APIView):
 # API to generate a view for a particlar thread
 class ThreadsHome(APIView):
 
-    def get(self, request, id):
+	def get(self, request, id):
         
-        # Find the thread and all its posts
-        try:
-            thread = Thread.objects.get(id=id)
-            queryset = Post.objects.filter(ParentThread=thread).order_by('TimeStamp')
-        except Exception as e:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		# Find the thread and all its posts
+		try:
+			thread = Thread.objects.get(id=id)
+			queryset = Post.objects.filter(ParentThread=thread).order_by('TimeStamp')
+		except Exception as e:
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        all_posts = PostSerializer(queryset, many=True)
-        return Response(all_posts.data, status=status.HTTP_200_OK)
+		all_posts = PostSerializer(queryset, many=True)
+		return Response(all_posts.data, status=status.HTTP_200_OK)
     
-    # Create a new post on an existing thread
-    def post(self, request, id):
+	# Create a new post on an existing thread
+	def post(self, request, id):
+		
+		# Ensure that the thread exists
+		try:
+			queryset = Thread.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # Ensure that the thread exists
-        try:
-            queryset = Thread.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		# Ensure that the user is logged in
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # Ensure that the user is logged in
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        # Ensure the user is not trying to make an empty post
-        if(request.data["data"]["Body"] == ""):
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        # Check if the body is less than 5000 characters
-        if(len(request.data["data"]["Body"]) > 5000):
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+		# Ensure the user is not trying to make an empty post
+		if(request.data["data"]["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
         
-        # Update thread metadata
-        user = User.objects.get(username=request.user)
-        count = queryset.PostCount + 1
-        queryset.PostCount = count
-        queryset.save(update_fields=["PostCount"])
+		# Update thread metadata
+		user = User.objects.get(username=request.user)
+		count = queryset.PostCount + 1
+		queryset.PostCount = count
+		queryset.save(update_fields=["PostCount"])
 
-        parse = request.data["data"]
+		parse = request.data["data"]
 
-        # Create the new post
-        temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
-        temp.save()
+		# Create the new post
+		temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
+		temp.save()
 
-        all_posts = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
-        all_posts = PostSerializer(all_posts, many=True)
+		all_posts_queryset = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+		all_posts = PostSerializer(all_posts_queryset, many=True)
 
-        # Record the user's activity
-        user_activity = MyActivity.objects.create(Owner=user, CreatedPost=queryset)
-        user_activity.save()
+		# Record the user's activity
+		user_activity = MyActivity.objects.create(Owner=user, CreatedPost=queryset)
+		user_activity.save()
 
-        return Response(all_posts.data, status=status.HTTP_200_OK)
+		# Find all unique users following this particular thread
+		users_to_notify = []
+		for i in all_posts_queryset:
+            
+			if i.Creator not in users_to_notify and i.Creator.username != user.username:
+				users_to_notify.append(i.Creator)
+            
+		# If the users have not disabled notifications, create one for each user
+		for i in users_to_notify:
+           
+			check_notification_status = Profile.objects.get(user=i).Disable
 
+			if(not check_notification_status):
+				if(i.username == queryset.Creator.username):
+					message = user.username + " posted on a thread you created."
+				else:
+					message = user.username + " posted on a thread you are following."
+                
+				new_notification = Notification.objects.create(Owner=i, Commentor=user, ParentThread=queryset, Body=message)
+				new_notification.save()
+
+		return Response(all_posts.data, status=status.HTTP_200_OK)
 
 # API View to add a thread to the forum
 class AddThread(APIView):
@@ -116,10 +132,6 @@ class AddThread(APIView):
 
         #  Ensure the user is not trying to make an empty post
         if(parse["Body"] == ""):
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        # Check if the body is less than 5000 characters
-        if(len(parse["Body"]) > 5000):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # Create the thread
@@ -184,10 +196,6 @@ class EditPost(APIView):
         # Ensure that the user is not trying to send an empty post
 		if(request.data["data"]["Body"] == ""):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
-
-		# Check if the body is less than 5000 characters
-		if(len(request.data["data"]["Body"]) > 5000):
-			return Response(status=status.HTTP_400_BAD_REQUEST)
     
 		user = User.objects.get(username=request.user)
 		temp_check = Profile.objects.get(user=user)
@@ -233,12 +241,27 @@ class DeletePost(APIView):
 			parent_thread.PostCount = count
 			parent_thread.save(update_fields=["PostCount"])
             
-			post_to_delete.delete()
+			# Find all the posts under this particular thread
+			all_children_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
+			
 
-			all_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
-			all_posts = PostSerializer(all_posts, many=True)
+			# If the post is the first post in the thread, delete the thread as well
+			if(all_children_posts[0].id == id):
 
-			return Response(all_posts.data, status=status.HTTP_200_OK)
+				# Delete the post in question
+				post_to_delete.delete()
+				
+				parent_thread.delete()
+				return Response(status=status.HTTP_200_OK)
+			else:
+
+				# Delete the post in question
+				post_to_delete.delete()
+				
+				all_posts = Post.objects.filter(ParentThread=parent_thread).order_by('TimeStamp')
+				all_posts = PostSerializer(all_posts, many=True)
+				return Response(all_posts.data, status=status.HTTP_200_OK)
+
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
@@ -266,4 +289,94 @@ class IndividualThread(APIView):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 		
 		serializer = ThreadSerializer(thread_to_get)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API view to return a single post
+class IndividualPost(APIView):
+
+	def get(self, request, id):
+
+		try:
+			thread_to_get = Post.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		serializer = PostSerializer(thread_to_get)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API view to return a parent thread of post
+class PostParent(APIView):
+
+	def get(self, request, id):
+
+		try:
+			post_to_get = Post.objects.get(id=id)
+			thread_to_get = Thread.objects.get(id=post_to_get.ParentThread.id)
+		except Exception as e:
+			print(e)
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		serializer = ThreadSerializer(thread_to_get)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API to change all future notifications for a user
+class ManageNotification(APIView):
+
+	def get(self, request):
+
+		# Ensure that the user is logged in
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Retrieve user's record
+		try:
+			user = User.objects.get(username=request.user)
+		except:
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Retrieve the user's notifications ordered by most recent
+		notifications = Notification.objects.filter(Owner=user).order_by('-Timestamp')
+
+		# Return all notifications
+		serializer = NotificationSerializer(notifications, many=True)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+	def post(self, request, act):
+
+		# Ensure that the user is logged in
+		if (not request.user.is_authenticated):
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Retrieve user's record
+		try:
+			user = Profile.objects.get(user=request.user)
+		except:
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Depending on the action, turn their notifications on/off
+		if(act == 'enable'):
+			user.Disable = False
+		elif(act == 'disable'):
+			user.Disable = True
+
+		user.save(update_fields=['Disable'])
+
+		serializer = ProfileSerializer(user)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API to get a particular thread's notification status
+class ThreadNotification(APIView):
+
+	def get(self, request, id):
+
+		# Retrieve user's record
+		try:
+			user = User.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+		temp = Profile.objects.get(user=user)
+
+		serializer = ProfileSerializer(temp)
+		print(serializer.data)
 		return Response(serializer.data, status=status.HTTP_200_OK)

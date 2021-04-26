@@ -44,7 +44,7 @@ handleSubmit = (event) =>{
         <span style={{color: "#583192"}}>Password*</span> <br/>
         <input type="password" required name="password" placeholder="Between 8 to 32 characters." minLength="8" maxLength="32"  style={{padding:"10px", width: "380px", height: "45px", fontSize: "24px", borderColor: "#2F80ED", borderRadius: "14px", outline: "none"}} onChange={this.handleChange} /><br/>
         { this.state.invalid && <span style={{color: "#FF0000", position: "absolute"}}>Username or Email are already taken.</span> }
-        <input type="submit" value="Sign Up" style={{width: "160px", height: "70px", position: "relative", marginTop: "95px", marginLeft: "220px", fontSize: "24px", color: "#FFFFFF", backgroundColor: "transparent", borderRadius: "7px", borderColor: "#FFFFFF"}}/>
+        <input type="submit" value="Sign Up" style={{width: "160px", height: "70px", position: "relative", marginTop: "95px", marginLeft: "220px", fontSize: "24px", color: "#FFFFFF", backgroundColor: "transparent", borderRadius: "7px", borderColor: "#FFFFFF", cursor: "pointer"}}/>
         { this.state.seen ? <SignUpFeedbackPopup toggle={this.togglePop} /> : null}
       </form>
     );

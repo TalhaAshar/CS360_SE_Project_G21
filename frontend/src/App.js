@@ -8,7 +8,6 @@ import Footer from './components/Footer'
 import React, {Component} from "react"
 import ContactUs from "./components/forms/ContactUs";
 import DMCA from "./components/forms/TakedownRequest";
-import Publications from "./components/publications/Publications";
 import List from "./components/publications/PersonalizedListUserRead";
 import Thread from "./components/forms/ThreadAdd";
 import SinglePub from "./components/publications/PubSinglePage";
@@ -18,7 +17,6 @@ import Catalogue from "./components/publications/PublicationsList";
 import Columnar from "./components/publications/Publications";
 import {useEffect, useState} from "react";
 import axios from 'axios';
-import { ContactSupportOutlined } from '@material-ui/icons';
 import Search from "./components/SearchPage";
 import ReportPublication from "./components/forms/ReportPublication";
 import ReportHistory from "./components/ReportUser";
@@ -37,10 +35,15 @@ import ProfileGuest from "./components/ProfileGuest";
 import ListGuest from "./components/publications/PersonalizedListGuest"
 import MyActivity from "./components/MyActivity";
 import ForumCategoryUser from "./components/forum/ThreadCategoryUser";
+import ResolvePubReport from "./components/PubReportView";
+import ResolvePostReport from "./components/ThreadReportView";
+import ResolveModApp from "./components/ModeratorAppView";
+import Notification from "./components/Notifications";
+import Blacklist from "./components/Blacklist";
+
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-//import profile
 
 function App() {
 
@@ -52,7 +55,6 @@ function App() {
           if (isComponentMounted){
           setAuth(res.data)
           };
-          console.log('ye boi', res.data)
       })
       .catch(error => console.log('Error:', error))
       return () => {
@@ -61,7 +63,7 @@ function App() {
     }, [])
 
     function handleChange(newAuth){
-      console.log("APP JS", auth)
+      console.log("Am here again")
       setAuth(newAuth)
     }
 
@@ -80,17 +82,14 @@ function App() {
         <Switch>
 
           <Route exact path="/">
-          {console.log("HOME PAGE")}
             <Home/>
           </Route>
 
           <Route exact path="/Contact">
-            {console.log("CONTACT INSIDE")}
             <ContactUs />
           </Route>
 
           <Route exact path="/DMCA">
-            {console.log("CONTACT INSIDE")}
             <DMCA />
           </Route>
 
@@ -103,8 +102,7 @@ function App() {
           </Route>
 
            <Route exact path="/management">
-            {console.log("CONTACT INSIDE")}
-            <ProfileManagement /> 
+            <ProfileManagement onChange={handleChange}/> 
           </Route> 
            
           <Route exact path="/Columnar/">
@@ -116,7 +114,6 @@ function App() {
           </Route>
 
           <Route path="/publication/:id">
-            {console.log("single")}
             <SinglePub />  
           </Route>
 
@@ -139,17 +136,14 @@ function App() {
           </Route>
 
           <Route path="/searched/:param">
-            {console.log("IM HERE")}
             <Search />  
           </Route>
 
           <Route path="/contributions">
-            {console.log("IM HERE")}
             <PubActivity />  
           </Route>
 
           <Route path="/my_activity">
-            {console.log("IM HERE")}
             <MyActivity />  
           </Route>
 
@@ -163,9 +157,13 @@ function App() {
 
           <Route exact path="/reportpost" component={(props) => <ReportThread {...props}/>} />
 
-          <Route exact path="/reports" component={(props) => <ReportHistory {...props}/>} />
+          <Route exact path="/reports">
+            <ReportHistory />
+          </Route >
 
-          <Route exact path="/modhist" component={(props) => <ModHistory {...props}/>} />
+          <Route exact path="/modhist">
+            <ModHistory />
+          </Route> 
 
           <Route exact path="/modapps">
             <ModeratorAppForm />
@@ -185,6 +183,26 @@ function App() {
 
           <Route path="/forum/category/:category">
             <ForumCategoryUser />
+          </Route>
+
+          <Route path="/resolve/report/publication/:id">
+            <ResolvePubReport />
+          </Route>
+
+          <Route path="/resolve/report/post/:id">
+            <ResolvePostReport />
+          </Route>
+
+          <Route path="/resolve/modapp/:id">
+            <ResolveModApp />
+          </Route>
+
+          <Route exact path="/notifications">
+            <Notification />
+          </Route>
+
+          <Route exact path="/blacklist">
+            <Blacklist />
           </Route>
 
         </Switch>

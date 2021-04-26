@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import FlagIcon from '@material-ui/icons/Flag';
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import {Link} from 'react-router-dom';
@@ -56,7 +57,7 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
     return (
         
         <Container>
-        <Link to={profile_url}>
+        <Link to={profile_url} style={{textDecoration:"none"}}>
             <ImageUserNameContainer>
                 <ImageContainer>
                 
@@ -77,7 +78,7 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
                 <CommentIcon/>
                 <h5 style={{paddingTop:"4px"}}>{post_time} {placeholder}</h5>
             </Comment>
-            <Commentf>
+           
             
             <Comment1>
             <ReplyIcon style = {{fontSize:'30px'}} onClick={() => replyHandler("@" + username)}/>
@@ -88,11 +89,11 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
                 state : post_id
             }}>
                 <Comment2>
-                <ReportProblemIcon style = {{fontSize:'30px'}}/>
+                <FlagIcon style = {{fontSize:'30px'}}/>
                 </Comment2>
             </Link>
 
-            </Commentf>
+            
             <TimeIcon>
             <Comment1>
                     
@@ -110,11 +111,10 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
 export default PostCardLogged
 
 const Container = styled.div`
-width:1100px;
-height:180px;
-display:flex;
-background:white;
-border-radius:12px;
+    width:90%;
+    background:white;
+    border-radius:12px;
+    margin-bottom:5%;
 `
 const ImageUserNameContainer = styled.div`
     margin-left:20px;
@@ -131,39 +131,39 @@ const ThreadDetailContainer = styled.div`
     margin-top:30px;
     margin-left:20px;
 `
-const ThreadTitle = styled.h4`
-padding-right: 155px;
-`
-const ThreadCategory = styled.h4`
-`
-const ThreadMinorDetail = styled.h4`
-margin-top:10px;
+
+const ThreadMinorDetail = styled.div`
+    margin-top:10px;
+    overflow-wrap:break-word;
 `
 const ThreadTimePostContainer = styled.div`
-    margin-left:670px;
-    margin-top:20px;
+    display:flex;
+    flex-flow: row wrap;
+    margin-left:90%;
 `
 const Comment = styled.div`
-display:flex;
-margin-bottom:10px;
-padding-bottom: 30px;
+    margin-bottom:10px;
+    padding-bottom: 30px;
+    margin-right:5%;
 `
 
+
 const Commentf = styled.div`
-display:flex;
 margin-bottom:10px;
+margin-right:5%;
 `
 
 const TimeIcon = styled.div`
-display:flex;
 padding-top: 10px;
+margin-right:5%;
 `
 const Comment1 = styled.div`
-display:flex;
+margin-right:5%;
+cursor: pointer;
 `
 const Comment2 = styled.div`
-display:flex;
 margin-left:10px;
+cursor: pointer;
 `
 const Commentb = styled.div`
 display:flex;

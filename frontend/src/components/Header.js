@@ -5,6 +5,8 @@ import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import LogIn from './LogIn'
 import SignUp from './SignUp'
+import NavBar from './NavBarGuest'
+
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
@@ -13,20 +15,20 @@ import ForumIcon from '@material-ui/icons/Forum';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
+import MenuIcon from '@material-ui/icons/Menu';
+
 
 
 function Header(props) {
     const [temp, setTemp] = React.useState(props.auth)
     const [searched, setSearched] = React.useState('')
     const [flag, setFlag] = React.useState(false)
+    const [NavStatus, setNavStatus] = React.useState(false)
     const history = useHistory();
-
-    console.log(searched, "kakak")
 
     const handleChange = (event) => {
         let temp = "/search/" + event.target.value
         setSearched(temp);
-        console.log(temp, searched, "SEARCHED")
     }
 
     function updateParent(event){
@@ -38,9 +40,17 @@ function Header(props) {
         setTemp(event)
         updateParent(event)
     }
+    function handleNav(event){
 
+        setNavStatus(!NavStatus)
+    }
+    function handleKeyPress(e){
+        if(e.key==="Enter"){
+            history.push(searched)
+        }
+    }
     return (
-        
+        <Overall>
         <Container>
           <Top>
           </Top>
@@ -138,8 +148,8 @@ function Header(props) {
                   />
             </SearchIconContainer>
                 <Search>
-                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)}></SearchInput>
-                    <Link to={searched}>
+                    <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)}></SearchInput>
+                    <Link to={searched}  style={{textDecoration:"none"}}>
                         <Button style={{
                             display:"flex",
                             justify:"center",
@@ -155,20 +165,107 @@ function Header(props) {
                 </Search>
             </SearchContainer>
           </Bottom>
+          </Container>
+          <ContainerMini>
+                        <Top></Top>
 
-        </Container>
+                        <Bottom style={{justifyContent:"flex-start"}}>
+                            <Link to="/" >  
+                                <LogoContainer>
+                                        <img src="\frontend\src\images\icons\Logo.png"
+                                        style={{borderRadius:"10px"}} />
+                                </LogoContainer>
+                            </Link>
+                            <MenuIcon color="white" style={{marginRight:"2%", marginLeft:"5%"}} onClick={handleNav}/>
+                            <Popup trigger={
+                                <SignUpContainer style={{marginRight:"3.5%", marginTop:"4%",marginLeft:"1%"}}>
+                                    <PersonAddIcon
+                                    style={{
+                                        color:"white",
+                                        fontSize:30,
+                                        marginLeft:"1px"
+                                        
+                                        }}
+                                        />
+                                </SignUpContainer>
+                            }
+                                contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
+                                >
+                                <SignUp/>
+                            </Popup> 
+                            <Popup trigger={
+                                    <LogInContainer style={{marginRight:"3.5%", marginTop:"4%",marginLeft:"1%"}}>
+                                        <AccountCircleIcon
+                                            style={{
+                                            color:"white",
+                                            fontSize:30,
+                                            marginLeft:"1px"
+                                            }}/>
+                                    </LogInContainer>
+            
+                            }
+                                contentStyle={{ padding: '0px', border: 'none', width:'420px',height:'570px',borderRadius:'30px' }}
+                            >
+                                <LogIn auth={temp} onChange={handleClick}/>
+                            </Popup>
+
+                            <SearchContainer style ={{marginLeft:"5%", marginRight:"6%"}} >
+                                    <SearchIconContainer> 
+                                        <SearchIcon
+                                        style={{
+                                        color:"#5F6368",
+                                        fontSize:30,
+                                        display:"flex",
+                                        justify:"center",
+                                        alignItems:"center"
+                                        }}
+                                    />
+                                </SearchIconContainer>
+                                    <Search>
+                                        <SearchInput type="text" maxLength="255" placeholder="Search Publications..." onChange={event => setSearched("/searched/" + event.target.value)} onKeyPress={e => handleKeyPress(e)}></SearchInput>
+                                    </Search>
+                                </SearchContainer>
+                        </Bottom>
+                        <BottomNew>
+                            <NavBar trigger={NavStatus} setTrigger={handleNav}/>
+                        </BottomNew>
+        </ContainerMini>
+        </Overall>
         
        
     )
 }
 
 export default Header
-
-const Container = styled.div`
-height:150px;
-color:white;
+const Overall = styled.div`
+    height:150px;
+    color:white;
+    width:100%;
 `
-
+const Container = styled.div`
+    height:150px;
+    color:white;
+    @media only screen and (max-width: 800px){
+        display:none;
+    }
+`
+const ContainerMini = styled.div`
+    display:none;
+    @media only screen and (max-width: 800px){
+    display:block;
+    height:150px;
+    color:white;
+    width:100%;
+}
+`
+const BottomNew = styled.div`
+    height:20px;
+    margin-bottom:3%;
+    background:#04396B;
+    display:flex;
+    flex-flow:row wrap;
+    
+`
 const Top = styled.div`
     margin-top:-20px;
     width:100%;

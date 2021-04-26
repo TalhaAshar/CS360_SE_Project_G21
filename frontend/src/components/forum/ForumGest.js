@@ -4,16 +4,20 @@ import ForumGuestThreadCard from './ForumGuestThreadCard';
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import {Link} from "react-router-dom";
+import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
+import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 
 function ForumGest() {
 
     const [threads, setThreads] = React.useState([])
+    const[start, setStart] = React.useState(0)
     const d = new Date()
 
     useEffect(() => {
         let isComponentMounted = true;
         axios.get(`api/forum/guest/home`).then((res) => {
             if (isComponentMounted){
+                console.log(res.data.length)
                 setThreads(res.data)
             };
         })
@@ -23,10 +27,28 @@ function ForumGest() {
         }
     }, [])
 
+    function leftClick(){
+        if(start > 0){
+            setStart(start - 6)
+            window.scrollTo(0, 0)
+        }
+    }
+
+    function rightClick(){
+        if(start + 6 < threads.length){
+            setStart(start + 6)
+            window.scrollTo(0, 0)
+        }
+    }
+
     return (
         <Container>
             
             <BookTitleContainer><h1>Recent Threads</h1></BookTitleContainer>
+            <Nextpage>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
            
             <BodyRecent>
                 <Results>
@@ -34,11 +56,16 @@ function ForumGest() {
                 
                     {
                         threads.map((elem, index) => {
-                            if(index < 6){
+                            if(index >= start && index < (start + 6) && index < threads.length){
                             let placeholder = "/thread/guest/" + elem.id
                             return(
-                                <Link to={placeholder}>
-                                    <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                <Link to={{
+                                    pathname : placeholder,
+                                    state : threads[index]
+                                }} style={{textDecoration:"none", marginBottom:"1%"}}>
+                                <ThreadDiv>
+                                <ForumGuestThreadCard key={elem.id} id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                </ThreadDiv>
                                 </Link>
                             )
                             }
@@ -47,6 +74,11 @@ function ForumGest() {
                 </Results>
 
             </BodyRecent>
+
+            <Nextpage>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
         </Container>
     )
 }
@@ -54,7 +86,12 @@ function ForumGest() {
 export default ForumGest
 
 const Container = styled.div`
-
+    width:100%;
+    height:95%;
+    margin-top:3%;
+    margin-bottom:3%;
+    background: white;
+    padding-bottom: 3%;
 `
 
 const BookTitleContainer = styled.div`
@@ -66,17 +103,31 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-margin-right: 3%;
+    margin-right: 3%;
 `
+const Nextpage = styled.div`
+cursor: pointer;
+display:flex;
+flex-direction:row;
+margin-left: 48%;
+margin-right: 48%;
+margin-top: 1%;
+`
+
 const Results = styled.div`
-width:1100px;
-display:grid;
-grid-template-rows: 200px 200px 200px 200px 200px;//one 200px for each card, should be bigger than the card
-padding-top:20px;
-margin-left:20px;
-margin: 0 auto;
-
-
+    width:100%;
+    display:flex;
+    flex-flow:row wrap;
+    padding-top:20px;
+    margin-bottom:5%;
+    margin-left: 2%;
+    margin-right: 2%;
+`
+const ThreadDiv = styled.div`
+    margin-left: 2%;
+    width: 580px;
+    padding-left: 20px;
+    height: 225px;
 `
 const Text = styled.h3`
     display:flex;
@@ -85,19 +136,17 @@ const Text = styled.h3`
 `
 
 const BodyRecent = styled.div`
-    margin-left:50px;
-    margin-right:50px;
-    margin-top:20px;
-    margin-bottom:20px;
-    display:grid;
-    grid-template-rows: 200px 200px 200px 200px;
+    margin-left:3%;
+    margin-right:3%;
+    margin-top:2%;
+    margin-bottom:5%;
+    display:flex;
+    flex-flow:row wrap;
     background:#DCF2F8;
-    padding-left:40px;
-    padding-top:20px;
-    padding-bottom:20px;
-    padding-right:40px;
-    height:1250px;
-    border-radius:8px;
+    padding-top:2%;
+    padding-bottom:2%;
     
-
+    height:85%;
+    border-radius:8px;
 `
+

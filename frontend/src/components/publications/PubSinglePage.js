@@ -9,6 +9,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import FlagIcon from '@material-ui/icons/Flag';
 import PubSingleAddFeedbackPopup from '../functionality/PubSingleAddFeedbackPopup';
+import PubSingleError from "../functionality/PubSingleError";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -23,6 +24,10 @@ function PubSinglePage(props) {
 
     function togglePop () {
         setSeen(!seen)
+    }
+
+    function toggleInvalid () {
+        setInvalid(!invalid)
     }
 
     useEffect(() => {
@@ -48,6 +53,7 @@ function PubSinglePage(props) {
             };
         })
         .catch(error => setProfile("LOGGEDOUT"))
+        window.scrollTo(0, 0)
 
         return () => {
             isComponentMounted = false;
@@ -77,8 +83,9 @@ function PubSinglePage(props) {
                         <Text>ISBN: {pubs[0].ISBN}</Text>
                     </BookDetails>
                     { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED' || profile == 'UNVERIFIED') &&<ButtonIcons>
-                            <AddCircleIcon onClick={AddToMyList}/>
+                            <AddCircleIcon onClick={AddToMyList} style={{cursor: "pointer"}}/>
                             { seen ? <PubSingleAddFeedbackPopup toggle={togglePop} /> : null }
+                            { invalid ? <PubSingleError toggle={toggleInvalid} /> : null }
                             
                             { (profile == 'ADMIN' || profile == 'MODERATOR' || profile == 'VERIFIED') && <Link to={{
                                         pathname: "/editpublication",
@@ -94,8 +101,8 @@ function PubSinglePage(props) {
                                 <FlagIcon/>
                             </Link>
                     </ButtonIcons>}
-                    { (profile == 'LOGGEDOUT') && 
-                        <span style={{textAlign:'justify-center'}}>You must be logged in to use other features.</span>}
+                    { (profile == 'LOGGEDOUT') && <UserLoggedOut>
+                        You must be logged in to use other features.</UserLoggedOut>}
                 </BookImageDetailContainer>
                 <BookDescriptionComment>
                     {pubs[0].Best_Edition && <BookComment>
@@ -119,9 +126,10 @@ function PubSinglePage(props) {
                             )
                         }
                         if(index > 0 && index < 6){
-                            console.log(elem.id, "rec_idx")
                             return(
-                                <Cards title={elem.Title} author={elem.Authors} id={elem.id} front_cover={elem.Front_Cover} />
+                                <CardContainer>
+                                <Cards key={elem.id} title={elem.Title} author={elem.Authors} id={elem.id} front_cover={elem.Front_Cover} />
+                                </CardContainer>
                             )
                         }
                     })
@@ -248,12 +256,27 @@ const Description = styled.h5`
 const BookRelatedEditionContainer = styled.div`
     width: 100%;
     height: 30%;
-    margin-left:1%;
-    margin-right:10%;
     margin-top:2%;
     margin-bottom:2%;
     background: #DCF2F8;
     border-radius: 16px;
     display:grid;
-    grid-template-columns: 250px 250px 250px 250px;
+    grid-template-columns: 250px 250px 250px 250px 250px;
+`
+
+const UserLoggedOut = styled.span`
+margin-left:30%;
+margin-right:30%;
+margin-bottom:3%;
+display:flex;
+flex-direction: row;
+align-items: stretch;
+justify-content:space-between;
+`
+const CardContainer = styled.div`
+padding-top:5%;
+padding-bottom:3%;
+padding-left:2%;
+padding-right:2%;
+
 `

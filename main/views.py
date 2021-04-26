@@ -38,7 +38,7 @@ class Index(generics.ListCreateAPIView):
 		
 		# Find recent additions in descending order of date of addition ensuring no duplicates
 		try:
-			recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:5]
+			recents = Publication.objects.filter(~Q(id=collected[0])).order_by('-contribution__Date')[:7]
 		except:
 			return Response({'Message' : 'There was an error loading this page.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -50,7 +50,7 @@ class Index(generics.ListCreateAPIView):
 		
 		# Find the publication IDs for 5 random publications as recommendations
 		new = []
-		while j < 5:
+		while j < 7:
 			temp = random.randint(1, total)
 			if temp not in collected and temp not in new:
 				new.append(temp)
@@ -69,6 +69,7 @@ class Index(generics.ListCreateAPIView):
 		return temp
 	
 	queryset = FindSet()
+	print(queryset.count())
 	serializer_class = PublicationSerializer
 
 # Return all publications for the grid-like catalogue view
@@ -165,11 +166,12 @@ class AddPublication(APIView):
 				for i in related_pubs:
 					try:
 						rel = Publication.objects.get(id=i)
-						new_rel = RelatedPublication.objects.create(Main=main, Rel=rel)
+						new_rel = RelatedPublication.objects.create(Main_Publication=main, Rel_Publication=rel)
 						new_rel.save()
-						second_rel = RelatedPublication.objects.create(Main=rel, Rel=main)
+						second_rel = RelatedPublication.objects.create(Main_Publication=rel, Rel_Publication=main)
 						second_rel.save()
-					except:
+					except Exception as e:
+						print(e)
 						pass
 
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -223,21 +225,41 @@ class EditPublication(APIView):
 				serializer.save()
 
 			# Parse the input data for the related publication fields
+			related_pubs = []
 			try:
-				related_pubs = parse["Related"].split(',')
+				temp = parsed["Related"].split(',')
+				for i in temp:
+					try:
+						if(isinstance(int(i), int)):
+							related_pubs.append(int(i))
+					except:
+						pass
+
 			except:
 				related_pubs = []
-
+			 
 			main = pub_to_edit
-
 			# For each related publication, create a pair of related objects
 			for i in related_pubs:
 				rel = Publication.objects.get(id=i)
-				if not RelatedPublication.objects.filter(Q(Main=main) & Q(Rel=rel)).exists():
-					new_rel = RelatedPublication.objects.create(Main=main, Rel=rel)
+				if not RelatedPublication.objects.filter(Q(Main_Publication=main) & Q(Rel_Publication=rel)).exists():
+					new_rel = RelatedPublication.objects.create(Main_Publication=main, Rel_Publication=rel)
 					new_rel.save()
-					second_rel = RelatedPublication.objects.create(Main=rel, Rel=main)
+					second_rel = RelatedPublication.objects.create(Main_Publication=rel, Rel_Publication=main)
 					second_rel.save()
+			
+			# Find removed related publications
+			temp = RelatedPublication.objects.filter(Main_Publication=main)
+			all_related_pubs = []
+			for i in temp:
+
+				if((i.Rel_Publication.id) not in related_pubs):
+					all_related_pubs.append(i.Rel_Publication.id)
+			
+			for i in all_related_pubs:
+				pub_to_delete = Publication.objects.get(id=i)
+				RelatedPublication.objects.get(Q(Main_Publication=main) & Q(Rel_Publication=pub_to_delete)).delete()
+				RelatedPublication.objects.get(Q(Main_Publication=pub_to_delete) & Q(Rel_Publication=main)).delete()
 
 			return Response(serializer.data, status=status.HTTP_200_OK)
 		else:
@@ -269,10 +291,6 @@ class TakedownRequest(APIView):
 
 		# Ensure a reason for the copyright is given
 		if(complaint["Body"] == ""):
-			return Response(status=status.HTTP_400_BAD_REQUEST)
-		
-		# Check if the length of the body is within 5000 characters
-		if(len(complaint["Body"]) > 5000):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 		# Generate the body of the email
@@ -310,10 +328,6 @@ class ContactUs(APIView):
 		if(parsed["Body"] == ""):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
-		# Check if the length of the body is within 5000 characters
-		if(len(parsed["Body"]) > 5000):
-			return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 		# Generate the body of the email
 		subject = "BookBound - " + parsed["Reason"]
@@ -330,3 +344,28 @@ class ContactUs(APIView):
 		except:
 			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 		return Response(status=status.HTTP_200_OK)
+
+# API VIew to delete a particular publication
+class DeletePublication(APIView):
+
+	def post(self, request, id):
+
+		# Ensure that only a logged in user can delete publications
+		if not request.user.is_authenticated:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+			
+		# Check if the user has the authorization to delete a publication
+		user_to_check = Profile.objects.values_list('User_Type', flat=True).get(user=request.user)
+		if user_to_check == 'UNVERIFIED' or user_to_check == 'VERIFIED':
+			return Response({'Message' : 'You do not have the permission to perform this task!'}, status=status.HTTP_401_UNAUTHORIZED)
+		
+		# Check if the publication exists in the database
+		try:
+			pub_to_delete = Publication.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+		
+		# Deleting the publication
+		pub_to_delete.delete()
+		return Response(status=status.HTTP_200_OK)
+

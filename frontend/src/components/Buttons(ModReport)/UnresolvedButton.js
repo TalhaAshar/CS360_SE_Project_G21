@@ -15,9 +15,9 @@ const Container = styled.div`
 height: 35px;
 width:100px;
 align:center;
-margin-left:910px;
 border-radius:5px; 
 background: #CC0C0C;
+margin-right: 1%;
 `
 const TextContainer = styled.text`
 color:white;
