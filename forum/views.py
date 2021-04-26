@@ -45,77 +45,76 @@ class UserRecentThreads(APIView):
 # API to generate a view for a particlar thread
 class ThreadsHome(APIView):
 
-    def get(self, request, id):
+	def get(self, request, id):
         
-        # Find the thread and all its posts
-        try:
-            thread = Thread.objects.get(id=id)
-            queryset = Post.objects.filter(ParentThread=thread).order_by('TimeStamp')
-        except Exception as e:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		# Find the thread and all its posts
+		try:
+			thread = Thread.objects.get(id=id)
+			queryset = Post.objects.filter(ParentThread=thread).order_by('TimeStamp')
+		except Exception as e:
+			return Response(status=status.HTTP_404_NOT_FOUND)
         
-        all_posts = PostSerializer(queryset, many=True)
-        return Response(all_posts.data, status=status.HTTP_200_OK)
+		all_posts = PostSerializer(queryset, many=True)
+		return Response(all_posts.data, status=status.HTTP_200_OK)
     
-    # Create a new post on an existing thread
-    def post(self, request, id):
+	# Create a new post on an existing thread
+	def post(self, request, id):
+		
+		# Ensure that the thread exists
+		try:
+			queryset = Thread.objects.get(id=id)
+		except:
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # Ensure that the thread exists
-        try:
-            queryset = Thread.objects.get(id=id)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+		# Ensure that the user is logged in
+		if(not request.user.is_authenticated):
+			return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # Ensure that the user is logged in
-        if(not request.user.is_authenticated):
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        # Ensure the user is not trying to make an empty post
-        if(request.data["data"]["Body"] == ""):
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+		# Ensure the user is not trying to make an empty post
+		if(request.data["data"]["Body"] == ""):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
         
-        # Update thread metadata
-        user = User.objects.get(username=request.user)
-        count = queryset.PostCount + 1
-        queryset.PostCount = count
-        queryset.save(update_fields=["PostCount"])
+		# Update thread metadata
+		user = User.objects.get(username=request.user)
+		count = queryset.PostCount + 1
+		queryset.PostCount = count
+		queryset.save(update_fields=["PostCount"])
 
-        parse = request.data["data"]
+		parse = request.data["data"]
 
-        # Create the new post
-        temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
-        temp.save()
+		# Create the new post
+		temp = Post.objects.create(Creator=user, Body=parse["Body"], ParentThread=queryset)
+		temp.save()
 
-        all_posts_queryset = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
-        all_posts = PostSerializer(all_posts_queryset, many=True)
+		all_posts_queryset = Post.objects.filter(ParentThread=queryset).order_by('TimeStamp')
+		all_posts = PostSerializer(all_posts_queryset, many=True)
 
-        # Record the user's activity
-        user_activity = MyActivity.objects.create(Owner=user, CreatedPost=queryset)
-        user_activity.save()
+		# Record the user's activity
+		user_activity = MyActivity.objects.create(Owner=user, CreatedPost=queryset)
+		user_activity.save()
 
-        # Find all unique users following this particular thread
-        users_to_notify = []
-        for i in all_posts_queryset:
+		# Find all unique users following this particular thread
+		users_to_notify = []
+		for i in all_posts_queryset:
             
-            if i.Creator not in users_to_notify and i.Creator.username != user.username:
-                users_to_notify.append(i.Creator)
+			if i.Creator not in users_to_notify and i.Creator.username != user.username:
+				users_to_notify.append(i.Creator)
             
-        # If the users have not disabled notifications, create one for each user
-        for i in users_to_notify:
+		# If the users have not disabled notifications, create one for each user
+		for i in users_to_notify:
            
-            check_notification_status = Profile.objects.get(user=i).Disable
+			check_notification_status = Profile.objects.get(user=i).Disable
 
-            if(not check_notification_status):
-                if(i.username == queryset.Creator.username):
-                    message = user.username + " posted on a thread you created."
-                else:
-                    message = user.username + " posted on a thread you are following."
+			if(not check_notification_status):
+				if(i.username == queryset.Creator.username):
+					message = user.username + " posted on a thread you created."
+				else:
+					message = user.username + " posted on a thread you are following."
                 
-                new_notification = Notification.objects.create(Owner=i, Commentor=user, ParentThread=queryset, Body=message)
-                new_notification.save()
+				new_notification = Notification.objects.create(Owner=i, Commentor=user, ParentThread=queryset, Body=message)
+				new_notification.save()
 
-        return Response(all_posts.data, status=status.HTTP_200_OK)
-
+		return Response(all_posts.data, status=status.HTTP_200_OK)
 
 # API View to add a thread to the forum
 class AddThread(APIView):

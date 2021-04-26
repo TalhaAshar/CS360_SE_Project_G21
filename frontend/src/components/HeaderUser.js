@@ -41,18 +41,16 @@ function Header(props) {
     const [searched, setSearched] = React.useState('')
     const [NavStatus, setNavStatus] = React.useState(false)
     const [PopView, setPopView] = React.useState(false)
-    console.log(searched, "kakak")
+    
     const history = useHistory();
 
     const handleNotification = () =>{
         setPopView(!PopView)
-        console.log("NEW VIEW", PopView)
     }
 
     const handleChange = (event) => {
         let temp = "/search/" + event.target.value
         setSearched(temp);
-        console.log(temp, searched, "SEARCHED")
     }
     
     function logUserOut(){
@@ -81,9 +79,7 @@ function Header(props) {
         setNavStatus(!NavStatus)
     }
 
-    function NavBarUpdate(event){
-        console.log(event)
-    }
+    
     function handleKeyPress(e){
         if(e.key==="Enter"){
             history.push(searched)
@@ -273,9 +269,9 @@ const ContainerMini = styled.div`
 
 const NotDropdownDiv = styled.div`
     z-index: 1000;
-    position: relative;
-    top: 8%;
-    padding-top: 22.5%;
+    position: absolute;
+    top: 30px;
+    padding-top: 10px;
     border-radius: 8px;
 `
 const BottomNew = styled.div`
@@ -296,13 +292,14 @@ const Top = styled.div`
     filter:drop-shadow(0px 2px 4px rgba(38, 50, 56, 0.16)), drop-shadow(0px 4px 8px rgba(38, 50, 56, 0.08));
 `
 const NotificationIconContainer = styled.div`
-padding-right:10px;
+padding-right:4%;
 margin-top:5px;
 position: absolute;
 right: 2%;
+cursor: pointer;
 `
 const UserAccountIconContainer = styled.div`
-padding-right:10px;
+padding-right:2%;
 margin-top:5px;
 `
 
@@ -312,6 +309,7 @@ const Bottom = styled.nav`
     display:flex;
     align-items:center;
     justify-content:space-between;
+    width: 100%;
 `
 
 const LogoContainer = styled.div`

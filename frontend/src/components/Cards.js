@@ -19,11 +19,11 @@ import {useEffect, useState} from "react";
 export default function ImgMediaCard({title, author, front_cover, id}) {
   let j = "/publication/" + id
   //location = useLocation()
-  console.log(j)
   const [path, setPath] = useState(useLocation().pathname)
 
   return (
     <StyledView>
+      <Link to={j} style={{textDecoration:"none"}}>
       <Card
       style={{
               height: "350px",
@@ -32,7 +32,7 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
               filter: "drop-shadow(0px 24px 64px rgba(0, 0, 0, 0.06))"            
           }}>
         <CardActionArea>
-        <Link to={j}>
+        
           <CardMedia
             component="img"
             alt={title}
@@ -41,7 +41,6 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
             src={front_cover}
             title={title}
           />
-          </Link>
           <Divider variant="middle" />
           <CardContent>
             <Typography gutterBottom variant="h6" component="h5" >
@@ -53,6 +52,7 @@ export default function ImgMediaCard({title, author, front_cover, id}) {
           </CardContent>
         </CardActionArea>
       </Card>
+      </Link>
       
     </StyledView>
   );

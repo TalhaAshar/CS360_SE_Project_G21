@@ -18,7 +18,6 @@ function Home() {
             if (isComponentMounted){
             setPubs(res.data)
             };
-            console.log('ye boi', res.data)
         })
         .catch(error => console.log('Error:', error))
         return () => {
@@ -45,7 +44,7 @@ function Home() {
                                     pubs.map((elem, index) => {
                                         if(index > 0 && index < 6){
                                             return(
-                                                <CardDiv>
+                                                <CardDiv key={elem.id}>
                                                 <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                                 </CardDiv>
                                             )
@@ -62,7 +61,7 @@ function Home() {
                                 pubs.map((elem, index) => {
                                     if(index > 5 && index <= 10){
                                         return(
-                                            <CardDiv>
+                                            <CardDiv key={elem.id}>
                                             <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
                                             </CardDiv>
                                         )

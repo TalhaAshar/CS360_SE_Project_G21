@@ -6,6 +6,7 @@ import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { useLocation, useParams} from "react-router-dom"
+import BlacklistAddFeedbackPopup from "./functionality/BlacklistAddFeedbackPopup"
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -15,6 +16,11 @@ function Profile() {
     const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{}, 'blacklisted' : false } )
     const [User, setUser] = useState('')
     const [visitor, setVisitor] = useState({'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{}, 'blacklisted' : false })
+    const [seen, setSeen] = useState(false)
+  
+    function togglePop () {
+      setSeen(true)
+    }
 
     let Path = "/List/guest/" + id
 
@@ -46,10 +52,9 @@ function Profile() {
     function addBlacklist(){
         let url = `api/register/blacklist/add/` + id
         axios.post(url).then((res) => {
-            
                 setDetails(res.data)
                 setUser(res.data['user']['username'])
-            
+                setSeen(false)
         })
         .catch(error => console.log('Error:', error))
     }
@@ -122,14 +127,19 @@ function Profile() {
                                     </MyList>
                                 </Link>
                                 <Line></Line>
-                                
-                                    {((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false && Details['User_Type'] != 'ADMIN') && <PrivateMessages onClick={addBlacklist}>
-                                        <PMBackground>
-                                            Add to Blacklist
-                                        </PMBackground>
-                                    </PrivateMessages> }
+                                    {   ((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false && Details['User_Type'] != 'ADMIN') && 
+                                        <PrivateMessages onClick={togglePop}>
+                                            <PMBackground>
+                                                Add to Blacklist
+                                            </PMBackground>
+                                            { seen ? <BlacklistAddFeedbackPopup blacklist={addBlacklist}/> : null }
+                                        </PrivateMessages>
+                                    }
                             </Activity>
                         </ButtonsActivity>
+                        {
+                            Details["blacklisted"] === true && <BlackText> Blacklisted </BlackText>
+                        }
                 </Lower>
                 </Container>
             )
@@ -332,6 +342,19 @@ line-height: 41px;
 color: #13AAFF;
 `
 
+const BlackText = styled.h3`
+width: 273px;
+height: 48px;
+font-family: Manrope;
+font-style: normal;
+font-weight: bold;
+font-size: 30px;
+line-height: 41px;
+color: #000000;
+margin-top: 20%;
+margin-left: -11%;
+`
+
 const Activity = styled.div`
     width:250px;
 
@@ -375,27 +398,24 @@ color:black;
 display:flex;
 justify-content:center;
 align-items:center;
-    width: 360px;
-    height: 86px;
-    
-
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+width: 360px;
+height: 86px;
+background: #FFFFFF;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+cursor:pointer;
 `
 
 const PMText = styled.h3`
-    width: 170px;
-    height: 27px;
-   
-    font-family: Manrope;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 27px;
-
-    color: #000000;
-
+width: 170px;
+height: 27px;
+font-family: Manrope;
+font-style: normal;
+font-weight: bold;
+font-size: 20px;
+line-height: 27px;
+color: #000000;
 `
 
 const PrivateMessages = styled.div`
+cursor:pointer;
 `

@@ -26,12 +26,9 @@ function Header(props) {
     const [NavStatus, setNavStatus] = React.useState(false)
     const history = useHistory();
 
-    console.log(searched, "kakak")
-
     const handleChange = (event) => {
         let temp = "/search/" + event.target.value
         setSearched(temp);
-        console.log(temp, searched, "SEARCHED")
     }
 
     function updateParent(event){

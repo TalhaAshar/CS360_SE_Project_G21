@@ -4,6 +4,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FlagIcon from '@material-ui/icons/Flag';
 import EditIcon from '@material-ui/icons/Edit';
 import {useEffect, useState} from "react";
 import axios from 'axios';
@@ -57,7 +58,6 @@ function PostCardAdmin({first, thread_id, post_id, username, timestamp, desc, id
 
         let url = "api/forum/post/delete/" + post_id + "/" + thread_id
         axios.post(url).then((res) => {
-            console.log("deleted")
             postHandler(res.data)
         })
         .catch(error => console.log('Error:', error))
@@ -95,7 +95,7 @@ function PostCardAdmin({first, thread_id, post_id, username, timestamp, desc, id
                 state : post_id
             }} style={{textDecoration:"none", marginRight:"6%"}}>
                 <Comment2>
-                    <ReportProblemIcon style = {{fontSize:'30px'}}/>
+                    <FlagIcon style = {{fontSize:'30px'}}/>
                 </Comment2>
             </Link>
 

@@ -52,7 +52,7 @@ function ThreadGuest() {
                     {
                         posts.map((elem, index)  => {
                                 return(
-                                    <PostCardGuest id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    <PostCardGuest key={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                 )
                         })
                     }
@@ -66,7 +66,8 @@ function ThreadGuest() {
 
 export default ThreadGuest
 const Container = styled.div`
-    height:100%;
+    height: 95%;
+    background: white;
 `
 
 

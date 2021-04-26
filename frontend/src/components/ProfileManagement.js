@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import SecurityIcon from '@material-ui/icons/Security';
+import { useHistory } from "react-router-dom";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ProfileUploadImage from './functionality/ProfileUploadImage'
+import RemoveAccountFeedbackPopup from './functionality/RemoveAccountFeedbackPopup'
 
 //User profile type icon needs to be added.
 
@@ -14,16 +16,24 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 class ProfileManagement extends Component{
     constructor(props){
         super(props)
-        this.ID = "/List" + this.props.passID
+        this.ID = "/List" + this.props.passID;
         this.handleSubmitData = this.handleSubmitData.bind(this);
         this.handleSubmitPassword = this.handleSubmitPassword.bind(this);
-        this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', invalid: false, Pop: false, 'ProfileImage':null, Display:this.props.passDetails['ProfileImage'] };
+        this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', invalid: false, Pop: false, 'ProfileImage':null, Display:this.props.passDetails['ProfileImage'], seen: false };
+    }
+    
+    togglePop = () => {
+      this.setState({seen:!this.state.seen})
     }
 
-    removeAccount = () => {
+    removeAccount = (hist) => {
       let url = "/api/register/user/delete"
       axios.post(url)
-          .then(res => console.log("done"))
+          .then(res => {
+            this.props.onChange({'Status' : 'Unauthentic'})
+            hist.push("/")
+          
+          })
           .catch(error => console.error('Error:', error))
           .then(response => console.log('Success', response));
     }
@@ -114,23 +124,23 @@ class ProfileManagement extends Component{
               <form onSubmit={this.handleSubmitData}>
                 <Descone>
                     {  (this.state.User_Type === 'ADMIN') && <Profession>Profession</Profession>    }
-                    {  (this.state.User_Type === 'ADMIN') && <input type="text" name="profession" value={this.state.profession} onChange={this.handleChange} />   }
+                    {  (this.state.User_Type === 'ADMIN') && <input type="text" name="profession" maxLength="150" value={this.state.profession} onChange={this.handleChange} />   }
                     {  (this.state.User_Type === 'ADMIN') && <Company>Company</Company> }
-                    {  (this.state.User_Type === 'ADMIN') && <input type="text" name="company" value={this.state.company} onChange={this.handleChange} /> }
+                    {  (this.state.User_Type === 'ADMIN') && <input type="text" name="company" maxLength="150" value={this.state.company} onChange={this.handleChange} /> }
                     {  (this.state.User_Type != 'ADMIN') && <Profession>Education</Profession>    }
-                    {  (this.state.User_Type != 'ADMIN') && <input type="text" name="education" value={this.state.education} onChange={this.handleChange} />   }
+                    {  (this.state.User_Type != 'ADMIN') && <input type="text" name="education" maxLength="150" value={this.state.education} onChange={this.handleChange} />   }
                     {  (this.state.User_Type != 'ADMIN') && <Company>Institution</Company> }
-                    {  (this.state.User_Type != 'ADMIN') && <input type="text" name="institution" value={this.state.institution} onChange={this.handleChange} /> }
+                    {  (this.state.User_Type != 'ADMIN') && <input type="text" name="institution" maxLength="150" value={this.state.institution} onChange={this.handleChange} /> }
                     <Location>Location</Location>
                     <input type="text" name="location" value={this.state.location} onChange={this.handleChange} /><br/>
                     <Age>Age</Age>
-                    <input type="text" name="age" value={this.state.age} onChange={this.handleChange} /><br/>
+                    <input type="number" name="age" value={this.state.age} onChange={this.handleChange} /><br/>
                     <Biography>
                       <BioText>
                         Biography
                       </BioText>
                       <TellUsAboutYourself>
-                        <textarea rows="25" cols="50" name="biography" onChange={this.handleChange} >{this.state.biography}</textarea>
+                        <textarea rows="25" cols="50" name="biography" maxLength="2000" onChange={this.handleChange} >{this.state.biography}</textarea>
                       </TellUsAboutYourself>
                     </Biography>
                     <input type="submit" value="Save" style = {{height: "7%",width:"7%", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"70%", marginTop:"35%"}}/>
@@ -188,12 +198,13 @@ class ProfileManagement extends Component{
                   }
                   {
                     ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED') || (this.state.User_Type === 'MODERATOR')) &&
-                        <ModApp>
-                          <ModAppBackground onClick={this.removeAccount}>
+                        <ModApp onClick={this.togglePop}>
+                          <ModAppBackground>
                             Remove Account
                           </ModAppBackground>
                         </ModApp>
                   }
+                  { this.state.seen ? <RemoveAccountFeedbackPopup toggle={this.togglePop} remove={this.removeAccount}/> : null }
                 </Buttons>
               </ButtonsActivity>
 
@@ -209,7 +220,6 @@ class ProfileManagement extends Component{
                   </form>
                 </ChangePassword>
             </Lower>
-
           </Container>
         )
       }
@@ -458,7 +468,9 @@ const SettingsText = styled.h3`
     color: #FFFFFF;
 `
 const ModApp = styled.div`
+cursor: pointer;
 `
+
 const ModAppBackground = styled.div`
 color:white;
 display:flex;
@@ -467,6 +479,7 @@ align-items:center;
 margin-bottom:40px;
 width: 359px;
 height: 30px;
+cursor: pointer;
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;

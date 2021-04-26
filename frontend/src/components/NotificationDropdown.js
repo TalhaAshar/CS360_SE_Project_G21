@@ -41,7 +41,7 @@ function NotificationDropdown(props) {
                             let threadLink = "/thread/user/" + elem.ParentThread["id"]                            
                             return(
                                 <Link to={threadLink} style={{textDecoration:"none"}}>
-                                <Notification>
+                                <Notification key={elem.id}>
                                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'1%', marginTop: '2%',alignItems:'center', position: 'absolute'}}/> 
                                     <NotificationText>{elem.Body}</NotificationText>
                                 </Notification>

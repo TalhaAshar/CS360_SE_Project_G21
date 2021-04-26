@@ -1,10 +1,8 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
-// import fetch from 'cross-fetch';
+import React from 'react';
 import styled from 'styled-components';
-import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 import { useLocation, useParams} from "react-router-dom";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -15,7 +13,7 @@ function ModAppView() {
 
   const [app, setApp] = useState({'Reason' : '', 'Description' : '', 'Name' : '', 'Location' : '', })
   const { id } = useParams();
-
+  const history = useHistory();
 
   useEffect(() => {
     let isComponentMounted = true;
@@ -25,7 +23,6 @@ function ModAppView() {
             setApp(res.data)
         };
     })
-    .catch(error => console.log('Error:', error))
 
     return () => {
         isComponentMounted = false;
@@ -36,108 +33,132 @@ function ModAppView() {
   function changeStatus(choice){
     let url = "api/accounts/modapps/" + id + "/" + choice
     axios.post(url).then((res) => {
-      console.log("The state was changed")
+      history.push("/modhist")
     })
-    .catch(error => console.log('Error:', error))
   }
 
+    return (
+        <Container>
+            <Header>Moderator Application</Header>
+            <View>
+                <Name >Name</Name>
+                <NameText>{app.Name}</NameText>
+                <Location>Location</Location>
+                <LocationText>{app.Location}</LocationText>
+                <Why>Why do you want to be a moderator?</Why>
+                <WhyText>{app.Reason}</WhyText>
+                <Qualifications>Describe your qualifications.</Qualifications>
+                <QualificationsText dangerouslySetInnerHTML={{ __html:app.Description}} />
+                <AcceptedContainer onClick={() => changeStatus("accept")}>
+                    <AcceptedTextContainer >Accepted</AcceptedTextContainer>
+                </AcceptedContainer>
 
-    return(
-      <Container>
-
-        <Head>Moderator Application</Head>
-
-        <FormContainer>
-
-            <UserInfo>
-              <Span>Full Name</Span>
-              <Span>Location</Span>
-              <Name>{app.Name}</Name>              
-              <Location>{app.Location}</Location>
-              <Span>Why do you want to be a moderator?</Span><br/>
-              <Why>{app.Reason}</Why>  
-              <Span style = {{marginTop:'25%',position:'relative',marginLeft:'-100%'}}>Describe your qualifications.</Span>
-              <Qualifications style = {{wordWrap:'break-word'}} dangerouslySetInnerHTML={{ __html:app.Description}} /> 
-            </UserInfo>
-
-            <AcceptedContainer>
-              <AcceptedTextContainer onClick={() => changeStatus("accept")}>Accepted</AcceptedTextContainer>
-            </AcceptedContainer>
-
-            <RejectedContainer>
-              <RejectedTextContainer onClick={() => changeStatus("reject")}>Rejected</RejectedTextContainer>
-            </RejectedContainer>
-
-        </FormContainer> 
-
-      </Container>
-        )
+                <RejectedContainer onClick={() => changeStatus("reject")}>
+                    <RejectedTextContainer >Rejected</RejectedTextContainer>
+                </RejectedContainer>
+            </View>
+        </Container>
+    )
 }
 
 export default ModAppView
 
 const Container = styled.div`
-  margin-left:150px;
-  margin-right:150px;
-
+  margin-left:11%;
+  height: 0 auto; 
 `
-const Head = styled.h3`
+const Header = styled.h3`
   width:1040px;
   height:50px;
   margin-top:30px;
   margin-left:5px;
   display:flex;
+  font-size:25px;
   justify-content:center;
   align-items:center;
   color:white;
   background: #03204C;
   border-radius: 8px;
 `
-const FormContainer = styled.div`
-  width: 1050px;
-  height: 900px;
-  margin-top:20px;
-  display:flex;
-  justify-content:space-between;
-  background:#DCF2F8;
-  border-radius: 16px;
-
+const View = styled.h3`
+width: 1050px;
+height: 900px;
+justify-content:space-between;
+background:#DCF2F8;
+border-radius: 16px;
 `
-const Name = styled.text`
+
+const Name = styled.h3`
+position:relative;
+margin-left:5%;
+padding-top:2%;
+font-weight:Bold;
+font-size:22px;
+`
+
+const Location = styled.h3`
+position:relative;
+margin-left:60%;
+margin-top:-6.75%;
+font-weight:Bold;
+font-size:22px;
+`
+
+const Why = styled.h3`
+position:relative;
+margin-left:5%;
+margin-top:5%;
+font-weight:Bold;
+font-size:22px;
+`
+
+const Qualifications = styled.h3`
+position:relative;
+margin-left:5%;
+margin-top:10%;
+font-weight:Bold;
+font-size:22px;
+`
+
+const NameText = styled.text`
+position:relative;
+width: 450px;
+height: 0 auto;
+display:flex;
+word-break:break-word;
+margin-left:5%;
 font-weight:Normal;
 font-size:18px;
-margin-top:2%
 `
-const Location = styled.text`
+
+const LocationText = styled.text`
+position:relative;
+width: 400px;
+margin-left:60%;
+display:flex;
+word-break:break-word;
 font-weight:Normal;
-font-size:18px;
-margin-top:2%
-`
+font-size:18px;`
 
-const Why = styled.text`
+const WhyText = styled.text`
+position:relative;
+width: 900px;
+margin-left:5%;
+margin-top: 3%;
+display:flex;
+word-break:break-word;
 font-weight:Normal;
-font-size:18px;
-margin-top:2%
-`
+font-size:18px;`
 
-const Qualifications = styled.text`
+const QualificationsText = styled.text`
+position:relative;
+width: 900px;
+margin-left:5%;
+margin-top: 1%;
+display:flex;
+word-break:break-word;
 font-weight:Normal;
-font-size:18px;
-`
-
-const UserInfo = styled.div`
-  display:grid;
-  grid-template-rows:20px 60px 20px 200px;
-  grid-template-columns:500px 500px;
-  margin-top:20px;
-  padding-left:50px;
-`
-
-const Span = styled.span`
-  font-weight:bold;
-  font-size:20px;
-  
-`
+font-size:18px;`
 
 const AcceptedContainer = styled.div`
 height: 35px;
@@ -145,17 +166,18 @@ position:relative;
 display:flex; 
 width:90px;
 align:center;
-margin-top:80%;
-margin-left:-30%;
+margin-left:70%;
+margin-top:40%;
 border-radius:5px; 
 background: #06AF47;
+cursor: pointer;
 `
 const AcceptedTextContainer = styled.text`
 color:white;
 align:center;
 font-style: normal;
 font-weight: bold;
-margin-left:15%;
+margin-left:9%;
 
 display: flex;
 align-items: center;
@@ -171,18 +193,18 @@ position:relative;
 display:flex; 
 width:90px;
 align:center;
-margin-left:-5%;
-margin-top:80%;
-margin-right:2%;
+margin-left:85%;
+margin-top:-3.5%;
 border-radius:5px; 
 background: #CC0C0C;
+cursor: pointer;
 `
 const RejectedTextContainer = styled.text`
 color:white;
 align:center;
 font-style: normal;
 font-weight: bold;
-margin-left:15%;
+margin-left:10%;
 margin-top:8%;
 
 align-items: center;

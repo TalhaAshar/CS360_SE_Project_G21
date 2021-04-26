@@ -23,6 +23,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@tinymce/tinymce-react": "^3.12.0",
     "axios": "^0.21.1",
     "css-loader": "^5.2.0",
@@ -34,6 +35,7 @@
     "react-onclickoutside": "^6.10.0",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
+    "react-spinners": "^0.10.6",
     "reactjs-popup": "^2.0.4",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",

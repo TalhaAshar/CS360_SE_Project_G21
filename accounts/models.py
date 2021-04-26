@@ -3,12 +3,13 @@ from django.contrib.auth.models import User
 from main.models import Publication
 from forum.models import Post, Thread
 
-# Create your models here.
+# Model for a user's personalized list
 class PersonalizedList(models.Model):
 	Owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	DisplayChoices = models.TextChoices('DisplayChoices', 'ALPHABETICAL READ UNREAD')
 	Display_Type = models.CharField(choices=DisplayChoices.choices, max_length=15, null=True)
 
+# Model for reports filed by a user
 class Report(models.Model):
 	Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	ReasonChoices = models.TextChoices('ReasonChoices', 'SPAM OFFENSIVE MISLEADING ABUSE INCORRECT_DATA INACCURATE_DESCRIPTION NOT_EXIST_PUBLICATION IMAGE_UNCLEAR')
@@ -22,7 +23,7 @@ class Report(models.Model):
 	Relevant_Pub = models.ForeignKey(Publication, on_delete=models.CASCADE, null=True)
 	Relevant_Thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True)
 
-
+# Moderator for a user's application for moderatorship
 class ModeratorApplication(models.Model):
 	Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	Name = models.CharField(max_length=255)
@@ -34,12 +35,14 @@ class ModeratorApplication(models.Model):
 	StatusChoices = models.TextChoices('StatusChoices', 'ACCEPTED REJECTED PENDING')
 	Status = models.CharField(choices=StatusChoices.choices, max_length=15, null=True)
 
+# Model to hold links between Posts and Threads
 class Listings(models.Model):
 	ListOwner = models.ForeignKey(User, on_delete=models.CASCADE)
 	ListPub = models.ForeignKey(Publication, on_delete=models.CASCADE)
 	StatusChoices = models.TextChoices('StatusChoices', 'READ UNREAD')
 	Status = models.CharField(choices=StatusChoices.choices, max_length=15, null=True)
 
+# Model to keep a track of the user's activity
 class MyActivity(models.Model):
 	Owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	FiledReport = models.ForeignKey(Report, on_delete=models.CASCADE, null=True, blank=True)

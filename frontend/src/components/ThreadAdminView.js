@@ -29,7 +29,6 @@ function ThreadAdmin(props) {
     const [notif, setNotif] = useState(false)
     const d = new Date()
     const { id } = useParams();
-    console.log("reply", reply)
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -37,16 +36,10 @@ function ThreadAdmin(props) {
         let url1 = `api/forum/threads/` + id
         axios.get(url1).then((res) => {
             if (isComponentMounted){
-                
-                //console.log(posts, "set new")
-                console.log(res.data, res.data[0].Creator["id"], "Nptt")
                 setPosts(res.data)
                 let notif_url = "api/forum/notifications/" + res.data[0].Creator["id"]
                 axios.get(notif_url).then((res2) => {
                     if (isComponentMounted){
-                        
-                        //console.log(posts, "set new")
-                        console.log(res2.data, "THE MAN")
                         setNotif(res2.data["Disable"])
                     };
                 })
@@ -74,7 +67,7 @@ function ThreadAdmin(props) {
             };
         })
         .catch(error => console.log('Error:', error))
-        
+        window.scrollTo(0, 0)
         return () => {
             isComponentMounted = false;
         }
@@ -90,26 +83,26 @@ function ThreadAdmin(props) {
 
     function replyPost(value){
         setReply(value)
-        console.log(reply, value, "THIS IS MY REPLY")
+        window.scrollTo(192000, 192000)
     }
 
     function updatePosts(newPosts){
-        console.log("New Posts", newPosts)
+        window.scrollTo(0, 0)
         setPosts(newPosts)
         setReply('')
+        
     }
 
     function editPost(value, post_id){
         setEditFlag(!editFlag)
         setPostToEdit(post_id)
         setReply(value)
-        console.log("Finished edit handler")
+        window.scrollTo(192000, 192000)
     }
 
     function manageNotifications(choice){
         let url = "api/forum/notifications/update/" + choice 
         axios.post(url).then((res) => {
-                console.log(res.data, "Nptt")
                 setNotif(res.data["Disable"])
         });
     }
@@ -153,7 +146,7 @@ function ThreadAdmin(props) {
                         posts.map((elem, index)  => {
                             if(index > 0){
                                 return(
-                                    <PostCardAdmin first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                    <PostCardAdmin key={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                 )
                             }
                         })
@@ -213,11 +206,11 @@ function ThreadAdmin(props) {
                                 if(User == elem.Creator["username"]){
                                     
                                     return(
-                                        <PostCardOwner post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardOwner key={elem.id} post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }else{
                                     return(
-                                        <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardLogged key={elem.id} replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }
                             }
@@ -278,11 +271,11 @@ function ThreadAdmin(props) {
                             if(index > 0){
                                 if(User == elem.Creator["username"]){
                                     return(
-                                        <PostCardOwner post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardOwner key={elem.id} post_id={elem.id} first={true} editHandler={editPost} postHandler={updatePosts} replyHandler={replyPost} thread_id={id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }else{
                                     return(
-                                        <PostCardLogged replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
+                                        <PostCardLogged  key={elem.id} replyHandler={replyPost} post_id={elem.id} id={elem.Creator["id"]} username={elem.Creator["username"]} desc={elem.Body} timestamp={parseInt ((d.getTime() - Date.parse(elem.TimeStamp)) / 3600000)}/>
                                     )
                                 }
                             }
@@ -314,7 +307,7 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-left: 3%;
-    margin-right: 3%;
+    margin-right: 4%;
     margin-top: 2%;
     margin-bottom: 2%;
 `
@@ -328,7 +321,7 @@ const Results = styled.div`
 `
 const Lower = styled.div`
 background: #DCF2F8;
-width:90%;
+width:92.4%;
 height: auto;
 border-radius: 20px;
 margin-bottom:100px;
@@ -344,7 +337,7 @@ const Results1 = styled.div`
 `
 const Container = styled.div`
     margin-bottom:5%;
-
+    background: white;
 `
 
 const Heading = styled.div`

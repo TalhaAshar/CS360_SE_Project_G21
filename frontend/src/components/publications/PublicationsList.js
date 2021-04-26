@@ -56,28 +56,27 @@ function PublicationsList() {
         
     const handleClick = () =>{
         setPopView(!PopView)
-        console.log("NEW VIEW", PopView)
     }
     const editClick = (value) =>{
         const updated = [...PopEdit.slice(0, value), !PopEdit[value], ...PopEdit.slice(value+1)]
-        console.log(updated)
         setPopEdit(updated)
     }
     const closeClick = () =>{
         const updated = [false, false,false, false,false, false,false, false,false, false,false, false,false, false,false, false]
-        console.log(updated)
         setPopEdit(updated)
     }
 
     function leftClick(){
         if(start > 0){
             setStart(start - 8)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 8 < pubs.length){
             setStart(start + 8)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -111,7 +110,7 @@ function PublicationsList() {
                             if(index >= start && index < (start + 8) && index < pubs.length){
                                 return(
                                     <CardDiv>
-                                        <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                        <NewLinearCard key={elem.id} title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                     </CardDiv>
                                     )
                             }
@@ -120,14 +119,14 @@ function PublicationsList() {
                     }
                 </Results>
                 </Colour>
-                <ViewNextButtonContainer>
-                        <View></View>
-                        <GuestNextPrevious>
+               < ViewNextButtonContainer >
+                        <View style={{background:"white"}}></View>
+                        <NextPrevious>
                             <SkipPreviousRoundedIcon onClick={leftClick}/>
                             <SkipNextRoundedIcon onClick={rightClick}/>
-                        </GuestNextPrevious>
-                        <View></View>
-                </ViewNextButtonContainer>
+                        </NextPrevious>
+                        <View style={{background:"white"}}></View>
+                    </ViewNextButtonContainer>
             </Container>
         )
             break;
@@ -168,11 +167,10 @@ function PublicationsList() {
                             if(index >= start && index < (start + 8) && index < pubs.length){
                                 return(
                                     <CardDiv>
-                                        <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
+                                        <NewLinearCard key={elem.id} title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                     </CardDiv>
                                     )
                             }
-                            console.log(index)
                         })
                     }
                 </Results>

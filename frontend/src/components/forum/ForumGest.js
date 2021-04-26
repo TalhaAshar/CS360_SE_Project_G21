@@ -30,12 +30,14 @@ function ForumGest() {
     function leftClick(){
         if(start > 0){
             setStart(start - 6)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 6 < threads.length){
             setStart(start + 6)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -62,7 +64,7 @@ function ForumGest() {
                                     state : threads[index]
                                 }} style={{textDecoration:"none", marginBottom:"1%"}}>
                                 <ThreadDiv>
-                                <ForumGuestThreadCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                <ForumGuestThreadCard key={elem.id} id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
                                 </ThreadDiv>
                                 </Link>
                             )
@@ -72,6 +74,11 @@ function ForumGest() {
                 </Results>
 
             </BodyRecent>
+
+            <Nextpage>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'0px'}} onClick={leftClick}/>
+                <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+            </Nextpage>
         </Container>
     )
 }
@@ -80,10 +87,11 @@ export default ForumGest
 
 const Container = styled.div`
     width:100%;
-    height:100%;
+    height:95%;
     margin-top:3%;
     margin-bottom:3%;
-
+    background: white;
+    padding-bottom: 3%;
 `
 
 const BookTitleContainer = styled.div`
@@ -111,13 +119,15 @@ const Results = styled.div`
     display:flex;
     flex-flow:row wrap;
     padding-top:20px;
-    margin-left:22px;
     margin-bottom:5%;
-
+    margin-left: 2%;
+    margin-right: 2%;
 `
 const ThreadDiv = styled.div`
-    width:100%;
-    padding-left:10%;
+    margin-left: 2%;
+    width: 580px;
+    padding-left: 20px;
+    height: 225px;
 `
 const Text = styled.h3`
     display:flex;
@@ -135,9 +145,8 @@ const BodyRecent = styled.div`
     background:#DCF2F8;
     padding-top:2%;
     padding-bottom:2%;
-    padding-right:5.5%;
-    padding-left:5.5%;
-    height:90%;
+    
+    height:85%;
     border-radius:8px;
 `
 

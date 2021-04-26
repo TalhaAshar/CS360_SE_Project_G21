@@ -11,7 +11,7 @@ function PubSingleAddFeedbackPopup(props) {
                 </Title>
                 <Body>
                     <Heading>
-                        The publication has been added to the database.
+                        The publication has been added to your personalized list.
                     </Heading>
                         <Button onClick={props.toggle}>
                             Return
@@ -31,7 +31,7 @@ const Container = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    zIndex: 999999999;
+    z-index: 999999999;
     transform: translate(-50%, -50%); 
     box-shadow: 0px 2px 8px rgba(117, 131, 142, 0.08), 0px 20px 32px rgba(52, 60, 68, 0.16);
     border-radius: 20px;
@@ -45,7 +45,7 @@ const Shadow = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    zIndex: 999999998;
+    z-index: 999999998;
     transform: translate(-50%, -50%); 
 `
 
@@ -86,12 +86,14 @@ const Button = styled.h3`
     height: 15%;
     width: 15%;
     align-items: center;
-    margin-top: 5%;
-    margin-left: -20%;
+    margin-top: 12%;
+    margin-left: 80%;
     font-family: Manrope;
     font-style: normal;
     font-weight: normal;
     font-size: 25px;
     color: white;
     background-color: #583192;
+    cursor: pointer;
+    border-radius: 8px;
 `

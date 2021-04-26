@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import CommentIcon from '@material-ui/icons/Comment';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import FlagIcon from '@material-ui/icons/Flag';
 import {useEffect, useState} from "react";
 import axios from 'axios';
 import {Link} from 'react-router-dom';
@@ -88,7 +89,7 @@ function PostCardLogged({post_id, username, timestamp, desc, id, replyHandler}) 
                 state : post_id
             }}>
                 <Comment2>
-                <ReportProblemIcon style = {{fontSize:'30px'}}/>
+                <FlagIcon style = {{fontSize:'30px'}}/>
                 </Comment2>
             </Link>
 

@@ -26,7 +26,6 @@ function SearchPage() {
         
         if(temp == -1)
         {
-            console.log("ADDING")
             setFilters([...filters, value])
             setStart(0)
         }
@@ -43,15 +42,16 @@ function SearchPage() {
     function leftClick(){
         if(start > 0){
             setStart(start - 8)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 8 < pubs.length){
             setStart(start + 8)
+            window.scrollTo(0, 0)
         }
     }
-    console.log("MMMM", param)
  
      useEffect(() => {
         let isComponentMounted = true;
@@ -60,13 +60,11 @@ function SearchPage() {
         for (let index = 0; index < filters.length; index++) {
             url = url + "&search_fields=" + filters[index]
         }
-        console.log(url, "edfghtuehhe")
+
         axios.get(url).then((res) => {
-            console.log("THEN HANDLER")
+
             if (isComponentMounted){
-                console.log("COMP")
                 setPubs(res.data)
-                console.log(res)
             }
             setStart(0)
         })
@@ -103,12 +101,11 @@ function SearchPage() {
                     pubs.map((elem, index) => {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
-                                <CardDiv>
+                                <CardDiv key={elem.id}>
                                     <NewLinearCard title={elem.Title} author={elem.Authors} front={elem.Front_Cover} id={elem.id}/>
                                 </CardDiv>
                                 )
                         }
-                        console.log(index)
                     })
                 }
                 </Results>

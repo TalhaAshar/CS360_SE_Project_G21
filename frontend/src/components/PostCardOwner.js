@@ -57,7 +57,6 @@ function PostCardOwner({first, post_id, thread_id, username, timestamp, desc, id
 
         let url = "api/forum/post/delete/" + post_id + "/" + thread_id
         axios.post(url).then((res) => {
-            console.log("deleted")
             postHandler(res.data)
         })
         .catch(error => console.log('Error:', error))

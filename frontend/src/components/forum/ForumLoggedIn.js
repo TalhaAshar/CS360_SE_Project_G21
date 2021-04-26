@@ -52,7 +52,7 @@ function ForumLoggedIn() {
                                     return(
                                         <Link to={placeholder} style={{textDecoration:"none"}}>
                                             <CardDiv>
-                                          <ForumLoggInCard id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
+                                          <ForumLoggInCard key={elem.id} id={elem.Creator["id"]} title={elem.Title} username={elem.Creator["username"]} timestamp={parseInt ((d.getTime() - Date.parse(elem.Timestamp)) / 3600000)} category={elem.Category} postcount={elem.PostCount} desc={elem.Base_View}/>
                                           </CardDiv>
                                         </Link>
                                     )

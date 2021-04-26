@@ -26,8 +26,6 @@ function Publications(props) {
         axios.get(url1).then((res) => {
             if (isComponentMounted){
                 setPubs(res.data)
-                console.log('ye boi', res.data)
-                console.log('nu boi', pubs.length)
             };
         })
         .catch(error => console.log('Error:', error))
@@ -47,18 +45,19 @@ function Publications(props) {
     
     const handleClick = () =>{
         setPopView(!PopView)
-        console.log("NEW VIEW", PopView)
     }
 
     function leftClick(){
         if(start > 0){
             setStart(start - 16)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 16 < pubs.length){
             setStart(start + 16)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -89,11 +88,13 @@ function Publications(props) {
                     <Cards>
                          {
                              pubs.map((elem, index) => {
-                                 console.log(elem.id)
                                  if(index >= start && index < (start + 16) && index < pubs.length){
                                      return(
+                                        <CardDiv>
                                          <Card title={elem.Title} author={elem.Authors} front_cover={elem.Front_Cover} id={elem.id}/>
+                                         </CardDiv>
                                          )
+                                         
                                  }
                              })
                          }
@@ -178,15 +179,15 @@ const BookTitleContainer = styled.div`
     justify-content:center;
     align-items:center;
     margin-top: 2%;
-
+    margin-left: 3%;
+    margin-right: 3%;
 margin-bottom: 2%;
 `
 
 const Container = styled.div`
-    width:90%;
-    height:96%;
-    margin-left:3%;
-    margin-right:3%;
+    width:100%;
+    height:100%;
+   
     margin-top:5%;
     margin-bottom:5%;
     @media only screen and (max-width: 1200px) {
@@ -197,8 +198,8 @@ const Container = styled.div`
 `
 const ViewNextButtonContainer = styled.div`
     display:flex;
-    margin-left:2%;
-    margin-right:2%;
+    margin-left:3%;
+    margin-right:3%;
     justify-content:space-between;
     align-items:center;
     `

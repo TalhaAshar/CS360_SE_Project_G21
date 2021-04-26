@@ -48,7 +48,7 @@ handleSubmit = (event) =>{
   render(){
     return(
       <Container>
-        <BookTitleContainer><h1>DMCA Takedown Request</h1></BookTitleContainer>
+        <BookTitleContainer><h1>Moderator Application</h1></BookTitleContainer>
         <FormContainer>
         <Ub>
             <Form onSubmit={this.handleSubmit}>
@@ -200,4 +200,5 @@ const Submit = styled.input`
   border-radius:6px;
   font-size:15px;
   font-weight:bold;
+  cursor:pointer;
 `

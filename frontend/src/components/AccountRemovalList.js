@@ -8,6 +8,8 @@ import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRo
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from 'axios';
+import AccountRemovalFeedbackPopup from "./functionality/AccountRemovalFeedbackPopup"
+import { useHistory } from "react-router-dom";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -17,6 +19,12 @@ function AccountRemoval() {
     const [apps, setApps] = useState([])
     const [flag, setFlag] = useState(false)
     const [start, setStart] = useState(0)
+    const history = useHistory();
+    const [seen, setSeen] = useState(false)
+  
+    function togglePop () {
+      setSeen(!seen)
+    }
 
     useEffect(() => {
         let isComponentMounted = true;
@@ -24,10 +32,10 @@ function AccountRemoval() {
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setApps(res.data)
-                console.log(res.data, "UMAMAM")
             };
         })
         .catch(error => console.log('Error:', error))
+        window.scrollTo(0, 0)
         return () => {
             isComponentMounted = false;
         }
@@ -36,23 +44,24 @@ function AccountRemoval() {
     function leftClick(){
         if(start > 0){
             setStart(start - 15)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 15 < apps.length){
             setStart(start + 15)
+            window.scrollTo(0, 0)
         }
     }
 
     function changeStatus(id){
-        
         let url = "api/register/admin/delete/" + id
         axios.post(url).then((res) => {
-                setApps(res.data)
-                console.log(res.data, "UMAMAM")
+            setApps(res.data)
+            togglePop()
+            history.push("/remove_account/admin")
         })
-        .catch(error => console.log('Error:', error))
     }
 
 
@@ -72,7 +81,7 @@ function AccountRemoval() {
                             let placeholder = "/profile/" + elem.user["id"]
                             if(elem.Status == 'ACCEPTED'){
                                 return(
-                                    <Flag>
+                                    <Flag key={elem.id}>
                                         <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                         <Text> <Link to={placeholder}>{elem.user["username"]} </Link>  made an account removal request.</Text>
                                         <AcceptedButton/>
@@ -82,12 +91,13 @@ function AccountRemoval() {
                             }
                             else{
                                 return(
-                                    <Flag>
+                                    <Flag key={elem.id}>
                                         <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                         <Text> <Link to={placeholder} style = {{textDecoration:'none'}}>{elem.user["username"]} </Link>  made an account removal request.</Text>
-                                        <BlacklistContainer onClick={() => changeStatus(elem.user["id"])}>
-                                            <TextContainer>Remove from blacklist</TextContainer>
+                                        <BlacklistContainer onClick={togglePop}>
+                                            <TextContainer>Remove</TextContainer>
                                         </BlacklistContainer>
+                                        { seen ? <AccountRemovalFeedbackPopup toggle={togglePop} remove={changeStatus} toRemove={elem.user["id"]}/> : null }
                                         <NLine></NLine>
                                     </Flag>
                                 )
@@ -199,6 +209,7 @@ align:center;
 margin-left:920px;
 border-radius:5px; 
 background: #583192;
+cursor:pointer;
 `
 
 const TextContainer = styled.text`
@@ -207,11 +218,10 @@ align:center;
 font-style: normal;
 font-weight: bold;
 margin-left:8px;
-
 display: flex;
 align-items: center;
 text-align: center;
 letter-spacing: -1px;
-
+cursor:pointer;
 color: #FFFFFF;
 `

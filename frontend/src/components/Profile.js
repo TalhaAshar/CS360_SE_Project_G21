@@ -118,7 +118,7 @@ function Profile() {
                                 </SettingsBackground>
                             </Settings>
                         {
-                            ((Details['User_Type'] === 'MODERATOR') || (Details['User_Type'] === 'ADMIN')) &&
+                            ((Details['User_Type'] === 'ADMIN')) &&
                             <Link to={'/modhist'} value="Moderator Applications" style={{textDecoration:"none"}}>
                                 <ModApp>
                                     <ModAppBackground>
@@ -133,6 +133,19 @@ function Profile() {
                                 <ModApp>
                                     <ModAppBackground>
                                         Moderator Application Form
+                                    </ModAppBackground>
+                                </ModApp>
+                            </Link>
+                        }
+                        {
+                            (Details['User_Type'] === 'MODERATOR') && 
+                            <Link to={{
+                                pathname : '/modhist',
+                                state : Details["User_Type"],
+                            }} style={{textDecoration:"none"}}>
+                                <ModApp>
+                                    <ModAppBackground>
+                                        Moderator Application History
                                     </ModAppBackground>
                                 </ModApp>
                             </Link>

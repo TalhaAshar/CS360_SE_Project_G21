@@ -25,7 +25,6 @@ function ModAppHistoryUser() {
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setApps(res.data)
-                console.log(res.data, "UMAMAM")
             };
         })
         .catch(error => console.log('Error:', error))
@@ -45,12 +44,14 @@ function ModAppHistoryUser() {
     function leftClick(){
         if(start > 0){
             setStart(start - 15)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 15 < apps.length){
             setStart(start + 15)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -82,7 +83,7 @@ function ModAppHistoryUser() {
                                 let placeholder = "/profile/" + elem.Creator["id"]
                                 if(elem.Status == 'ACCEPTED'){
                                     return(
-                                        <Flag>
+                                        <Flag key={elem.id}>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text> <Link to={placeholder}>{elem.Creator["username"]} </Link>  applied for moderatorship.</Text>
                                             <AcceptedButton/>
@@ -92,7 +93,7 @@ function ModAppHistoryUser() {
                                 }
                                 else if(elem.Status == 'REJECTED'){
                                     return(
-                                        <Flag>
+                                        <Flag key={elem.id}>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
                                             <RejectedButton/>
@@ -103,7 +104,7 @@ function ModAppHistoryUser() {
                                 else{
                                     let appLink = "/resolve/modapp/" + elem.id
                                     return(
-                                        <Flag>
+                                        <Flag key={elem.id}>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
                                             <Link to={appLink} style={{textDecoration:"none"}}>
@@ -118,7 +119,7 @@ function ModAppHistoryUser() {
                             else{
                                 if(elem.Status == 'ACCEPTED'){
                                     return(
-                                        <Flag>
+                                        <Flag key={elem.id}>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text>You applied for moderatorship.</Text>
                                             <AcceptedButton/>
@@ -128,7 +129,7 @@ function ModAppHistoryUser() {
                                 }
                                 else if(elem.Status == 'REJECTED'){
                                     return(
-                                        <Flag>
+                                        <Flag key={elem.id}>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text>You applied for moderatorship.</Text>
                                             <RejectedButton/>
@@ -138,7 +139,7 @@ function ModAppHistoryUser() {
                                 }
                                 else{
                                     return(
-                                        <Flag>
+                                        <Flag key={elem.id}>
                                             <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                             <Text>You applied for moderatorship.</Text>
                                             <PendingButton/>

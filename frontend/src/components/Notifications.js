@@ -21,7 +21,6 @@ function Notifications() {
         axios.get(url).then((res) => {
             if (isComponentMounted){
                 setNotifs(res.data)
-                console.log(res.data, "UMAMAM")
             };
         })
         .catch(error => console.log('Error:', error))
@@ -33,12 +32,14 @@ function Notifications() {
     function leftClick(){
         if(start > 0){
             setStart(start - 15)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 15 < pubs.length){
             setStart(start + 15)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -58,7 +59,7 @@ function Notifications() {
                             let threadLink = "/thread/user/" + elem.ParentThread["id"]
                             return(
                                 <Link to={threadLink} style={{textDecoration:"none"}}>
-                                    <Flag>
+                                    <Flag key={elem.id}>
                                         <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                                         <Text>{elem.Body}</Text>
                                         <NLine></NLine>

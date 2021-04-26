@@ -93,14 +93,13 @@ function PersonalizedListUserRead() {
         let url = "api/accounts/mylist/" + sorter
         axios.get(url).then((res) => {
             if (isComponentMounted){
-                console.log(res)
-                console.log(res.status)
+                
                 if(res.data.length > 0){
                     setPubs(res.data)
                     setUser(res.data[0]["ListOwner"]["username"] + "\'s List")
                 }
                 else{
-                    console.log(res.data, "abc")
+                    
                     setPubs(res.data)
                     setUser("No Publications")
                 }
@@ -133,19 +132,20 @@ function PersonalizedListUserRead() {
     function leftClick(){
         if(start > 0){
             setStart(start - 8)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 8 < pubs.length){
             setStart(start + 8)
+            window.scrollTo(0, 0)
         }
     }
 
     const changeView = (choice) => {
         handleClick()
         setSorter(choice)
-        console.log(choice, "updated")
     }
 
 
@@ -184,7 +184,7 @@ function PersonalizedListUserRead() {
                         if(index >= start && index < (start + 8) && index < pubs.length){
                             return(
                                 <CardContent>
-                                    <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
+                                    <Card key={elem.id} title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
                                     <StatusDiv>{elem.Status}</StatusDiv>
                                     <Dropdiv>
                                         <CardSvg onClick = {() => editClick(index)} width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">

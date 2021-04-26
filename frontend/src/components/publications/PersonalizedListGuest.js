@@ -27,7 +27,6 @@ function PersonalizedListGuest() {
                 setUser(res.data[0]["ListOwner"]["username"] + "\'s List")
             }
             else{
-                console.log(res.data, "abc")
                 setPubs(res.data)
                 setUser("No Publications")
             }
@@ -41,12 +40,14 @@ function PersonalizedListGuest() {
     function leftClick(){
         if(start > 0){
             setStart(start - 8)
+            window.scrollTo(0, 0)
         }
     }
 
     function rightClick(){
         if(start + 8 < pubs.length){
             setStart(start + 8)
+            window.scrollTo(0, 0)
         }
     }
 
@@ -68,7 +69,7 @@ function PersonalizedListGuest() {
                      pubs.map((elem, index) => {
                          if(index < 16){
                              return(
-                                 <Card title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
+                                 <Card key={elem.id} title={elem.ListPub["Title"]} author={elem.ListPub["Authors"]} front_cover={elem.ListPub["Front_Cover"]} id={elem.ListPub["id"]}/>
                                  )
                          }
                          console.log(index)
