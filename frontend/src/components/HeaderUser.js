@@ -24,7 +24,6 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 const StyledPopup = styled(Popup)`
-
 //   // use your custom style for ".popup-overlay"
 //   &-overlay {
 //     ...;
@@ -320,7 +319,6 @@ const LogoContainer = styled.div`
 `
 const Home = styled.div`
     height:60px;
-
 `
 const Forum = styled.div`
     height:60px;
@@ -332,7 +330,6 @@ const Publications = styled.div`
 const LogOutContainer = styled.div`
     height:60px;
     cursor: pointer;
-
 `
 const SearchContainer = styled.div`
     margin-right: 45px;
@@ -370,7 +367,6 @@ const IconText = styled.h5`
     border-style: double;
     border-color:#04396B;
     border-radius:6px;
-
     &:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }
@@ -381,7 +377,6 @@ const Button = styled.button`
     border-style: double;
     border-color:#04396B;
     border-radius:6px;
-
     &:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }

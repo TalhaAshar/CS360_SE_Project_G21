@@ -9,6 +9,8 @@ import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRo
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from 'axios';
+import PendingButtonUser from './Buttons(ModReport)/PendingButtonUser'
+
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -69,95 +71,120 @@ function ModAppHistoryUser() {
     return (
         <Container>
             <MDAHeader>
-                <MDAText>Moderator Applications</MDAText>
+                <h1>Moderator Applications</h1>
             </MDAHeader>
+            <ButtonContainer>
+                <div></div>
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
-            <MDAContainer>
-                {
-                    apps.map((elem, index) => {
-                        if(index >= start && index < (start + 15) && index < apps.length)
-                        {
-                            if(type == 'ADMIN'){
-                                let placeholder = "/profile/" + elem.Creator["id"]
-                                if(elem.Status == 'ACCEPTED'){
-                                    return(
-                                        <Flag key={elem.id}>
-                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                            <Text> <Link to={placeholder}>{elem.Creator["username"]} </Link>  applied for moderatorship.</Text>
-                                            <AcceptedButton/>
+            <div></div>
+            </ButtonContainer>
+            <FormContainer>
+                <MDAContainer>
+                    {
+                        apps.map((elem, index) => {
+                            if(index >= start && index < (start + 15) && index < apps.length)
+                            {
+                                if(type == 'ADMIN'){
+                                    let placeholder = "/profile/" + elem.Creator["id"]
+                                    if(elem.Status == 'ACCEPTED'){
+                                        return(
+                                            <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <TextContainer>
+                                                    <Text> <Link to={placeholder}>{elem.Creator["username"]} </Link>  applied for moderatorship.</Text>
+                                                    </TextContainer>
+                                                <AcceptedButton/>
+                                               
+                                            </Flag>
                                             <NLine></NLine>
-                                        </Flag>
-                                    )
-                                }
-                                else if(elem.Status == 'REJECTED'){
-                                    return(
-                                        <Flag key={elem.id}>
-                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                            <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
-                                            <RejectedButton/>
+                                            </div>
+                                        )
+                                    }
+                                    else if(elem.Status == 'REJECTED'){
+                                        return(
+                                            <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <TextContainer>
+                                                    <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
+                                                </TextContainer>
+                                                <RejectedButton/>     
+                                            </Flag>
                                             <NLine></NLine>
-                                        </Flag>
-                                    )
-                                }
-                                else{
-                                    let appLink = "/resolve/modapp/" + elem.id
-                                    return(
-                                        <Flag key={elem.id}>
-                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                            <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
-                                            <Link to={appLink} style={{textDecoration:"none"}}>
-                                                <PendingButton/>
-                                            </Link>
+                                            </div>
+                                        )
+                                    }
+                                    else{
+                                        let appLink = "/resolve/modapp/" + elem.id
+                                        return(
+                                            <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <TextContainer>
+                                                    <Text><Link to={placeholder}>{elem.Creator["username"]} </Link> applied for moderatorship.</Text>
+                                                </TextContainer>
+                                                <Link to={appLink} style={{textDecoration:"none",marginLeft:"20%"}}>
+                                                    <PendingButton/>
+                                                </Link>
+                                            </Flag>
                                             <NLine></NLine>
-                                        </Flag>
-                                    )
-                                }
-                                
-                            }
-                            else{
-                                if(elem.Status == 'ACCEPTED'){
-                                    return(
-                                        <Flag key={elem.id}>
-                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                            <Text>You applied for moderatorship.</Text>
-                                            <AcceptedButton/>
-                                            <NLine></NLine>
-                                        </Flag>
-                                    )
-                                }
-                                else if(elem.Status == 'REJECTED'){
-                                    return(
-                                        <Flag key={elem.id}>
-                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                            <Text>You applied for moderatorship.</Text>
-                                            <RejectedButton/>
-                                            <NLine></NLine>
-                                        </Flag>
-                                    )
+                                            </div>
+                                        )
+                                    }
+                                    
                                 }
                                 else{
-                                    return(
-                                        <Flag key={elem.id}>
-                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                            <Text>You applied for moderatorship.</Text>
-                                            <PendingButton/>
+                                    if(elem.Status == 'ACCEPTED'){
+                                        return(
+                                            <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <Text>You applied for moderatorship.</Text>
+                                                <AcceptedButton/>       
+                                            </Flag>
                                             <NLine></NLine>
-                                        </Flag>
-                                    )
+                                            </div>
+                                        )
+                                    }
+                                    else if(elem.Status == 'REJECTED'){
+                                        return(
+                                            <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <Text>You applied for moderatorship.</Text>
+                                                <RejectedButton/>
+                                            </Flag>
+                                            <NLine></NLine>
+                                            </div>
+                                        )
+                                    }
+                                    else{
+                                        return(
+                                            <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <Text>You applied for moderatorship.</Text>
+                                                <PendingButtonUser/>
+                                            </Flag>
+                                            <NLine></NLine>
+                                            </div>
+                                        )
+                                    }
                                 }
                             }
-                        }
-                    })
-                }
-                 {(apps.length == 0) && <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text>There are no submitted moderator application forms.</Text>
-                    <NLine></NLine> 
-                </Flag>}       
-            </MDAContainer>
-            
+                        })
+                    }
+                    {(apps.length == 0) && <Flag>
+                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                        <Text>There are no submitted moderator application forms.</Text>
+                        
+                    </Flag>}
+                    <NLine></NLine>        
+                </MDAContainer>
+            </FormContainer>    
         </Container>
     )
 }
@@ -165,20 +192,23 @@ function ModAppHistoryUser() {
 export default ModAppHistoryUser
 
 const Container = styled.div`
-max-width: 1570px;
-margin: 0 auto;
-height: auto;
+width: 100%;
+height: 100%;
 background-color: white;
 `
+
 const MDAHeader = styled.h3`
-width: 1050px;
-height: 40px;
-margin-left:150px;
-margin-right:150px;
-padding-left: 10px;
-padding-right: 10px;
-border-radius: 20px;
 background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
 `
 const MDAText = styled.h3`
 max-height:50px;
@@ -193,46 +223,59 @@ border-radius:6px;
 `
 
 const MDAContainer = styled.h3`
-width:1050px;
-height: 0 auto;
-margin-left:160px;
+width: 100%;
+height: 95%;
 margin-top:3%;
 border-radius:10px;
 `
+const FormContainer = styled.div`
+margin-left: 3%;
+margin-right: 3%;
+  max-width: 100%;
+  max-height: 95%;
+  margin-top: 1%;
+  display:flex;
+  justify-content:center;
+  background:white;
+  border-radius: 16px;
+  align-items: center;
+  padding-bottom: 3%;
+  padding-left: 3%;
+`
+
 
 const ViewNextButtonContainer = styled.div`
 display:flex;
 width:100px;
 height:50px;
-margin-left:635px;
 align-items: Center;
 margin-top:3%;
-background: #DCF2F8;
 border-radius:10px;
 `
 
 const Flag = styled.h3`
-width:1050px;
-height:60px;
+width:95%;
+height:auto;
 font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
+color: Black;
 display: flex;
 align-items: center;
-color: Black;
 background: #DCF2F8;
+padding-top: 1%;
 `
 
 
 const NLine = styled.line`
 position:absolute;
-width:1050px;
+width:86%;
 heigth:0px;
-margin-top: 60px;
 border: 1px solid #F9F7FC;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
+
 
 const Text = styled.text`
 margin-left:40px;
@@ -242,4 +285,13 @@ font-weight: normal;
 font-size: 18px;
 line-height: 32px;
 color: #060606;
+`
+const TextContainer = styled.div`
+    width: 68%;
+    padding-bottom:2%;
+`
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `

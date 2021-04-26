@@ -64,14 +64,14 @@ function PubReportView() {
 
     return (
         <Container>
-            <Header>Reported Publication</Header>
+            <Header>Report Publication</Header>
             <View>
                 <Reason>Reason</Reason>
                 <ReasonText>{report.Reason}</ReasonText>
                 <Details>Provide a description of what is wrong and suggestions/corrections required.</Details>
                 <DetailsText dangerouslySetInnerHTML={{ __html:report.Description}} />
                 <RemoveItemContainer onClick={togglePop}>
-                  <RemoveItemTextContainer>Remove</RemoveItemTextContainer>
+                  <RemoveItemTextContainer>Remove Item</RemoveItemTextContainer>
                 </RemoveItemContainer>
                 { seen ? <ReportHistoryFeedbackPubPopup toggle={togglePop} remove={removeItem}/> : null }
                 <IgnoreContainer onClick={changeStatus}>
@@ -150,13 +150,12 @@ const RemoveItemContainer = styled.div`
 height: 35px;
 position:relative;
 display:flex; 
-width:80px;
+width:120px;
 align:center;
 margin-top:50%;
 margin-left:65%;
 border-radius:5px; 
 background: #06AF47;
-cursor: pointer;
 `
 const RemoveItemTextContainer = styled.text`
 color:white;
@@ -183,7 +182,6 @@ margin-left:85%;
 margin-top:-3.3%;
 border-radius:5px; 
 background: #CC0C0C;
-cursor: pointer;
 `
 const IgnoreTextContainer = styled.text`
 color:white;
@@ -191,7 +189,7 @@ align:center;
 font-style: normal;
 font-weight: bold;
 margin-left:17%;
-margin-top:7%;
+margin-top:8%;
 
 align-items: center;
 text-align: center;

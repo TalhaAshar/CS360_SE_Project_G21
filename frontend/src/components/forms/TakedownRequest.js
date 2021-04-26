@@ -118,6 +118,7 @@ max-width:100%;
 max-height:100%;
 margin-left:3%;
 margin-right:3%;
+background: white;
 `
 const Head = styled.h3`
 min-width: 55%;

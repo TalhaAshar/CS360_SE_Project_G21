@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import SecurityIcon from '@material-ui/icons/Security';
-import { useHistory } from "react-router-dom";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ProfileUploadImage from './functionality/ProfileUploadImage'
-import RemoveAccountFeedbackPopup from './functionality/RemoveAccountFeedbackPopup'
 
 //User profile type icon needs to be added.
 
@@ -16,24 +14,16 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 class ProfileManagement extends Component{
     constructor(props){
         super(props)
-        this.ID = "/List" + this.props.passID;
+        this.ID = "/List" + this.props.passID
         this.handleSubmitData = this.handleSubmitData.bind(this);
         this.handleSubmitPassword = this.handleSubmitPassword.bind(this);
-        this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', invalid: false, Pop: false, 'ProfileImage':null, Display:this.props.passDetails['ProfileImage'], seen: false };
-    }
-    
-    togglePop = () => {
-      this.setState({seen:!this.state.seen})
+        this.state = {'User_Type':this.props.passDetails['User_Type'], 'biography':this.props.passDetails['biography'], 'education':this.props.passDetails['education'], 'institution':this.props.passDetails['institution'], 'profession':this.props.passDetails['profession'], 'company':this.props.passDetails['company'], 'location':this.props.passDetails['location'], 'age':this.props.passDetails['age'], 'newpassword':'', 'currentpassword':'', invalid: false, Pop: false, 'ProfileImage':null, Display:this.props.passDetails['ProfileImage'] };
     }
 
-    removeAccount = (hist) => {
+    removeAccount = () => {
       let url = "/api/register/user/delete"
       axios.post(url)
-          .then(res => {
-            this.props.onChange({'Status' : 'Unauthentic'})
-            hist.push("/")
-          
-          })
+          .then(res => console.log("done"))
           .catch(error => console.error('Error:', error))
           .then(response => console.log('Success', response));
     }
@@ -104,161 +94,171 @@ class ProfileManagement extends Component{
         
       render(){
         return(
-          <Container>
-            <Upper>
-              <Profilepicture src={this.state.Display} width="200px" height ="200px" onClick={this.handleClick} />
-              <ProfileUploadImage trigger={this.state.Pop} setTrigger={this.handleClick} PFunc={this.onProfileImageChange} >
-                            <h1>My pop up for image</h1>
-              </ProfileUploadImage>
-              <Name>{this.props.passUsername}</Name>
-              <Admintag>
-                {  (this.state.User_Type === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
-                {  (this.state.User_Type === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
-                {  (this.state.User_Type === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
-                {  (this.state.User_Type === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
-                {this.state.User_Type}
-              </Admintag>
-            </Upper>
+            <OuterContainer>
+            <Container>
+              <Upper>
+                <Profilepicture src={this.state.Display} width="200px" height ="200px" onClick={this.handleClick} />
+                <ProfileUploadImage trigger={this.state.Pop} setTrigger={this.handleClick} PFunc={this.onProfileImageChange} >
+                </ProfileUploadImage>
+                <Name style={{marginLeft:"5%"}}>{this.props.passUsername}</Name>
+                <Admintag>
+                  {  (this.state.User_Type === 'ADMIN') && <SecurityIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                  {  (this.state.User_Type === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                  {  (this.state.User_Type === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
+                  {  (this.state.User_Type === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
+                  <h4>{this.state.User_Type}</h4>
+                  </Admintag>
+              </Upper>
 
-            <Lower>
-              <form onSubmit={this.handleSubmitData}>
-                <Descone>
-                    {  (this.state.User_Type === 'ADMIN') && <Profession>Profession</Profession>    }
-                    {  (this.state.User_Type === 'ADMIN') && <input type="text" name="profession" maxLength="150" value={this.state.profession} onChange={this.handleChange} />   }
-                    {  (this.state.User_Type === 'ADMIN') && <Company>Company</Company> }
-                    {  (this.state.User_Type === 'ADMIN') && <input type="text" name="company" maxLength="150" value={this.state.company} onChange={this.handleChange} /> }
-                    {  (this.state.User_Type != 'ADMIN') && <Profession>Education</Profession>    }
-                    {  (this.state.User_Type != 'ADMIN') && <input type="text" name="education" maxLength="150" value={this.state.education} onChange={this.handleChange} />   }
-                    {  (this.state.User_Type != 'ADMIN') && <Company>Institution</Company> }
-                    {  (this.state.User_Type != 'ADMIN') && <input type="text" name="institution" maxLength="150" value={this.state.institution} onChange={this.handleChange} /> }
-                    <Location>Location</Location>
-                    <input type="text" name="location" value={this.state.location} onChange={this.handleChange} /><br/>
-                    <Age>Age</Age>
-                    <input type="number" name="age" value={this.state.age} onChange={this.handleChange} /><br/>
-                    <Biography>
-                      <BioText>
-                        Biography
-                      </BioText>
-                      <TellUsAboutYourself>
-                        <textarea rows="25" cols="50" name="biography" maxLength="2000" onChange={this.handleChange} >{this.state.biography}</textarea>
-                      </TellUsAboutYourself>
-                    </Biography>
-                    <input type="submit" value="Save" style = {{height: "7%",width:"7%", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"absolute", borderRadius:"8%", marginLeft:"70%", marginTop:"35%"}}/>
-                </Descone>
-              </form>
-              
-              <ButtonsActivity>
-                <Buttons>
-                  <Link to='/List' value="My List">
-                    <MyList>
-                      <MyListBackground>
-                        My List
-                      </MyListBackground>
-                    </MyList>
-                  </Link>
-                  <Link to='/reports' value="Reports">
-                    <Report>
-                      <ReportBackground>
-                        Report History
-                      </ReportBackground>
-                    </Report>
-                  </Link>
-                  {
-                    ((this.state.User_Type === 'MODERATOR') || (this.state.User_Type === 'ADMIN')) &&
-                      <Link to='/blacklist' value="Blacklist">
-                        <Settings>
-                          <SettingsBackground>
-                            Blacklist
-                          </SettingsBackground>
-                        </Settings>
-                      </Link>
-                  }
-                  {
-                    ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED')) &&
-                      <Link to={{
-                        pathname : '/modhist',
-                        state : this.state.User_Type,
-                    }}  value="Moderator Application History">
-                        <Settings>
-                          <SettingsBackground>
-                            Moderator Application History
-                          </SettingsBackground>
-                        </Settings>
-                      </Link>
-                  }
-                  {
-                    (this.state.User_Type === 'ADMIN') &&
-                      <Link to='/remove_account/admin' value="Remove Account">
-                        <ModApp>
-                          <ModAppBackground>
-                            Account Removal Requests
-                          </ModAppBackground>
-                        </ModApp>
-                      </Link>
-                  }
-                  {
-                    ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED') || (this.state.User_Type === 'MODERATOR')) &&
-                        <ModApp onClick={this.togglePop}>
-                          <ModAppBackground>
-                            Remove Account
-                          </ModAppBackground>
-                        </ModApp>
-                  }
-                  { this.state.seen ? <RemoveAccountFeedbackPopup toggle={this.togglePop} remove={this.removeAccount}/> : null }
-                </Buttons>
-              </ButtonsActivity>
+              <Lower>
+                <Form onSubmit={this.handleSubmitData}>
+                  <Descone>
+                      {  (this.state.User_Type === 'ADMIN') && <Profession>Profession</Profession>    }
+                      {  (this.state.User_Type === 'ADMIN') && <Input type="text" name="profession" value={this.state.profession} onChange={this.handleChange} />   }
+                      {  (this.state.User_Type === 'ADMIN') && <Company>Company</Company> }
+                      {  (this.state.User_Type === 'ADMIN') && <Input type="text" name="company" value={this.state.company} onChange={this.handleChange} /> }
+                      {  (this.state.User_Type != 'ADMIN') && <Profession>Education</Profession>    }
+                      {  (this.state.User_Type != 'ADMIN') && <Input type="text" name="education" value={this.state.education} onChange={this.handleChange} />   }
+                      {  (this.state.User_Type != 'ADMIN') && <Company>Institution</Company> }
+                      {  (this.state.User_Type != 'ADMIN') && <Input type="text" name="institution" value={this.state.institution} onChange={this.handleChange} /> }
+                      <Location>Location</Location>
+                      <Input type="text" name="location" value={this.state.location} onChange={this.handleChange} /><br/>
+                      <Age>Age</Age>
+                      <Input type="text" name="age" value={this.state.age} onChange={this.handleChange} /><br/>
+                      <Biography>
+                        <BioText>
+                          Biography
+                        </BioText>
+                        <TellUsAboutYourself>
+                          <TextArea rows="25" cols="50" name="biography" onChange={this.handleChange} >{this.state.biography}</TextArea>
+                        </TellUsAboutYourself>
+                      </Biography>
+                      <Input type="submit" value="Save" style = {{height: "40px",width:"80px", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "25px",lineHeight: "34px",color: "#FFFFFF", background:"#03204C", position:"relative", borderRadius:"8%", marginTop:"145%"}}/>
+                  </Descone>
+                </Form>
+                
+                <ButtonsActivity>
+                  <ChangePassword>
+                      <form onSubmit={this.handleSubmitPassword}>
+                        <TT>Change Password</TT>
+                        <br/>
+                        <T>Current Password</T><br/>
+                        <Input type="text" required name="currentpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
+                        <T>New Password</T>
+                        <br/>
+                        <Input type="text" required name="newpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
+                        <InputSave type="submit" value="Save" style = {{paddngBottom: "5px", position:"relative", borderRadius:"8%", marginLeft:"10%", marginTop:"5%",height: "30px",width:"80px", fontFamily: "Manrope",fontStyle: "normal",fontWeight: "bold",fontSize: "20px",lineHeight: "34px",color: "#FFFFFF", background:"green", borderRadius:"8%"}} />
+                        { this.state.invalid && <ErrorText>Current password cannot be the same as new password.</ErrorText> }
+                      </form>
+                    </ChangePassword>
+                    <Link to='/List' value="My List" style={{textDecoration:"none"}}>
+                      <MyList>
+                        <MyListBackground>
+                          My List
+                        </MyListBackground>
+                      </MyList>
+                    </Link>
+                    <Link to='/reports' value="Reports" style={{textDecoration:"none"}}>
+                      <Report>
+                        <ReportBackground>
+                          Report History
+                        </ReportBackground>
+                      </Report>
+                    </Link>
+                    {
+                      ((this.state.User_Type === 'MODERATOR') || (this.state.User_Type === 'ADMIN')) &&
+                        <Link to='/blacklist' value="Blacklist" style={{textDecoration:"none"}}>
+                          <Settings>
+                            <SettingsBackground>
+                              Blacklist
+                            </SettingsBackground>
+                          </Settings>
+                        </Link>
+                    }
+                    {
+                      ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED')) &&
+                        <Link to={{
+                          pathname : '/modhist',
+                          state : this.state.User_Type,
+                      }}  value="Moderator Application History" style={{textDecoration:"none"}}>
+                          <Settings>
+                            <SettingsBackground>
+                              Moderator Application History
+                            </SettingsBackground>
+                          </Settings>
+                        </Link>
+                    }
+                    {
+                      (this.state.User_Type === 'ADMIN') &&
+                        <Link to='/remove_account/admin' value="Remove Account" style={{textDecoration:"none"}}>
+                          <ModApp>
+                            <ModAppBackground>
+                              Account Removal Requests
+                            </ModAppBackground>
+                          </ModApp>
+                        </Link>
+                    }
+                    {
+                      ((this.state.User_Type === 'VERIFIED') || (this.state.User_Type === 'UNVERIFIED') || (this.state.User_Type === 'MODERATOR')) &&
+                          <ModApp>
+                            <ModAppBackground onClick={this.removeAccount}>
+                              Remove Account
+                            </ModAppBackground>
+                          </ModApp>
+                    }
+                </ButtonsActivity>
+              </Lower>
 
-                <ChangePassword>
-                  <form onSubmit={this.handleSubmitPassword}>
-                    <T>Change Password</T>
-                    <h2>Current Password</h2>
-                    <input type="text" required name="currentpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/><br/>
-                    <h2>New Password</h2>
-                    <input type="text" required name="newpassword"  minLength="8" maxLength="32" onChange={this.handleChange} style = {{width:'65%'}}/> <br/>
-                    <input type="submit" value="Save" style = {{height: "10%", width:"10%", position:"absolute", color:"#FB0101", background:"#03204C", borderRadius:"8%", marginLeft:"55%", marginTop:"2%"}}/>
-                    { this.state.invalid && <ErrorText>Current password cannot be the same as new password.</ErrorText> }
-                  </form>
-                </ChangePassword>
-            </Lower>
-          </Container>
+            </Container>
+        </OuterContainer>
         )
       }
     }
 
 export default ProfileManagement;
 
+const OuterContainer = styled.div`
+width: 90%;
+height: auto;
+margin-top:3%;
+margin-left:3%;
+margin-right:3%;
+margin-bottom:4%;
+background:white;
+`
 const Container = styled.div`
-    width: 1200px;
-    height: 930px;
-    margin-top:50px;
-    margin-left:100px;
-    margin-right:100px;
-    margin-bottom:50px;
+    width: 90%;
+    height:auto;
+    margin-top:3%;
+    margin-left:3%;
+    margin-right:3%;
+    margin-bottom:4%;
     background: #DCF2F8;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 24px;
 `
 const Upper = styled.div`
     display:flex;
-    width: 1200px;
+    width: 100%;
     height: 186px;
     
     background: linear-gradient(90deg, #03204C 10.42%, rgba(70, 51, 138, 0.88) 97.92%);
 `
 
 const Profilepicture = styled.img`
-    width: 213px;
-    height: 237px;
+    width: 20%;
+    height: 115%;
     border-radius: 50px;
-    margin-left:60px;
-    margin-top:60px;
+    margin-left:5%;
+    margin-top:5%;
+    cursor:pointer;
 `
 
 const Name = styled.h3`
-    width: 511px;
+    width:30%;
     height: 55px;
-    margin-top:60px;
-    margin-left:10px;
+    margin-top:5%;
+    margin-left:2%;
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
@@ -269,15 +269,17 @@ const Name = styled.h3`
 `
 
 const Admintag = styled.div`
-    margin-left: 25%;
-    margin-right: 5%;
-    margin-bottom: 7%;
-    margin-top: 5%;
+    left: 25%;
+    bottom: 7%;
+    top: 10%;
     width: 82px;
     height: 82px;
     color:white;
-    border:none;
-    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 `
 
 const ErrorText = styled.span`
@@ -289,19 +291,28 @@ const Lower = styled.div`
     margin-top:80px;
     margin-left:20px;
     display:flex;
+    @media only screen and (max-width: 1000px){
+      display:flex;
+      flex-flow:row wrap;
+      height:auto;
+  }
 `
-
+const Form = styled.form`
+@media only screen and (max-width: 900px){
+  display:flex;
+  flex-flow:row wrap;
+  height:auto;
+}
+`
 const Descone = styled.div`
 margin-top: 50px;
 margin-left: 60px;
 `
 const ButtonsActivity = styled.div`
-    display:flex;
-    position:absolute;
-    flex-direction:column;
-    margin-left:750px;
-    margin-top:300px;
-    
+    position:relative;
+    width:100%;
+    height:90%;
+    left:40%;
 `
 
 
@@ -396,7 +407,7 @@ const MyListBackground = styled.div`
     align-items:center;
     margin-bottom:20px;
    
-    width: 359px;
+    width: 250px;
     height: 30px;
    
     background: #03204C;
@@ -424,7 +435,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:20px;
-width: 359px;
+width: 250px;
 height: 30px;
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -450,7 +461,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:20px;
-width: 359px;
+width: 250px;
 height: 30px;
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -468,18 +479,15 @@ const SettingsText = styled.h3`
     color: #FFFFFF;
 `
 const ModApp = styled.div`
-cursor: pointer;
 `
-
 const ModAppBackground = styled.div`
 color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 margin-bottom:40px;
-width: 359px;
+width: 250px;
 height: 30px;
-cursor: pointer;
 background: #03204C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
@@ -502,7 +510,7 @@ color:black;
 display:flex;
 justify-content:center;
 align-items:center;
-    width: 360px;
+    width: 250px;
     height: 86px;
     
     background: #FFFFFF;
@@ -530,16 +538,55 @@ const PrivateMessages = styled.div`
 const ChangePassword = styled.div`
 position:relative;
 height:40%;
-width:40%;
+width:50%;
 margin-top:-0.5%;
-margin-left:56%;
 font-family: Manrope;
 font-style: normal;
 font-weight: bold;
 font-size: 20px;
-line-height: 41px;
+line-height: 45px;
 color: #13AAFF;
 `
 const T = styled.text`
-font-size:170%s;
+font-size:25px;
+width:550px;
+position:relative;
+margin-bottom:5%;
+`
+
+const TT = styled.text`
+font-size:30px;
+width:550px;
+position:relative;
+margin-bottom:5%;
+`
+
+const InputSave = styled.input`
+    width:90px;
+    position:relative;
+    bottom:5px;
+    left:35%;
+`
+const Input = styled.input`
+width: 50%;
+height: 40px;
+background: #F9F7FC;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 8px;
+border:2px solid #ccc;
+:focus{
+    outline:2px;   
+}
+`
+const TextArea = styled.textarea`
+background: #F9F7FC;
+border: 2px solid #ccc;
+border-radius:20px;
+padding-left:6%;
+padding-right:6%;
+padding-top:4%;
+padding-bottom:4%;
+:focus{
+  outline:2px;   
+}
 `

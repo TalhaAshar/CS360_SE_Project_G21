@@ -47,24 +47,32 @@ function Notifications() {
     return (
         <Container>
             <NotificationsHeader>
-                <NotificationsText>Notifications</NotificationsText>
+                <h1>Notifications</h1>
             </NotificationsHeader>
+            <ButtonContainer>
+                <div></div>
             <ViewNextButtonContainer>
-                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick} /><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
+                <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
+            <div></div>
+            </ButtonContainer>
+            <FormContainer>
             <NotificationsContainer>
                 {
                     notifs.map((elem, index) => {
                         if(index >= start && index < (start + 15) && index < notifs.length){
                             let threadLink = "/thread/user/" + elem.ParentThread["id"]
                             return(
-                                <Link to={threadLink} style={{textDecoration:"none"}}>
-                                    <Flag key={elem.id}>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text>{elem.Body}</Text>
+                                    <div>
+                                        <Flag key={elem.id}>
+                                            <Link to={threadLink} style={{textDecoration:"none"}}>
+                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                            <Text>{elem.Body}</Text>  
+                                            </Link>
+                                        </Flag>
                                         <NLine></NLine>
-                                    </Flag>
-                                </Link>
+                                    </div>
+                                
                             )
                         }
                     })
@@ -74,11 +82,10 @@ function Notifications() {
                 {(notifs.length == 0) && <Flag>
                     <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
                     <Text>You have no new notifications</Text>
-                    <NLine></NLine>
-                </Flag>}
+                </Flag>}<NLine></NLine>
 
             </NotificationsContainer>
-            
+            </FormContainer>
         </Container>
     )
 }
@@ -87,20 +94,23 @@ function Notifications() {
 export default Notifications
 
 const Container = styled.div`
-max-width: 1570px;
-margin: 0 auto;
-height: auto;
+width: 100%;
+height: 100%;
 background-color: white;
+margin-bottom:5%;
 `
 const NotificationsHeader = styled.h3`
-width: 1050px;
-height: 40px;
-margin-left:150px;
-margin-right:150px;
-padding-left: 10px;
-padding-right: 10px;
-border-radius: 20px;
 background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
 `
 const NotificationsText = styled.h3`
 max-height:50px;
@@ -115,9 +125,8 @@ border-radius:6px;
 `
 
 const NotificationsContainer = styled.h3`
-width:1050px;
-height: 0 auto;
-margin-left:160px;
+width:100%;
+height:85%;
 margin-top:3%;
 border-radius:10px;
 `
@@ -126,15 +135,28 @@ const ViewNextButtonContainer = styled.div`
 display:flex;
 width:100px;
 height:50px;
-margin-left:635px;
 align-items: Center;
 margin-top:3%;
-background: #DCF2F8;
 border-radius:10px;
 `
+const FormContainer = styled.div`
+margin-left: 3%;
+margin-right: 3%;
+  max-width: 100%;
+  max-height: 90%;
+  margin-top: 2%;
+  display:flex;
+  justify-content:center;
+  background:white;
+  border-radius: 16px;
+  align-items: center;
+  padding-bottom: 3%;
+  padding-left: 3%;
+`
+
 
 const Flag = styled.h3`
-width:1050px;
+width:95%;
 height:60px;
 font-style: normal;
 font-weight: normal;
@@ -149,13 +171,11 @@ background: #DCF2F8;
 
 const NLine = styled.line`
 position:absolute;
-width:1050px;
+width:85%;
 heigth:0px;
-margin-top: 60px;
 border: 1px solid #F9F7FC;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
-
 const Text = styled.text`
 margin-left:40px;
 position:absolute;
@@ -163,7 +183,10 @@ font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
-
-
 color: #060606;
+`
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `

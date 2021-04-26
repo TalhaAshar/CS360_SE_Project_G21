@@ -108,7 +108,7 @@ margin-bottom: 2%;
 const Container = styled.div`
 max-width:100%;
 max-height:100%;
-
+background: white;
 `
 
 const Ub = styled.h3`

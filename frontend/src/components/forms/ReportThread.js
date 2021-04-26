@@ -99,7 +99,7 @@ export default App;
 const Container = styled.div`
   max-width:100%;
   max-height:100%;
-
+  background: white;
 
 `
 

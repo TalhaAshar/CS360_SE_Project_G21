@@ -6,7 +6,6 @@ import {HashRouter as Router, Route, Switch, Link} from 'react-router-dom'
 import SecurityIcon from '@material-ui/icons/Security';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { useLocation, useParams} from "react-router-dom"
-import BlacklistAddFeedbackPopup from "./functionality/BlacklistAddFeedbackPopup"
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -16,11 +15,6 @@ function Profile() {
     const [Details, setDetails] = useState( {'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{}, 'blacklisted' : false } )
     const [User, setUser] = useState('')
     const [visitor, setVisitor] = useState({'User_Type':'', 'ProfileImage':'', 'biography':'', 'education':'', 'institution':'', 'profession':'', 'company':'', 'location':'', 'age':'', 'user':{}, 'blacklisted' : false })
-    const [seen, setSeen] = useState(false)
-  
-    function togglePop () {
-      setSeen(true)
-    }
 
     let Path = "/List/guest/" + id
 
@@ -52,21 +46,23 @@ function Profile() {
     function addBlacklist(){
         let url = `api/register/blacklist/add/` + id
         axios.post(url).then((res) => {
+            
                 setDetails(res.data)
                 setUser(res.data['user']['username'])
-                setSeen(false)
+            
         })
         .catch(error => console.log('Error:', error))
     }
 
             return (
+                <OuterContainer>
                 <Container>
                 <Upper>
                         <Profilepicture src={Details['ProfileImage']}
                             width="200px"
                             height = "200px"
                         /> 
-                        <Name>
+                        <Name style={{marginLeft:"5%"}}>
                             {User}
                         </Name>
 
@@ -75,7 +71,7 @@ function Profile() {
                             {  (Details['User_Type'] === 'MODERATOR') && <SecurityIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
                             {  (Details['User_Type'] === 'VERIFIED') && <VerifiedUserIcon style = {{ color:"#00FF00", height:"100%", width:"100%" }}/>    }
                             {  (Details['User_Type'] === 'UNVERIFIED') && <VerifiedUserIcon style = {{ color:"#FFFF00", height:"100%", width:"100%" }}/>    }
-                            {Details['User_Type']}
+                            <UserType>{Details['User_Type']}</UserType>
                         </Admintag>
                 </Upper>
 
@@ -127,92 +123,117 @@ function Profile() {
                                     </MyList>
                                 </Link>
                                 <Line></Line>
-                                    {   ((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false && Details['User_Type'] != 'ADMIN') && 
-                                        <PrivateMessages onClick={togglePop}>
-                                            <PMBackground>
-                                                Add to Blacklist
-                                            </PMBackground>
-                                            { seen ? <BlacklistAddFeedbackPopup blacklist={addBlacklist}/> : null }
-                                        </PrivateMessages>
-                                    }
+                                
+                                    {((visitor['User_Type'] === 'ADMIN' || visitor['User_Type'] === 'MODERATOR') && Details["blacklisted"] === false && Details['User_Type'] != 'ADMIN') && <PrivateMessages onClick={addBlacklist}>
+                                        <PMBackground>
+                                            Add to Blacklist
+                                        </PMBackground>
+                                    </PrivateMessages> }
                             </Activity>
                         </ButtonsActivity>
-                        {
-                            Details["blacklisted"] === true && <BlackText> Blacklisted </BlackText>
-                        }
                 </Lower>
                 </Container>
+                </OuterContainer>
             )
 }
 
 export default Profile;
 
+const OuterContainer = styled.div`
+width: 90%;
+height: auto;
+margin-top:5%;
+margin-left:3%;
+margin-right:3%;
+margin-bottom:4%;
+background:white;
+`
 const Container = styled.div`
-    width: 1200px;
-    height: 930px;
-    margin-top:50px;
-    margin-left:100px;
-    margin-right:100px;
-    margin-bottom:50px;
+    width: 90%;
+    height:auto;
+    margin-top:3%;
+    margin-left:3%;
+    margin-right:3%;
+    margin-bottom:4%;
     background: #DCF2F8;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 24px;
+    padding-bottom:5%;
 `
 const Upper = styled.div`
-    display:flex;
-    width: 1200px;
-    height: 186px;
+display:flex;
+width: 100%;
+height: 186px;
     background: linear-gradient(90deg, #03204C 10.42%, rgba(70, 51, 138, 0.88) 97.92%);
 `
-
+const UserType = styled.h4`
+@media only screen and (max-width: 800px){
+        display:none;
+    }
+`
 const Profilepicture = styled.img`
-    width: 213px;
-    height: 237px;
+    width: 20%;
+    height: 115%;
     border-radius: 50px;
-    margin-left:60px;
-    margin-top:60px;
+    margin-left:5%;
+    margin-top:5%;
 `
 
 const Name = styled.h3`
-    width: 511px;
-    height: 55px;
-    margin-top:60px;
-    margin-left:0px;
-    font-family: Manrope;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 40px;
-    line-height: 55px;
-    color: #FFFFFF;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+width:30%;
+height: 55px;
+margin-top:5%;
+margin-left:2%;
+font-family: Manrope;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 55px;
+color: #FFFFFF;
+text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
 const Admintag = styled.div`
-    margin-left: 25%;
-    margin-right: 5%;
-    margin-bottom: 7%;
-    margin-top: 5%;
-    width: 82px;
-    height: 82px;
-    color:white;
-    border:none;
-    box-sizing: border-box;
+left: 25%;
+bottom: 7%;
+top: 10%;
+width: 82px;
+height: 82px;
+color:white;
+display: flex;
+flex-flow: row wrap;
+align-items: center;
+justify-content: center;
+position: relative;
+@media only screen and (max-width: 800px){
+    left:20%;
+    margin-left:2%;
+}
+@media only screen and (max-width: 500px){
+    display:none;
+}
 `
 
 const Lower = styled.div`
     margin-top:80px;
     margin-left:20px;
     display:flex;
+    @media only screen and (max-width: 800px){
+        display:flex;
+        flex-flow:row wrap;
+        height:auto;
+    }
 `
 
 const Descone = styled.div`
-margin-top: 50px;
-margin-left: 60px;
+margin-top: 7%;
+margin-left: 5%;
 `
 const ButtonsActivity = styled.div`
-    display:flex;
-    flex-direction:column;
-    margin-left:180px;
+position:relative;
+width:100%;
+height:90%;
+left:7%;
 `
 
 const Profession = styled.h3`
@@ -312,19 +333,22 @@ margin-bottom: 30px;
 `
 
 const Biography = styled.div`
-    margin-left:40px;
-    margin-right:10px;
+    margin-left:20%;
+    margin-right:2%;
+    margin-bottom:5%;
+    @media only screen and (max-width: 800px){
+        margin-left:4%;
+    }
 `
 
 const BioText = styled.h3`
-    width: 273px;
+    width: 100%;
     height: 48px;
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 30px;
     line-height: 41px;
-
     color: #13AAFF;
 `
 
@@ -332,7 +356,7 @@ const TellUsAboutYourself = styled.div`
 `
 
 const Activitytext = styled.h3`
-width: 273px;
+width: 100%;
 height: 48px;
 font-family: Manrope;
 font-style: normal;
@@ -342,26 +366,12 @@ line-height: 41px;
 color: #13AAFF;
 `
 
-const BlackText = styled.h3`
-width: 273px;
-height: 48px;
-font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 30px;
-line-height: 41px;
-color: #000000;
-margin-top: 20%;
-margin-left: -11%;
-`
-
 const Activity = styled.div`
-    width:250px;
-
+    width:76%;
 `
 const Line = styled.div`
     height:0px;
-    width:360px;
+    width:100%;
     border: solid 1px;
 `
 
@@ -373,7 +383,7 @@ color:black;
 display:flex;
 justify-content:center;
 align-items:center;
-width: 360px;
+width: 100%;
 height: 86px;
 background: #FFFFFF;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -383,13 +393,11 @@ const MyListText = styled.h3`
     width: 108px;
     height: 27px;
     
-
     font-family: Manrope;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
     line-height: 27px;
-
     color: #000000;
 `
 
@@ -398,24 +406,24 @@ color:black;
 display:flex;
 justify-content:center;
 align-items:center;
-width: 360px;
-height: 86px;
-background: #FFFFFF;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-cursor:pointer;
+    width: 100%;
+    height: 86px;
+    
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
 const PMText = styled.h3`
-width: 170px;
-height: 27px;
-font-family: Manrope;
-font-style: normal;
-font-weight: bold;
-font-size: 20px;
-line-height: 27px;
-color: #000000;
+    width: 170px;
+    height: 27px;
+   
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
 `
 
 const PrivateMessages = styled.div`
-cursor:pointer;
 `

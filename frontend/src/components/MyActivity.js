@@ -60,9 +60,8 @@ function MyActivity() {
             <div></div>
             </ButtonContainer>
             
+            
             <FormContainer>
-            
-            
             <ActivityContainer>
                 {
                     pubs.map((elem, index) => {

@@ -15,7 +15,6 @@ const Container = styled.div`
 height: 35px;
 width:90px;
 align:center;
-margin-left:920px;
 border-radius:5px; 
 background: #898989;
 `
@@ -25,11 +24,9 @@ align:center;
 font-style: normal;
 font-weight: bold;
 margin-left:12px;
-
 display: flex;
 align-items: center;
 text-align: center;
 letter-spacing: -1px;
-
 color: #FFFFFF;
 `

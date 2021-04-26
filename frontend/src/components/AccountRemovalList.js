@@ -68,53 +68,69 @@ function AccountRemoval() {
     return (
         <Container>
             <MDAHeader>
-                <MDAText>Account Removal Requests</MDAText>
+                <h1>Account Removal Requests</h1>
             </MDAHeader>
+            <ButtonContainer>
+                <div></div>
             <ViewNextButtonContainer>
                 <SkipPreviousRoundedIcon style = {{marginLeft:'25px'}} onClick={leftClick}/><SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </ViewNextButtonContainer>
-            <MDAContainer>
-                {
-                    apps.map((elem, index) => {
-                        if(index >= start && index < (start + 15) && index < apps.length)
-                        {
-                            let placeholder = "/profile/" + elem.user["id"]
-                            if(elem.Status == 'ACCEPTED'){
-                                return(
-                                    <Flag key={elem.id}>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text> <Link to={placeholder}>{elem.user["username"]} </Link>  made an account removal request.</Text>
-                                        <AcceptedButton/>
+            <div></div>
+            </ButtonContainer>
+
+            <FormContainer>
+                <MDAContainer>
+                    {
+                        apps.map((elem, index) => {
+                            if(index >= start && index < (start + 15) && index < apps.length)
+                            {
+                                let placeholder = "/profile/" + elem.user["id"]
+                                if(elem.Status == 'ACCEPTED'){
+                                    return(
+                                        <div>
+                                            <Flag key={elem.id}>
+                                                <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                                <TextContainerResult>
+                                                    <Text> <Link to={placeholder}>{elem.user["username"]} </Link>  made an account removal request.</Text>
+                                                </TextContainerResult>
+                                                <AcceptedButton/>
+                                            </Flag>
+                                            <NLine></NLine>
+                                        </div>
+                                    )
+                                }
+                                else{
+                                    return(
+                                        <div>
+                                        <Flag key={elem.id}>
+                                            <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                                            <TextContainerResult>
+                                                <Text> <Link to={placeholder} style = {{textDecoration:'none'}}>{elem.user["username"]} </Link>  made an account removal request.</Text>
+                                            </TextContainerResult>
+                                            <BlacklistContainer onClick={togglePop}>
+                                                <TextContainer>Remove</TextContainer>
+                                            </BlacklistContainer>
+                                            { seen ? <AccountRemovalFeedbackPopup toggle={togglePop} remove={changeStatus} toRemove={elem.user["id"]}/> : null }
+                                            
+                                        </Flag>
                                         <NLine></NLine>
-                                    </Flag>
-                                )
+                                        </div>
+                                    )
+                                }
                             }
-                            else{
-                                return(
-                                    <Flag key={elem.id}>
-                                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                                        <Text> <Link to={placeholder} style = {{textDecoration:'none'}}>{elem.user["username"]} </Link>  made an account removal request.</Text>
-                                        <BlacklistContainer onClick={togglePop}>
-                                            <TextContainer>Remove</TextContainer>
-                                        </BlacklistContainer>
-                                        { seen ? <AccountRemovalFeedbackPopup toggle={togglePop} remove={changeStatus} toRemove={elem.user["id"]}/> : null }
-                                        <NLine></NLine>
-                                    </Flag>
-                                )
-                            }
-                        }
-                    })
-                }
-                {(apps.length == 0) && <Flag>
-                    <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
-                    <Text>There are no account removal requests.</Text>
-                    <NLine></NLine> 
-                </Flag>}        
+                        })
+                    }
+                    {(apps.length == 0) && <Flag>
+                        <FiberManualRecordRoundedIcon style = {{color: "#0A3977", marginLeft:'10px',alignItems:'center'}}/>
+                        <Text>There are no account removal requests.</Text>
+                        
+                    </Flag>}
+                    <NLine></NLine>      
 
-            </MDAContainer>
+                </MDAContainer>
 
-            
-
+                
+            </FormContainer>
         </Container>
     )
 }
@@ -123,20 +139,23 @@ function AccountRemoval() {
 export default AccountRemoval
 
 const Container = styled.div`
-max-width: 1570px;
-margin: 0 auto;
-height: auto;
+width: 100%;
+height: 100%;
 background-color: white;
 `
+
 const MDAHeader = styled.h3`
-width: 1050px;
-height: 40px;
-margin-left:150px;
-margin-right:150px;
-padding-left: 10px;
-padding-right: 10px;
-border-radius: 20px;
 background: #0A3977;
+    border-radius:20px;
+    color:white;
+    min-width: 55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left: 3%;
+margin-right: 3%;
+margin-top: 2%;
+margin-bottom: 2%;
 `
 const MDAText = styled.h3`
 max-height:50px;
@@ -151,46 +170,59 @@ border-radius:6px;
 `
 
 const MDAContainer = styled.h3`
-width:1050px;
-height: 0 auto;
-margin-left:160px;
+width: 100%;
+height: 95%;
 margin-top:3%;
 border-radius:10px;
 `
+const FormContainer = styled.div`
+margin-left: 3%;
+margin-right: 3%;
+  max-width: 100%;
+  max-height: 95%;
+  margin-top: 1%;
+  display:flex;
+  justify-content:center;
+  background:white;
+  border-radius: 16px;
+  align-items: center;
+  padding-bottom: 3%;
+  padding-left: 3%;
+`
+
 
 const ViewNextButtonContainer = styled.div`
 display:flex;
 width:100px;
 height:50px;
-margin-left:635px;
 align-items: Center;
 margin-top:3%;
-background: #DCF2F8;
 border-radius:10px;
 `
 
 const Flag = styled.h3`
-width:1050px;
-height:60px;
+width:95%;
+height:auto;
 font-style: normal;
 font-weight: normal;
 font-size: 18px;
 line-height: 32px;
+color: Black;
 display: flex;
 align-items: center;
-color: Black;
 background: #DCF2F8;
+padding-top: 1%;
 `
 
 
 const NLine = styled.line`
 position:absolute;
-width:1050px;
+width:86%;
 heigth:0px;
-margin-top: 60px;
 border: 1px solid #F9F7FC;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
+
 
 const Text = styled.text`
 margin-left:40px;
@@ -201,15 +233,24 @@ font-size: 18px;
 line-height: 32px;
 color: #060606;
 `
-
+const TextContainerResult = styled.div`
+    width: 68%;
+    padding-bottom:2%;
+`
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 const BlacklistContainer = styled.div`
 height: 35px;
 width:90px;
 align:center;
-margin-left:920px;
+margin-left:20%;
 border-radius:5px; 
 background: #583192;
 cursor:pointer;
+margin-bottom:1%;
 `
 
 const TextContainer = styled.text`

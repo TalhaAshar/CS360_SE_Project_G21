@@ -86,7 +86,12 @@ function SearchPage() {
             <SkipNextRoundedIcon style = {{}} onClick={rightClick}/>
             </Nextpage>
 
+            <FilterContainer>
+                <div></div>
             < Filter onChange={handleFilters}/>
+            <div></div>
+            </FilterContainer>
+
             <Colour>
                 <Results>
                 {(pubs.length == 0) && <YoutubeSearchedForIcon
@@ -131,6 +136,13 @@ const BookTitleContainer = styled.div`
     margin-left: 3%;
     margin-right: 3%;
     margin-top:3%;
+`
+
+const FilterContainer = styled.div`
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-left: 5%;
 `
 
 const Results = styled.div`

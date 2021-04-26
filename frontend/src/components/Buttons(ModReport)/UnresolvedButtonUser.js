@@ -26,11 +26,9 @@ align:center;
 font-style: normal;
 font-weight: bold;
 margin-left:5px;
-
 display: flex;
 align-items: center;
 text-align: center;
 letter-spacing: -1px;
-
 color: #FFFFFF;
 `
