@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function PubSingleAddFeedbackPopup(props) {
+function AddPublicationFeedbackPopup(props) {
     return (
         <div>
         <Shadow>
@@ -11,18 +11,18 @@ function PubSingleAddFeedbackPopup(props) {
                 </Title>
                 <Body>
                     <Heading>
-                        The publication has been added to your personalized list.
+                        The user has been blacklisted from the site.
                     </Heading>
-                        <Button onClick={props.toggle}>
-                            Return
-                        </Button>
+                    <Button onClick={props.blacklist}>
+                        Return
+                    </Button>
                 </Body>
             </Container>
         </div>
     )
 }
 
-export default PubSingleAddFeedbackPopup
+export default AddPublicationFeedbackPopup
 
 const Container = styled.div`
     width: 505px;
@@ -86,7 +86,7 @@ const Button = styled.h3`
     height: 15%;
     width: 15%;
     align-items: center;
-    margin-top: 12%;
+    margin-top: 15%;
     margin-left: 80%;
     font-family: Manrope;
     font-style: normal;
@@ -94,6 +94,5 @@ const Button = styled.h3`
     font-size: 25px;
     color: white;
     background-color: #583192;
-    cursor: pointer;
     border-radius: 8px;
 `

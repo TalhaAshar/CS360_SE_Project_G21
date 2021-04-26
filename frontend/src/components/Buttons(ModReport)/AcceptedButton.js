@@ -15,7 +15,7 @@ const Container = styled.div`
 height: 35px;
 width:90px;
 align:center;
-margin-left:920px;
+margin-left:20%;
 border-radius:5px; 
 background: #06AF47;
 `

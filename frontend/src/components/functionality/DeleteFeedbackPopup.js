@@ -34,7 +34,7 @@ const Container = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    zIndex: 999999999;
+    z-index: 999999999;
     transform: translate(-50%, -50%); 
     box-shadow: 0px 2px 8px rgba(117, 131, 142, 0.08), 0px 20px 32px rgba(52, 60, 68, 0.16);
     border-radius: 20px;
@@ -48,7 +48,7 @@ const Shadow = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    zIndex: 999999998;
+    z-index: 999999998;
     transform: translate(-50%, -50%); 
 `
 

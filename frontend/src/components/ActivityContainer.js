@@ -133,8 +133,8 @@ function Activity(props) {
 
 export default Activity
 
-const ActivityContainer = styled.h3`
-width:1050px;
+const ActivityContainer = styled.div`
+width:100%;
 height:60px;
 font-style: normal;
 font-weight: normal;
@@ -147,7 +147,7 @@ color: Black;
 
 const NLine = styled.line`
 position:absolute;
-width:1050px;
+width:82%;
 heigth:0px;
 margin-top: 60px;
 border: 1px solid #F9F7FC;

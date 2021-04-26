@@ -15,7 +15,6 @@ const Container = styled.div`
 height: 35px;
 width:90px;
 align:center;
-margin-left:920px;
 border-radius:5px; 
 background: #898989;
 `

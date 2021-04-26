@@ -11,7 +11,7 @@ function PubSingleAddFeedbackPopup(props) {
                 </Title>
                 <Body>
                     <Heading>
-                        The publication has been added to your personalized list.
+                        The publication already exists in your personalized list.
                     </Heading>
                         <Button onClick={props.toggle}>
                             Return

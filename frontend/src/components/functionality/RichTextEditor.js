@@ -1,7 +1,7 @@
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from 'axios';
-import styled from "styled-components"
+import styled from 'styled-components'
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -27,6 +27,7 @@ class App extends React.Component {
   handleSubmit(event) {
     //alert("Text was submitted: " + this.state.content);
     event.preventDefault();
+    window.scrollTo(0, 0)
     console.log(this.props.isEdit, "edit flag")
     let isComponentMounted = true;
     if(this.props.isEdit == false){
@@ -35,6 +36,7 @@ class App extends React.Component {
       axios.post(url, {data}).then((res) => {
         console.log("added")
         if (isComponentMounted){
+          window.scrollTo(0, 0)
           this.setState({content : ''})
           this.props.postHandler(res.data)
           this.props.replyHandler('')
@@ -61,6 +63,7 @@ class App extends React.Component {
         axios.post(url, {data}).then((res) => {
           console.log("added")
           if (isComponentMounted){
+            window.scrollTo(0, 0)
             this.setState({content : ''})
             this.props.postHandler(res.data)
             this.props.replyHandler('')
@@ -87,24 +90,25 @@ class App extends React.Component {
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit} style={{marginLeft:"4.5%", marginRight:"4.5%"}}>
-      <EditorContainer>
-              <Editor
-                  value={this.state.Description}
-                  apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
-                  init={{
-                      height: 500,
-                      width:"90%",
-                      //plugins: "image",
-                      toolbar: "bold italic", // image",
-                      menubar: false,
-                      toolbar_location: "bottom",
-                  }}
-                  onEditorChange={this.handleEditorChange}
-                  />
-              </EditorContainer>
-              <Submit type="submit" value="Submit" />
-              </Form>
+      <Form onSubmit={this.handleSubmit}>
+        <EditorContainer>
+        <Editor
+          value = {this.state.content}
+          apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
+          init={{
+            width: "100%",
+            height: 500,
+            plugins: "image",
+            toolbar: "bold italic image",
+            menubar: false,
+            toolbar_location: "bottom",
+          }}
+          onEditorChange={this.handleChange}
+        />
+        <br />
+        <Submit type="submit" value="»" />
+        </EditorContainer>
+      </Form>
     );
   }
 }
@@ -119,44 +123,26 @@ const Form = styled.form`
 
 `
 const EditorContainer = styled.div`
-    position:relative;
-    margin-left:30px;
-    
-
+margin-left:4.5%;
+margin-top:3%;
+flex:1;
+padding-top:20px;
+padding-left:4.5%;
+padding-right: 4.5%;
+margin-right:4.5%;
+margin: 0 auto;
 `
 const Submit = styled.input`
-    position: relative;
-    bottom:20%;
-    left: 87%;
-    width:150px;
-    height:35px;
-    z-index:4;
-    border:none;
-    background: #03204C;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    color:white;
-    font-size:20px;
-    font-weight:bold;
+width:8%;
+height:15%;
+position:relative;
+bottom:76px;
+left:90%;
+background-color:#03204C;
+color:white;
+z-index:2;
+border-radius:6px;
+font-size:22px;
+font-weight:bold;
+cursor: pointer;
 `
-
-
-
-// <Container>
-//       <Form onSubmit={this.handleSubmit} style={{marginLeft:"4.5%", marginRight:"4.5%"}}>
-//         <Editor
-//           value = {this.state.content}
-//           apiKey="dn8136u1fhyng3ughxdyzfw93m38430c67msp493v583itva"
-//           init={{
-//             width:"100%",
-//             height: 500,
-//             plugins: "image",
-//             toolbar: "bold italic image",
-//             menubar: false,
-//             toolbar_location: "bottom",
-//           }}
-//           onEditorChange={this.handleChange}
-//         />
-//         <Submit type="submit" value="Submit" />
-//       </Form>
-//       </Container>

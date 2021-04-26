@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function PubSingleAddFeedbackPopup(props) {
+function AccountRemovalFeedbackPopup(props) {
     return (
         <div>
         <Shadow>
@@ -11,18 +11,23 @@ function PubSingleAddFeedbackPopup(props) {
                 </Title>
                 <Body>
                     <Heading>
-                        The publication has been added to your personalized list.
+                        Are you sure you want to delete this account?
                     </Heading>
-                        <Button onClick={props.toggle}>
-                            Return
-                        </Button>
+                    <Buttons>
+                        <Button1 onClick={() => props.remove(props.toRemove)}>
+                            Confirm
+                        </Button1>
+                        <Button2 onClick={props.toggle}>
+                            Cancel
+                        </Button2>
+                    </Buttons>
                 </Body>
             </Container>
         </div>
     )
 }
 
-export default PubSingleAddFeedbackPopup
+export default AccountRemovalFeedbackPopup
 
 const Container = styled.div`
     width: 505px;
@@ -36,7 +41,6 @@ const Container = styled.div`
     box-shadow: 0px 2px 8px rgba(117, 131, 142, 0.08), 0px 20px 32px rgba(52, 60, 68, 0.16);
     border-radius: 20px;
 `
-
 const Shadow = styled.div`
     width: 100%;
     height: 100%;
@@ -67,6 +71,45 @@ align-items:center;
     border-radius: 20px;
 `
 
+const Buttons = styled.div`
+`
+
+const Button1 = styled.h3`
+    position: absolute;
+    height: 15%;
+    width: 20%;
+    align-items: center;
+    margin-top: 5%;
+    margin-left: -40%;
+    padding-left: 1.5%;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    color: white;
+    background-color: #583192;
+    border-radius: 8px;
+    cursor: pointer;
+`
+
+const Button2 = styled.h3`
+    position: absolute;
+    height: 15%;
+    width: 17%;
+    border-radius: 8px;
+    padding-left: 1.5%;
+    align-items: center;
+    margin-top: 5%;
+    margin-left: -15%;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    color: white;
+    background-color: #583192;
+    cursor: pointer;
+`
+
 const Heading = styled.h3`
     margin-left:20px;
     height: 14px;
@@ -79,21 +122,4 @@ const Heading = styled.h3`
     align-items: center;
     letter-spacing: 0.169679px;
     color: #583192;
-`
-
-const Button = styled.h3`
-    position: absolute;
-    height: 15%;
-    width: 15%;
-    align-items: center;
-    margin-top: 12%;
-    margin-left: 80%;
-    font-family: Manrope;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 25px;
-    color: white;
-    background-color: #583192;
-    cursor: pointer;
-    border-radius: 8px;
 `
