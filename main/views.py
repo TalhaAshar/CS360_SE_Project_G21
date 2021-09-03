@@ -315,7 +315,7 @@ class TakedownRequest(APIView):
 
 		# Send the email to all admins
 		try:
-			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
+			send_mail(subject, plain , EMAIL_HOST_USER, [''], fail_silently = True, html_message=message)
 		except:
 			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -347,7 +347,7 @@ class ContactUs(APIView):
 
 		# Send the email to all admins
 		try:
-			send_mail(subject, plain , EMAIL_HOST_USER, ['talhaashar01@gmail.com', 'animerjk@gmail.com', '22100036@lums.edu.pk'], fail_silently = True, html_message=message)
+			send_mail(subject, plain , EMAIL_HOST_USER, [''], fail_silently = True, html_message=message)
 		except:
 			return Response({'Message' : 'There was an error processing your request!'}, status=status.HTTP_400_BAD_REQUEST)
 		return Response(status=status.HTTP_200_OK)
