@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y#zj%#*x*6mv6-t2ce7_(crm(aduk1x)ipm+2+12c$3)!-bc!h'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -96,11 +96,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_1', 
-        'USER': 'bookbound', 
-        'PASSWORD': 'Kyogre11',
-        'HOST': 'database-1.cw1pg5hjopmh.ap-south-1.rds.amazonaws.com', 
-        'PORT': '5432',
+        'NAME': '', 
+        'USER': '', 
+        'PASSWORD': '',
+        'HOST': '', 
+        'PORT': '',
     }
 }
 
@@ -164,12 +164,12 @@ MEDIA_URL = '/frontend/src/images/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'bookboundofficial@gmail.com'
-EMAIL_HOST_PASSWORD = 'umubhaimathking'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = 'bookboundofficial@gmail.com'
-SERVER_EMAIL = 'bookboundofficial@gmail.com'
+DEFAULT_FROM_EMAIL = ''
+SERVER_EMAIL = ''
 
 
 #Defining the relevant URL's for when a user logs in or out of the system
